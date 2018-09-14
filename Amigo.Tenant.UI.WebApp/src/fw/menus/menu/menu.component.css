@@ -1,0 +1,43 @@
+:host {
+    display: flex; 
+    align-items: flex-end; 
+    justify-content: flex-start;
+    flex-grow: 1;
+
+	/*background: rgb(243,179,53);*/ /* Old browsers */
+	/*background: -moz-linear-gradient(left,  rgba(243,179,53,1) 0%, rgba(229,132,44,1) 50%, rgba(211,90,62,1) 100%);*/ /* FF3.6-15 */
+	/*background: -webkit-linear-gradient(left,  rgba(243,179,53,1) 0%,rgba(229,132,44,1) 50%,rgba(211,90,62,1) 100%);*/ /* Chrome10-25,Safari5.1-6 */
+	/*background: linear-gradient(to right,  rgba(243,179,53,1) 0%,rgba(229,132,44,1) 50%,rgba(211,90,62,1) 100%);*/ /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+	/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f3b335', endColorstr='#c9502a',GradientType=1 );*/ /* IE6-9 */
+    background: #258fc3;
+    color: whitesmoke;
+}
+
+:host(.vertical-menu) {
+    display: inline-block;
+    width: 200px;
+    padding-left: 4px;
+    flex-grow: 0;
+    background: #555;
+    overflow: auto;
+
+    color: whitesmoke;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    display: inline;
+}
+
+button {
+    margin-top: 20px;
+}
+button.horizontal {
+    margin-left: 20px;
+    margin-bottom: 2px;
+}

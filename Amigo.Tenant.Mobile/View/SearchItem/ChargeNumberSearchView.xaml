@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:cbehavior="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Behaviors;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+              x:Class="XPO.ShuttleTracking.Mobile.View.SearchItem.ChargeNumberSearchView"
+              Title="{x:Static resource:AppString.titleChargeNumberSearch}">
+  <abstract:NavigatingPage.Resources>
+    <ResourceDictionary>
+      
+      <converter:ItemsFoundToBoolConverter x:Key="Lst2Bool" />
+      <converter:StringToBoolConverter x:Key="Str2Bool" />
+      <converter:StringToGridLengthConverter x:Key="Str2Grid" />
+      
+      <Style x:Key="DailyActivityTitle" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontSize" Value="Small" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+      </Style>
+
+      <Style x:Key="DailyActivityActionType" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+      </Style>
+
+      <DataTemplate x:Key="ChargeNumberTemplate">
+        <ViewCell>
+          <Grid  Padding="10,20,10,0" RowSpacing="0">
+            <Grid.RowDefinitions>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="*"/>
+              <RowDefinition Height="{Binding StartDate,Converter={StaticResource Str2Grid}}"/>
+              <RowDefinition Height="{Binding FromBlock,Converter={StaticResource Str2Grid}}"/>
+              <RowDefinition Height="{Binding ToBlock,Converter={StaticResource Str2Grid}}"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="3*"/>
+              <ColumnDefinition Width="5*"/>
+              <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Column="0" Grid.Row="0" Style="{StaticResource DailyActivityActionType}" Text="{Binding ActionType}" FontAttributes="Bold" Margin="0,0,0,5"/>
+            <Label Grid.Column="1" Grid.Row="0" Style="{StaticResource DailyActivityActionType}" Text="{Binding ActivityType}" FontAttributes="Bold" Margin="0,0,0,5"/>
+            <Image Grid.Column="2" Grid.Row="0" Source="arrow_right.png" HeightRequest="15" WidthRequest="15" VerticalOptions="Center" HorizontalOptions="End"/>
+            
+            <Label Grid.Column="0" Grid.Row="1" Style="{StaticResource DailyActivityTitle}" Text="{Binding ChargeType}" />
+            <Label Grid.Column="1" Grid.Row="1" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding ChargeNo}" />
+            <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource DailyActivityTitle}" Text="{x:Static resource:AppString.lblEqupNo}" />
+            <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding EquipmentType}"/>
+            <Label Grid.Column="0" Grid.Row="3" Style="{StaticResource DailyActivityTitle}" Text="{x:Static resource:AppString.lblChassis}"/>
+            <Label Grid.Column="1" Grid.Row="3" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding Chassis}"/>
+            <Label Grid.Column="0" Grid.Row="4" Style="{StaticResource DailyActivityTitle}" Text="{x:Static resource:AppString.lblStartTime}" />
+            <Label Grid.Column="1" Grid.Row="4" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding StartDate}"/>
+            
+            <Label Grid.Column="0" Grid.Row="5" Style="{StaticResource DailyActivityTitle}" Text="{x:Static resource:AppString.lblFromBlock}"/>
+            <Label Grid.Column="1" Grid.Row="5" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding FromBlock}"/>
+            <Label Grid.Column="0" Grid.Row="6" Style="{StaticResource DailyActivityTitle}" Text="{x:Static resource:AppString.lblToBlock}"/>
+            <Label Grid.Column="1" Grid.Row="6" Style="{StaticResource DailyActivityTitle}" FontAttributes="Bold" Text="{Binding ToBlock}"/>
+          </Grid>
+        </ViewCell>
+      </DataTemplate>
+    </ResourceDictionary>
+  </abstract:NavigatingPage.Resources>
+
+  <StackLayout Style="{StaticResource OuterStackLayout}">
+    <!--Header-->
+    <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+      <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+        <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+        <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+      </StackLayout>
+    </StackLayout>
+    
+    <!--Searchbar-->
+    <SearchBar x:Name="SearchBar" Text="{Binding ChargeNumber}" Placeholder="{x:Static resource:AppString.lblSearchChargeNumber}" SearchCommand="{Binding OnChargeNumberTextChanged}">
+      <!--<SearchBar.Behaviors>
+        <cbehavior:EventToCommandBehavior EventName="TextChanged" Command="{Binding OnChargeNumberTextChanged}"/>
+      </SearchBar.Behaviors>-->
+    </SearchBar>
+    <Label Margin="20" Text="{x:Static resource:AppString.lblSearchNotFound}" FontSize="Large" FontAttributes="Bold" IsVisible="{Binding LstFilteredDailyActivities,Converter={StaticResource Lst2Bool}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+    <!--Results-->
+    <customControls:ListView  x:Name="ListViewSearchResult"
+                              HasUnevenRows="True"
+                              SelectedItem="{Binding SelectedActivity}"
+                              ItemsSource="{Binding LstFilteredDailyActivities}" 
+                              ItemTemplate="{StaticResource ChargeNumberTemplate}"
+                              ItemClickCommand="{Binding ChooseCommand}"
+                              IsRefreshing="{Binding IsLoading}"/>  
+  </StackLayout>
+</abstract:NavigatingPage>

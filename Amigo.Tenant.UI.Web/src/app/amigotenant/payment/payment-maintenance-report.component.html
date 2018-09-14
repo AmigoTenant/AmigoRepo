@@ -1,0 +1,184 @@
+<div class="form-horizontal">
+    <a style="padding:0px;">
+        <img src="./assets/images/logo.png" class="img-responsive" width="19%"/>
+    </a>
+    <div class="page-header text-right">
+        Invoice No. {{ invoiceHeaderDTO.invoiceNo }}
+    </div>
+    
+    <div class="tab-pane">
+        <form>
+            <div class="filter-bar form-horizontal">
+                <div class="row">
+                    <div class="col-lg-12 col-md-12 col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="driver" class="col-sm-4 control-label">Bill To</label>
+                                    <label class="col-sm-7">
+                                        {{ invoiceHeaderDTO.tenantFullName }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="from" class="col-sm-4 control-label">Date</label>
+                                    <label class="col-sm-7">
+                                        {{ invoiceHeaderDTO.invoiceDate | date:"dd/MM/yyyy"}}
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="from" class="col-sm-4 control-label">Property</label>
+                                    <label class="col-sm-7">
+                                        {{ invoiceHeaderDTO.houseName }}
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="from" class="col-sm-4 control-label">Period</label>
+                                    <label class="col-sm-7">
+                                        {{ invoiceHeaderDTO.periodCode }}
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="from" class="col-sm-4 control-label">Comment</label>
+                                    <label class="col-sm-7">
+                                        
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <label for="from" class="col-sm-4 control-label">Contract</label>
+                                    <label class="col-sm-7">
+                                        {{ invoiceHeaderDTO.contractCode }}
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+                        
+        </form>
+        <div class="grid-container">
+            <kendo-grid id="kgrid-Contract" [data]="invoiceDetailDTO" [selectable]="true">
+                <kendo-grid-column field="paymentDescription" title="Description"></kendo-grid-column>
+                <kendo-grid-column  title="Amount" >
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <div class="text-right">
+                            <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                        </div>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+
+        <div class="filter-bar form-horizontal">
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Rent</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalRent | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Deposit</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalDeposit | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Late Fee</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalLateFee | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Service</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalService | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Fine</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalFine | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total On Account</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue">{{ invoiceHeaderDTO.totalOnAcount | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-6 text-right">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">Total Amount</label>
+                                <label class="col-sm-7 text-right" style="font:bold; color:blue; font-size: 14px">{{ invoiceHeaderDTO.totalAmount | number:'2.2-2' }}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+</div>
+    
+</div>

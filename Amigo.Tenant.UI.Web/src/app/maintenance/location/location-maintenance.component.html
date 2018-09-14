@@ -1,0 +1,192 @@
+<div class="page-header">
+    Location
+</div>
+<div class="form-horizontal">
+    <div class="action-bar-container">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="locationForm.form.valid" [formName]="'locationForm'"></st-boton-maintenance>
+    </div>
+    <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+    <form #locationForm="ngForm" data-val-form="locationForm">
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Code</label>
+                    <div class="col-sm-4">
+                        <input st-autofocus type="text" class="form-control"
+                               [(ngModel)]="locationMaintenance.code"
+                               required name="code" #code="ngModel" />
+                        <label [hidden]="code.valid || (code.pristine && code.untouched)" class="message error">Code is required</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="locationMaintenance.name"
+                               required name="name" #name="ngModel" />
+                        <label [hidden]="name.valid || (name.pristine && name.untouched)" class="message error">Name is required</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Address Line 1</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="locationMaintenance.address1"
+                               name="address1" />
+
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="button" (click)="onValidateAddress()" class="ro-button btn-default" value="Validate Address">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Address Line 2</label>
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="locationMaintenance.address2"
+                               name="address2" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Zip Code</label>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="locationMaintenance.zipCode"
+                               name="zipCode" />
+                    </div>
+                    <label class="col-sm-2 control-label">Country</label>
+                    <div class="col-sm-4">
+                        <select class="form-control"
+                                [(ngModel)]="locationMaintenance.countryISOCode"
+                                name="countryISOCode"
+                                (change)="onChangeCountry($event.target.value)">
+                            <option value=""></option>
+                            <option *ngFor="let country of listCountries" [attr.value]='country.countryISOCode'>
+                                {{country.countryName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">State</label>
+                    <div class="col-sm-3">
+                        <select class="form-control"
+                                [(ngModel)]="locationMaintenance.stateCode"
+                                name="stateCode"
+                                (change)="onChangeState($event.target.value)">
+                            <option value=""></option>
+                            <option *ngFor="let state of listState" [attr.value]='state.stateCode'>
+                                {{state.stateName}}
+                            </option>
+                        </select>
+                    </div>
+                    <label class="col-sm-2 control-label">City</label>
+                    <div class="col-sm-3">
+                        <select class="form-control"
+                                [(ngModel)]="locationMaintenance.cityCode"
+                                name="cityCode"
+                                (change)="onChangeCity($event.target.value)">
+                            <option value=""></option>
+                            <option *ngFor="let city of listCity" [attr.value]='city.cityCode'>
+                                {{city.cityName}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Location Type</label>
+                    <div class="col-sm-6">
+                        <select class="form-control" required
+                                [(ngModel)]="locationMaintenance.locationTypeCode"
+                                name="locationTypeCode"
+                                #locationTypeCode="ngModel">
+                            <option value=""></option>
+                            <option *ngFor="let type of listLocationType" [attr.value]='type.code'>
+                                {{type.name}}
+                            </option>
+                        </select>
+                        <label [hidden]="locationTypeCode.valid || (locationTypeCode.pristine && locationTypeCode.untouched)" class="message error">Location Type is required</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Parent Location</label>
+                    <div class="col-sm-6">
+                        <select class="form-control"
+                                [(ngModel)]="locationMaintenance.parentLocationCode"
+                                name="parentLocationCode">
+                            <option value=""></option>
+                            <option *ngFor="let parent of listParentLocation" [attr.value]='parent.code'>
+                                {{parent.name}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <!--<label class="col-sm-3 control-label">Has Geofence</label>
+                 <div class="col-md-1 checkbox">
+                    <input type="checkbox"  style="zoom: 1.3;" name="showOpen"
+                            [(ngModel)]="locationMaintenance.hasGeofence"
+                            ng-checked="locationMaintenance.hasGeofence"
+                            data-toggle="toggle" class="control-form"
+                            (click)="checked()">
+                 </div>-->
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"></label>
+                    <div class="col-md-9 checkbox form-control-static">
+                        <input id="chk-showOpen" type="checkbox" name="showOpen"
+                               [(ngModel)]="locationMaintenance.hasGeofence"
+                               ng-checked="locationMaintenance.hasGeofence"
+                               data-toggle="toggle" class="ro-checkbox"
+                               (click)="checked()">
+                        <label for="chk-showOpen"></label>
+                        <label for="chk-showOpen">Has Geofence</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <label class="sub-header" style="padding-left: 10px;">Geofence information</label>
+    <div class="map-container" [hidden]="!locationMaintenance.hasGeofence">
+
+        <div class="map-details">
+            <div>
+                <label class="control-label">Latitude</label>
+                <input type="text" class="form-control" [(ngModel)]="locationMaintenance.latitude"
+                       name="latitude" readonly="readonly" />
+            </div>
+            <div>
+                <label class="control-label">Longitude</label>
+                <input type="text" class="form-control" [(ngModel)]="locationMaintenance.longitude"
+                       name="longitude" readonly="readonly" />
+            </div>
+        </div>
+        <div class="action-bar">
+            <input type="button" (click)="onRemove()" value="Remove Perimeter" class="ro-button">
+            <input type="button" (click)="undoPerimeter()" value="Undo Perimeter Changes" class="ro-button">
+        </div>
+        <!-- <marker-map-component [iLatitude]="locationMaintenance.latitude"
+                              [ilongitude]="locationMaintenance.longitude"
+                              [iListCoordinate]="listCoordinates"
+                              (changeCoordinates)="changeCoordinates($event);"></marker-map-component> -->
+    </div>
+</div>

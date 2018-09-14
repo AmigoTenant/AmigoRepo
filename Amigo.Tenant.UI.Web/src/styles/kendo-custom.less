@@ -1,0 +1,67 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+// Buttons
+
+.k-widget {
+    font-size: @font-size-base;
+}
+
+.k-dropdown {
+    .k-input {
+        padding: 0;
+        height: 25px;
+        line-height: 25px;
+    }
+
+    .k-icon {
+        line-height: 1.5;
+    }
+
+    &.k-state-focused {
+        box-shadow: none !important;
+    }
+}
+
+.k-dialog {
+    font-size: 13px;
+
+    .k-header {
+        border-bottom: 1px solid #e5e5e5;
+        border-radius: 1px 1px 0 0;
+        background-color: #f5f5f5;
+        color: @text-color;
+    }
+
+    .k-content {
+        height: 100%;
+        outline: 0;
+        overflow: hidden;
+        padding: 1.143em;
+        position: relative;
+    }
+
+    .k-window-title {
+        font-size: 20px;
+        font-weight: 500;
+    }
+
+    .k-window-actions {
+        align-items: center;
+        display: flex;
+        line-height: 42px;
+        height: 42px;
+    }
+
+    .k-window-buttons {
+        border-top: solid thin rgba(0,0,0,.08);
+        margin-left: -15px;
+        margin-top: 15px;
+        margin-right: -15px;
+        padding: 15px 10px 0 10px;
+        text-align: right;
+    }
+}
+
+.k-grid .k-grid-header th.k-header, .k-grid .k-filter-row th {
+    height: 32px !important;
+}

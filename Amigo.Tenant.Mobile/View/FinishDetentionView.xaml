@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.FinishDetentionView"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             Title="{x:Static resource:AppString.titleDetention}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converter:StringToBoolConverter x:Key="Str2Bool" />
+      <converter:RequiredToBoolConverter x:Key="Req2Bool" />
+      <converter:IntToBoolConverter x:Key="Int2Bool" />
+      <converter:IntToBoolConverter x:Key="Int2Bool2" TrueValue="1" />
+      <converter:AddEditStringConverter x:Key="AddOrEdit" AddOption="{x:Static resource:AppString.lblAddComment}" EditOption="{x:Static resource:AppString.lblEditComment}"/>
+
+      <Style x:Key="GeneralLabelLink" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorTextLink}" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="WidthRequest" Value="{StaticResource LabelSizeWidth}" />
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="HorizontalTextAlignment" Value="Start"/>
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="Small"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+    <StackLayout Style="{StaticResource OuterStackLayout}" BackgroundColor="{StaticResource ColorControlBackground}">
+      <!--Header-->
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+
+      <!--Scrollable content-->
+      <ScrollView VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorControlBackground}">
+        <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+          <!--Charge No.-->
+          <StackLayout Padding="20" BackgroundColor="{StaticResource ColorShipmentIdBackground}">
+            <Label Text="{Binding LblId}" TextColor="{StaticResource ColorActiveFormInput}" FontAttributes = "Bold" FontSize = "Large"></Label>
+            <Label Text="{Binding LblNumber}" TextColor="{StaticResource ColorContrastText}" FontAttributes = "Bold" FontSize = "Large"></Label>
+          </StackLayout>
+
+          <!--Body-->
+          <StackLayout VerticalOptions="FillAndExpand" BackgroundColor="{StaticResource ColorControlBackground}" Spacing="0" Padding="0">
+
+            <Grid Padding="20">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+                <RowDefinition Height="{StaticResource HeaderRow}" />
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <!--From Block-->
+              <Label Grid.Row="0" Grid.Column="0" Margin="0,5,0,0" Text="{x:Static resource:AppString.lblBlock}" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+              <Label Grid.Row="0" Grid.Column="1" Margin="0,5,0,0" Text="{Binding FromBlock}" Style="{StaticResource DesctiptionLabelText}"></Label>
+              <!--Service Type-->
+              <Label Grid.Row="1" Grid.Column="0" Margin="0,5,0,0" Text="{x:Static resource:AppString.lblServiceType}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="1" Grid.Column="1" Margin="0,5,0,0" Text="{Binding MoveType}" Style="{StaticResource DesctiptionLabelText}"/>
+              <!--Container/Tank/DryVan - Equipment Number-->
+              <Label Grid.Row="2" Grid.Column="0" Margin="0,5,0,0" Text="{Binding EquipmentTypeDesc}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="2" Grid.Column="1" Margin="0,5,0,0" Text="{Binding EquipmentNumber}" Style="{StaticResource DesctiptionLabelText}"/>
+              <!--Equipment Status-->
+              <Label Grid.Row="3" Grid.Column="0" Margin="0,5,0,0" Text="{x:Static resource:AppString.lblStatusUpper}" Style="{StaticResource GeneralLabelLink}" HorizontalOptions="FillAndExpand" IsVisible="{Binding StatusRequired,Converter={StaticResource Req2Bool}}">
+                <Label.GestureRecognizers>
+                  <TapGestureRecognizer Command="{Binding EquipmentStatusCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+              </Label>
+              <Label Grid.Row="3" Grid.Column="1" Margin="0,5,0,0" Text="{Binding EquipmentStatus}" Style="{StaticResource DesctiptionLabelText}" IsVisible="{Binding StatusRequired,Converter={StaticResource Req2Bool}}"></Label>
+              <!--Start Time-->
+              <Label Grid.Row="4" Grid.Column="0" Margin="0,5,0,0" Text="{x:Static resource:AppString.lblStartTime}" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+              <Label Grid.Row="4" Grid.Column="1" Margin="0,5,0,0" Text="{Binding LblTime}" Style="{StaticResource DesctiptionLabelText}"></Label>
+              <!--Comments-->
+              <Label Grid.Row="5" Grid.Column="0" Margin="0,5,0,0" Text="{x:Static resource:AppString.lblDriverCommentsFinishScreen}" Style="{StaticResource GeneralLabelLink}" >
+                <Label.GestureRecognizers>
+                  <TapGestureRecognizer Command="{Binding CommentsCommand}"></TapGestureRecognizer>
+                </Label.GestureRecognizers>
+              </Label>
+              <Label Grid.Row="5" Grid.Column="1" Margin="0,5,0,0" Text="{Binding GeneralDetention.DriverComments}" Style="{StaticResource DesctiptionLabelText}"/>
+            </Grid>
+          
+            <!--Progress Animation-->
+            <customControls:CircularProgress Margin="0,20,0,0" x:Name="Circular" Label="{Binding TimeElapsed}" />
+          </StackLayout>
+
+          <!--Finish Button-->
+          <StackLayout Padding="20" HorizontalOptions="FillAndExpand" Orientation="Horizontal" BackgroundColor="{StaticResource ColorControlBackground}">
+            <Button Text="{x:Static resource:AppString.btnCancelDetention}" Command="{Binding GoCancelDetention}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryButtonS}"></Button>
+            <Button Text="{x:Static resource:AppString.btnFinishDetention}" Command="{Binding GoConfirmationDetention}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryFormButtonS}"></Button>
+          </StackLayout>                   
+        </StackLayout>
+      </ScrollView>
+    </StackLayout>
+
+  </ContentPage.Content>
+
+</abstract:NavigatingPage>

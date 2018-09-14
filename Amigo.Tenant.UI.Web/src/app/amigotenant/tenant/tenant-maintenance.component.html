@@ -1,0 +1,217 @@
+<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} Tenant" 
+    (close)="close()" style="z-index:10003;" id="tenantMaintenancePanel">
+
+    <div style="width:800px;height:1px;">&nbsp;</div>
+    <div class="form-horizontal">
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" 
+            [errorMessages]='errorMessages'></biz-val>
+
+        <form #tenantForm="ngForm" data-val-form="tenantForm" novalidate>
+          <label class="sub-header first-header">General information</label>
+                <!--<fieldset class="scheduler-border">-->
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="code" class="col-sm-4 control-label" style="padding-right:7px;">Code</label>
+                  <div class="col-sm-8">
+                      <input *ngIf="flgEdition === 'E'" type="text" class="form-control" 
+                          [(ngModel)]="tenant.code" name="code" #code="ngModel" 
+                          readonly maxlength="20" />
+                      <input st-autofocus *ngIf="flgEdition === 'N'" type="text" class="form-control" 
+                          [(ngModel)]="tenant.code" name="code" #code="ngModel" id="code" 
+                          readonly maxlength="20" />
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="idRef" class="col-sm-4 control-label">ID</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                          [(ngModel)]="tenant.idRef" name="idRef" />
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group" *ngIf="flgEdition === 'E'">
+                  
+                      <label class="col-sm-4 control-label">Active</label>
+                      <div class="col-sm-8">
+                          <input id="chk-rowStatus" type="checkbox" class="ro-checkbox" [(ngModel)]="tenant.rowStatus" name="rowStatus">
+                          <label for="chk-rowStatus"></label>
+                      </div>
+                  
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                  <label for="" class="col-sm-2 control-label">Name</label>
+                  <div class="col-sm-10" style="padding-left:7px;">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                        class="form-control" [(ngModel)]="tenant.fullName" name="fullName" maxlength="100" (ngModelChange)="onChangeName()" />
+                      <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.fullNameError">Name is required</label>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="" class="col-sm-4 control-label">Type</label>
+                  <div class="col-sm-8">
+                    <select name="typeId" [(ngModel)]="tenant.typeId" class="form-control input-control" 
+                        #typeId="ngModel">
+                      <option *ngFor="let t of tenantTypes" [ngValue]="t.typeId">{{t.name}}</option>
+                    </select>
+                    <input type="hidden" [(ngModel)]="tenant.typeId" name="typeId" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="passport" class="col-sm-4 control-label" style="padding-right:8px;">Passport</label>
+                  <div class="col-sm-8" style="padding-left:11px;">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                            [(ngModel)]="tenant.passportNo" name="passport" maxlength="100" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="phoneN01" class="col-sm-4 control-label">Phone 1</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                        [(ngModel)]="tenant.phoneN01" name="phoneN01" maxlength="100" />
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="phoneNo2" class="col-sm-4 control-label">Phone 2</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                        [(ngModel)]="tenant.phoneNo2" name="phoneNo2" maxlength="100" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label" style="padding-right:12px;">Email</label>
+                  <div class="col-sm-10" style="padding-left:8px;">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                        [(ngModel)]="tenant.email" name="email" maxlength="100" (ngModelChange)="onChangeEmail()"  />
+                        <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.emailError">EMail is required</label><br>
+                        <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.emailFormatError">{{ emailMessageError }}</label>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="country" class="col-sm-4 control-label">Country</label>
+                  <div class="col-sm-8">
+                    <select name="countryId" [(ngModel)]="tenant.countryId" class="form-control input-control" 
+                        #countryId="ngModel" (ngModelChange)="onSelectCountry()">
+                      <option *ngFor="let c of countries" [ngValue]="c.id">{{c.name}}</option>
+                    </select>
+                    <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.countryIdError">Country is required</label>
+                    <input type="hidden" [(ngModel)]="tenant.countryId" name="countryId" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                  <label for="address" class="col-sm-3 control-label" style="padding-right:20px;">Address</label>
+                  <div class="col-sm-9" style="padding-left:0;">
+                      <textarea type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                          class="form-control" [(ngModel)]="tenant.address" name="address" 
+                          maxlength="100" rows="3" cols="30" >
+                      </textarea>
+                  </div>
+              </div>
+            </div>
+            <!--<div class="col-sm-6">
+              <div class="form-group">
+                  <label for="uploadPicture" class="col-sm-2 control-label" style="padding-right:20px;">Picture</label>
+                  <div class="col-sm-10" style="padding-left:0;">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                        [(ngModel)]="tenant.picture" name="picture" maxlength="100" />
+                  </div>
+              </div>
+            </div>-->
+          </div>
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                  <label for="reference" class="col-sm-3 control-label" style="padding-right:20px;">Reference</label>
+                  <div class="col-sm-9" style="padding-left:0;">
+                      <textarea type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                          class="form-control" [(ngModel)]="tenant.reference" name="reference"
+                           maxlengt="100" rows="3" cols="30">
+                      </textarea>
+                  </div>
+              </div>
+            </div>
+          </div>
+                    <!--</fieldset>-->
+
+          <label class="sub-header">Emergency contact</label>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                  <label for="email" class="col-sm-2 control-label">Name</label>
+                  <div class="col-sm-8">
+                      <input type="text" class="form-control" 
+                        [(ngModel)]="tenant.contactName" name="contactName" maxlength="20" />
+                  </div>
+              </div>
+            </div>
+          </div>
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label for="phoneN01" class="col-sm-2 control-label">Relation</label>
+                    <div class="col-sm-8">
+                        <input type="text" st-autofocus class="form-control"
+                                [(ngModel)]="tenant.contactRelation" name="contactRelation" maxlength="20" />
+                    </div>
+                </div>
+            </div>
+
+        </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                    <label for="contactPhone" class="col-sm-2 control-label">Phone</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"
+                                [(ngModel)]="tenant.contactPhone" name="contactPhone" maxlength="20" />
+                    </div>
+               </div>
+            </div>
+              
+          </div>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group">
+                  <label for="contactEmail" class="col-sm-2 control-label">Email</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                      [(ngModel)]="tenant.contactEmail" name="contactEmail" maxlength="100" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          
+        </form>
+    </div>
+    <div class="k-window-buttons">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="tenantForm.form.valid" [formName]="'tenantForm'"></st-boton-maintenance>
+    </div>
+
+</kendo-dialog>

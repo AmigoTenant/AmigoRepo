@@ -1,0 +1,80 @@
+{
+  "project": {
+    "version": "1.0.0-beta.19-3",
+    "name": "amigo-tenant"
+  },
+  "apps": [
+    {
+      "root": "src",
+      "outDir": "dist",
+      "assets": [
+	   "assets",
+	   "favicon.ico"
+	   ],
+      "index": "index.html",
+      "main": "main.ts",
+      "test": "test.ts",
+      "tsconfig": "tsconfig.json",
+      "prefix": "app",
+      "mobile": false,
+      "styles": [
+        "../node_modules/tether/dist/css/tether.css",
+        "../node_modules/bootstrap/scss/bootstrap.scss",
+        "../node_modules/@telerik/kendo-theme-default/styles/grid/main.scss",
+        "styles/kendo-custom.less",
+        "styles/amigotenantx-styles.less",
+        "../node_modules/ionicons/dist/css/ionicons.css",
+        "../node_modules/font-awesome/css/font-awesome.css",
+        "../node_modules/primeng/resources/themes/omega/theme.css" , 
+        "../node_modules/primeng/resources/primeng.css",
+        "styles/css/amigotenantx-icons.css",
+        "styles/css/amigotenant-icons.css",
+        "styles/css/animate.css",
+        "styles/css/tooltip.css"
+      ],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.js",
+        "../node_modules/tether/dist/js/tether.js",
+        "../node_modules/popper.js/dist/umd/popper.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.js",
+        "../node_modules/moment/min/moment.min.js",
+        "scripts/tooltip.js"        
+      ],
+      "environmentSource": "environments/environment.ts",
+      "environments": {
+          "dev": "environments/environment.ts",
+          "prod": "environments/environment.prod.ts"
+      }
+    }
+  ],
+  "addons": [
+    "../node_modules/ionicons/dist/fonts/*.+(otf|eot|svg|ttf|woff|woff2)"
+  ],
+  "packages": [],
+  "e2e": {
+    "protractor": {
+      "config": "./protractor.conf.js"
+    }
+  },
+  "test": {
+    "karma": {
+      "config": "./karma.conf.js"
+    }
+  },
+    "defaults": {
+    "styleExt": "less",
+    "prefixInterfaces": false,
+    "inline": {
+      "style": true,
+      "template": true
+    },
+    "spec": {
+      "class": false,
+      "component": true,
+      "directive": true,
+      "module": false,
+      "pipe": true,
+      "service": true
+    }
+  }
+}

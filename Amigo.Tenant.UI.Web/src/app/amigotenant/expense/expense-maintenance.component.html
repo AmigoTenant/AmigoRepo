@@ -1,0 +1,246 @@
+<div class="form-horizontal">
+    <div class="page-header">
+        Rental Application
+    </div>
+    <div class=".container-fluid">
+        <div class="row">
+            <div class="col-sm-10">
+                <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
+                    <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="rentalApplicationForm.form.valid" [formName]="'rentalApplicationForm'"></st-boton-maintenance>
+                </div>
+            </div>
+        </div>
+        <div class="row">&nbsp;</div>
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+            <div class="row">
+                <form #rentalApplicationForm="ngForm" data-val-form="rentalApplicationForm" class="col-sm-12">
+
+                    <ngb-tabset>
+                        <ngb-tab title="Detail Information">
+                            <ng-template ngbTabContent>
+
+                                <div class="row col-sm-8">
+                                    <div class="form-group col-sm-12"></div>
+
+                                    <div class="form-group col-sm-12">
+
+                                        
+                                        <label for="from" class="col-sm-3 control-label">Application Date</label>
+                                        <label class="ro-calendar col-sm-3">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="applicationDate" ngbDatepicker #d1="ngbDatepicker"
+                                                    [outside-click]="d1" [(ngModel)]="modelApplicationDate" (ngModelChange)="onSelectModelApplicationDate()" [disabled]="_isDisabled">
+
+                                            <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                            <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.applicationDateError">Application date is required</label>
+                                        </label>
+
+                                        
+                                        <label for="from" class="col-sm-3 control-label">Check-in</label>
+                                        <label class="ro-calendar col-sm-3">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="checkIn" ngbDatepicker #d2="ngbDatepicker"
+                                                    [outside-click]="d2" [(ngModel)]="modelCheckIn" (ngModelChange)="onSelectModelCheckIn()" [disabled]="_isDisabled">
+
+                                            <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                            <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.checkInError">Check-in date is required</label>
+                                        </label>
+                                        
+
+                                        
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        
+                                        <label for="from" class="col-sm-3 control-label">Full Name</label>
+                                        <label class="col-sm-3">
+                                            <input type="text" name="fullName" class="form-control" [(ngModel)]="model.fullName" [disabled]="_isDisabled" />
+                                            <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.fullNameError">Name is required</label>
+                                        </label>
+                                        
+                                        <label for="from" class="col-sm-3 control-label">Check-Out</label>
+                                        <label class="ro-calendar col-sm-3">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="checkOut" ngbDatepicker #d3="ngbDatepicker"
+                                                    [outside-click]="d3" [(ngModel)]="modelCheckOut" (ngModelChange)="onSelectModelCheckOut()" [disabled]="_isDisabled">
+                                            <span *ngIf="_isDisabled===false" class="ro-calendar-btn" (click)="d3.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                            <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.checkOutError">Check-Out is required</label>
+                                        </label>
+                                        
+                                    </div>
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">EMail</label>
+                                            <label class="col-sm-3">
+                                                <input type="text" name="email" class="form-control" [(ngModel)]="model.email" [disabled]="_isDisabled" />
+                                            </label>
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Residence Country</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <select name="countryId" [(ngModel)]="model.residenseCountryId"
+                                                        class="form-control input-control">
+                                                    <option *ngFor="let country of _listCountries" [ngValue]="country.id">
+                                                        {{country.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Cellphone</label>
+                                            <label class="col-sm-3">
+                                                <input type="text" name="cellPhone" class="form-control" [(ngModel)]="model.cellPhone" [disabled]="_isDisabled" />
+                                            </label>
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Property Type</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <select class="form-control" [(ngModel)]="model.propertyTypeId"
+                                                        name="model.propertyTypeId">
+                                                    <option *ngFor="let type of _listHouseTypes" [ngValue]='type.id'>
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Other phone</label>
+                                            <label class="col-sm-3">
+                                                <input type="text" name="housePhone" class="form-control" [(ngModel)]="model.housePhone" [disabled]="_isDisabled" />
+                                            </label>
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Budget</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <select class="form-control" [(ngModel)]="model.budgetId"
+                                                        name="model.budgetId">
+                                                    <option *ngFor="let type of _listBudgets" [ngValue]='type.typeId'>
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Complete/Shared</label>
+                                            <label class="col-sm-3">
+                                                <select [(ngModel)]="model.housePartId"
+                                                        class="form-control input-control" name="model.housePartId">
+                                                    <option *ngFor="let type of _listCompleteShared" [ngValue]="type.typeId">
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                            <label for="from" class="col-sm-3 control-label">In Downtown</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <select name="typeId" [(ngModel)]="model.outInDownId"
+                                                        class="form-control input-control">
+                                                    <option *ngFor="let type of _listOutInDowntown" [ngValue]="type.typeId">
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Referred By</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <select class="form-control" [(ngModel)]="model.referredById"
+                                                        name="model.referredById">
+                                                    <option *ngFor="let type of _listReferredBy" [ngValue]='type.typeId'>
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Referred By Other</label>
+                                            <label class="col-sm-3">
+                                                <input type="text" name="referredByOther" class="form-control" [(ngModel)]="model.referredByOther" [disabled]="_isDisabled" />
+                                            </label>
+                                        
+
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+
+                                        <label for="from" class="col-sm-3 control-label">Priority</label>
+                                        <label class="ro-calendar col-sm-3">
+                                            <select class="form-control" [(ngModel)]="model.priorityId"
+                                                    name="model.priorityId">
+                                                <option *ngFor="let type of _listPriority" [ngValue]='type.typeId'>
+                                                    {{type.name}}
+                                                </option>
+                                            </select>
+                                        </label>
+
+                                            <label for="from" class="col-sm-3 control-label">Person No</label>
+                                            <label class="col-sm-3">
+                                                <input type="text" name="personNo" class="form-control" [(ngModel)]="model.personNo" [disabled]="_isDisabled" />
+                                            </label>
+                                        
+
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Comments</label>
+                                            <label class="col-sm-9">
+                                                <textarea type="txtComments" rows="4" style="height:150px" name="comment" [(ngModel)]="model.comment" class="form-control" [disabled]="_isDisabled">
+                                                </textarea>
+                                            </label>
+                                        
+                                    </div>
+
+
+                                </div>
+                            </ng-template>
+                        </ngb-tab>
+                        <ngb-tab title="Alert">
+                            <ng-template ngbTabContent>
+                                <div class="row col-sm-8">
+                                    <div class="form-group col-sm-12"></div>
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Alert Date</label>
+                                            <label class="ro-calendar col-sm-3">
+                                                <input class="form-control" [placeholder]="localization.dateFormat" name="alertDate" ngbDatepicker #d4="ngbDatepicker"
+                                                       [outside-click]="d4" [(ngModel)]="modelAlertDate" (ngModelChange)="onSelectModelAlertDate()" [disabled]="_isDisabled">
+                                                <span *ngIf="_isDisabled===false" class="ro-calendar-btn" (click)="d4.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                            </label>
+                                        
+
+                                    </div>
+
+                                    <div class="form-group col-sm-12">
+                                        
+                                            <label for="from" class="col-sm-3 control-label">Alert Message</label>
+                                            <label class="col-sm-9">
+                                                <textarea type="txtMessage" rows="4" style="height:150px" name="alertMessage" [(ngModel)]="model.alertMessage" class="form-control" [disabled]="_isDisabled">
+                                                </textarea>
+                                            </label>
+                                        
+                                       
+                                    </div>
+
+
+                                </div>
+                            </ng-template>
+                        </ngb-tab>
+                    </ngb-tabset>
+                </form>
+            </div>
+        </div>
+</div>
+
+<!-- <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
+    <div>{{deleteMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesDelete()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog> -->

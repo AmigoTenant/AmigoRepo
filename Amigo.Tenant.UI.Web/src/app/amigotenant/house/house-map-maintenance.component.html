@@ -1,0 +1,36 @@
+<kendo-dialog title="Map information" 
+    (close)="close()" style="z-index:10003;" id="houseMapDialog">
+
+    <div class="map-container">
+        <!-- <label class="sub-header" style="padding-left: 10px;">Map information</label> -->
+
+        <div class="map-details">
+            <div>
+                <label class="control-label">Latitude</label>
+                <input type="text" class="form-control" [(ngModel)]="latitude"
+                        name="latitude" readonly="readonly" style="font-size:12px;" />
+            </div>
+            <div>
+                <label class="control-label">Longitude</label>
+                <input type="text" class="form-control" [(ngModel)]="longitude"
+                        name="longitude" readonly="readonly" style="font-size:12px;" />
+            </div>
+        </div>
+        <div class="action-bar">
+            <input type="button" (click)="onRemove()" value="Remove mark" class="ro-button">
+            <input type="button" (click)="undoPerimeter()" value="Undo mark changes" class="ro-button">
+        </div>
+        <!-- <house-map-component [iLatitudeMap]="latitudeMap"
+                            [iLongitudeMap]="longitudeMap"
+                            [coordinates]="coordinates"
+                            (changeCoordinates)="onChangeCoordinates($event);"> 
+        </house-map-component> -->
+    </div>
+    <div class="k-window-buttons">
+        <div>
+            <input type="button" class="ro-button btn-default" value="Cancel" (click)="onCancel()">
+            <input type="button" class="ro-button btn-submit" value="Save" (click)="onSave();">
+        </div>
+    </div>
+</kendo-dialog>
+

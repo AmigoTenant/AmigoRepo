@@ -1,0 +1,126 @@
+<div class="page-header">
+    Location Maintenance
+</div>
+
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Locations <span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <div [hidden]="!visible">
+                        <form class="form-horizontal">
+                            <div class="filter-bar">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <div class="filter-row">
+                                            <div class="filter-control">
+                                                <label for="code" class="control-label">Code</label>
+                                                <label>
+                                                    <input st-autofocus type="text" class="form-control" [(ngModel)]="searchCriteria.code" name="code" autofocus maxlength="20" />
+                                                </label>
+                                            </div>
+                                            <div class="filter-control">
+                                                <label for="name" class="control-label">Name</label>
+                                                <label>
+                                                    <input type="text" class="form-control" [(ngModel)]="searchCriteria.name" name="name" style="width: 200px;" />
+                                                </label>
+                                            </div>
+                                            <div class="filter-control">
+                                                <label for="code" class="control-label">Location Type</label>
+                                                <label>
+                                                    <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.locationTypeCode" name="searchCriteria.locationTypeCode">
+                                                        <option value=""></option>
+                                                        <option *ngFor="let type of listLocationType" [attr.value]='type.code'>
+                                                            {{type.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="filter-control">
+                                                <label for="name" class="control-label">Parent Location</label>
+                                                <label>
+                                                    <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.parentLocationCode" name="searchCriteria.parentLocationCode">
+                                                        <option value=""></option>
+                                                        <option *ngFor="let type of listParentLocation" [attr.value]='type.code'>
+                                                            {{type.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <div class="button-container">
+                                            <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default"  st-authCheck [actionCode]="'Location.Search'">Search</button>
+                                        </div>
+                                        <div class="button-container">
+                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <button type="submit" id="btnNew" (click)="onNew()" class="ro-button btn-default"  st-authCheck [actionCode]="'Location.Create'">Add Location</button>
+                            </div>
+                        </div>
+                        <div class="grid-container">
+                            <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" [height]="580" (pageChange)="pageChange($event)" [selectable]="false">
+                                <kendo-grid-column width="30" title="Code">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span>{{dataItem.code}}</span>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="name" title="Name" width="80"></kendo-grid-column>
+                                <kendo-grid-column field="locationTypeName" title="Location Type" width="30"></kendo-grid-column>
+                                <kendo-grid-column field="address1" title="Address 1" width="60"></kendo-grid-column>
+                                <kendo-grid-column field="address2" title="Address 2" width="60"></kendo-grid-column>
+                                <kendo-grid-column field="cityName" title="City" width="50"></kendo-grid-column>
+                                <kendo-grid-column field="zipCode" title="Zip" width="20"></kendo-grid-column>
+                                <kendo-grid-column field="stateName" title="State" width="30"></kendo-grid-column>
+                                <kendo-grid-column width="20">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <button type="button" class="btn-icon" (click)="onEdit(dataItem)"  st-authCheck [actionCode]="'Location.Update'">
+                                                <i class="xico-action-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn-icon" (click)="onDelete(dataItem.code);"  st-authCheck [actionCode]="'Location.Delete'">
+                                                <i class="xico-action-remove"></i>
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+
+                    <div class="location-details">
+                        <div>
+                            <st-location-maintenance></st-location-maintenance>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
+              (close)="closeConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete location?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

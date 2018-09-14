@@ -1,0 +1,256 @@
+<!--<div class="page-header">
+    Location Maintenance
+</div>-->
+
+<biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Massive Payment<span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <div [hidden]="!visible">
+                        <form class="form-horizontal">
+                            <div class="filter-bar">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Period</label>
+                                                    <div class="col-sm-8">
+                                                        <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="status" class="control-label col-sm-4">Rent Status</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.paymentPeriodStatusId"
+                                                                name="searchCriteria.paymentPeriodStatusId">
+                                                            <option value=""></option>
+                                                            <option *ngFor="let status of _listEntityStatus" [attr.value]='status.entityStatusId'>
+                                                                {{status.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Pending Fines</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingFines" name="hasPendingFines">
+                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                                {{item.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Property</label>
+                                                    <div class="col-sm-8">
+                                                        <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Lease No</label>
+                                                    <div class="col-sm-8">
+                                                        <input st-autofocus type="text" class="form-control"
+                                                               [(ngModel)]="searchCriteria.contractCode" name="contractCode" autofocus maxlength="20" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Pending Services</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingServices" name="hasPendingServices">
+                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                                {{item.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Tenant</label>
+                                                    <div class="col-sm-8">
+                                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant"></ngbd-typeahead-tenant>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Pending Deposit</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingDeposit" name="hasPendingDeposit">
+                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                                {{item.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Pending Late Fee</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingLateFee" name="hasPendingLateFee">
+                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                                {{item.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <div class="button-container">
+                                            <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck>Search</button><!--[actionCode]="'House.Search'"-->
+                                        </div>
+                                        <div class="button-container">
+                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <button type="submit" id="btnSendPayNotification" (click)="onSendPayNotification()" class="ro-button btn-success">
+                                    <i class="xico-file-download"></i>
+                                    Send Email Notification
+                                </button>
+                            </div>
+                            <div class="button-container">
+                                <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
+                                    <i class="xico-file-download"></i>
+                                    Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid-container">
+                            <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" [height]="580" (pageChange)="pageChange($event)" [selectable]="false">
+                                <kendo-grid-column field="periodCode" title="Period" width="90"></kendo-grid-column>
+                                <kendo-grid-column field="dueDate" title="Due Date" width="90">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div>
+                                            <span>{{dataItem.dueDate|date:"MM/dd/yyyy" }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="contractCode" title="Contract" width="90"></kendo-grid-column>
+                                <kendo-grid-column field="tenantFullName" title="Tenant" width="120"></kendo-grid-column>
+                                <kendo-grid-column field="houseName" title="House" width="90"></kendo-grid-column>
+                                <kendo-grid-column title="Status" width="30">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
+                                            <label class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
+                                        </div>
+                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'">
+                                            <label class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="rentPrice" title="Rent Amount" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="depositAmountPending" title="Pending Deposit" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.depositAmountPending|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="finesAmountPending" title="Pending Fines" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.finesAmountPending|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="servicesAmountPending" title="Pending Services" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.servicesAmountPending|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="lateFeesAmountPending" title="Pending Late Fee" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.lateFeesAmountPending|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column width="20">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                                <!--st-authCheck [actionCode]="'House.Update'"-->
+                                                <i class="xico-action-edit"></i>
+                                            </button>
+                                            <!--<button type="button" class="btn-icon" (click)="onDelete(dataItem);"  >
+                                        <i class="xico-action-remove"></i>
+                                    </button>-->
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<!--<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
+              (close)="closeConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete house?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>-->
+<!--<div class="location-details">-->
+<div>
+    <div>
+        <at-payment-maintenance></at-payment-maintenance>
+    </div>
+</div> 

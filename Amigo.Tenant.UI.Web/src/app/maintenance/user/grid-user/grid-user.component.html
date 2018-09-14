@@ -1,0 +1,36 @@
+<div class="grid-container">
+    <kendo-grid [data]="list" [pageSize]="params.pageSize" [skip]="currentPage" [pageable]="{
+            buttonCount: buttonCount,
+            info: info,
+            type: type,
+            pageSizes: pageSizes,
+            previousNext: previousNext
+          }" [height]="550" (pageChange)="pageChange($event)" [selectable]="false">
+        <kendo-grid-column field="username" title="User Id"></kendo-grid-column>
+        <kendo-grid-column field="firstName" title="First Name"></kendo-grid-column>
+        <kendo-grid-column field="lastName" title="Last Name"></kendo-grid-column>
+        <kendo-grid-column field="amigoTenantTRoleName" title="Role"></kendo-grid-column>
+        <kendo-grid-column field="payByName" title="Paid By"></kendo-grid-column>
+        <kendo-grid-column field="userTypeName" title="Type"></kendo-grid-column>
+        <kendo-grid-column field="locationName" title="Location"></kendo-grid-column>
+        <kendo-grid-column>
+            <ng-template kendoGridCellTemplate let-dataItem> 
+                <div class="text-right">
+                    <button type="button" class="btn-icon" (click)="setSelected(dataItem)" st-authCheck [actionCode]="'User.Update'">
+                        <i class="xico-action-edit"></i>
+                    </button>
+                    <button [disabled]="dataItem.isAdmin && !dataItem.isAdminModifiedUser" type="button" class="btn-icon" (click)="deleteUser(dataItem)" st-authCheck [actionCode]="'User.Delete'">
+                        <i class="xico-action-remove"></i>
+                    </button>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+    </kendo-grid>
+</div>
+<kendo-dialog title="Confirmation" *ngIf="opened" (close)="close()">
+    <div>Delete user?</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="close()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesDeleteUser()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

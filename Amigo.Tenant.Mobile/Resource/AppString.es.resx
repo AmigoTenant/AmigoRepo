@@ -1,0 +1,1083 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="btnDialogCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="btnDialogOk" xml:space="preserve">
+    <value>Aceptar</value>
+  </data>
+  <data name="lblFormatFieldLengthMin" xml:space="preserve">
+    <value>El campo {0} acepta un mínimo de {1} caracteres.</value>
+  </data>
+  <data name="lblContainerCheckDigit" xml:space="preserve">
+    <value>El Digito de verificación es incorrecto.</value>
+  </data>
+  <data name="lblContainerFormat" xml:space="preserve">
+    <value>Número de contenedor inválido</value>
+  </data>
+  <data name="lblContainerLength" xml:space="preserve">
+    <value>El número de contenedor debe tener 10 ú 11 digitos.</value>
+  </data>
+  <data name="lblContainerNumberInvalid" xml:space="preserve">
+    <value>Número de Contenedor inválido. Por favor revise el primer digito númerico.</value>
+  </data>
+  <data name="lblFieldLengthMin" xml:space="preserve">
+    <value>El campo {0} acepta un mínimo de {1} caracteres.</value>
+  </data>
+  <data name="imgLoginTitle" xml:space="preserve">
+    <value>ic_logo.png</value>
+  </data>
+  <data name="lblGeneralLoading" xml:space="preserve">
+    <value>Cargando ...</value>
+  </data>
+  <data name="lblLogin" xml:space="preserve">
+    <value>Ingresar</value>
+  </data>
+  <data name="lblLoginAppName" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="lblLoginEnglish" xml:space="preserve">
+    <value>Inglés</value>
+  </data>
+  <data name="lblLoginPassword" xml:space="preserve">
+    <value>Contraseña</value>
+  </data>
+  <data name="lblLoginSpanish" xml:space="preserve">
+    <value>Español</value>
+  </data>
+  <data name="lblLoginUsername" xml:space="preserve">
+    <value>Conductor ID</value>
+  </data>
+  <data name="lblPermissions01" xml:space="preserve">
+    <value>SmoothCom Permisos</value>
+  </data>
+  <data name="lblPermissions02" xml:space="preserve">
+    <value>Todos los permisos son utilizados por la aplicación.</value>
+  </data>
+  <data name="lblPermissions03" xml:space="preserve">
+    <value>Ubicación:</value>
+  </data>
+  <data name="lblPermissions04" xml:space="preserve">
+    <value>Esta Aplicación recolecta información del GPS mientras estés conectado, que será usada para realizar el seguimiento de contenedores y tanques.</value>
+  </data>
+  <data name="lblPermissions05" xml:space="preserve">
+    <value>Acceso a fotos y archivos del dispositivo:</value>
+  </data>
+  <data name="lblPermissions06" xml:space="preserve">
+    <value>Almacenamiento de información para la aplicación.</value>
+  </data>
+  <data name="lblPermissions07" xml:space="preserve">
+    <value>Captura de fotos y video:</value>
+  </data>
+  <data name="lblPermissions08" xml:space="preserve">
+    <value>Uso de la cámara para tomar fotos(Solo images, no videos).</value>
+  </data>
+  <data name="lblPermissions09" xml:space="preserve">
+    <value>SMS permiso: (Solo Movimientos Michelin)</value>
+  </data>
+  <data name="lblPermissions10" xml:space="preserve">
+    <value>Envío de alertas de desviaciones si la conexión a internet se pierde.</value>
+  </data>
+  <data name="lblTabHome" xml:space="preserve">
+    <value>Inicio</value>
+  </data>
+  <data name="lblTabSummary" xml:space="preserve">
+    <value>Resumen</value>
+  </data>
+  <data name="lblTosConfirm01" xml:space="preserve">
+    <value>Términos y política de privacidad de ShuttleTracking</value>
+  </data>
+  <data name="lblTosConfirm02" xml:space="preserve">
+    <value>Por favor leer los términos cuidadosamente antes de usar la aplicación.</value>
+  </data>
+  <data name="lblTosConfirm03" xml:space="preserve">
+    <value>Recopilación de información y uso</value>
+  </data>
+  <data name="lblTosConfirm04" xml:space="preserve">
+    <value>Mientras usa nuestra aplicación, esta accederá a cierta información personal que puede ser usado para contactarlo e identificarlo. Información personal identificable puede incluir, pero no está limitada a su nombre, número telefónico, IMEI y dirección MAC wifi.</value>
+  </data>
+  <data name="lblTosConfirm05" xml:space="preserve">
+    <value>Datos de Inicio de sessión</value>
+  </data>
+  <data name="lblTosConfirm06" xml:space="preserve">
+    <value>Esta aplicación recoge información del GPS mientras esta dentro de la aplicación, esta será utilizada para enviar mensajes automáticos y/o recibir alertas.</value>
+  </data>
+  <data name="lblTosConfirm07" xml:space="preserve">
+    <value>Seguridad</value>
+  </data>
+  <data name="lblTosConfirm08" xml:space="preserve">
+    <value>La seguridad de su información personal es muy importante para nosotros, pero recuerde que ningún método de interet o de almacenamiento electrónico es 100% seguro. Si bien nos esforzamos por utilizar medios comercialmente aceptables para proteger su información personal, no podemos garantizar su seguridad absoluta</value>
+  </data>
+  <data name="lblTosConfirm09" xml:space="preserve">
+    <value>Terminación</value>
+  </data>
+  <data name="lblTosConfirm10" xml:space="preserve">
+    <value>Podemos cancelar o suspender el acceso a nuestro servicio inmediatamente y sin previo aviso o responsabilidad, por cualquier motivo.</value>
+  </data>
+  <data name="lblTosConfirm11" xml:space="preserve">
+    <value>Contáctenos</value>
+  </data>
+  <data name="lblTosConfirm12" xml:space="preserve">
+    <value>Si usted tiene alguna pregunta acerca de esta política de privacidad, por favor contáctenos.</value>
+  </data>
+  <data name="lblTosConfirm13" xml:space="preserve">
+    <value>Al hacer click en Aceptar, usted esta de acuerdo con nuestros términos y ha leído nuestros Política de Privacidad y Términos.</value>
+  </data>
+  <data name="lblMandatoryField" xml:space="preserve">
+    <value>{0} es requerido.</value>
+  </data>
+  <data name="titleLogin" xml:space="preserve">
+    <value>Welcome</value>
+  </data>
+  <data name="titleMainMenu" xml:space="preserve">
+    <value>Shuttle Tracking</value>
+  </data>
+  <data name="titleRegisterMove" xml:space="preserve">
+    <value>Registrar Movimiento</value>
+  </data>
+  <data name="imgLoginEyeDisabled" xml:space="preserve">
+    <value>eye_disabled.png</value>
+  </data>
+  <data name="imgLoginEyeEnabled" xml:space="preserve">
+    <value>eye_enabled.png</value>
+  </data>
+  <data name="lblMainMenuOffDuty" xml:space="preserve">
+    <value>On Break</value>
+  </data>
+  <data name="lblMainMenuOnDuty" xml:space="preserve">
+    <value>On Duty</value>
+  </data>
+  <data name="btnMainMenuArrive" xml:space="preserve">
+    <value>Iniciar Jornada</value>
+  </data>
+  <data name="btnMainMenuDepart" xml:space="preserve">
+    <value>Finalizar Jornada</value>
+  </data>
+  <data name="lblAddServiceFor" xml:space="preserve">
+    <value>ADD SERVICE</value>
+  </data>
+  <data name="lblAddServicePer" xml:space="preserve">
+    <value>ADD SERVICIO POR</value>
+  </data>
+  <data name="lblDetails" xml:space="preserve">
+    <value>GENERAL</value>
+  </data>
+  <data name="lblDispatching" xml:space="preserve">
+    <value>Dispatching</value>
+  </data>
+  <data name="lblEquipmentNumber" xml:space="preserve">
+    <value>Equipo #</value>
+  </data>
+  <data name="lblEquipmentSize" xml:space="preserve">
+    <value>Tamaño de Equipo</value>
+  </data>
+  <data name="lblEquipmentType" xml:space="preserve">
+    <value>Tipo de Equipo</value>
+  </data>
+  <data name="lblFinishTime" xml:space="preserve">
+    <value>Tiempo de Finalización</value>
+  </data>
+  <data name="lblFromBlockNumber" xml:space="preserve">
+    <value>From Block #</value>
+  </data>
+  <data name="lblH34" xml:space="preserve">
+    <value>Tiene H34</value>
+  </data>
+  <data name="lblProduct" xml:space="preserve">
+    <value>Producto</value>
+  </data>
+  <data name="lblService" xml:space="preserve">
+    <value>Tipo de Servicio</value>
+  </data>
+  <data name="lblShipmentId" xml:space="preserve">
+    <value>Shipment Id</value>
+  </data>
+  <data name="lblStartTime" xml:space="preserve">
+    <value>Tiempo de Inicio</value>
+  </data>
+  <data name="titleBlock" xml:space="preserve">
+    <value>Search Block</value>
+  </data>
+  <data name="titleCostCenter" xml:space="preserve">
+    <value>Search Cost Center</value>
+  </data>
+  <data name="titleFinishMove" xml:space="preserve">
+    <value>Finish Move</value>
+  </data>
+  <data name="lbl25yrTest" xml:space="preserve">
+    <value>2.5yrs Test Date</value>
+  </data>
+  <data name="lbl5yrTest" xml:space="preserve">
+    <value>5yrs Test Date</value>
+  </data>
+  <data name="lblBobTail" xml:space="preserve">
+    <value>Bobtail Authorization</value>
+  </data>
+  <data name="lblByCostCenter" xml:space="preserve">
+    <value>By Cost Center</value>
+  </data>
+  <data name="lblByShipment" xml:space="preserve">
+    <value>By Shipment Id </value>
+  </data>
+  <data name="lblChassis" xml:space="preserve">
+    <value>Chassis No</value>
+  </data>
+  <data name="lblCostCenter" xml:space="preserve">
+    <value>Cost Center</value>
+  </data>
+  <data name="lblFromBlock" xml:space="preserve">
+    <value>From Block</value>
+  </data>
+  <data name="lblMoveType" xml:space="preserve">
+    <value>Move Type</value>
+  </data>
+  <data name="lblSave" xml:space="preserve">
+    <value>Guardar</value>
+  </data>
+  <data name="lblStatus" xml:space="preserve">
+    <value>Status</value>
+  </data>
+  <data name="lblErrorUnknown" xml:space="preserve">
+    <value>Ocurrió un error desconocido</value>
+  </data>
+  <data name="lblMainMenuConfirmFinishWorkday" xml:space="preserve">
+    <value>Please confirm you want to finish your workday.</value>
+  </data>
+  <data name="lblMainMenuConfirmStartWorkday" xml:space="preserve">
+    <value>Please confirm you want to start your workday.</value>
+  </data>
+  <data name="lblMainMenuOffDutyMsg" xml:space="preserve">
+    <value>On Break since {0}</value>
+  </data>
+  <data name="lblMainMenuOnDutyMsg" xml:space="preserve">
+    <value>On Duty since {0}</value>
+  </data>
+  <data name="lblMainMenuStartedDay" xml:space="preserve">
+    <value>Started day at:</value>
+  </data>
+  <data name="lblEquipment" xml:space="preserve">
+    <value>EQUIPO</value>
+  </data>
+  <data name="lblNumber" xml:space="preserve">
+    <value>Número</value>
+  </data>
+  <data name="lblSize" xml:space="preserve">
+    <value>Tamaño</value>
+  </data>
+  <data name="lblType" xml:space="preserve">
+    <value>Tipo</value>
+  </data>
+  <data name="btnFinishMove" xml:space="preserve">
+    <value>Finalizar Movimiento</value>
+  </data>
+  <data name="btnStartMove" xml:space="preserve">
+    <value>Iniciar Movimiento</value>
+  </data>
+  <data name="btnAddService" xml:space="preserve">
+    <value>Agregar Servicio</value>
+  </data>
+  <data name="btnOtherMove" xml:space="preserve">
+    <value>Agregar Movimiento</value>
+  </data>
+  <data name="lblElapsedTime" xml:space="preserve">
+    <value>Tiempo Transcurrido</value>
+  </data>
+  <data name="lblNext" xml:space="preserve">
+    <value>Siguiente</value>
+  </data>
+  <data name="btnFinishAdditionalService" xml:space="preserve">
+    <value>Finalizar Servicio</value>
+  </data>
+  <data name="btnStartAdditionalService" xml:space="preserve">
+    <value>Iniciar Servicio</value>
+  </data>
+  <data name="lblHeaderTimeMsg" xml:space="preserve">
+    <value>Today's Date:</value>
+  </data>
+  <data name="lblToBlock" xml:space="preserve">
+    <value>To Block</value>
+  </data>
+  <data name="lblGeneral" xml:space="preserve">
+    <value>GENERAL</value>
+  </data>
+  <data name="lblMasterData" xml:space="preserve">
+    <value>Master Data</value>
+  </data>
+  <data name="lblLastUpdate" xml:space="preserve">
+    <value>Last Update</value>
+  </data>
+  <data name="lblAddServRegistered" xml:space="preserve">
+    <value>Servicio Registrado Exitosamente</value>
+  </data>
+  <data name="btnDialogNo" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="btnDialogYes" xml:space="preserve">
+    <value>Si</value>
+  </data>
+  <data name="btnToolbarName" xml:space="preserve">
+    <value>Option</value>
+  </data>
+  <data name="btnToolbarCancel" xml:space="preserve">
+    <value>Cancelar</value>
+  </data>
+  <data name="btnToolbarAdditionalServices" xml:space="preserve">
+    <value>Additional Services</value>
+  </data>
+  <data name="btnToolbarDetention" xml:space="preserve">
+    <value>Detention</value>
+  </data>
+  <data name="btnToolbarHome" xml:space="preserve">
+    <value>Home</value>
+  </data>
+  <data name="btnToolbarNewMove" xml:space="preserve">
+    <value>Start New Move</value>
+  </data>
+  <data name="btnToolbarSearchCharge" xml:space="preserve">
+    <value>Search Charge No.</value>
+  </data>
+  <data name="btnToolbarSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="lblDialogDiscard" xml:space="preserve">
+    <value>Deshacer cambios e ir al Menú Principal?</value>
+  </data>
+  <data name="titleAdditionalService" xml:space="preserve">
+    <value>Adicionar Servicio</value>
+  </data>
+  <data name="lblDialogMove" xml:space="preserve">
+    <value>¿Desea recuperar el ultimo movimiento guardado?</value>
+  </data>
+  <data name="btnAckMove" xml:space="preserve">
+    <value>Acknowlegde Move</value>
+  </data>
+  <data name="btnDetention" xml:space="preserve">
+    <value>Agregar Detention</value>
+  </data>
+  <data name="btnTaylorLift" xml:space="preserve">
+    <value>Add Operate Taylor Lift</value>
+  </data>
+  <data name="lblEquipmentDataError" xml:space="preserve">
+    <value>Error en datos de Equipo</value>
+  </data>
+  <data name="lblRegMoveOther" xml:space="preserve">
+    <value>OTHER</value>
+  </data>
+  <data name="lblRegMoveChargeNo" xml:space="preserve">
+    <value>Charge No</value>
+  </data>
+  <data name="titleSearchProduct" xml:space="preserve">
+    <value>Búsqueda de Producto</value>
+  </data>
+  <data name="lblEquipmentMatchData" xml:space="preserve">
+    <value>El número de Equipo no existe</value>
+  </data>
+  <data name="lblAlertWrongPassword" xml:space="preserve">
+    <value>La contraseña ingresada es incorrecta. Por favor, intente nuevamente</value>
+  </data>
+  <data name="lblBlock" xml:space="preserve">
+    <value>Bloque</value>
+  </data>
+  <data name="lblResumeMoveAuthorization" xml:space="preserve">
+    <value>Authorization</value>
+  </data>
+  <data name="lblResumeMoveStartTime" xml:space="preserve">
+    <value>Start Time</value>
+  </data>
+  <data name="lblResumeMoveTimeElapsed" xml:space="preserve">
+    <value>Time Elapsed</value>
+  </data>
+  <data name="lblResumeMoveToBlock" xml:space="preserve">
+    <value>To Block</value>
+  </data>
+  <data name="btnStartService" xml:space="preserve">
+    <value>Iniciar Servicio</value>
+  </data>
+  <data name="lblDialogStartService" xml:space="preserve">
+    <value>¿Esta seguro de comenzar el Servicio?</value>
+  </data>
+  <data name="lblDialogFinishService" xml:space="preserve">
+    <value>¿Esta seguro de finalizar el Servicio?</value>
+  </data>
+  <data name="lblMainMenuDailyActivities" xml:space="preserve">
+    <value>Daily Activities</value>
+  </data>
+  <data name="lblResumeMoveFromBlock" xml:space="preserve">
+    <value>From Block</value>
+  </data>
+  <data name="lblResumeMoveFinishTime" xml:space="preserve">
+    <value>Finish Time</value>
+  </data>
+  <data name="lblResumeMoveEquipmentNumber" xml:space="preserve">
+    <value>Equipment Number</value>
+  </data>
+  <data name="lblResumeMoveEquipmentType" xml:space="preserve">
+    <value>Equipment Type</value>
+  </data>
+  <data name="lblResumeMoveEquipmentSize" xml:space="preserve">
+    <value>Equipment Size</value>
+  </data>
+  <data name="lblResumeMoveEquipmentStatus" xml:space="preserve">
+    <value>Equipment Status</value>
+  </data>
+  <data name="lblResumeMoveMoveType" xml:space="preserve">
+    <value>MoveType</value>
+  </data>
+  <data name="lblResumeMoveProduct" xml:space="preserve">
+    <value>Product</value>
+  </data>
+  <data name="lblMsgNotRegistered" xml:space="preserve">
+    <value>Not Registered</value>
+  </data>
+  <data name="titleDetention" xml:space="preserve">
+    <value>Detention</value>
+  </data>
+  <data name="lblMainMenuAddDetention" xml:space="preserve">
+    <value>Add Detention</value>
+  </data>
+  <data name="btnMainMenu" xml:space="preserve">
+    <value>Menu Principal</value>
+  </data>
+  <data name="lblDialogLogOutMessage" xml:space="preserve">
+    <value>Do you want to exit the application?</value>
+  </data>
+  <data name="lblDialogLogOutTitle" xml:space="preserve">
+    <value>LogOut</value>
+  </data>
+  <data name="btnToolbarTos" xml:space="preserve">
+    <value>Term of Services</value>
+  </data>
+  <data name="titleTos" xml:space="preserve">
+    <value>Term of Services</value>
+  </data>
+  <data name="btnToolbarLogOut" xml:space="preserve">
+    <value>Log Out</value>
+  </data>
+  <data name="lblDefaultSelection" xml:space="preserve">
+    <value>Selecciona {0}</value>
+  </data>
+  <data name="btnFinishDetention" xml:space="preserve">
+    <value>Finalizar Detention</value>
+  </data>
+  <data name="btnStartDetention" xml:space="preserve">
+    <value>Iniciar Detention</value>
+  </data>
+  <data name="lblDialogFinishDetention" xml:space="preserve">
+    <value>¿Esta seguro de finalizar el Detention?</value>
+  </data>
+  <data name="lblDialogStartDetention" xml:space="preserve">
+    <value>¿Esta seguro de iniciar el Detention?</value>
+  </data>
+  <data name="lblCode" xml:space="preserve">
+    <value>Código</value>
+  </data>
+  <data name="lblName" xml:space="preserve">
+    <value>Nombre</value>
+  </data>
+  <data name="lblDialogService" xml:space="preserve">
+    <value>¿Desea recuperar el ultimo servicio guardado?</value>
+  </data>
+  <data name="lblSuccessMove" xml:space="preserve">
+    <value>Movimiento Ingresado Correctamente</value>
+  </data>
+  <data name="lblSuccessService" xml:space="preserve">
+    <value>Servicio Ingresado Correctamente</value>
+  </data>
+  <data name="lblDialogDetention" xml:space="preserve">
+    <value>¿Desea recuperar el ultimo detention guardado?</value>
+  </data>
+  <data name="lblInstructionStartDetention" xml:space="preserve">
+    <value>Prosione el botón Start para iniciar Detention</value>
+  </data>
+  <data name="lblInstructionStartMove" xml:space="preserve">
+    <value>Prosione el botón Start para iniciar el Movimiento</value>
+  </data>
+  <data name="lblInstructionStartService" xml:space="preserve">
+    <value>Prosione el botón Start para iniciar el Servicio</value>
+  </data>
+  <data name="lblSuccessDetention" xml:space="preserve">
+    <value>Detention Registrado Exitosamente</value>
+  </data>
+  <data name="lblH34No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="lblH34Yes" xml:space="preserve">
+    <value>Si</value>
+  </data>
+  <data name="imgMenuLabelBullet" xml:space="preserve">
+    <value>arrow_right.png</value>
+  </data>
+  <data name="termsCancelMessage" xml:space="preserve">
+    <value>Debes aceptar los terminos y condiciones para usar esta aplicacion.</value>
+  </data>
+  <data name="lblStopTime" xml:space="preserve">
+    <value>Tiempo de Finalización</value>
+  </data>
+  <data name="lblEqupNo" xml:space="preserve">
+    <value>Equipment No</value>
+  </data>
+  <data name="lblInProgress" xml:space="preserve">
+    <value>In Progress</value>
+  </data>
+  <data name="lblMainMenuStoreForward" xml:space="preserve">
+    <value>Store &amp; Forward</value>
+  </data>
+  <data name="lblMainMenuAcknowledgeMove" xml:space="preserve">
+    <value>Acknowledge</value>
+  </data>
+  <data name="lblServiceType" xml:space="preserve">
+    <value>Service Type</value>
+  </data>
+  <data name="lblDialogFinishMove" xml:space="preserve">
+    <value>Finish Move?</value>
+  </data>
+  <data name="lblDialogStartMove" xml:space="preserve">
+    <value>¿Esta seguro de comenzar el Movimiento?</value>
+  </data>
+  <data name="lblFinishMoveStarted" xml:space="preserve">
+    <value>Started</value>
+  </data>
+  <data name="titleSummary" xml:space="preserve">
+    <value>Summary</value>
+  </data>
+  <data name="titleOperateTaylorLift" xml:space="preserve">
+    <value>Operate Taylor Lift</value>
+  </data>
+  <data name="lblDialogStartOperateTaylorLift" xml:space="preserve">
+    <value>Start Operate Taylor Lift?</value>
+  </data>
+  <data name="lblDialogFinishOperateTaylorLift" xml:space="preserve">
+    <value>Finish Operate Taylor Lift?</value>
+  </data>
+  <data name="btnStartOperateTaylorLift" xml:space="preserve">
+    <value>Iniciar Operate Taylor Lift</value>
+  </data>
+  <data name="lblInstructionStartOperateTaylorLift" xml:space="preserve">
+    <value>Press the Start Button to begin with the Operate Taylor Lift</value>
+  </data>
+  <data name="lblMainMenuAddOperateTaylorLift" xml:space="preserve">
+    <value>Add Operate Taylor Lift</value>
+  </data>
+  <data name="lblDialogOperateTaylorLift" xml:space="preserve">
+    <value>Do you wish to recover the last stored Operate Taylor Lift? </value>
+  </data>
+  <data name="btnFinishOperateTaylorLift" xml:space="preserve">
+    <value>Finish Operate Taylor Lift</value>
+  </data>
+  <data name="lblSuccessOperateTaylorLift" xml:space="preserve">
+    <value>Operate Taylor Lift Successfully Completed</value>
+  </data>
+  <data name="lblSummaryDriver" xml:space="preserve">
+    <value>Driver</value>
+  </data>
+  <data name="lblSummaryTotalHours" xml:space="preserve">
+    <value>Total Hours</value>
+  </data>
+  <data name="lblSummaryTotalMoves" xml:space="preserve">
+    <value>Total Moves</value>
+  </data>
+  <data name="lblSummaryUnitNo" xml:space="preserve">
+    <value>Unit#</value>
+  </data>
+  <data name="lblTagPerHour" xml:space="preserve">
+    <value>Per Hour</value>
+  </data>
+  <data name="lblTagPerMove" xml:space="preserve">
+    <value>Per Move</value>
+  </data>
+  <data name="lblContinueWith" xml:space="preserve">
+    <value>Continue with Charge # </value>
+  </data>
+  <data name="lblStartNewOne" xml:space="preserve">
+    <value>Start with new Charge#</value>
+  </data>
+  <data name="OptionDetention" xml:space="preserve">
+    <value>Detention</value>
+  </data>
+  <data name="OptionMove" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="OptionService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="OptionTaylor" xml:space="preserve">
+    <value>Taylor Lift</value>
+  </data>
+  <data name="lblSummaryChargeNo" xml:space="preserve">
+    <value>Charge No</value>
+  </data>
+  <data name="lblSummaryChargeNoWDot" xml:space="preserve">
+    <value>Charge No</value>
+  </data>
+  <data name="lblSummaryDetention" xml:space="preserve">
+    <value>D</value>
+  </data>
+  <data name="lblSummaryInplant" xml:space="preserve">
+    <value>I</value>
+  </data>
+  <data name="lblSummaryOperateTaylorLift" xml:space="preserve">
+    <value>L</value>
+  </data>
+  <data name="lblSummaryOutplantBobtail" xml:space="preserve">
+    <value>O/B</value>
+  </data>
+  <data name="lblSummaryPrep" xml:space="preserve">
+    <value>P</value>
+  </data>
+  <data name="lblSummaryRespot" xml:space="preserve">
+    <value>R</value>
+  </data>
+  <data name="lblSummaryTrailer" xml:space="preserve">
+    <value>T</value>
+  </data>
+  <data name="lblSummaryYardCheck" xml:space="preserve">
+    <value>Y</value>
+  </data>
+  <data name="titleDailyActivities" xml:space="preserve">
+    <value>Daily Activities</value>
+  </data>
+  <data name="lblDailyActivitiesMoves" xml:space="preserve">
+    <value>movimientos</value>
+  </data>
+  <data name="btnSummaryLegend" xml:space="preserve">
+    <value>Mostrar Leyenda</value>
+  </data>
+  <data name="lblActionTypeDetention" xml:space="preserve">
+    <value>Detention</value>
+  </data>
+  <data name="lblActionTypeMove" xml:space="preserve">
+    <value>Move</value>
+  </data>
+  <data name="lblActionTypeService" xml:space="preserve">
+    <value>Service</value>
+  </data>
+  <data name="lblActionTypeTaylorLift" xml:space="preserve">
+    <value>Taylor Lift</value>
+  </data>
+  <data name="titleChargeNumberSearch" xml:space="preserve">
+    <value>Search Charge No</value>
+  </data>
+  <data name="lblSearchNotFound" xml:space="preserve">
+    <value>No results found</value>
+  </data>
+  <data name="connectivityError" xml:space="preserve">
+    <value>Verifica tu conexion a internet.</value>
+  </data>
+  <data name="lblSettingsAbout" xml:space="preserve">
+    <value>About</value>
+  </data>
+  <data name="lblSettingsDeleteHistory" xml:space="preserve">
+    <value>Delete History</value>
+  </data>
+  <data name="lblSettingsDeleteLog" xml:space="preserve">
+    <value>Delete Log</value>
+  </data>
+  <data name="lblSettingsDriverId" xml:space="preserve">
+    <value>Driver Id</value>
+  </data>
+  <data name="lblSettingsGenerateLog" xml:space="preserve">
+    <value>Generate</value>
+  </data>
+  <data name="lblSettingsLog" xml:space="preserve">
+    <value>Log</value>
+  </data>
+  <data name="lblSettingsVersion" xml:space="preserve">
+    <value>Version</value>
+  </data>
+  <data name="titleSettings" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="btnSendLog" xml:space="preserve">
+    <value>Send Log</value>
+  </data>
+  <data name="btnToolbarSyncNow" xml:space="preserve">
+    <value>Sincronizar</value>
+  </data>
+  <data name="storeForwardrunning" xml:space="preserve">
+    <value>Store &amp; forward ya se está ejecutando actualmente.</value>
+  </data>
+  <data name="titleStoreForward" xml:space="preserve">
+    <value>Store &amp; Forward</value>
+  </data>
+  <data name="lblTooltipFinishPreviousWorkday" xml:space="preserve">
+    <value>You must finish your previous workday to add a new activity today</value>
+  </data>
+  <data name="lblGpsException" xml:space="preserve">
+    <value>Por favor activar el GPS. No podrá usar Shuttle Tracking</value>
+  </data>
+  <data name="lblAppName" xml:space="preserve">
+    <value>Shuttle Tracking</value>
+  </data>
+  <data name="lblDailyActivitiesAuthorized" xml:space="preserve">
+    <value>Acknowledged</value>
+  </data>
+  <data name="lblNone" xml:space="preserve">
+    <value>None</value>
+  </data>
+  <data name="lblSFNoRecordsFounds" xml:space="preserve">
+    <value>No Records Found</value>
+  </data>
+  <data name="lblAcknowledgeLoading" xml:space="preserve">
+    <value>Loading Acknowledge Moves</value>
+  </data>
+  <data name="lblAcknowledgeSelectCharge" xml:space="preserve">
+    <value>Select Charge No</value>
+  </data>
+  <data name="lblAcknowledgeSelectOneOption" xml:space="preserve">
+    <value>Select one option from the list</value>
+  </data>
+  <data name="lblAcknowledgeSuccessful" xml:space="preserve">
+    <value>Activity successfully acknowledged</value>
+  </data>
+  <data name="lblDialogSearching" xml:space="preserve">
+    <value>Searching ...</value>
+  </data>
+  <data name="lblDialogUpdatingMaster" xml:space="preserve">
+    <value>Updating master data ...</value>
+  </data>
+  <data name="lblLoginLoggingIn" xml:space="preserve">
+    <value>Logging in ...</value>
+  </data>
+  <data name="lblSettingsCreatingLogFile" xml:space="preserve">
+    <value>Creating diagnostic files ...</value>
+  </data>
+  <data name="lblSummaryLegendText" xml:space="preserve">
+    <value>Per Move:\nI: In Plant\nO/B: Out Plant/Auth. Bobtail\nR: Respot\nP: Prep &amp; Unprep\nY: Yard Check\nT: Trailer Interchange\nB: Bobtail\n\nPer Hour:\nD: Detention\nL: Operate Lift</value>
+  </data>
+  <data name="lblSummaryLegendTitle" xml:space="preserve">
+    <value>Legend</value>
+  </data>
+  <data name="lblSearchProduct" xml:space="preserve">
+    <value>Search Product</value>
+  </data>
+  <data name="errorServiceCode" xml:space="preserve">
+    <value>Unable to retrieve the Service Codes</value>
+  </data>
+  <data name="lblError" xml:space="preserve">
+    <value>Error</value>
+  </data>
+  <data name="errorActivityHistory" xml:space="preserve">
+    <value>Error updating Activity history</value>
+  </data>
+  <data name="errorInvalidUsername" xml:space="preserve">
+    <value>Invalid username or password</value>
+  </data>
+  <data name="lblPerHour" xml:space="preserve">
+    <value>Per Hour</value>
+  </data>
+  <data name="lblPerMove" xml:space="preserve">
+    <value>Per Move</value>
+  </data>
+  <data name="lblSettingsMode" xml:space="preserve">
+    <value>Mode</value>
+  </data>
+  <data name="lblDay" xml:space="preserve">
+    <value>day</value>
+  </data>
+  <data name="lblDays" xml:space="preserve">
+    <value>days</value>
+  </data>
+  <data name="lblSummaryLoadingAtBlock" xml:space="preserve">
+    <value>LB</value>
+  </data>
+  <data name="lblSummaryUnloadingAtBlock" xml:space="preserve">
+    <value>UB</value>
+  </data>
+  <data name="lblSummaryWaitingAtScales" xml:space="preserve">
+    <value>WS</value>
+  </data>
+  <data name="lblSummaryWaitingOnBlock" xml:space="preserve">
+    <value>WB</value>
+  </data>
+  <data name="lblSummaryPerHourLegend" xml:space="preserve">
+    <value>I: In Plant\nO: Out Plant\nLB: LoadingAtBlock\nUB: UnloadingAtBlock\nWS: WaitingAtScales\nWB: WaitingOnBlock\n</value>
+  </data>
+  <data name="lblMoves" xml:space="preserve">
+    <value>Moves</value>
+  </data>
+  <data name="lblTime" xml:space="preserve">
+    <value>Time</value>
+  </data>
+  <data name="lblSearchCreateA" xml:space="preserve">
+    <value>Use to create a:</value>
+  </data>
+  <data name="lblMsgNotRequired" xml:space="preserve">
+    <value>Not Required</value>
+  </data>
+  <data name="titleSummaryPerHour" xml:space="preserve">
+    <value>Summary Per Hour</value>
+  </data>
+  <data name="lblSummaryBobtail" xml:space="preserve">
+    <value>B</value>
+  </data>
+  <data name="lblCommentsMaxLength" xml:space="preserve">
+    <value>Enter your comment (max. {0} chars)</value>
+  </data>
+  <data name="lblAddComment" xml:space="preserve">
+    <value>Add Comment</value>
+  </data>
+  <data name="lblEditComment" xml:space="preserve">
+    <value>Edit Comment</value>
+  </data>
+  <data name="lblDriverComments" xml:space="preserve">
+    <value>Driver Comments</value>
+  </data>
+  <data name="lblDriverCommentsFinishScreen" xml:space="preserve">
+    <value>DRIVER COMMENTS</value>
+  </data>
+  <data name="lblClear" xml:space="preserve">
+    <value>CLEAR</value>
+  </data>
+  <data name="lblDailyIndeterminable" xml:space="preserve">
+    <value>Indeterminable</value>
+  </data>
+  <data name="lblTooltipUserTypeHasChanged" xml:space="preserve">
+    <value>Your user setting have changed from {0} to {1}. You must finish your current workday to add a new activity today.</value>
+  </data>
+  <data name="lblTooltipTitleSettingsUpdated" xml:space="preserve">
+    <value>Your settings have been updated</value>
+  </data>
+  <data name="lblErrorDateRequired" xml:space="preserve">
+    <value>Date is required</value>
+  </data>
+  <data name="lblModalEquipNoTitle" xml:space="preserve">
+    <value>Equipment Number Verification</value>
+  </data>
+  <data name="lblErrorReadingDateTime" xml:space="preserve">
+    <value>Error reading Date</value>
+  </data>
+  <data name="errorCreatingUserProfile" xml:space="preserve">
+    <value>Error creating User Profile</value>
+  </data>
+  <data name="lblMaxLength" xml:space="preserve">
+    <value>{0} must have {1} digits</value>
+  </data>
+  <data name="lblNumericOnly" xml:space="preserve">
+    <value>{0} accepts only numbers</value>
+  </data>
+  <data name="lblStartWithFormat" xml:space="preserve">
+    <value>{0} must start with {1} or {2}</value>
+  </data>
+  <data name="errorLoadingDetentions" xml:space="preserve">
+    <value>Error loading Detentions</value>
+  </data>
+  <data name="errorLoadingLifts" xml:space="preserve">
+    <value>Error loading Taylor Lifts</value>
+  </data>
+  <data name="errorLoadingMoves" xml:space="preserve">
+    <value>Error loading Moves</value>
+  </data>
+  <data name="errorLoadingServices" xml:space="preserve">
+    <value>Error loading Services</value>
+  </data>
+  <data name="titleActivityDetail" xml:space="preserve">
+    <value>Activity Detail</value>
+  </data>
+  <data name="errorMasterData" xml:space="preserve">
+    <value>Ha ocurrido un error descargando los datos maestros.</value>
+  </data>
+  <data name="lblRetry" xml:space="preserve">
+    <value>Reintentar</value>
+  </data>
+  <data name="lblContinue" xml:space="preserve">
+    <value>Continuar</value>
+  </data>
+  <data name="lblAddA" xml:space="preserve">
+    <value>Add a</value>
+  </data>
+  <data name="lblStartANew" xml:space="preserve">
+    <value>Start a new</value>
+  </data>
+  <data name="lblAlert" xml:space="preserve">
+    <value>Alert</value>
+  </data>
+  <data name="lblSearchBlock" xml:space="preserve">
+    <value>Block</value>
+  </data>
+  <data name="lblSearchChargeNumber" xml:space="preserve">
+    <value>Equipment, Chassis or Charge Number</value>
+  </data>
+  <data name="lblSearchCostCenter" xml:space="preserve">
+    <value>Cost Center</value>
+  </data>
+  <data name="lblNotRecordSelected" xml:space="preserve">
+    <value>No ha seleccionado registro</value>
+  </data>
+  <data name="btnCancelDetention" xml:space="preserve">
+    <value>Cancelar Detention</value>
+  </data>
+  <data name="btnCancelMove" xml:space="preserve">
+    <value>Cancelar Move</value>
+  </data>
+  <data name="btnCancelOperate" xml:space="preserve">
+    <value>Cancelar Taylor Lift</value>
+  </data>
+  <data name="btnCancelService" xml:space="preserve">
+    <value>Cancelar Service</value>
+  </data>
+  <data name="lblDialogCancelMove" xml:space="preserve">
+    <value>¿Esta seguro de cancel el Movimiento?</value>
+  </data>
+  <data name="lblDialogCancelDetention" xml:space="preserve">
+    <value>¿Esta seguro de cancel el Detention?</value>
+  </data>
+  <data name="lblDialogCancelOperate" xml:space="preserve">
+    <value>¿Esta seguro de cancelar el Operate Taylor Lift?</value>
+  </data>
+  <data name="lblDialogCancelService" xml:space="preserve">
+    <value>¿Esta seguro de cancelar el Service?</value>
+  </data>
+  <data name="lblCancelDetention" xml:space="preserve">
+    <value>Detention Cancelado</value>
+  </data>
+  <data name="lblCancelMove" xml:space="preserve">
+    <value>Movimiento Cancelado</value>
+  </data>
+  <data name="lblCancelOperate" xml:space="preserve">
+    <value>Operate Taylor Lift Cancelado</value>
+  </data>
+  <data name="lblCancelService" xml:space="preserve">
+    <value>Servicio Cancelado</value>
+  </data>
+  <data name="lblStatusUpper" xml:space="preserve">
+    <value>STATUS</value>
+  </data>
+  <data name="lblErrorValidation" xml:space="preserve">
+    <value>Error Validation</value>
+  </data>
+  <data name="lblResumeMoveToBlockUpper" xml:space="preserve">
+    <value>TO BLOCK</value>
+  </data>
+  <data name="lblSelectedOf" xml:space="preserve">
+    <value>Selected {0} of {1}</value>
+  </data>
+  <data name="lblSelectChargeNumber" xml:space="preserve">
+    <value>Select Charge Number</value>
+  </data>
+  <data name="lblSelectAll" xml:space="preserve">
+    <value>Select All</value>
+  </data>
+  <data name="titleSelectChargeNumber" xml:space="preserve">
+    <value>Select Charge Number</value>
+  </data>
+  <data name="lblDialogNoChargeNumbers" xml:space="preserve">
+    <value>No moves left for approval</value>
+  </data>
+</root>

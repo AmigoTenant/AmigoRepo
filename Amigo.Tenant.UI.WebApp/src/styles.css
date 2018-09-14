@@ -1,0 +1,8 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+    font-family: 'Open Sans', sans-serif;
+}
+
+fw-menu > nav > ul > li > fw-menu-item {
+    color: whitesmoke !important;
+}

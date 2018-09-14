@@ -1,0 +1,47 @@
+{
+  "Data": {
+    "Driver": {
+      "UserName": "ABC111",
+      "Name": "Jesus Angulo Gasco"
+    },
+    "Date": "14/11/2016",
+    "Modules": [
+      {
+        "Code": "HOME001",
+        "Name": "Home",
+        "URL": "",
+        "ParentModuleId": "",
+        "SortOrder": "0",
+        "RowStatus": "1"
+      },
+      {
+        "Code": "MAIN001",
+        "Name": "Maintenance",
+        "URL": "",
+        "ParentModuleId": "",
+        "SortOrder": "1",
+        "RowStatus": "1",
+        "Childrens": [
+          {
+            "Code": "MOD001",
+            "Name": "Module",
+            "URL": "/home/module",
+            "ParentModuleId": "1",
+            "SortOrder": "0",
+            "RowStatus": "1"
+          }
+        ]
+      },
+      {
+        "Code": "REPO001",
+        "Name": "Reports",
+        "URL": "/home/reports",
+        "ParentModuleId": "",
+        "SortOrder": "2",
+        "RowStatus": "1"
+      }
+    ]
+  },
+  "IsValid": true,
+  "Messages": [ ]
+}

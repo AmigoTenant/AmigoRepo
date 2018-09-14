@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Amigo.Tenant.UI.Web</id>
+    <version>1.0.0</version>
+    <authors>AmigoTenant</authors>
+    <owners>AmigoTenant</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>http://example.com/</licenseUrl>
+    <projectUrl>http://example.com/</projectUrl>
+    <description>The Amigo.Tenant.UI.Web deployment package</description>
+    <releaseNotes></releaseNotes>	  
+  </metadata>
+  <files>    
+    <file src="dist\**\*.*" target="dist" />
+    <file src="Web.config"  target="dist" />
+  </files>
+</package>

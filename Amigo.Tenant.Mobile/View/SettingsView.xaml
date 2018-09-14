@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+              xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+              xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+              x:Class="XPO.ShuttleTracking.Mobile.View.SettingsView"
+              Title="{x:Static resource:AppString.titleSettings}">
+
+  <abstract:NavigatingPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="Frame">
+        <Setter Property="HasShadow" Value="False"/>
+        <Setter Property="BackgroundColor" Value="{StaticResource ColorSubtitleBackground}"/>
+        <Setter Property="Margin" Value="0"/>
+      </Style>
+      <Style x:Key="Header" TargetType="Label">
+        <Setter Property="FontSize" Value="Medium"/>
+        <Setter Property="TextColor" Value="{StaticResource ColorBodyText}"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+        <Setter Property="HorizontalOptions" Value="Start"/>
+      </Style>
+      <Style TargetType="Label">
+        <Setter Property="Margin" Value="0,5"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+      </Style>
+      <Style x:Key="Label" TargetType="Label">
+        <Setter Property="Margin" Value="10,5"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontAttributes" Value="Bold"/>
+      </Style>
+      <Style TargetType="BoxView">
+        <Setter Property="BackgroundColor" Value="{StaticResource ColorControlBackground}"/>
+        <Setter Property="HorizontalOptions" Value="FillAndExpand"/>
+        <Setter Property="VerticalOptions" Value="Fill"/>
+        <Setter Property="HeightRequest" Value="15"/>
+        <Setter Property="Margin" Value="0"/>
+      </Style>
+      <Style TargetType="Grid">
+        <Setter Property="BackgroundColor" Value="{StaticResource ColorControlBackground}"/>
+        <Setter Property="RowSpacing" Value="0"/>
+      </Style>
+    </ResourceDictionary>
+  </abstract:NavigatingPage.Resources>
+
+  <StackLayout Style="{StaticResource OuterStackLayout}">
+    <!--Header-->
+    <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+      <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+        <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+        <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+      </StackLayout>
+    </StackLayout>
+
+    <ScrollView>
+
+      <!--Body-->
+      <Grid>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="*"/><!--SettingsAbout-->
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="*"/><!--General-->
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="*"/><!--MasterData-->
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="*"/><!--Log-->
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="{StaticResource HeaderRow}"/>
+          <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="3*"/>
+          <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <!--About-->
+        <Frame Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0">
+          <Label Text="{x:Static resource:AppString.lblSettingsAbout}" Style="{StaticResource Header}"></Label>
+        </Frame>
+        <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resource:AppString.lblSettingsDriverId}" Style="{StaticResource Label}"/>
+        <Label Grid.Row="1" Grid.Column="1" Text="{Binding DriverID}" HorizontalOptions="End" Margin="10,0"/>
+        <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resource:AppString.lblSettingsVersion}" Style="{StaticResource Label}"/>
+        <Label Grid.Row="2" Grid.Column="1" Text="{Binding AppVersion}" HorizontalOptions="End" Margin="10,0"/>
+        <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resource:AppString.lblSettingsMode}" Style="{StaticResource Label}"/>
+        <Label Grid.Row="3" Grid.Column="1" Text="{Binding TypeUser}" HorizontalOptions="End" Margin="10,0"/>
+
+        <BoxView Grid.Row="4" Grid.ColumnSpan="2" Grid.Column="0"/>
+
+        <!--General-->
+        <Frame Grid.Row="5" Grid.ColumnSpan="2" Grid.Column="0">
+          <Label Text="{x:Static resource:AppString.lblGeneral}" Style="{StaticResource Header}"></Label>
+        </Frame>
+        <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resource:AppString.lblSettingsDeleteHistory}" Style="{StaticResource Label}"/>
+        <Label Grid.Row="6" Grid.Column="1" Text="{Binding DeleteHistory}" HorizontalOptions="End" Margin="10,0"/>
+        <BoxView Grid.Row="7" Grid.ColumnSpan="2" Grid.Column="0"/>
+        <!--MasterData-->
+        <Frame Grid.Row="8" Grid.ColumnSpan="2" Grid.Column="0">
+          <Label Text="{x:Static resource:AppString.lblMasterData}" Style="{StaticResource Header}"></Label>
+        </Frame>
+        <Label Grid.Row="9" Grid.Column="0" Text="{x:Static resource:AppString.lblLastUpdate}" Style="{StaticResource Label}"/>
+        <Label Grid.Row="9" Grid.Column="1" Text="{Binding MasterDataLastUpdate}" HorizontalOptions="End" Margin="10,0"/>
+        <Button Grid.Row="10" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding RefreshMasterDataCommand}" Text="Update master data"
+               Style="{StaticResource PrimaryButtonS}"/>         
+        <BoxView Grid.Row="11" Grid.ColumnSpan="2" Grid.Column="0"/>
+        <!--Log-->
+        <Frame Grid.Row="12" Grid.ColumnSpan="2" Grid.Column="0">
+          <Label Text="{x:Static resource:AppString.lblSettingsLog}" Style="{StaticResource Header}"></Label>
+        </Frame>
+        <Label Grid.Row="13" Grid.Column="0" Text="{x:Static resource:AppString.lblSettingsGenerateLog}" Style="{StaticResource Label}"/>
+        <Switch Grid.Row="13" Grid.Column="1" HorizontalOptions="EndAndExpand" VerticalOptions="CenterAndExpand" IsToggled="{Binding IsLogEnabled}" Margin="0,0,12,0"/>
+        <BoxView Grid.Row="14" Grid.ColumnSpan="2" Grid.Column="0"/>
+        <!--Button-->
+        <Button Grid.Row="15" Grid.Column="0" Grid.ColumnSpan="2" Command="{Binding SendLogCommand}" Text="{x:Static resource:AppString.btnSendLog}"
+                Style="{StaticResource PrimaryFormButtonS}"/>
+      </Grid>
+
+    </ScrollView>
+  </StackLayout>
+</abstract:NavigatingPage>

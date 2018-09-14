@@ -1,0 +1,49 @@
+
+    <div class="form-horizontal">
+        <div class="page-header">
+            Payment Maintenance Detail
+        </div>
+
+        <!--<div class="action-bar-container">
+            <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="validationForm.form.valid" [formName]="'validationForm'"></st-boton-maintenance>
+        </div>
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>-->
+        <div class="row col-sm-8">
+            <form #headerForm="ngForm" data-val-form="headerForm" class="col-sm-12">
+                <div>
+                    <div class="col-sm-8">
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">Payment Type</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [(ngModel)]="paymentMaintenanceDetail.paymentTypeCode"
+                                       name="paymentTypeCode" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">Amount</label>
+                            <div class="col-sm-9">
+                                <input type="text" class="form-control" [(ngModel)]="paymentMaintenanceDetail.paymentAmount"
+                                       name="paymentAmount" />
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <label class="col-sm-3 control-label">Comment</label>
+                            <div class="col-sm-9">
+                                <textarea rows="4" style="height:120px" class="form-control" [(ngModel)]="paymentMaintenanceDetail.comment"
+                                          name="comment"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="button-container">
+                <button type="button" class="ro-button btn-default" (click)="onSave()">Accept</button>
+                <button type="button" class="ro-button btn-success" (click)="onCancel()" >Cancel</button>
+            </div>
+        </div>
+
+    </div>

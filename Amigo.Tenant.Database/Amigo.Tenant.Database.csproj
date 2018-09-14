@@ -1,0 +1,253 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{5EDF744C-A8E9-4B98-9B56-C8F0ED474366}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.Database</RootNamespace>
+    <AssemblyName>Amigo.Tenant.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.40.00-FD.0002.ServicePeriodStatus.sql" />
+    <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.40.00-FD.0004.AppSetting.sql" />
+    <Content Include="AmigoTenantTrackingDb\up\R.01.40.00-CD.0004.DefaultCero.sql" />
+    <None Include="packages.config" />
+    <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.30.00-FD.0001.Scripts.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.30.00-MT.0003.Invoice.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.40.00-FD.0003.UnitMeasureConsumption.sql" />
+    <Content Include="AmigoTenantTrackingDb\up\R.01.40.00-CT.0003.EntityStatusTable.sql" />
+    <Content Include="AmigoTenantTrackingDb\up\R.01.40.00-MT.0002.RefactorizarHouseServicePeriod.sql" />
+    <Content Include="AmigoTenantTrackingDb\up\R.01.30.00-MT.0002.RentalApplication.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.30.00-MT.0001.CreateMenuOption.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.20.00-MT.0002.Initial-Insert-Schema-dbo.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.20.00-MT.0001.Initial-Insert-Schema-sec.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.40.00-MT.0001.UtilityBills.Menu.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwContractHouseDetail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwExpenseDetailSearch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwCountry.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwExpenseSearch.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwHouse.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwHouseStatus.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwHouseType.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwHouseFeatureDetailContract.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.AT.vwMainTenant.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwOtherTenant.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwContractSearch.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwContract.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwConcept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.AT.vwHouseFeatureAndDetail.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwHouseFeature.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwFeature.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwPaymentPeriodInvoicePrint.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwPaymentPeriodByContract.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwRentalApplicationSearch.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwServiceHouse.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwServiceHousePeriod.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwUtilityHouseService.sql" />
+    <Content Include="AmigoTenantTrackingDb\views\vwHouseService.sql" />
+    <Content Include="roundhouse.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="roundhouse.Production.config">
+      <DependentUpon>roundhouse.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="roundhouse.QA.config">
+      <DependentUpon>roundhouse.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="roundhouse.UAT.config">
+      <DependentUpon>roundhouse.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="console\rh.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.20.00-FD.0001.Initial-DataBase.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAction.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwActivityEventLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAppVersion.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwCity.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwDevice.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwDriverPayReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwEquipmentSize.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwLast24Hours.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwLatestPosition.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwLocation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwLocationCoordinate.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwLocationType.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwMainMenu.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwModel.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwModule.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwOSVersion.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwParentLocation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwPermission.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwEquipment.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTEventLog.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTService.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTServiceApproveRates.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTServiceLatest.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTServiceReport.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTUser.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwAmigoTenantTServiceApproveRatesPerHour.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwPaymentPeriod.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="_BuildInfo.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="AmigoTenantTrackingDb\AlterDatabase\" />
+    <Folder Include="AmigoTenantTrackingDb\Functions\" />
+    <Folder Include="AmigoTenantTrackingDb\Indexes\" />
+    <Folder Include="AmigoTenantTrackingDb\Permissions\" />
+    <Folder Include="AmigoTenantTrackingDb\runAfterCreateDatabase\" />
+    <Folder Include="AmigoTenantTrackingDb\sprocs\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="..\packages\OctoPack.3.4.7\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.4.7\tools\OctoPack.targets')" />
+  <Target Name="EnsureOctoPackImported" BeforeTargets="BeforeBuild" Condition="'$(OctoPackImported)' == ''">
+    <Error Condition="!Exists('..\packages\OctoPack.3.4.7\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="You are trying to build with OctoPack, but the NuGet targets file that OctoPack depends on is not available on this computer. This is probably because the OctoPack package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\OctoPack.3.4.7\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="OctoPack cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

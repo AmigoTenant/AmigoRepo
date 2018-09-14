@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             x:Class="XPO.ShuttleTracking.Mobile.View.StoreAndForwardView"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             Title="{x:Static resource:AppString.titleStoreForward}">
+  <ContentPage.ToolbarItems>
+    <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarSyncNow}" Order="Secondary" Command="{Binding SyncNowCommand}"/>
+  </ContentPage.ToolbarItems>  
+    <Grid>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="{StaticResource HeaderRow}" />
+        <RowDefinition Height="{StaticResource HeaderRow}" />      
+      </Grid.RowDefinitions>
+      <!--Header-->
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+      <!--S&F List-->      
+      <customControls:ListView HasUnevenRows="False" VerticalOptions="FillAndExpand"
+        IsPullToRefreshEnabled="True" IsRefreshing="{Binding IsLoading}"
+        RefreshCommand="{Binding UpdateCommand}" RowHeight="120" Grid.Row="1"
+        ItemsSource="{Binding PendentTasks}">
+        <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+        <ListView.ItemTemplate>
+          <DataTemplate>
+            <ViewCell>
+              <Grid Padding="15" RowSpacing="2">
+                <Grid.RowDefinitions>
+                  <RowDefinition Height="{StaticResource HeaderRow}"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="*" />
+                  <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="{Binding Tag}" Style="{StaticResource GeneralLabelText}"/>
+                <Label Grid.Row="0" Grid.Column="1" Text="{Binding Desc}"  Style="{StaticResource GeneralLabelTextN}"/>
+              </Grid>
+            </ViewCell>
+          </DataTemplate>
+        </ListView.ItemTemplate>
+      </customControls:ListView>
+    </Grid>  
+</abstract:NavigatingPage>

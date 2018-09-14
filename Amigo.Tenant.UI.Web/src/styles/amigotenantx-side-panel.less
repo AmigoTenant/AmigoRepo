@@ -1,0 +1,195 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+
+.ro-modern {
+
+    .action-bar {
+        position: relative;
+
+        [ro-side-panel-toggle] {
+            cursor: pointer;
+            position: relative;
+            width: 50px;
+            float: right;
+            height: 50px;
+            border-left: 1px solid #eee;
+            margin-right: 0;
+            background: @black-default;
+        }
+
+        [ro-side-panel-toggle] > i {
+            color: #fff;
+            font-size: 22px;
+            margin-left: -11px;
+            margin-top: -11px;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+        }
+
+        [ro-side-panel-toggle].glance-view {
+            background: #fff;
+        }
+
+        [ro-side-panel-toggle].glance-view > i {
+            color: @text-color;
+            margin-left: -10px;
+        }
+
+        [ro-side-panel-toggle].glance-view.isInactive {
+            cursor: default;
+
+            > i {
+                color: #999;
+            }
+        }
+    }
+
+    .ro-side-panel {
+        height: 100%;
+        background: #ccc;
+        transition: width 0.2s ease-in-out;
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 9;
+        overflow: hidden;
+
+        & .actions-bar-grid {
+            height: 50px;
+            position: relative;
+
+            &:before,
+            &:after {
+                display: table;
+                content: " ";
+            }
+
+            &:after {
+                clear: both;
+            }
+
+            & .button-container {
+                align-items: center;
+                display: flex;
+                height: 49px;
+                padding: 0 10px;
+
+                &:last-child {
+                    padding-right: 0;
+                }
+            }
+        }
+
+        &.panel-open {
+            width: 40%;
+        }
+
+        &.panel-open-expanded {
+            width: 70%;
+        }
+
+        .side-panel-header {
+            background: @black-default;
+            display: flex;
+            font-size: 12px;
+            min-height: 62px;
+            padding: 12px 12px;
+            .cf;
+
+            > div.header-info {
+                flex-basis: 100%;
+                padding-right: 8px;
+
+                &:first-child {
+                    max-width: 125px;
+                }
+
+                > span {
+                    color: #FFF;
+                    display: inline-block;
+                    height: 17px;
+                    line-height: 17px;
+                    overflow-y: hidden;
+                    word-break: break-all;
+                }
+
+                &:last-child {
+                    text-align: left;
+                    float: left;
+                    font-size: 12px;
+                    width: 65%;
+                }
+            }
+
+            a {
+                color: #4C8DFA;
+                text-decoration: none;
+            }
+
+            a:hover {
+                color: #FFF;
+            }
+        }
+
+        .side-panel-body {
+            border-left: 1px solid #ccc;
+            display: block;
+            overflow-x: visible;
+            overflow-y: hidden;
+
+            .wrapper {
+                background: #eee;
+                height: 100%;
+                padding: 0 15px 15px 15px;
+
+                .content {
+                    background: #fff;
+                    display: flex;
+                    overflow-y: auto;
+                    position: relative;
+                    width: 100%;
+                }
+            }
+        }
+
+        .xico-loading-spinning {
+            font-size: 36px;
+        }
+
+        .xico-dots {
+            color: @text-color;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 16px;
+            position: absolute;
+            top: 50%;
+            transform: rotate(90deg);
+
+            &:hover {
+                background-color: rgba(158,158,158,.2);
+                border-radius: 2px;
+            }
+        }
+
+        .content-without-aside {
+            background: #fff;
+            box-sizing: border-box;
+            height: 100%;
+            min-height: 0;
+            max-height: 1000px;
+            padding: 15px 15px 0px 15px;
+        }
+    }
+}
+
+.cf {
+    &:before, &:after {
+        content: " ";
+        display: table;
+    }
+
+    &:after {
+        clear: both;
+    }
+}

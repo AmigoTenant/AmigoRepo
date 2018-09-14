@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:effects="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Effects;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.DailyActivitiesFilteredView"
+             Title="{Binding Title}">
+  
+  <abstract:NavigatingPage.Resources>
+    <ResourceDictionary>
+      <converter:ItemsFoundToBoolConverter x:Key="Lst2Bool" />
+      <converter:StringToBoolConverter x:Key="Str2Bool" />
+
+      <Style x:Key="DailyActivityTag" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+      </Style>
+
+      <Style x:Key="DailyActivityData" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontSize" Value="15" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+      </Style>
+
+      <Style x:Key="DailyActivityActionType" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+      </Style>
+
+      <Style x:Key="DailyActivityApproved" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorOnDuty}" />
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+      </Style>
+
+      <DataTemplate x:Key="FilteredTemplate">
+        <ViewCell>
+          <Grid Padding="10,20,10,0" BackgroundColor="{StaticResource ColorBackground}" >
+            <Grid.RowDefinitions>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="2*"/>
+              <ColumnDefinition Width="3*"/>
+              <ColumnDefinition Width="2*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" Style="{StaticResource DailyActivityActionType}" Text="{Binding ActionType}"/>
+            <Image Grid.Column="2" Grid.Row="0" HorizontalOptions="End" VerticalOptions="Center" Source="arrow_right.png" HeightRequest="15" WidthRequest="15" />
+            <Label Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Style="{StaticResource DailyActivityApproved}" Text="{Binding AcknowledgeState}" IsVisible="{Binding AcknowledgeState,Converter={StaticResource Str2Bool}}"/>
+            <Label Grid.Column="0" Grid.Row="2" Style="{StaticResource DailyActivityTag}" Text="{Binding HeaderLabel}"/>
+            <Label Grid.Column="1" Grid.Row="2" Style="{StaticResource DailyActivityData}" Text="{Binding HeaderDesc}"/>
+          
+          </Grid>
+        </ViewCell>
+      </DataTemplate>
+    </ResourceDictionary>
+
+
+  </abstract:NavigatingPage.Resources>
+
+  <StackLayout Style="{StaticResource OuterStackLayout}">
+    <!--Header-->
+    <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+      <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+        <Label Text="{Binding HeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+        <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+      </StackLayout>
+    </StackLayout>
+    <!--Scrollable Activities-->
+    <Label Margin="20" Text="{x:Static resource:AppString.lblSearchNotFound}" FontSize="Large" FontAttributes="Bold" IsVisible="{Binding LstDailyActivities,Converter={StaticResource Lst2Bool}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+
+    <customControls:ListView x:Name="LVDailyActivities"
+                             ItemsSource="{Binding LstDailyActivities}"
+                             HasUnevenRows="True" 
+                             ItemTemplate="{StaticResource FilteredTemplate}"
+                             ItemClickCommand="{Binding ShowDetail}" >
+      <ListViewCachingStrategy>RecycleElement</ListViewCachingStrategy>
+    </customControls:ListView>
+
+    <!--Buttons-->
+    <StackLayout Margin="20,10,20,10" HorizontalOptions="FillAndExpand" Orientation="Horizontal">
+      <Button Text="{x:Static resource:AppString.lblDailyActivitiesPreviousWorkday}" Command="{Binding YesterdayCommand}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryButtonS}"></Button>
+      <Button Text="{x:Static resource:AppString.lblDailyActivitiesCurrentWorkday}" Command="{Binding TodayCommand}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryFormButtonS}"></Button>
+    </StackLayout>
+  
+</StackLayout>
+
+</abstract:NavigatingPage>

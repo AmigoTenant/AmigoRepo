@@ -1,0 +1,16 @@
+<div class="page-header">
+    Module Maintenance
+</div>
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Modules <span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <st-module-search (counterEvent)="counterSearchEvent($event)" ></st-module-search>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

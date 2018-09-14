@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<navigation:NavigationContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"                          
+             xmlns:navigation="clr-namespace:XPO.ShuttleTracking.Mobile.Navigation;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.LoginView"
+             Title="{x:Static resource:AppString.titleLogin}">
+
+  <ScrollView>
+  <StackLayout Style="{StaticResource OuterStackLayout}">
+    <StackLayout Spacing="5" Padding="20" VerticalOptions="FillAndExpand">
+      <!--Logo-->
+      <Image Margin="20,20,20,40" Source="{x:Static resource:AppString.imgLoginTitle}"  HorizontalOptions="CenterAndExpand" VerticalOptions="Fill"/>
+
+      <!--Username & Password-->
+      <AbsoluteLayout HeightRequest="148">
+        <!--Username-->
+        <Label x:Name="lblUsername" Text="{x:Static resource:AppString.lblLoginUsername}" Style="{StaticResource GeneralPlaceholder}" Margin="10"
+                AbsoluteLayout.LayoutBounds="0,.25,1,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"/>
+        <customControls:CustomEntry x:Name="txtUsername" UppercaseOnly="False" VerticalOptions="Center" AutomationId="LoginEntryDriverId" Text="{Binding Username}" Style="{StaticResource GeneralEntryText}"
+                AbsoluteLayout.LayoutBounds="0,.25,1,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"/>
+
+        <!--Password-->
+        <!--<AbsoluteLayout AbsoluteLayout.LayoutBounds="0,1,1,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional">-->
+          <Label x:Name="lblPassword" Text="{x:Static resource:AppString.lblLoginPassword}" Style="{StaticResource GeneralPlaceholder}" Margin="10"
+                AbsoluteLayout.LayoutBounds="0,1,1,40" AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional"/>
+          <customControls:CustomEntry x:Name="txtPassword" UppercaseOnly="False" AutomationId="LoginEntryPassword" Text="{Binding Password}" IsPassword="{Binding IsPassword}" Style="{StaticResource GeneralEntryText}"
+                                      AbsoluteLayout.LayoutBounds="0, 1, 1, 40" AbsoluteLayout.LayoutFlags="PositionProportional, WidthProportional"/>
+          <Image Source="{Binding SourceEyeImg}" HorizontalOptions="Center" WidthRequest="30" Aspect="AspectFit"
+                 AbsoluteLayout.LayoutBounds="1,1,50,40" AbsoluteLayout.LayoutFlags="PositionProportional">
+            <Image.GestureRecognizers>
+              <TapGestureRecognizer Command="{Binding OnTapShowPassword}"/>
+            </Image.GestureRecognizers>
+          </Image>
+        <!--</AbsoluteLayout>-->
+      </AbsoluteLayout>
+
+      <StackLayout VerticalOptions="StartAndExpand" Padding="0,50,0,0">
+        <!--Language-->
+        <customControls:CustomSwitcher IsVisible="{Binding ShowLanguageSelect}" TextTabLeft="{x:Static resource:AppString.lblLoginEnglish}" TextTabRight="{x:Static resource:AppString.lblLoginSpanish}"></customControls:CustomSwitcher>
+        <!--Login Button-->
+        <Button AutomationId="LoginBtnLogin" Text="{x:Static resource:AppString.lblLogin}" Command="{Binding LoginCommand}" Style="{StaticResource PrimaryFormButtonM}"></Button>
+      </StackLayout>
+
+      <!--Information-->
+      <Label Text="{Binding AppVersion}" Style="{StaticResource FooterLabelText}" VerticalOptions="CenterAndExpand" HorizontalOptions="Center"></Label>
+    
+    </StackLayout>
+  </StackLayout>
+  </ScrollView>
+</navigation:NavigationContentPage>

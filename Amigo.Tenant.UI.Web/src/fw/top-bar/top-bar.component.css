@@ -1,0 +1,43 @@
+:host {
+    font-family: "Segoe UI", Calibri,Helvetica,Arial,sans-serif;
+    height: 28px; 
+    text-align: right; 
+    /*padding-top: 4px;*/
+    background: #258fc3;
+	padding: 4px 20px;
+	font-size: 11px;
+    color: white;
+}
+
+div {
+    display: inline;
+    margin-left: 34px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.top-image {
+    width: 18px;
+    height: 18px;
+    margin-left: 8px;
+    vertical-align: middle;
+}
+
+.flag-image {
+    width: 22px;
+    height: 16px;
+    vertical-align: middle;
+    /*margin-right: -16px;*/
+}
+
+span.i {
+    margin-left: 4px;
+    font-size: 11px;
+}
+
+.sign-out {
+    margin-left: 12px;
+    cursor: pointer;
+}

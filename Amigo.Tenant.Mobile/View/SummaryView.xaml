@@ -1,0 +1,216 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:behaviors="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Behaviors;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.SummaryView"
+             Title="{x:Static resource:AppString.titleSummary}">
+  <abstract:NavigatingPage.Resources>
+    <ResourceDictionary>
+      <converter:IntToBoolConverter x:Key="ShowPerMove" TrueValue="0" />
+      <converter:IntToBoolConverter x:Key="ShowPerHour" TrueValue="1" />
+      <Style x:Key="SummaryLabelGeneralData" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="FontAttributes" Value="None" />
+      </Style>
+
+      <Style x:Key="SummaryLabelDetail" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center"></Setter>
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="FontSize" Value="Small"/>
+        <Setter Property="HorizontalOptions" Value="Fill"></Setter>
+        <Setter Property="MinimumWidthRequest" Value="200"></Setter>
+      </Style>
+
+      <Style x:Key="SummaryLabelHeader" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorContrastText}" />
+        <Setter Property="VerticalOptions" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Center"></Setter>
+        <Setter Property="FontAttributes" Value="None" />
+        <Setter Property="FontSize" Value="Medium"/>
+      </Style>
+    </ResourceDictionary>
+  </abstract:NavigatingPage.Resources>
+
+  <abstract:NavigatingPage.Behaviors>
+    <behaviors:ToolbarOnPlatformBehavior>
+      <behaviors:ToolbarOnPlatformBehavior.Android>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnSummaryLegend}" Order="Secondary"
+                      Command="{Binding ShowLegendCommand}"/>
+      </behaviors:ToolbarOnPlatformBehavior.Android>
+      <behaviors:ToolbarOnPlatformBehavior.iOS>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarName}" Order="Primary"
+                      Icon="menu.png" Clicked="ShowActionSheet"/>
+      </behaviors:ToolbarOnPlatformBehavior.iOS>
+    </behaviors:ToolbarOnPlatformBehavior>
+  </abstract:NavigatingPage.Behaviors>
+
+  <abstract:NavigatingPage.Content>
+    <StackLayout Style="{StaticResource OuterStackLayout}">
+
+      <!--Header-->
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{Binding HeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+
+      <!--Body-->
+      <StackLayout Spacing="5" BackgroundColor="{StaticResource ColorControlBackground}" VerticalOptions="Fill">
+        <customControls:CustomTab x:Name="TabShip" VerticalOptions="FillAndExpand" SelectedItem="{Binding SelectedTab}" TextTabLeft="{x:Static resource:AppString.lblTagPerMove}" TextTabRight="{x:Static resource:AppString.lblTagPerHour}"></customControls:CustomTab>
+
+        <!--General Data-->
+        <Grid Margin="10,0" RowSpacing="5">
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource HeaderRow}" />
+            <RowDefinition Height="{StaticResource HeaderRow}" />
+            <RowDefinition Height="{StaticResource HeaderRow}" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Label Grid.Row="0" Grid.Column="0" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Medium"  Text="{x:Static resource:AppString.lblSummaryDriver}" />
+          <Label Grid.Row="0" Grid.Column="1" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Large"   Text="{Binding Driver}" Grid.ColumnSpan="3"/>
+          <Label Grid.Row="1" Grid.Column="0" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Medium"  Text="{x:Static resource:AppString.lblSummaryUnitNo}"/>
+          <Label Grid.Row="1" Grid.Column="1" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Large"   Text="{Binding UnitNo}" Grid.ColumnSpan="3" />
+          <Label Grid.Row="2" Grid.Column="0" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Medium"  Text="{x:Static resource:AppString.lblSummaryTotalHours}"/>
+          <Label Grid.Row="2" Grid.Column="1" VerticalOptions="Center" FontSize="Large" TextColor="Green"  Text="{Binding TotalHours}" />
+          <Label Grid.Row="2" Grid.Column="2" Style="{StaticResource SummaryLabelGeneralData}" FontSize="Medium" Text="{x:Static resource:AppString.lblSummaryTotalMoves}" IsVisible="{Binding ShowTotalMoves}"/>
+          <Label Grid.Row="2" Grid.Column="3" VerticalOptions="Center" FontSize="Large" TextColor="Orange" Text="{Binding TotalMoves}" IsVisible="{Binding ShowTotalMoves}"/>
+        </Grid>
+      </StackLayout>
+
+      <!--Content-->
+      <StackLayout Spacing="0" Margin="0" Padding="5,10,5,0" BackgroundColor="{StaticResource ColorControlBackground}">
+        <!--Header Per Move-->
+        <Grid ColumnSpacing="0" RowSpacing="3" BackgroundColor="{StaticResource ColorXpoRed}" IsVisible="{Binding SelectedTab,Converter={StaticResource ShowPerMove}}" >
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource HeaderRow}" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Label Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" HorizontalOptions="Start"  FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryChargeNo}"/>
+          <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryInplant}"/>
+          <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryOutplantBobtail}"/>
+          <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryRespot}"/>
+          <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryPrep}"/>
+          <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryYardCheck}"/>
+          <Label Grid.Row="0" Grid.Column="6" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryTrailer}"/>
+          <Label Grid.Row="0" Grid.Column="7" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryBobtail}"/>
+        </Grid>
+        
+        <!--Detail Per Move-->
+        <ScrollView IsVisible="{Binding SelectedTab,Converter={StaticResource ShowPerMove}}">
+          <customControls:ListView ItemsSource="{Binding SummaryPerMove}" HasUnevenRows="True">
+            <ListView.Header>
+              
+            </ListView.Header>
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <ViewCell>
+                  <StackLayout Padding="2">
+                    <Grid ColumnSpacing="0">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="{StaticResource HeaderRow}" />
+                      </Grid.RowDefinitions>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+
+                      <Label Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" Style="{StaticResource GeneralLabelTextN}" Text="{Binding Charge}"/>
+                      <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding InPlant}"/>
+                      <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding OutPlantBobTail}"/>
+                      <Label Grid.Row="0" Grid.Column="3" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Respot}"/>
+                      <Label Grid.Row="0" Grid.Column="4" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Prep}"/>
+                      <Label Grid.Row="0" Grid.Column="5" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Yardcheck}"/>
+                      <Label Grid.Row="0" Grid.Column="6" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Trailer}"/>
+                      <Label Grid.Row="0" Grid.Column="7" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Bobtail}"/>
+                    </Grid>
+                  </StackLayout>
+                </ViewCell>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </customControls:ListView>
+        </ScrollView>
+
+        <!--Header Per Hour-->
+        <Grid ColumnSpacing="0" RowSpacing="3" BackgroundColor="{StaticResource ColorXpoRed}" IsVisible="{Binding SelectedTab,Converter={StaticResource ShowPerHour}}" >
+          <Grid.RowDefinitions>
+            <RowDefinition Height="{StaticResource HeaderRow}" />
+          </Grid.RowDefinitions>
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+          </Grid.ColumnDefinitions>
+
+          <Label Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" HorizontalOptions="Start"  FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryChargeNo}"/>
+          <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryDetention}"/>
+          <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" Style="{StaticResource SummaryLabelHeader}" Text="{x:Static resource:AppString.lblSummaryOperateTaylorLift}"/>
+        </Grid>
+
+        <!--Detail Per Hour-->
+        <ScrollView x:Name="sclView" IsVisible="{Binding SelectedTab,Converter={StaticResource ShowPerHour}}">
+          <customControls:ListView x:Name="lstView" ItemsSource="{Binding SummaryPerHour}" HasUnevenRows="True">
+            <ListView.ItemTemplate>
+              <DataTemplate>
+                <ViewCell>
+                  <StackLayout Padding="2">
+                    <Grid ColumnSpacing="0">
+                      <Grid.RowDefinitions>
+                        <RowDefinition Height="{StaticResource HeaderRow}" />
+                      </Grid.RowDefinitions>
+                      <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="3*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                      </Grid.ColumnDefinitions>
+
+                      <Label Grid.Row="0" Grid.Column="0" Margin="5,0,0,0" HorizontalOptions="Start"  Style="{StaticResource SummaryLabelDetail}" Text="{Binding Charge}"/>
+                      <Label Grid.Row="0" Grid.Column="1" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Detention}"/>
+                      <Label Grid.Row="0" Grid.Column="2" HorizontalOptions="Center" Style="{StaticResource SummaryLabelDetail}" Text="{Binding Lift}"/>
+                    </Grid>
+                  </StackLayout>
+                </ViewCell>
+              </DataTemplate>
+            </ListView.ItemTemplate>
+          </customControls:ListView>
+        </ScrollView>
+      </StackLayout>
+
+      <!--Buttons-->
+      <StackLayout Padding="20,10,20,10" Margin="0" HorizontalOptions="FillAndExpand" Orientation="Horizontal" BackgroundColor="{StaticResource ColorControlBackground}">
+        <Button Text="{x:Static resource:AppString.lblDailyActivitiesPreviousWorkday}" Command="{Binding YesterdayCommand}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryButtonS}"></Button>
+        <Button Text="{x:Static resource:AppString.lblDailyActivitiesCurrentWorkday}" Command="{Binding TodayCommand}" HorizontalOptions="FillAndExpand" Style="{StaticResource PrimaryFormButtonS}"></Button>
+      </StackLayout>
+
+    </StackLayout>
+  </abstract:NavigatingPage.Content>
+</abstract:NavigatingPage>

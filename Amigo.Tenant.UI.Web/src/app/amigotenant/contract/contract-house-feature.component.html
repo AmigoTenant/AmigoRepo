@@ -1,0 +1,87 @@
+<div class="form-horizontal col-sm-12">
+    <fieldset class="scheduler-border col-sm-12">
+    <div class="sub-header">House Feature</div>
+        <div *ngFor="let o of _listHouseFeature">
+            <div class="form-group col-sm-12" >
+                <div class="col-sm-12" *ngIf="_isDisabled==true">
+
+                    <div class="row col-sm-12" *ngIf="o.isDisabled===true">
+                        <span class="col-sm-5">
+                            <span>{{o.description}}</span>
+                        </span>
+                        <span class="col-sm-3">
+                            <span>{{o.additionalAddressInfo}}</span>
+                        </span>
+                        <span class="col-sm-2">
+                            <span style="color:red"> RENTED!!!</span>
+                        </span>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" *ngIf="o.isDisabled===false && (o.marked===false || o.marked===null)">
+                        <span class="col-sm-5">
+                            <span>{{o.description}}</span>
+                        </span>
+                        <span class="col-sm-3">
+                            <span>{{o.additionalAddressInfo}}</span>
+                        </span>
+                        <span class="col-sm-2">
+                            <span style="color:blue"> FREE!!!</span>
+                        </span>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" *ngIf="o.isDisabled===false && o.marked===true">
+                        <span class="col-sm-5">
+                            <span>{{o.description}}</span>
+                        </span>
+                        <span class="col-sm-3">
+                            <span>{{o.additionalAddressInfo}}</span>
+                        </span>
+                        <span class="col-sm-2">
+                            <span style="color:green"> CHECKED!!!</span>
+                        </span>
+                        <div class="col-sm-2">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12" *ngIf="_isDisabled==false">
+
+                    <div class="row col-sm-12" *ngIf="o.isDisabled===true">
+                        <span class="col-sm-5">
+                            <span>{{o.description}}</span>
+                        </span>
+                        <span class="col-sm-3">
+                            <span>{{o.additionalAddressInfo}}</span>
+                        </span>
+                        <span class="col-sm-2">
+                            <span style="color:red"> RENTED!!!</span>
+                        </span>
+                        <div class="col-sm-2">
+                            <input type="checkbox" disabled id="chkHouseFeature{{o.houseFeatureId}}" [(ngModel)]="o.marked" (ngModelChange)="onChange(o)" name="chkHouseFeature{{o.houseFeatureId}}" class="ro-checkbox" />
+                            <label for="chkHouseFeature{{o.houseFeatureId}}"></label>
+                        </div>
+                    </div>
+                    <div class="row col-sm-12" *ngIf="o.isDisabled===false">
+                        <span class="col-sm-5">
+                            <span>{{o.description}}</span>
+                        </span>
+                        <span class="col-sm-3">
+                            <span>{{o.additionalAddressInfo}}</span>
+                        </span>
+                        <span class="col-sm-2">
+                            <span style="color:blue"> FREE!!!</span>
+                        </span>
+                        <div class="col-sm-2">
+                            <input type="checkbox" id="chkHouseFeature{{o.houseFeatureId}}" [(ngModel)]="o.marked" (ngModelChange)="onChange(o)" name="chkHouseFeature{{o.houseFeatureId}}" class="ro-checkbox" />
+                            <label for="chkHouseFeature{{o.houseFeatureId}}"></label>
+                        </div>
+                    </div>
+                    
+                </div>
+                
+            </div>
+        </div>
+    </fieldset>
+</div>
+

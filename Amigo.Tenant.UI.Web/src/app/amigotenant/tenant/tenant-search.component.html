@@ -1,0 +1,153 @@
+<div>
+    <form>
+        <div class="filter-bar form-horizontal">
+            <div class="row">
+                <div class="col-sm-10">
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="code">Code</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control"
+                                           [(ngModel)]="model.code" name="code" maxlength="20">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="statusId">Status</label>
+                                <div class="col-sm-6">
+                                    <select name="statusId" [(ngModel)]="model.statusId"
+                                            class="form-control input-control">
+                                        <option *ngFor="let status of activeInactiveStatus" [ngValue]="status.id">
+                                            {{status.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="statusId">Country</label>
+                                <div class="col-sm-6">
+                                    <select name="countryId" [(ngModel)]="model.countryId"
+                                            class="form-control input-control">
+                                        <option *ngFor="let country of countries" [ngValue]="country.id">
+                                            {{country.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="fullName">Name</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control" [(ngModel)]="model.fullName" name="fullName">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="phoneNumber">Phone</label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control"
+                                           [(ngModel)]="model.phoneNumber" name="phoneNumber">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4" for="typeId">Type</label>
+                                <div class="col-sm-6">
+                                    <select name="typeId" [(ngModel)]="model.typeId"
+                                            class="form-control input-control">
+                                        <option *ngFor="let type of tenantTypes" [ngValue]="type.typeId">
+                                            {{type.name}}
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-2">
+                    <div class="button-container">
+                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary">Search</button> <!-- st-authCheck [actionCode]="'Tenant.Search'" -->
+                    </div>
+                    <div class="button-container">
+                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-bar">
+            <div class="button-container">
+                <button type="button" class="ro-button btn-success" (click)="addItem()">Add Tenant</button> 
+                <!--<button type="button" class="ro-button btn-default" (click)="changeStatus()">Change Status</button>--> 
+            </div>
+        </div>
+    </form>
+
+    <div class="grid-container">
+        <kendo-grid [data]="tenantsDTOs" [selectable]="false"
+                    [pageSize]="model.pageSize"
+                    [skip]="currentPage"
+                    [style.height.%]="50" [style.width.%]="100"
+                    [pageable]="{
+          buttonCount: buttonCount,
+          info: info,
+          type: type,
+          pageSizes: pageSizes,
+          previousNext: previousNext
+        }"
+                   (pageChange)="pageChange($event)">
+            <kendo-grid-column field="code" title="Code"></kendo-grid-column>
+            <kendo-grid-column field="typeName" title="Type"></kendo-grid-column>
+            <kendo-grid-column field="fullName" title="Name"></kendo-grid-column>
+            <kendo-grid-column field="phoneN01" title="Phone"></kendo-grid-column>
+            <kendo-grid-column field="address" title="Address"></kendo-grid-column>
+            <kendo-grid-column field="countryName" title="Country"></kendo-grid-column>
+            <kendo-grid-column field="contactName" title="Contact Name"></kendo-grid-column>
+            <kendo-grid-column field="contactRelation" title="Contact Relation"></kendo-grid-column>
+            <kendo-grid-column field="contactPhone" title="Contact Phone"></kendo-grid-column>
+            <kendo-grid-column title="Status">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <span *ngIf="dataItem.rowStatus">Active</span>
+                    <span *ngIf="!dataItem.rowStatus">Inactive</span>
+                </ng-template>
+            </kendo-grid-column>
+            <kendo-grid-column>
+                <ng-template kendoGridCellTemplate let-dataItem>
+                    <div class="text-right">
+                        <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                            <!--st-authCheck [actionCode]="'Tenant.Update'">-->
+                            <i class="xico-action-edit"></i>
+                        </button>
+                        <button type="button" class="btn-icon" (click)="deleteItem(dataItem);">
+                            <!--st-authCheck [actionCode]="'Tenant.Delete'">-->
+                            <i class="xico-action-remove"></i>
+                        </button>
+                        <button type="button" class="btn-icon" (click)="sendNotification(dataItem);">
+                            <i class="xico-action-mail"></i>
+                        </button>
+                    </div>
+                </ng-template>
+            </kendo-grid-column>
+        </kendo-grid>
+    </div>
+</div>
+
+<kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
+    <div>{{deleteMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesDeleteItem()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

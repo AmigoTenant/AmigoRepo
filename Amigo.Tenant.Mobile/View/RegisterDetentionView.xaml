@@ -1,0 +1,258 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XPO.ShuttleTracking.Mobile.View.RegisterDetentionView"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:behaviors="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Behaviors;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:effects="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Effects;assembly=XPO.ShuttleTracking.Mobile">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:StringToBoolConverter x:Key="Str2Bool" />
+            <converter:IntToBoolConverter x:Key="Int2Bool" />
+            <converter:IntToBoolConverter x:Key="Int2Bool2" TrueValue="1" />
+            <converter:RequiredToBoolConverter x:Key="Req2Bool" />
+            <converter:AddEditStringConverter x:Key="AddOrEdit" AddOption="{x:Static resource:AppString.lblAddComment}" EditOption="{x:Static resource:AppString.lblEditComment}"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.Behaviors>
+        <behaviors:ToolbarOnPlatformBehavior>
+            <behaviors:ToolbarOnPlatformBehavior.Android>
+                <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarSettings}" Order="Secondary"
+                      Command="{Binding SettingsCommand}"/>
+                <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarTos}"      Order="Secondary"
+                      Command="{Binding TosCommand}"/>
+                <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarHome}"   Order="Secondary"
+                      Command="{Binding HomeCommand}"/>
+                <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarSearchCharge}"   Order="Secondary"
+                      Command="{Binding SearchChargeNumberCommand}"/>
+            </behaviors:ToolbarOnPlatformBehavior.Android>
+            <behaviors:ToolbarOnPlatformBehavior.iOS>
+                <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarName}" Order="Primary"
+                      Icon="menu.png" Clicked="ShowActionSheet"/>
+            </behaviors:ToolbarOnPlatformBehavior.iOS>
+        </behaviors:ToolbarOnPlatformBehavior>
+    </ContentPage.Behaviors>
+
+    <ContentPage.Content>
+        <StackLayout Style="{StaticResource OuterStackLayout}">
+            <!--Header-->
+            <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+                <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+                    <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+                    <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+                </StackLayout>
+            </StackLayout>
+
+            <!--Scrollable content-->
+            <ScrollView x:Name="sclView">
+                <StackLayout Spacing="10" BackgroundColor="{StaticResource ColorBackground}">
+                    <!--Tab-->
+                    <customControls:CustomTab x:Name="TabShip" SelectedItem="{Binding SelectedTab}" TextTabLeft="By Shipment Id" TextTabRight="By Cost Center"></customControls:CustomTab>
+                    <!--Detail-->
+                    <StackLayout BackgroundColor="{StaticResource ColorSubtitleBackground}">
+                        <!--Menu Header: General -->
+                        <Label Text="{x:Static resource:AppString.lblDetails}" Margin="20,0,20,0" Style="{StaticResource GeneralSubtitleText}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="{StaticResource EntrySizeS}" VerticalTextAlignment="Center"/>
+                        <StackLayout Padding="20" BackgroundColor="{StaticResource ColorControlBackground}">
+                            <!--Shipment Id / Cost Center-->
+                            <StackLayout>
+                                <Label Text="{x:Static resource:AppString.lblRegMoveChargeNo}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+                                <customControls:CustomEntry x:Name="TxtShipmentId" Placeholder="{x:Static resource:AppString.lblShipmentId}" AutomationId="TxtShipmentId" IsVisible="{Binding SelectedTab,Converter={StaticResource Int2Bool}}" Text="{Binding GeneralDetention.ShipmentID}" Style="{StaticResource GeneralEntryText}"></customControls:CustomEntry>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="{Binding SelectedTab,Converter={StaticResource Int2Bool2}}">
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoSearchCostCenter}" />
+                                    </StackLayout.GestureRecognizers>
+                                    <Label x:Name="TxtCostCenter" AutomationId="TxtCostCenter" Text="{Binding GeneralDetention.CostCenterName, Mode=TwoWay}" FontSize="Medium" TextColor="{StaticResource ColorBodyText}" HorizontalOptions="FillAndExpand">
+                                        <Label.Effects>
+                                            <effects:LabelBorderEffect/>
+                                        </Label.Effects>
+                                    </Label>
+                                    <Image Source="search.png" HeightRequest="25" WidthRequest="25"/>
+                                </StackLayout>
+                                <Label Text="{Binding LblCostCenter}" x:Name="LblCostCenter" IsVisible="{Binding LblCostCenter,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+                                <Label Text="{Binding LblShipmentId}" x:Name="LblShipmentId" IsVisible="{Binding LblShipmentId,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+                            </StackLayout>
+
+                            <!--Service Type  LblServiceTypeT  PkrMoveType-->
+                            <!--
+              <Label Text="{x:Static resource:AppString.lblServiceType}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+              <customControls:BindablePicker x:Name="PkrMoveType" Title="{x:Static resource:AppString.lblServiceType}" AutomationId="PkrMoveType" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=LstService}" DisplayMemberPath="Name" SelectedValuePath="ServiceId" SelectedValue="{Binding Path=selService, Mode=TwoWay}" >
+                <customControls:BindablePicker.Effects>
+                  <effects:PickerBorderEffect/>
+                </customControls:BindablePicker.Effects>
+              </customControls:BindablePicker>
+              <Label Text="{Binding LblMoveType}" x:Name="LblMoveType"  IsVisible="{Binding LblMoveType,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>-->
+
+                            <!--From Block-->
+                            <Label Text="{x:Static resource:AppString.lblBlock}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding BlockRequired,Converter={StaticResource Req2Bool}}"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="{Binding BlockRequired,Converter={StaticResource Req2Bool}}">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoFromBlock}" />
+                                </StackLayout.GestureRecognizers>
+                                <Label x:Name="TxtFromBlock" AutomationId="TxtFromBlock" Text="{Binding GeneralDetention.StartName}" FontSize="Medium" TextColor="{StaticResource ColorBodyText}" HorizontalOptions="FillAndExpand">
+                                    <Label.Effects>
+                                        <effects:LabelBorderEffect/>
+                                    </Label.Effects>
+                                </Label>
+                                <Image Source="{Binding FromBlockSeachImage}" HeightRequest="25" WidthRequest="25" AutomationId="imgFromBlock">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding GoFromBlock}"/>
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <Label Text="{Binding LblFromBlock}" x:Name="LblFromBlock"  IsVisible="{Binding LblFromBlock,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Dispatching-->
+                            <Label Text="{x:Static resource:AppString.lblDispatching}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+                            <customControls:BindablePicker x:Name="PkrToDispatching" Title="{x:Static resource:AppString.lblDispatching}" AutomationId="PkrToDispatching" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=LstDispatcher}" DisplayMemberPath="Name" SelectedValuePath="DispatchingPartyId" SelectedValue="{Binding Path=selDispatcher, Mode=TwoWay}">
+                                <customControls:BindablePicker.Effects>
+                                    <effects:PickerBorderEffect/>
+                                </customControls:BindablePicker.Effects>
+                            </customControls:BindablePicker>
+                            <Label Text="{Binding LblToDispatching}" x:Name="LblToDispatching"  IsVisible="{Binding LblToDispatching,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Has a H34-->
+                            <StackLayout Orientation="Horizontal" Margin ="0,10,0,10">
+                                <Label Text="{x:Static resource:AppString.lblH34}" Margin="0,10,0,0" HorizontalOptions="FillAndExpand" Style="{StaticResource GeneralLabelText} "/>
+                                <Switch x:Name="PkrH34" AutomationId="PkrH34" IsToggled="{Binding GeneralDetention.HasH34}" />
+                                <Label Text="{Binding Lbl34}" x:Name="Lbl34"  IsVisible="{Binding Lbl34,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+                            </StackLayout>
+
+                            <!--Product-->
+                            <Label Text="{x:Static resource:AppString.lblProduct}" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding ProductRequired,Converter={StaticResource Req2Bool}}"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" IsVisible="{Binding ProductRequired,Converter={StaticResource Req2Bool}}">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding GoToSearchProduct}" />
+                                </StackLayout.GestureRecognizers>
+                                <Label x:Name="TxtProduct" AutomationId="TxtProduct" Text="{Binding GeneralDetention.ProductDescription}" FontSize="Medium" TextColor="{StaticResource ColorBodyText}" HorizontalOptions="FillAndExpand">
+                                    <Label.Effects>
+                                        <effects:LabelBorderEffect/>
+                                    </Label.Effects>
+                                </Label>
+                                <Image Source="{Binding ProductSeachImage}" HeightRequest="25" WidthRequest="25"/>
+                            </StackLayout>
+                            <Label Text="{Binding LblProduct}" x:Name="LblProduct"  IsVisible="{Binding LblProduct,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Comments-->
+                            <Label Text="{x:Static resource:AppString.lblDriverComments}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+                            <StackLayout HorizontalOptions="FillAndExpand">
+                                <StackLayout.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CommentsCommand}"></TapGestureRecognizer>
+                                </StackLayout.GestureRecognizers>
+                                <Label Text="{Binding GeneralDetention.DriverComments, Mode=TwoWay}" FontSize="Medium" TextColor="{StaticResource ColorBodyText}" HorizontalOptions="FillAndExpand">
+                                    <Label.Effects>
+                                        <effects:LabelBorderEffect/>
+                                    </Label.Effects>
+                                </Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <!--Equipment-->
+                    <StackLayout BackgroundColor="{StaticResource ColorSubtitleBackground}">
+                        <!--Menu Header: Equipment -->
+                        <Label Text="{x:Static resource:AppString.lblEquipment}" Margin="20,0,20,0" Style="{StaticResource GeneralSubtitleText}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="{StaticResource EntrySizeS}" VerticalTextAlignment="Center" IsVisible="{Binding EquipmentSectionRequired,Converter={StaticResource Req2Bool}}"/>
+                        <StackLayout Orientation="Vertical" Padding="20"  BackgroundColor="{StaticResource ColorControlBackground}">
+                            <!--Type-->
+                            <StackLayout Orientation="Horizontal" IsVisible="{Binding EquipmentRequired,Converter={StaticResource Req2Bool}}">
+                                <Label Text="{x:Static resource:AppString.lblType}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"/>
+                                <Label Text="{x:Static resource:AppString.lblClear}" FontSize="Medium" TextColor="{StaticResource ColorTextLink}"  FontAttributes="Bold" >
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ClearEquipmentCommand}"></TapGestureRecognizer>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </StackLayout>
+                            <customControls:BindablePicker x:Name="PkrEquipmentType" Title="{x:Static resource:AppString.lblType}" AutomationId="PkrEquipmentType" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=LstEquipmentType}" DisplayMemberPath="Name" SelectedValuePath="EquipmentTypeId" SelectedValue="{Binding Path=selEquipmentType, Mode=TwoWay}" IsVisible="{Binding EquipmentRequired,Converter={StaticResource Req2Bool}}">
+                                <customControls:BindablePicker.Effects>
+                                    <effects:PickerBorderEffect/>
+                                </customControls:BindablePicker.Effects>
+                            </customControls:BindablePicker>
+                            <Entry x:Name="txtIdEqType" Text="{Binding TxtIdEqType}" IsVisible="False"></Entry>
+                            <Label Text="{Binding LblEquipmentType}" x:Name="LblEquipmentType"  IsVisible="{Binding LblEquipmentType,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Size-->
+                            <Label Text="{x:Static resource:AppString.lblSize}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding EquipmentRequired,Converter={StaticResource Req2Bool}}"/>
+                            <customControls:BindablePicker x:Name="PkrEquipmentSize" AutomationId="PkrEquipmentSize"  HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=LstEquipmentSize}" DisplayMemberPath="Name" SelectedValuePath="EquipmentSizeId" SelectedValue="{Binding Path=selEquipmentSize, Mode=TwoWay}" IsVisible="{Binding EquipmentRequired,Converter={StaticResource Req2Bool}}">
+                                <customControls:BindablePicker.Effects>
+                                    <effects:PickerBorderEffect/>
+                                </customControls:BindablePicker.Effects>
+                            </customControls:BindablePicker>
+                            <Entry x:Name="txtIdEqSize" Text="{Binding TxtIdEqSize}" IsVisible="False"></Entry>
+                            <Label Text="{Binding LblEquipmentSize}" x:Name="LblEquipmentSize"  IsVisible="{Binding LblEquipmentSize,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Number-->
+                            <Label Text="{x:Static resource:AppString.lblNumber}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding EquipmentNumberRequired,Converter={StaticResource Req2Bool}}"/>
+                            <StackLayout Orientation="Horizontal" IsVisible="{Binding EquipmentNumberRequired,Converter={StaticResource Req2Bool}}">
+                                <customControls:CustomEntry x:Name="PkrEquipmentNo" MaxLength="11" AutomationId="PkrEquipmentNo" Text="{Binding GeneralDetention.EquipmentNumber}" Style="{StaticResource GeneralEntryText}"></customControls:CustomEntry>
+                                <Image Source="inspection.png" HeightRequest="30" WidthRequest="30" AutomationId="ImgGetEquipment">
+                                    <Image.GestureRecognizers>
+                                        <TapGestureRecognizer Command ="{Binding GetEquipment}" />
+                                    </Image.GestureRecognizers>
+                                </Image>
+                            </StackLayout>
+                            <Label Text="{Binding LblEquipmentNo}" x:Name="LblEquipmentNo" IsVisible="{Binding LblEquipmentNo,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--Status-->
+                            <Label Text="{x:Static resource:AppString.lblStatus}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding StatusRequired,Converter={StaticResource Req2Bool}}"/>
+                            <customControls:BindablePicker  x:Name="PkrEquipmentStatus" Title="{x:Static resource:AppString.lblStatus}" AutomationId="PkrEquipmentStatus" HorizontalOptions="FillAndExpand" ItemsSource="{Binding Path=LstEquipmentStatus}" DisplayMemberPath="Name" SelectedValuePath="EquipmentStatusId" SelectedValue="{Binding Path=selEquipmentStatus, Mode=TwoWay}" IsVisible="{Binding StatusRequired,Converter={StaticResource Req2Bool}}">
+                                <customControls:BindablePicker.Effects>
+                                    <effects:PickerBorderEffect/>
+                                </customControls:BindablePicker.Effects>
+                            </customControls:BindablePicker>
+                            <Label Text="{Binding LblEquipmentStatus}" x:Name="LblEquipmentStatus" IsVisible="{Binding LblEquipmentStatus,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+                            <!--25 yr-->
+                            <StackLayout x:Name="stk25Yr" Padding="0">
+                                <Label Text="{x:Static resource:AppString.lbl25yrTest}"  Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+                                <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" x:Name="StackLayoutDtDp25yrTestDate">
+                                    <DatePicker x:Name="DtDp25yrTestDate" AutomationId="Dp25yrTestDate" IsVisible="False" HorizontalOptions="FillAndExpand" Format="dd/MM/yyyy"></DatePicker>
+                                    <customControls:FormattedDateEntry x:Name="TxtDp25yrTestDate" Text="{Binding TxtDp25yrTestDate}" AutomationId="txtDp25yrTestDate" Placeholder="MM/DD/YYYY" Style="{StaticResource GeneralEntryText}" Keyboard="Numeric"></customControls:FormattedDateEntry>
+                                    <Image x:Name="ImgDp25yrTestDate" Source="calendar.png" HeightRequest="25" WidthRequest="25"/>
+                                </StackLayout>
+                                <Label Text="{Binding LblDp25yrTestDate}" x:Name="LblDp25yrTestDate"  IsVisible="{Binding LblDp25yrTestDate,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+                            </StackLayout>
+
+                            <!--5 yr-->
+                            <StackLayout x:Name="stk5yr" Padding="0">
+                                <Label Text="{x:Static resource:AppString.lbl5yrTest}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}"/>
+                                <StackLayout Orientation="Horizontal" x:Name="StackLayoutDtDp5yrTestDate" HorizontalOptions="FillAndExpand">
+                                    <DatePicker x:Name="DtDp5yrTestDate" AutomationId="Dp5yrTestDate" IsVisible="False" HorizontalOptions="FillAndExpand" Format="dd/MM/yyyy"></DatePicker>
+                                    <customControls:FormattedDateEntry x:Name="TxtDp5yrTestDate" Text="{Binding TxtDp5yrTestDate}" AutomationId="TxtDp5yrTestDate" Placeholder="MM/DD/YYYY" Style="{StaticResource GeneralEntryText}" Keyboard="Numeric"></customControls:FormattedDateEntry>
+                                    <Image x:Name="ImgDp5yrTestDate" Source="calendar.png" HeightRequest="25" WidthRequest="25"/>
+                                </StackLayout>
+                                <Label Text="{Binding LblDp5yrTestDate}" x:Name="LblDp5yrTestDate" IsVisible="{Binding LblDp5yrTestDate,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+                            </StackLayout>
+
+                            <!--Chasis-->
+                            <Label Text="{x:Static resource:AppString.lblChassis}" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding ChassisRequired,Converter={StaticResource Req2Bool}}"/>
+                            <customControls:CustomEntry x:Name="PkrChassisNo" MaxLength="11" AutomationId="PkrChassisNo" Text="{Binding GeneralDetention.ChassisNumber}" Style="{StaticResource GeneralEntryText}" IsVisible="{Binding ChassisRequired,Converter={StaticResource Req2Bool}}"></customControls:CustomEntry>
+                            <Label Text="{Binding LblChassisNo}"  x:Name="LblChassisNo" IsVisible="{Binding LblChassisNo,Converter={StaticResource Str2Bool}}" Style="{StaticResource GeneralErrorText}"/>
+
+
+                            <!--Next Button-->
+                            <Button x:Name="btnNext" Text="{x:Static resource:AppString.lblNext}" Margin="0,20,0,0" AutomationId="RegisterMoveBtnRegister" Command="{Binding GoStartDetention}" Style="{StaticResource PrimaryButtonS}"></Button>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <!--Other-->
+                    <!--<StackLayout BackgroundColor="{StaticResource ColorSubtitleBackground}">
+            -->
+                    <!--Menu Header: Other -->
+                    <!--
+            <Label Text="{x:Static resource:AppString.lblRegMoveOther}" Margin="20,0,20,0" Style="{StaticResource GeneralSubtitleText}" HorizontalOptions="FillAndExpand" VerticalOptions="Center" HeightRequest="{StaticResource EntrySizeS}" VerticalTextAlignment="Center"/>
+            <StackLayout Orientation="Vertical" Padding="20" BackgroundColor="{StaticResource ColorControlBackground}">
+              
+
+              -->
+                    <!--Button-->
+                    <!--
+              <Button x:Name="btnNext" Text="{x:Static resource:AppString.lblNext}" Margin="0,20,0,0" AutomationId="RegisterMoveBtnRegister" Command="{Binding GoStartAdditionalService}" Style="{StaticResource PrimaryButtonS}"></Button>
+            </StackLayout>
+          </StackLayout>-->
+                </StackLayout>
+            </ScrollView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

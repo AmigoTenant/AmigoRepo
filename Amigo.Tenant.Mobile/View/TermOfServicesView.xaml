@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.TermOfServicesView"
+             Title="{x:Static resource:AppString.titleTos}">
+  <StackLayout Orientation="Vertical">
+    <StackLayout.Padding>
+      <OnPlatform x:TypeArguments="Thickness" iOS="5,20,5,5" Android="5"/>
+    </StackLayout.Padding>
+    <StackLayout VerticalOptions="Fill">
+      <ScrollView>
+        <StackLayout Spacing="15">
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm01}" Style="{StaticResource TOSLabelSubtitle}" HorizontalTextAlignment="Center"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm02}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm03}" Style="{StaticResource TOSLabelSubtitle}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm04}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm05}" Style="{StaticResource TOSLabelSubtitle}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm06}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm07}" Style="{StaticResource TOSLabelSubtitle}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm08}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm09}" Style="{StaticResource TOSLabelSubtitle}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm10}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm11}" Style="{StaticResource TOSLabelSubtitle}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm12}" Style="{StaticResource TOSLabelText}"></Label>
+                    <Label Text="{x:Static resource:AppString.lblTosConfirm13}" Style="{StaticResource TOSLabelText}"></Label>
+        </StackLayout>
+      </ScrollView>
+    </StackLayout>
+  </StackLayout>
+</ContentPage>

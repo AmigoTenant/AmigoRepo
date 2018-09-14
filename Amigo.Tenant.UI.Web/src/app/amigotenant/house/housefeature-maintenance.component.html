@@ -1,0 +1,63 @@
+<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} Feature" 
+    (close)="close()" style="z-index:10003;" id="houseMaintenancePanel">
+
+    <div style="width:800px;height:1px;">&nbsp;</div>
+    <div class="form-horizontal">
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" 
+            [errorMessages]='errorMessages'></biz-val>
+
+        <form #houseForm="ngForm" data-val-form="houseForm" novalidate>
+            <div class="form-group">
+                <label for="featureId" class="col-sm-2 control-label" style="padding-right:7px;">Feature</label>
+                <div class="col-sm-8">
+                    <select name="featureId" [(ngModel)]="housefeature.featureId" 
+                            class="form-control input-control" #featureId="ngModel" (ngModelChange)="onFeatureChange()">
+                        <option *ngFor="let f of features" [ngValue]="f.featureId">{{f.code + ' - ' + f.description}}</option>
+                    </select>  
+                    <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.featureError">Feature is required</label>
+                    <input type="hidden" [(ngModel)]="housefeature.featureId" name="featureId" />  
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="addressInfo" class="col-sm-2 control-label">Address</label>
+                <div class="col-sm-8">
+                    <input type="text" class="form-control" [(ngModel)]="housefeature.addressInfo" name="addressInfo" maxlength="100" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="houseFeatureStatusId" class="col-sm-2 control-label">Status</label>
+                <div class="col-sm-2">
+                    <select name="houseFeatureStatusId" [(ngModel)]="housefeature.houseFeatureStatusId" 
+                            class="form-control input-control" #houseFeatureStatusId="ngModel" (ngModelChange)="onStatusChange()">
+                        <option *ngFor="let s of houseStatuses" [ngValue]="s.entityStatusId">{{s.name}}</option>
+                    </select> 
+                    <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.statusError">Status is required</label>
+                    <input type="hidden" [(ngModel)]="housefeature.houseFeatureStatusId" name="houseFeatureStatusId" />  
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Rentable</label>
+                <div class="col-sm-8">
+                    <input id="chk-rowStatus" type="checkbox" class="ro-checkbox" [(ngModel)]="housefeature.isRentable" name="isRentable">
+                    <label for="chk-rowStatus"></label>
+                </div>
+            </div>
+            
+
+            <div class="form-group">
+                <label for="rentPrice" class="col-sm-2 control-label">Rent</label>
+                <div class="col-sm-2">
+                    <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                    class="form-control" [(ngModel)]="housefeature.rentPrice" name="rentPrice" maxlength="100" (ngModelChange)="onRentChange()" />
+                    <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.rentError">Rent is required</label>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="k-window-buttons">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="houseForm.form.valid" [formName]="'houseForm'"></st-boton-maintenance>
+    </div>
+
+</kendo-dialog>

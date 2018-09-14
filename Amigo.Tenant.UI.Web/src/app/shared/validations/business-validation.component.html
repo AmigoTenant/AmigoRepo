@@ -1,0 +1,9 @@
+﻿<div>
+    <div *ngIf='messages && messages.length' [ngClass]="!successFlag ? 'error show-group' : 'success show-group'" class="notification-group hide-group">
+        <ul>
+            <li *ngFor="let item of messages">
+                <span>{{item.message}}</span>
+            </li>
+        </ul>
+    </div>
+</div>

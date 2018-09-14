@@ -1,0 +1,19 @@
+<!-- <button *ngIf="!menuService.showingLeftSideMenu"
+    class="btn btn-sm"
+    [ngClass]="{'horizontal': !menuService.isVertical }"
+    (click)="menuService.toggleMenuOrientation()">
+<span *ngIf="menuService.isVertical" class="fa fa-chevron-up"></span>
+<span *ngIf="!menuService.isVertical" class="fa fa-bars"></span>
+</button> -->
+
+<nav>
+  <ul>
+    <li *ngFor="let item of menuService.items">
+      <fw-menu-item [item]="item"
+                    [ngClass]="{'vertical-menu': menuService.isVertical }"
+                    [parentIsPopup]="false">
+      </fw-menu-item>
+    </li>
+  </ul>
+</nav>
+

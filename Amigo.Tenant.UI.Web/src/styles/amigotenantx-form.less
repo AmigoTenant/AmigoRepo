@@ -1,0 +1,83 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+@import "amigotenantx-mixins.less";
+// Forms
+
+.form-group {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+select.form-control {
+    height: 30px !important;
+    min-width: 100px;
+    padding-left: 5px;
+}
+
+.control-label {
+    color: @text-color-secondary;
+    display: inline-flex;
+    font-weight: 500;
+
+    &.timer-label {
+        margin-top: 28px !important;
+    }
+}
+
+.form-control {
+    border-radius: 1px;
+    font-size: @font-size-base;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 7px;
+
+    &:focus {
+        border-color: @accent-color;
+    }
+
+    + .dropdown-menu .dropdown-item {
+        font-size: 12px;
+    }
+}
+
+.form-control-helptext {
+    color: @text-color-secondary;
+    display: flex;
+    padding-top: 3px;
+}
+
+.col-form-label {
+    font-weight: 500;
+}
+
+.inline-form-control {
+    display: inline-block;
+    padding-left: ((@grid-gutter-width / 2));
+    padding-right: ((@grid-gutter-width / 2));
+}
+
+.form-horizontal {
+    font-size: @font-size-base;
+    color: @text-color;
+    width: @FullWidth;
+
+    @media (min-width: @screen-sm-min) {
+        .control-label {
+            justify-content: flex-end;
+            margin-top: 7px;
+            padding-left: 10px;
+            padding-right: 10px;
+            text-align: right;
+        }
+
+        .form-control-stactic {
+            .control-label();
+            text-align: left;
+        }
+    }
+}
+
+textarea {
+    padding: 7px;
+    width: 100%;
+}

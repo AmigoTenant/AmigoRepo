@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C814E1EB-BA3D-4980-BF0B-C94C0978C0F8}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.Infrastructure.Persistence.NPoco</RootNamespace>
+    <AssemblyName>Amigo.Tenant.Infrastructure.Persistence.NPoco</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="ExpressMapper, Version=1.9.1.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.9.1\lib\net46\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NPoco, Version=3.4.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPoco.3.4.4\lib\net45\NPoco.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\NPocoDataAccess.cs" />
+    <Compile Include="Abstract\NPocoDatabaseFactory.cs" />
+    <Compile Include="Mapping\ActivityEventLogMapping.cs" />
+    <Compile Include="Mapping\AppVersionMapping.cs" />
+    <Compile Include="Mapping\ExpenseDetailRegisterMapping.cs" />
+    <Compile Include="Mapping\ExpenseDetailSearchMapping.cs" />
+    <Compile Include="Mapping\ExpenseSearchMapping.cs" />
+    <Compile Include="Mapping\ContractHouseDetailMapping.cs" />
+    <Compile Include="Mapping\CountryMapping.cs" />
+    <Compile Include="Mapping\EntityStatusMapping.cs" />
+    <Compile Include="Mapping\FeatureMapping.cs" />
+    <Compile Include="Mapping\HouseFeatureDetailContractMapping.cs" />
+    <Compile Include="Mapping\HouseFeatureMapping.cs" />
+    <Compile Include="Mapping\HouseMapping.cs" />
+    <Compile Include="Mapping\HouseServiceMapping.cs" />
+    <Compile Include="Mapping\HouseStatusMapping.cs" />
+    <Compile Include="Mapping\HouseTypeMapping.cs" />
+    <Compile Include="Mapping\MainTenantBasicMapping.cs" />
+    <Compile Include="Mapping\OtherTenantMapping.cs" />
+    <Compile Include="Mapping\ContractMapping.cs" />
+    <Compile Include="Mapping\PaymentPeriodByContractMapping.cs" />
+    <Compile Include="Mapping\PaymentPeriodPrintMapping.cs" />
+    <Compile Include="Mapping\PaymentPeriodMapping.cs" />
+    <Compile Include="Mapping\ExpenseRegisterMapping.cs" />
+    <Compile Include="Mapping\RentalApplicationRegisterMapping.cs" />
+    <Compile Include="Mapping\RequestLogMapping.cs" />
+    <Compile Include="Mapping\RentalApplicationMapping.cs" />
+    <Compile Include="Mapping\ServiceHouseMapping.cs" />
+    <Compile Include="Mapping\ServiceHousePeriodMapping.cs" />
+    <Compile Include="Mapping\ServiceReportMapping.cs" />
+    <Compile Include="Mapping\DispatchingPartyMapping.cs" />
+    <Compile Include="Mapping\DeviceMapping.cs" />
+    <Compile Include="Mapping\EquipmentMapping.cs" />
+    <Compile Include="Mapping\ActionMapping.cs" />
+    <Compile Include="Mapping\ActivityTypeMapping.cs" />
+    <Compile Include="Mapping\Last24HoursMapping.cs" />
+    <Compile Include="Mapping\LocationType.cs" />
+    <Compile Include="Mapping\MainMenuMapping.cs" />
+    <Compile Include="Mapping\LatestPositionMapping.cs" />
+    <Compile Include="Mapping\ModelMapping.cs" />
+    <Compile Include="Mapping\OSVersionMapping.cs" />
+    <Compile Include="Mapping\PermissionMapping.cs" />
+    <Compile Include="Mapping\RoleMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantParameterMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTEventLogSearchResultMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTRoleBasicMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTRoleMapping.cs" />
+    <Compile Include="Mapping\LocationCoordinateMapping.cs" />
+    <Compile Include="Mapping\ModuleMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTServiceApproveRateMapping.cs" />
+    <Compile Include="Mapping\DriverPayReportMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTServiceLatestMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTServiceMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTServiceReportMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTUserBasicMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTEventLogPerHourMapping.cs" />
+    <Compile Include="Mapping\RateMapping.cs" />
+    <Compile Include="Mapping\ContractSearchMapping.cs" />
+    <Compile Include="Mapping\PeriodMapping.cs" />
+    <Compile Include="Mapping\ConceptMapping.cs" />
+    <Compile Include="Mapping\GeneralTableMapping.cs" />
+    <Compile Include="Mapping\HouseFeatureAndDetailMapping.cs" />
+    <Compile Include="Mapping\MainTenantMapping.cs" />
+    <Compile Include="Mapping\HouseBasicMapping.cs" />
+    <Compile Include="Mapping\UserAuthorizationMapping.cs" />
+    <Compile Include="Mapping\AmigoTenantTUserMapping.cs" />
+    <Compile Include="Mapping\LocationMapping.cs" />
+    <Compile Include="Mapping\EquipmentStatusMapping.cs" />
+    <Compile Include="Mapping\EquipmentSizeMapping.cs" />
+    <Compile Include="Mapping\EquipmentTypeMapping.cs" />
+    <Compile Include="Mapping\CostCenterMapping.cs" />
+    <Compile Include="Mapping\ServiceTypeMapping.cs" />
+    <Compile Include="Mapping\ServiceMapping.cs" />
+    <Compile Include="Mapping\ProductsMapping.cs" />
+    <Compile Include="Mapping\CityMapping.cs" />
+    <Compile Include="Mapping\ParentLocationMapping.cs" />
+    <Compile Include="Mapping\UtilityHouseServicePeriodMapping.cs" />
+    <Compile Include="NPocoRequestLogRepository.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
+      <Project>{e24205a2-8839-4ad1-aa3a-1f5cb0a5b586}</Project>
+      <Name>Amigo.Tenant.Application.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.CommandModel\Amigo.Tenant.CommandModel.csproj">
+      <Project>{897d8378-f63c-42aa-9c77-ed7a21256f00}</Project>
+      <Name>Amigo.Tenant.CommandModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Infrastructure.Persistence\Amigo.Tenant.Infrastructure.Persistence.csproj">
+      <Project>{42F7694D-E786-4B7B-AC78-3A6C1A21FD43}</Project>
+      <Name>Amigo.Tenant.Infrastructure.Persistence</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,86 @@
+<div class="filter-bar form-horizontal">
+    <div class="row">
+        <div class="col-lg-10 col-md-10 col-sm-9">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">User Id</label>
+                        <label class="col-sm-6">
+                            <input st-autofocus class="form-control" type="text" [(ngModel)]="user.userName" name="userName">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">First Name</label>
+                        <label class="col-sm-6">
+                            <input class="form-control" type="text" [(ngModel)]="user.firstName" name="firstName">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Last Name</label>
+                        <label class="col-sm-6">
+                            <input class="form-control" type="text" [(ngModel)]="user.lastName" name="lastName">
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Role</label>
+                        <label class="col-sm-6">
+                            <select class="form-control" [(ngModel)]="user.amigoTenantTRoleId" name="role">
+                                <option *ngFor="let role of roleList" [value]="role.amigoTenantTRoleId">{{role.name}}</option>
+                            </select>
+
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="from">Paid By</label>
+                        <label class="col-sm-6">
+                            <select class="form-control" [(ngModel)]="user.payBy" name="paidby">
+                                <option *ngFor="let paidBy of paidByList" [value]="paidBy.code">{{paidBy.name}}</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="chargeNoType">Type</label>
+                        <label class="col-sm-6">
+                            <select class="form-control" [(ngModel)]="user.userType" name="type">
+                                <option *ngFor="let type of typeList" [value]="type.code">{{type.name}}</option>
+                            </select>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="from">Location</label>
+                        <label class="col-sm-6">
+                            <!--<ngbd-typeahead-locationnew (modelOutput)="geLocation($event)" [currentLocation]="currentOriginLocation"></ngbd-typeahead-locationnew>-->
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-2 col-md-2 col-sm-3 text-right">
+            <div class="button-container">
+                <button type="button" class="ro-button btn-default" (click)="searchUsers()"  st-authCheck [actionCode]="'User.Search'">Search</button>
+            </div>
+            <div class="button-container">
+                <button type="button" class="ro-button btn-default" (click)="resetForm()">Clear</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="action-bar">
+    <div class="button-container">
+        <button type="button" class="ro-button btn-default" (click)="addUser()"  st-authCheck [actionCode]="'User.Create'">Add User</button>
+    </div>
+</div>

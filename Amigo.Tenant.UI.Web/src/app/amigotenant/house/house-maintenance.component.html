@@ -1,0 +1,292 @@
+
+<div class="form-horizontal">
+    <div class="page-header">
+        House
+    </div>
+
+    <div class="action-bar-container">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="locationForm.form.valid" [formName]="'locationForm'"></st-boton-maintenance>
+    </div>
+    <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+    <form #locationForm="ngForm" data-val-form="locationForm">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="row form-group">
+                    <label class="col-sm-2 control-label">Code</label>
+                    <div class="col-sm-3">
+                        <input st-autofocus type="text" class="form-control"
+                               [(ngModel)]="houseMaintenance.code"
+                               required name="code" #code="ngModel" maxlength="8" />
+                        <label [hidden]="code.valid || (code.pristine && code.untouched)" class="message error">Code is required</label>
+                    </div>
+                    <label class="col-sm-1 control-label">Name</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="houseMaintenance.name"
+                               required name="name" #name="ngModel" maxlength="100" />
+                        <label [hidden]="name.valid || (name.pristine && name.untouched)" class="message error">Name is required</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">Short Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="houseMaintenance.shortName"
+                               name="shortName" maxlength="100"/>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="row form-group">
+                    <label class="col-sm-4 control-label">Phone</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="houseMaintenance.phoneNumber"
+                               required name="phoneNumber" #phoneNumber="ngModel" maxlength="20"/>
+                        <label [hidden]="phoneNumber.valid || (phoneNumber.pristine && phoneNumber.untouched)" class="message error">Phone No is required</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="row form-group">
+                    <label for="cityId" class="col-sm-3 control-label">City</label>
+                    <div class="col-sm-7">
+                        <select class="form-control"
+                                [(ngModel)]="houseMaintenance.cityId"
+                                required name="cityId" #cityId="ngModel">
+                            <option value=""></option>
+                            <option *ngFor="let city of cities" [attr.value]='city.cityId' 
+                                (onchange)="onTypeChange(type)">
+                                {{city.cityName}}
+                            </option>
+                        </select>
+                        <!-- [disabled]="flgEdition === 'E'" -->
+                        <label [hidden]="cityId.valid || (cityId.pristine && cityId.untouched)" 
+                            class="message error">City is required</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="row form-group">
+                    <label class="col-sm-2 control-label">Address</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control"
+                               [(ngModel)]="houseMaintenance.address"
+                               required name="address" #address="ngModel" maxlength="150"/>
+                        <label [hidden]="address.valid || (address.pristine && address.untouched)" class="message error">Adrress is required</label>
+                    </div>
+                    <div class="col-sm-2 text-right">
+                            <button id="btnGroupDrop1" type="button" class="btn btn-default" (click)="searchMapInfo()" 
+                                style="padding: 0.3rem 0.5rem;">
+                                    <i class="ic-search"></i><span data-toggle="tooltip" title="Search typed current address"></span>
+                            </button>
+                            <button id="btnGroupDrop1" type="button" class="btn btn-default" (click)="setMapInfo()" 
+                                style="padding: 0.3rem 0.5rem;">
+                                    <i class="ic-coordinate"></i><span data-toggle="tooltip" title="Show saved house address"></span>
+                            </button>
+                                <!-- <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                                <a class="dropdown-item" (click)="setMapInfo()">Show Address</a>
+                                <a class="dropdown-item" (click)="searchMapInfo()">Search Address</a>
+                            </div> -->
+                    </div>
+                    <!-- <div class="col-sm-2 text-right">(click)="setMapInfo()">Map I
+                            <button type="button" class="ro-button btn-info" nfo</button>--> <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                    <!--</div> -->
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="row form-group">
+                    <label class="col-sm-3 control-label">Type</label>
+                    <div class="col-sm-9">
+                        <select class="form-control"
+                                [(ngModel)]="houseMaintenance.houseTypeId"
+                                [disabled]="flgEdition === 'E'"
+                                required name="houseTypeId" #houseTypeId="ngModel">
+                            <option value=""></option>
+                            <option *ngFor="let type of houseTypes" [attr.value]='type.id' (onchange)="onTypeChange(type)">
+                                {{type.name}}
+                            </option>
+                        </select>
+                        <label [hidden]="houseTypeId.valid || (houseTypeId.pristine && houseTypeId.untouched)" class="message error">Type is required</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="row form-group">
+                    <label class="col-sm-4 control-label">Status</label>
+                    <div class="col-sm-4">
+                        <select class="form-control"
+                                [(ngModel)]="houseMaintenance.houseStatusId"
+                                required name="houseStatusId" #houseStatusId="ngModel">
+                            <option value=""></option>
+                            <option *ngFor="let status of houseStatuses" [attr.value]='status.id'>
+                                {{status.name}}
+                            </option>
+                        </select>
+                        <label [hidden]="houseStatusId.valid || (houseStatusId.pristine && houseStatusId.untouched)" class="message error">Status is required</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <div *ngIf="flgEdition === 'E'">
+        <!-- <label class="sub-header" style="padding-left: 10px;">Features</label> -->
+        <div class="ro-tab tabs-top">
+            <ul class="nav-tabs">
+                <li>
+                    <input type="radio" name="tabsHeader" id="tabFeatures" class="tab-check" checked />
+                    <label for="tabFeatures">Features</label>
+                    <div class="tab-content">
+                        <div class="tab-pane">
+                            <div class="action-bar">
+                                <div class="button-container">
+                                    <button type="button" class="ro-button btn-success" (click)="addItem()">Add Feature</button> <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                                </div>
+                            </div>
+                            <div>
+                                <kendo-grid [data]="houseFeatures" [selectable]="false" id="grdFeature"
+                                    [pageSize]="20"
+                                    [skip]="currentPage"
+                                    [pageable]="{
+                                        buttonCount: buttonCount,
+                                        info: info,
+                                        type: type,
+                                        pageSizes: pageSizes,
+                                        previousNext: previousNext
+                                        }"
+                                    (pageChange)="pageChange1($event)">
+                                    <kendo-grid-column field="featureCode" title="Code"></kendo-grid-column>
+                                    <kendo-grid-column field="featureDescription" title="Description"></kendo-grid-column>
+                                    <kendo-grid-column field="featureMeasure" title="Measure"></kendo-grid-column>
+                                    <kendo-grid-column title="Rentable">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <span *ngIf="dataItem.isRentable">Yes</span>
+                                            <span *ngIf="!dataItem.isRentable">No</span>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="addressInfo" title="Address"></kendo-grid-column>
+                                    <kendo-grid-column field="rentPrice" title="Rent Price">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
+                                                <span>{{dataItem.rentPrice|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column title="Status">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div *ngIf="dataItem.houseFeatureStatusName==='For Rent'">
+                                                <label class="label-status approved">{{dataItem.houseFeatureStatusName}}</label>
+                                            </div>
+                                            <div *ngIf="dataItem.houseFeatureStatusName==='Rented'">
+                                                <label class="label-status rejected">{{dataItem.houseFeatureStatusName}}</label>
+                                            </div>
+                                            <div *ngIf="dataItem.houseFeatureStatusName==='Repair'">
+                                                <label class="label-status default">{{dataItem.houseFeatureStatusName}}</label>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column>
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
+                                                <button type="button" class="btn-icon" (click)="editItem(dataItem)">
+                                                    <!--st-authCheck [actionCode]="'Tenant.Update'">-->
+                                                    <i class="xico-action-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="deleteItem(dataItem);">
+                                                    <!--st-authCheck [actionCode]="'Tenant.Delete'">-->
+                                                    <i class="xico-action-remove"></i>
+                                                </button>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <input type="radio" name="tabsHeader" id="tabServices" class="tab-check"/>
+                    <label for="tabServices">Services</label>
+                    <div class="tab-content">
+                        <div class="tab-pane">
+                            <div class="action-bar">
+                                <div class="button-container">
+                                    <button type="button" class="ro-button btn-info" (click)="addHouseService()">Add Services</button> <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                                </div>
+                            </div>
+                            <div>
+                                <!-- [pageSize]="20"
+                                [skip]="currentPage"
+                                [pageable]="{
+                                            buttonCount: buttonCount,
+                                            info: info,
+                                            type: type,
+                                            pageSizes: pageSizes,
+                                            previousNext: previousNext
+                                            }"
+                                (pageChange)="pageChange1($event)" -->
+                                <kendo-grid [data]="houseServices" [selectable]="false" id="grdService">
+                                    <kendo-grid-column field="serviceTypeValue" title="Service"></kendo-grid-column>
+                                    <kendo-grid-column field="conceptDescription" title="Type"></kendo-grid-column>
+                                    <kendo-grid-column field="businessPartnerName" title="Provider"></kendo-grid-column>
+                                    <kendo-grid-column>
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
+                                                <button type="button" class="btn-icon" (click)="editService(dataItem)">
+                                                    <!--st-authCheck [actionCode]="'Tenant.Update'">-->
+                                                    <i class="xico-action-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="deleteService(dataItem);">
+                                                    <!--st-authCheck [actionCode]="'Tenant.Delete'">-->
+                                                    <i class="xico-action-remove"></i>
+                                                </button>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+                
+    </div>
+</div>
+
+<at-house-feature *ngIf="openDialog" (onClickCloseDialog)="onClickCloseDialog($event)"
+                  [inputSelectedFeature]="selectedFeature">
+</at-house-feature>
+<at-house-map *ngIf="openDialogMap" (onClickCloseDialogMap)="onClickCloseDialogMap($event)"
+              [coordinates]="coordinates"
+              (changeCoordinates)="onChangeCoordinates($event)">
+</at-house-map>
+<at-house-service *ngIf="openDialogHouseService" (onClickCloseDialog)="onClickCloseHouseService($event)"
+                [selectedHouseService]="selectedHouseService"
+                [alreadyAddedHouseServices]="houseServices">
+</at-house-service>
+
+<kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation"
+              (close)="closeDeletionConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete feature?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimationService"
+        (close)="closeDeletionConfirmationService('cancel')" style="z-index: 7888">
+    <div>Delete Service?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmationService('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmationService('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

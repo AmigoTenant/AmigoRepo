@@ -1,0 +1,685 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D05A3150-45C5-4C6E-B5CF-D618127EEEF1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.Mobile</RootNamespace>
+    <AssemblyName>Amigo.Tenant.Mobile</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\AccordionView.cs" />
+    <Compile Include="CustomControls\BindablePicker.cs" />
+    <Compile Include="CustomControls\CircularProgress.xaml.cs">
+      <DependentUpon>CircularProgress.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="CustomControls\CustomEntry.cs" />
+    <Compile Include="CustomControls\CustomSwitcher.cs" />
+    <Compile Include="CustomControls\CustomTab.cs" />
+    <Compile Include="CustomControls\ExtendedButton.cs" />
+    <Compile Include="CustomControls\FormattedDateEntry.cs" />
+    <Compile Include="CustomControls\LineEntry.cs" />
+    <Compile Include="CustomControls\ListView.cs" />
+    <Compile Include="CustomControls\MenuButton.cs" />
+    <Compile Include="CustomControls\SlideButton.cs" />
+    <Compile Include="DependencyInjection\Bootstraper.cs" />
+    <Compile Include="Event\ChangeBlockTextHadler.cs" />
+    <Compile Include="Event\ChangeCostCenterTextHadler.cs" />
+    <Compile Include="Event\ChangeProductTextHandler.cs" />
+    <Compile Include="Helpers\Behaviors\BindableBehavior.cs" />
+    <Compile Include="Helpers\Behaviors\EventToCommandBehavior.cs" />
+    <Compile Include="Helpers\Behaviors\ToolbarOnPlatformBehavior.cs" />
+    <Compile Include="Helpers\Converter\AcknowledgeDataTemplateSelector.cs" />
+    <Compile Include="Helpers\Converter\AddEditStringConverter.cs" />
+    <Compile Include="Helpers\Converter\BoolToCheckBoxImg.cs" />
+    <Compile Include="Helpers\Converter\BoolToStringConverter.cs" />
+    <Compile Include="Helpers\Converter\EquipmentTypeToBool.cs" />
+    <Compile Include="Helpers\Converter\InverseBooleanConverter.cs" />
+    <Compile Include="Helpers\Converter\ItemsFoundToBoolConverter.cs" />
+    <Compile Include="Helpers\Converter\MoveEventCodeToTextConverter.cs" />
+    <Compile Include="Helpers\Converter\RequiredToBoolConverter.cs" />
+    <Compile Include="Helpers\Converter\StatusToVisibilityConverter.cs" />
+    <Compile Include="Helpers\Converter\StringToBoolConverter.cs" />
+    <Compile Include="Helpers\Converter\StringToDate.cs" />
+    <Compile Include="Helpers\Converter\StringToGridLengthConverter.cs" />
+    <Compile Include="Helpers\Converter\TaskStatusToColorConverter.cs" />
+    <Compile Include="Helpers\Converter\TaskToTextConverter.cs" />
+    <Compile Include="Helpers\Effects\CurvedCornerLabelEffect.cs" />
+    <Compile Include="Helpers\PluginManager.cs" />
+    <Compile Include="Helpers\Effects\LabelBorderEffect.cs" />
+    <Compile Include="Helpers\Effects\MainMenuEffect.cs" />
+    <Compile Include="Helpers\Effects\PickerBorderEffect.cs" />
+    <Compile Include="Helpers\HockeyAppHelper.cs" />
+    <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Helpers\Timing\Timer.cs" />
+    <Compile Include="Helpers\Util\UtilMove.cs" />
+    <Compile Include="Infrastructure\IKeyboardInteractions.cs" />
+    <Compile Include="Infrastructure\IPermissions.cs" />
+    <Compile Include="Helpers\ListViewHelper.cs" />
+    <Compile Include="Helpers\PermissionsBuild.cs" />
+    <Compile Include="Infrastructure\GeofenceService\Abstract\IGeofenceService.cs" />
+    <Compile Include="Infrastructure\RootValidator\IRootValidator.cs" />
+    <Compile Include="Infrastructure\State\State.cs" />
+    <Compile Include="LocalConfig\LocalizationConfig.cs" />
+    <Compile Include="Model\TodayViewModel.cs" />
+    <Compile Include="Model\BaseModel.cs" />
+    <Compile Include="Model\PendentTaskGroup.cs" />
+    <Compile Include="Model\RegisterMove\BlockNumber.cs" />
+    <Compile Include="Model\RegisterMove\Dispatcher.cs" />
+    <Compile Include="Model\RegisterMove\MoveType.cs" />
+    <Compile Include="Model\RegisterMove\Product.cs" />
+    <Compile Include="MarkupExtensions\TranslateExtension.cs" />
+    <Compile Include="Model\UserStatus.cs" />
+    <Compile Include="Navigation\INavigator.cs" />
+    <Compile Include="Navigation\NavigationContentPage.cs" />
+    <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="PubSubEvents\LoggedInMessage.cs" />
+    <Compile Include="PubSubEvents\ManuallyStartTaskManagerMessage.cs" />
+    <Compile Include="PubSubEvents\StopTaskManagerMessage.cs" />
+    <Compile Include="Resource\AppString.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppString.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Resource\AppString.es.Designer.cs">
+      <DependentUpon>AppString.es.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
+    <Compile Include="Services\GeneralService.cs" />
+    <Compile Include="Services\MasterDataDownloaderTask.cs" />
+    <Compile Include="Services\ShuttleTrackingGeofenceService.cs" />
+    <Compile Include="ViewModel\AcknowledgeChargeNoViewModel.cs" />
+    <Compile Include="ViewModel\AcknowledgeMoveViewModel.cs" />
+    <Compile Include="ViewModel\DailyActivitiesFilteredItemNewViewModel.cs" />
+    <Compile Include="ViewModel\DailyActivitiesFilteredViewModel.cs" />
+    <Compile Include="ViewModel\FinishViewModelBase.cs" />
+    <Compile Include="ViewModel\RegisterAdditionalServiceViewModel.cs" />
+    <Compile Include="ViewModel\ConfirmationDetentionViewModel.cs" />
+    <Compile Include="ViewModel\ConfirmationOperateTaylorLiftViewModel.cs" />
+    <Compile Include="ViewModel\DailyActivitiesViewModel.cs" />
+    <Compile Include="ViewModel\RegisterDetentionViewModel.cs" />
+    <Compile Include="ViewModel\Dialog\ConfirmPermissionViewModel.cs" />
+    <Compile Include="ViewModel\Dialog\ConfirmTosViewModel.cs" />
+    <Compile Include="ViewModel\FinishAdditionalServiceViewModel.cs" />
+    <Compile Include="ViewModel\FinishDetentionViewModel.cs" />
+    <Compile Include="ViewModel\FinishMoveViewModel.cs" />
+    <Compile Include="ViewModel\FinishOperateTaylorLiftViewModel.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\MainMenuViewModel.cs" />
+    <Compile Include="ViewModel\RegisterOperateTaylorLiftViewModel.cs" />
+    <Compile Include="ViewModel\ProductSearchViewModel.cs" />
+    <Compile Include="ViewModel\ConfirmationMoveViewModel.cs" />
+    <Compile Include="ViewModel\SearchItem\ActionType.cs" />
+    <Compile Include="ViewModel\SearchItem\ActivityHeader.cs" />
+    <Compile Include="ViewModel\SearchItem\ChargeNumberSearchViewModel.cs" />
+    <Compile Include="ViewModel\SearchItem\CostCenterSearchViewModel.cs" />
+    <Compile Include="ViewModel\RegisterMoveViewModel.cs" />
+    <Compile Include="ViewModel\SearchItem\FromBlockSearchViewModel.cs" />
+    <Compile Include="ViewModel\SearchItem\ToBlockSearchViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="ViewModel\StartAdditionalServiceViewModel.cs" />
+    <Compile Include="ViewModel\StartDetentionViewModel.cs" />
+    <Compile Include="ViewModel\StartMoveViewModel.cs" />
+    <Compile Include="ViewModel\StartOperateTaylorLiftViewModel.cs" />
+    <Compile Include="ViewModel\StoreForwardViewModel.cs" />
+    <Compile Include="ViewModel\ConfirmationAdditionalServiceViewModel.cs" />
+    <Compile Include="ViewModel\SummaryPerHourViewModel.cs" />
+    <Compile Include="ViewModel\SummaryViewModel.cs" />
+    <Compile Include="ViewModel\TermOfServicesViewModel.cs" />
+    <Compile Include="View\Abstract\IPersistentView.cs" />
+    <Compile Include="View\Abstract\NavigatingPage.cs" />
+    <Compile Include="View\AcknowledgeChargeNoView.xaml.cs">
+      <DependentUpon>AcknowledgeChargeNoView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\AcknowledgeMoveView.xaml.cs">
+      <DependentUpon>AcknowledgeMoveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DailyActivitiesFilteredItemNewView.xaml.cs">
+      <DependentUpon>DailyActivitiesFilteredItemNewView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DailyActivitiesFilteredView.xaml.cs">
+      <DependentUpon>DailyActivitiesFilteredView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegisterAdditionalServiceView.xaml.cs">
+      <DependentUpon>RegisterAdditionalServiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConfirmationDetentionView.xaml.cs">
+      <DependentUpon>ConfirmationDetentionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConfirmationOperateTaylorLiftView.xaml.cs">
+      <DependentUpon>ConfirmationOperateTaylorLiftView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\DailyActivitiesView.xaml.cs">
+      <DependentUpon>DailyActivitiesView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegisterDetentionView.xaml.cs">
+      <DependentUpon>RegisterDetentionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialog\ConfirmPermissionView.xaml.cs">
+      <DependentUpon>ConfirmPermissionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dialog\ConfirmTosView.xaml.cs">
+      <DependentUpon>ConfirmTosView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishDetentionView.xaml.cs">
+      <DependentUpon>FinishDetentionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishMoveView.xaml.cs">
+      <DependentUpon>FinishMoveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishOperateTaylorLiftView.xaml.cs">
+      <DependentUpon>FinishOperateTaylorLiftView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\MainMenuView.xaml.cs">
+      <DependentUpon>MainMenuView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="View\RegisterOperateTaylorLiftView.xaml.cs">
+      <DependentUpon>RegisterOperateTaylorLiftView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConfirmationMoveView.xaml.cs">
+      <DependentUpon>ConfirmationMoveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchItem\ChargeNumberSearchView.xaml.cs">
+      <DependentUpon>ChargeNumberSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchItem\FromBlockSearchView.xaml.cs">
+      <DependentUpon>FromBlockSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ProductSearchView.xaml.cs">
+      <DependentUpon>ProductSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchItem\ToBlockSearchView.xaml.cs">
+      <DependentUpon>ToBlockSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SearchItem\CostCenterSearchView.xaml.cs">
+      <DependentUpon>CostCenterSearchView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\RegisterMoveView.xaml.cs">
+      <DependentUpon>RegisterMoveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\Converter\IntToBoolConverter.cs" />
+    <Compile Include="View\SettingsView.xaml.cs">
+      <DependentUpon>SettingsView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartAdditionalServiceView.xaml.cs">
+      <DependentUpon>StartAdditionalServiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartDetentionView.xaml.cs">
+      <DependentUpon>StartDetentionView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartMoveView.xaml.cs">
+      <DependentUpon>StartMoveView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\FinishAdditionalServiceView.xaml.cs">
+      <DependentUpon>FinishAdditionalServiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StartOperateTaylorLiftView.xaml.cs">
+      <DependentUpon>StartOperateTaylorLiftView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StoreAndForwardView.xaml.cs">
+      <DependentUpon>StoreAndForwardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ConfirmationAdditionalServiceView.xaml.cs">
+      <DependentUpon>ConfirmationAdditionalServiceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SummaryPerHourView.xaml.cs">
+      <DependentUpon>SummaryPerHourView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SummaryView.xaml.cs">
+      <DependentUpon>SummaryView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\TermOfServicesView.xaml.cs">
+      <DependentUpon>TermOfServicesView.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="App.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resource\AppString.es.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppString.es.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resource\AppString.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>AppString.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="View\SearchItem\CostCenterSearchView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\MainMenuView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Acr.UserDialogs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Acr.UserDialogs.6.3.10\lib\portable-win+net45+wp8+win8+wpa81\Acr.UserDialogs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Acr.UserDialogs.Interface, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Acr.UserDialogs.6.3.10\lib\portable-win+net45+wp8+win8+wpa81\Acr.UserDialogs.Interface.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib.Portable, Version=0.86.0.51803, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.Portable.0.86.0.0003\lib\portable-net45+netcore45+wp8+win8+wpa81+MonoTouch+MonoAndroid+Xamarin.iOS10\ICSharpCode.SharpZipLib.Portable.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MarcelloDB, Version=1.0.1.33950, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MarcelloDB.1.0.1\lib\portable-net45+win+wp80+MonoTouch10+MonoAndroid10+xamarinmac20+xamarinios10\MarcelloDB.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ModernHttpClient">
+      <HintPath>..\packages\modernhttpclient.2.4.2\lib\Portable-Net45+WinRT45+WP8+WPA81\ModernHttpClient.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mono.Android">
+      <HintPath>C:\Program Files (x86)\Reference Assemblies\Microsoft\Framework\MonoAndroid\v6.0\Mono.Android.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.2\lib\portable-net45+win8+wpa81+wp8\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.1.3.3\lib\portable-net4+sl5+netcore45+wpa81+wp8+MonoAndroid1+MonoTouch1+XamariniOS1\NodaTime.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLAppConfig, Version=0.2.0.0, Culture=neutral, PublicKeyToken=7dc9bc9afb3fa588, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLAppConfig.0.3.2\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLAppConfig.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLAppConfig.FileSystemStream, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLAppConfig.0.3.2\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLAppConfig.FileSystemStream.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLAppConfig.FileSystemStream.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLAppConfig.0.3.2\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLAppConfig.FileSystemStream.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLCrypto">
+      <HintPath>..\packages\PCLCrypto.2.0.147\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\PCLCrypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="PCLStorage.Abstractions, Version=1.0.2.0, Culture=neutral, PublicKeyToken=286fe515a2c35b64, processorArchitecture=MSIL">
+      <HintPath>..\packages\PCLStorage.1.0.2\lib\portable-net45+wp8+wpa81+win8+monoandroid+monotouch+Xamarin.iOS+Xamarin.Mac\PCLStorage.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Connectivity, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.2.3.0\lib\portable-net45+wp80+win8+wpa81\Plugin.Connectivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Connectivity.Abstractions, Version=2.3.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Connectivity.2.3.0\lib\portable-net45+wp80+win8+wpa81\Plugin.Connectivity.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Geolocator, Version=4.0.0.55, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.4.0.0.55-beta\lib\portable-net45+wp80+win8+wpa81\Plugin.Geolocator.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Geolocator.Abstractions, Version=4.0.0.55, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Geolocator.4.0.0.55-beta\lib\portable-net45+wp80+win8+wpa81\Plugin.Geolocator.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Media, Version=2.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Media.2.6.2\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Media.Abstractions, Version=2.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugin.Media.2.6.2\lib\portable-net45+wp80+win8+wpa81\Plugin.Media.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Messaging, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugins.Messaging.4.0.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Messaging.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Messaging.Abstractions, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugins.Messaging.4.0.0\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\Plugin.Messaging.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Plugin.Permissions, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Plugin.Permissions.1.2.1\lib\portable-net45+wp80+win+wpa81\Plugin.Permissions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Permissions.Abstractions, Version=1.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Plugin.Permissions.1.2.1\lib\portable-net45+wp80+win+wpa81\Plugin.Permissions.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Settings, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugins.Settings.2.5.4\lib\portable-net45+wp80+win8+wpa81\Plugin.Settings.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Plugin.Settings.Abstractions, Version=2.5.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xam.Plugins.Settings.2.5.4\lib\portable-net45+wp80+win8+wpa81\Plugin.Settings.Abstractions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ScnViewGestures">
+      <HintPath>..\packages\ScnViewGestures.Forms.1.3.6.1\lib\portable-net45+wp8+wpa81+win8+MonoAndroid10+MonoTouch10+Xamarin.iOS10+UAP10\ScnViewGestures.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Splat, Version=1.6.2.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Splat.1.6.2\lib\Portable-net45+win+wpa81+wp80\Splat.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TSI.Xamarin.Forms.Logging, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TSI.Xamarin.Forms.Logging.1.0.4\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\TSI.Xamarin.Forms.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="TSI.Xamarin.Forms.Mvvm, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TSI.Xamarin.Forms.Mvvm.1.0.9\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\TSI.Xamarin.Forms.Mvvm.dll</HintPath>
+    </Reference>
+    <Reference Include="TSI.Xamarin.Forms.Persistence, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TSI.Xamarin.Forms.Persistence.1.0.6\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\TSI.Xamarin.Forms.Persistence.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\packages\Validation.2.3.7\lib\portable-net45+win+wpa81+wp80+MonoAndroid10+xamarinios10+MonoTouch10\Validation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v4">
+      <HintPath>..\packages\Xamarin.Android.Support.v4.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Platform, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Forms.2.3.4.231\lib\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="XFShapeView">
+      <HintPath>..\packages\VG.XFShapeView.1.0.4\lib\portable-net45+wp80+win8+wpa81\XFShapeView.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="app.config">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="packages.config" />
+    <None Include="SampleData.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
+      <Project>{e24205a2-8839-4ad1-aa3a-1f5cb0a5b586}</Project>
+      <Name>Amigo.Tenant.Application.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Mobile.Common\Amigo.Tenant.Mobile.Common.csproj">
+      <Project>{d4fa52fc-6491-4d17-bc9c-f75398fdaf00}</Project>
+      <Name>Amigo.Tenant.Mobile.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Mobile.Domain\Amigo.Tenant.Mobile.Domain.csproj">
+      <Project>{e10f53e6-dc72-42dc-a3af-9505d715ba59}</Project>
+      <Name>Amigo.Tenant.Mobile.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Mobile.Entity\Amigo.Tenant.Mobile.Entity.csproj">
+      <Project>{56830cf6-e58f-4e42-a908-a78a1f6aa62e}</Project>
+      <Name>Amigo.Tenant.Mobile.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Mobile.Infrastructure\Amigo.Tenant.Mobile.Infrastructure.csproj">
+      <Project>{39468558-027b-4c70-926f-31f0598cb95a}</Project>
+      <Name>Amigo.Tenant.Mobile.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\RegisterMoveView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SearchItem\ToBlockSearchView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\LoginView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SearchItem\FromBlockSearchView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ProductSearchView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Dialog\ConfirmTosView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\Dialog\ConfirmPermissionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\StartMoveView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\FinishMoveView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\RegisterAdditionalServiceView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ConfirmationMoveView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\StartAdditionalServiceView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\FinishAdditionalServiceView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ConfirmationAdditionalServiceView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\RegisterDetentionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\TermOfServicesView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\StartDetentionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\DailyActivitiesView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\FinishDetentionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ConfirmationDetentionView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\StoreAndForwardView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\AcknowledgeMoveView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SummaryView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\RegisterOperateTaylorLiftView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\StartOperateTaylorLiftView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\FinishOperateTaylorLiftView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\ConfirmationOperateTaylorLiftView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SearchItem\ChargeNumberSearchView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SettingsView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Infrastructure\Zip\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\SummaryPerHourView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CustomControls\CircularProgress.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\DailyActivitiesFilteredView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\DailyActivitiesFilteredItemNewView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="View\AcknowledgeChargeNoView.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
+    <Error Condition="!Exists('..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets'))" />
+  </Target>
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.4.231\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
+</Project>

@@ -1,0 +1,205 @@
+﻿<div>
+    <div class="form-horizontal">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+                    <biz-val [successFlag]="validationSuccessFlag" [successMessage]="validationSuccessMessage" [errorMessages]='validationErrorMessages'></biz-val>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Charge Type</label>
+                        <div class="col-sm-5">
+                            <select class="form-control" [(ngModel)]="maintenance.chargeType"
+                                    (change)="onChangeChargeType($event.target.value)" [disabled]="isValidToApprove">
+                                <option *ngFor="let item of listChargeTypes" [value]='item.code'>
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3 text-right" *ngIf="hasAudit">
+                            <st-audit [auditModel]="auditModel"></st-audit>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showCostCenterCode">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Charge Number</label>
+                        <div class="col-sm-5">
+                            <!--<input type="text" class="form-control" [(ngModel)]="maintenance.costCenterCode" [disabled]="isValidToApprove || chargeNumberDisabled" />-->
+                            <!-- <ngbd-typeahead-costcenternew (modelOutput)="getCostCenter($event)" [currentLocation]="currentCostCenter" [isDisabled]="isValidToApprove"></ngbd-typeahead-costcenternew> -->
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="!showCostCenterCode">
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">ShipmentID</label>
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" [(ngModel)]="maintenance.shipmentID" [disabled]="isValidToApprove" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showEquipmentNumber">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Equipment Number</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" [(ngModel)]="maintenance.equipmentNumber" [disabled]="isValidToApprove" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showChassisNumber">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Chassis Number</label>
+                        <div class="col-sm-3">
+                            <input type="text" class="form-control" [(ngModel)]="maintenance.chassisNumber" [disabled]="isValidToApprove" />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showEquipmentStatus">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Equipment Status</label>
+                        <div class="col-sm-3">
+                            <select class="form-control" [(ngModel)]="maintenance.equipmentStatusId"
+                                    [disabled]="isValidToApprove">
+                                <option *ngFor="let item of listEquipmentStatus" [value]='item.equipmentStatusId'>
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showMoveType">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Move Type</label>
+                        <div class="col-sm-3">
+                            <select class="form-control" [(ngModel)]="maintenance.serviceId"
+                                    [disabled]="isValidToApprove">
+                                <option *ngFor="let item of listMoveTypes" [attr.value]='item.serviceId'>
+                                    {{item.name}}
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Block</label>
+                        <div class="col-sm-5">
+                            <div class="row-flex">
+                                <div class="inline-form-control col-sm-6">
+                                    <!--<input type="text" class="form-control" [(ngModel)]="maintenance.originLocationId" [disabled]="isValidToApprove"/>-->
+                                    <!--<ngbd-typeahead-location (locationModelOutput)="getOriginLocation($event)" [modelOriginLocationCode]="maintenance" [isDisabled]="isValidToApprove"></ngbd-typeahead-location>-->
+                                    <!--<ngbd-typeahead-locationnew (modelOutput)="getOriginLocation($event)" [currentLocation]="currentOriginLocation" [isDisabled]="isValidToApprove"></ngbd-typeahead-locationnew>-->
+                                    <span class="form-control-helptext">From</span>
+                                </div>
+                                <div class="inline-form-control col-sm-6" *ngIf="showToBlock">
+                                    <!--<input type="text" class="form-control" [(ngModel)]="maintenance.destinationLocationId" [disabled]="isValidToApprove"/>-->
+                                    <!--<ngbd-typeahead-location (locationModelOutput)="getDestinationLocation($event)" [modelDestinationLocationCode]="maintenance" [isDisabled]="isValidToApprove"></ngbd-typeahead-location>-->
+                                    <!--<ngbd-typeahead-locationnew (modelOutput)="getDestinationLocation($event)" [currentLocation]="currentDestinationLocation" [isDisabled]="isValidToApprove"></ngbd-typeahead-locationnew>-->
+                                    <span class="form-control-helptext">To</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="from" class="col-sm-4 control-label timer-label">Start Time</label>
+                        <div class="col-sm-5">
+                            <div class="row-flex">
+                                <div class="inline-form-control">
+                                    <ngb-timepicker [(ngModel)]="modelServiceTimeStart" [readonlyInputs]="isValidToApprove" [spinners]="!isValidToApprove" (ngModelChange)="onSelectModelServiceTimeStart()"></ngb-timepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label for="from" class="col-sm-4 control-label timer-label">Finish Time</label>
+                        <div class="col-sm-4">
+                            <div class="row-flex">
+                                <div class="inline-form-control">
+                                    <ngb-timepicker [(ngModel)]="modelServiceTimeFinish" [readonlyInputs]="isValidToApprove" [spinners]="!isValidToApprove" (ngModelChange)="onSelectModelServiceTimeFinish()"></ngb-timepicker>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showProduct">
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Product</label>
+                        <div class="col-sm-5">
+                            <!--<ngbd-typeahead-product (productModelOutput)="getProduct($event)" [modelProductName]="maintenance" [isDisabled]="isValidToApprove"></ngbd-typeahead-product>-->
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="showHasH34">
+                    <div class="form-group">
+                        <div class="offset-sm-4 col-md-5 checkbox form-control-stactic">
+                            <input id="hasH34" class="ro-checkbox" type="checkbox" name="showOpen"
+                                   [(ngModel)]="maintenance.hasH34"
+                                   ng-checked="maintenance.hasH34"
+                                   data-toggle="toggle" [disabled]="isValidToApprove">
+
+                            <label for="hasH34"></label>
+                            <label for="hasH34">Has H34</label>
+                        </div>
+                    </div>
+                </div>
+                <div >
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Driver Comments</label>
+                        <div class="col-sm-5">
+                            <textarea [(ngModel)]='maintenance.driverComments' rows="7" disabled="disabled"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Approval/Rejection Comments</label>
+                        <div class="col-sm-5">
+                            <textarea [(ngModel)]='maintenance.approvalComments' rows="7" disabled="disabled"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row">
+            <div class="form-group">
+                <label for="from" class="col-sm-4 control-label">Time</label>
+                <div class="col-sm-4">
+                    <div class="row-flex">
+                        <div class="inline-form-control">
+                            <div class="ro-calendar">
+                                <input class="form-control" [placeholder]="localization.dateFormat" name="from" ngbDatepicker #d="ngbDatepicker" [(ngModel)]="modelServiceDateStart"
+                                       (ngModelChange)="onSelectModelServiceDateStart()" [disabled]="isValidToApprove">
+                                <span class="ro-calendar-btn" (click)="d.toggle()"><i class="xico-ui-calendar"></i></span>
+                                <span class="form-control-helptext">Start</span>
+                            </div>
+                        </div>
+                        <div class="inline-form-control">
+                            <div class="ro-calendar">
+                                <input class="form-control" [placeholder]="localization.dateFormat" name="from" ngbDatepicker #d2="ngbDatepicker" [(ngModel)]="modelServiceDateFinish"
+                                       (ngModelChange)="onSelectModelServiceDateFinish()" [disabled]="isValidToApprove">
+                                <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar"></i></span>
+                                <span class="form-control-helptext">Finish</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="offset-sm-4 col-sm-5 text-right">
+                        <button type="button" id="btnSave" (click)="onSave()" [disabled]="isValidToApprove" class="ro-button btn-submit margin-left-5px" st-authCheck [actionCode]="'Approval.Save'">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

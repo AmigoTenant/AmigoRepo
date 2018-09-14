@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"            
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.ConfirmationMoveView"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             Title="{Binding Title}">
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converter:IntToBoolConverter x:Key="Int2Bool" />
+      <converter:IntToBoolConverter x:Key="Int2Bool1" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+  <StackLayout Style="{StaticResource OuterStackLayout}" BackgroundColor="{StaticResource ColorBackground}">
+    <!--Header-->
+    <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+      <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+        <Label x:Name="lblHeaderTimeMsg" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+        <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+      </StackLayout>
+    </StackLayout>
+
+    <!--Scrollable content-->
+    <ScrollView>
+      <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+        <!--Charge No.-->
+        <StackLayout Padding="20" BackgroundColor="{StaticResource ColorBodyText}">
+          <Label Text="{Binding LblId}" TextColor="{StaticResource ColorActiveFormInput}" VerticalOptions = "Center" HorizontalOptions = "FillAndExpand" HorizontalTextAlignment = "Start" FontAttributes = "Bold" FontSize = "Large"></Label>
+          <Label x:Name="LblChargeNumber" Text="{Binding LblNumber}" TextColor="{StaticResource ColorContrastText}" VerticalOptions = "Center" HorizontalOptions = "FillAndExpand" HorizontalTextAlignment = "Start" FontAttributes = "Bold" FontSize = "Large"></Label>
+        </StackLayout>
+
+        <!--Body-->
+        <StackLayout VerticalOptions="FillAndExpand" Spacing="0" Padding="20" BackgroundColor="{StaticResource ColorControlBackground}">
+          <Grid>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--From Block-->
+            <Label Grid.Row="0" Grid.Column="0" x:Name="lblResumeMoveFromBlock" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding FromBlock}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--To Block-->
+            <Label Grid.Row="1" Grid.Column="0" x:Name="lblResumeMoveToBlock" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="1" Grid.Column="1" Text="{Binding ToBlock}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Move Type-->
+            <Label Grid.Row="2" Grid.Column="0" x:Name="lblResumeMoveMoveType" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="2" Grid.Column="1" Text="{Binding MoveType}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Equipment Nº-->
+            <Label Grid.Row="3" Grid.Column="0" Text="{Binding EquipmentTypeDesc}" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding EquipmentNumber}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Equipment Size-->
+            <Label Grid.Row="4" Grid.Column="0" x:Name="lblResumeMoveEquipmentSize" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="4" Grid.Column="1" Text="{Binding EquipmentSizeDesc}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Equipment Status-->
+            <Label Grid.Row="5" Grid.Column="0" x:Name="lblResumeMoveEquipmentStatus" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="5" Grid.Column="1" Text="{Binding EquipmentStatusDesc}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Chassis No.-->
+            <Label Grid.Row="6" Grid.Column="0" x:Name="lblChassisNumber" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="6" Grid.Column="1" Text="{Binding ChassisNo}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Product-->
+            <Label Grid.Row="7" Grid.Column="0" x:Name="lblResumeMoveProduct" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="7" Grid.Column="1" Text="{Binding Product}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Start Time-->
+            <Label Grid.Row="8" Grid.Column="0" x:Name="lblResumeMoveStartTime" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="8" Grid.Column="1" Text="{Binding StartTime}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Finish Time-->
+            <Label Grid.Row="9" Grid.Column="0" x:Name="lblResumeMoveFinishTime" Style="{StaticResource GeneralLabelText}" HorizontalOptions="FillAndExpand"></Label>
+            <Label Grid.Row="9" Grid.Column="1" Text="{Binding FinishTime}" Style="{StaticResource DesctiptionLabelText}"></Label>
+            <!--Elapsed Time-->
+            <Label Grid.Row="10" Grid.Column="0" x:Name= "lblTimeElapsed" Style="{StaticResource GeneralLabelText}"></Label>
+            <Label Grid.Row="10" Grid.Column="1" Text="{Binding ElapsedTime}" Style="{StaticResource GeneralLabelTextN}"></Label>
+            <!--Comments-->
+            <Label Grid.Row="11" Grid.Column="0" x:Name= "lblDriverComments" Style="{StaticResource GeneralLabelText}"></Label>
+            <Label Grid.Row="11" Grid.Column="1" Text="{Binding DriverComments}" Style="{StaticResource GeneralLabelTextN}"></Label>
+          </Grid>
+
+          <Grid Margin="0" IsVisible="{Binding ShowBobtailAuth}" >
+            <Grid.RowDefinitions>
+              <RowDefinition Height="{StaticResource HeaderRow}" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <!--Bobtail Authorization-->
+            <Label Grid.Row="0" Grid.Column="0" x:Name="lblBobtailAuth" Style="{StaticResource GeneralLabelText}" IsVisible="{Binding ShowBobtailAuth}"/>
+            <Label Grid.Row="0" Grid.Column="1" Text="{Binding BobtailAuthorization}" Style="{StaticResource DesctiptionLabelText}" IsVisible="{Binding ShowBobtailAuth}"/>
+          </Grid>
+          
+           <!--Cancel Msg-->
+           <StackLayout Orientation="Horizontal" Padding="15" HeightRequest="{StaticResource EntrySizeS}" IsVisible="{Binding cancel,Converter={StaticResource Int2Bool}}">
+            <Image Source="wrong.png" VerticalOptions="Fill"></Image>
+           <Label x:Name="lblCancelMove" TextColor="{StaticResource ColorXpoRed}" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Fill" HorizontalOptions="FillAndExpand"></Label>
+          </StackLayout>
+          
+          <!--Success Msg-->
+          <StackLayout Orientation="Horizontal" Padding="15" HeightRequest="{StaticResource EntrySizeS}" IsVisible="{Binding success,Converter={StaticResource Int2Bool1}}">
+            <Image Source="correct.png" VerticalOptions="Fill"></Image>
+            <Label x:Name="lblSuccessMove" TextColor="{StaticResource ColorSuccess}" FontAttributes="Bold" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" VerticalOptions="Fill" HorizontalOptions="FillAndExpand"></Label>
+          </StackLayout>
+
+          <StackLayout Spacing="20" VerticalOptions="EndAndExpand">
+            <!--Buttons-->
+            <Button AutomationId="ContinueButton" x:Name="BtnContinueWith" Text="{Binding ContinueWith}" Style="{StaticResource PrimaryButtonS}" Command="{Binding ContinueSame}"></Button>
+            <Button AutomationId="StartNewButton" x:Name="BtnSetNewOne" Style="{StaticResource PrimaryButtonS}" Command="{Binding ContinueNew}"></Button>
+
+            <!--Main Menu-->
+            <Button AutomationId="MainMenuButton" x:Name="btnMainMenu"  Command="{Binding GoMainMenuCommand}" Style="{StaticResource SecondFormButtonS}"></Button>
+          </StackLayout>
+        </StackLayout>
+      </StackLayout>
+    </ScrollView>
+  </StackLayout>
+  </ContentPage.Content>
+  </abstract:NavigatingPage>

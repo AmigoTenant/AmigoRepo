@@ -1,0 +1,15 @@
+<st-header></st-header>
+<st-navigation></st-navigation>
+<div id="main" role="main" style="min-width: 400px;" class="container-fluid">
+    <router-outlet></router-outlet>
+</div>
+<div [hidden]="!isBusy">
+    <div class="loader">
+        <div class="spinner">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+        </div>
+    </div>
+</div>

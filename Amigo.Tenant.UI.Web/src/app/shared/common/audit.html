@@ -1,0 +1,23 @@
+<div class="audit-panel">
+    <tooltip-content #myTooltip [animation]="true" placement="left">
+        <div class="audit-popover" style="text-align: left">
+            <div *ngIf="auditModel.createdByCode !=null && auditModel.createdByCode !=''">
+                <label>Create </label>
+                <span>{{ auditModel.createdByCode }} - {{ auditModel.creationDate | date:"MM/dd/yyyy HH:mm:ss" }}</span>
+            </div>
+            <div *ngIf="auditModel.createdByCode ==null || auditModel.createdByCode ==''">
+                <label>Create </label>
+                <span> ---------------- - -----------------</span>
+            </div>
+            <div *ngIf="auditModel.updatedByCode !=null && auditModel.updatedByCode !=''">
+                <label>Update </label>
+                <span>{{ auditModel.updatedByCode }} - {{ auditModel.updatedDate | date:"MM/dd/yyyy HH:mm:ss" }}</span>
+            </div>
+            <div *ngIf="auditModel.updatedByCode ==null || auditModel.updatedByCode ==''">
+                <label>Update </label>
+                <span> ---------------- - -----------------</span>
+            </div>
+        </div>
+    </tooltip-content>
+    <label class="link-label" [tooltip]="myTooltip">View Audit</label>
+</div>

@@ -1,0 +1,489 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{EFB7FD0F-56CC-4FDC-AE0A-3981D714C263}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.IdentityServer</RootNamespace>
+    <AssemblyName>Amigo.Tenant.IdentityServer</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <IISExpressSSLPort>44366</IISExpressSSLPort>
+    <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
+    <IISExpressWindowsAuthentication>enabled</IISExpressWindowsAuthentication>
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.3.5.0\lib\net40\Autofac.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Autofac.Integration.WebApi, Version=4.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.WebApi2.4.0.1\lib\net45\Autofac.Integration.WebApi.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="AutoMapper, Version=5.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.5.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExpressMapper, Version=1.8.3.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.8.3\lib\net46\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityManager, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityManager.1.0.0-beta5-5\lib\net45\IdentityManager.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityManager.AspNetIdentity, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityManager.AspNetIdentity.1.0.0-beta5-1\lib\net45\IdentityManager.AspNetIdentity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityModel, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityModel.2.0.0\lib\net45\IdentityModel.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.2.5.4\lib\net45\IdentityServer3.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.AccessTokenValidation, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.AccessTokenValidation.2.11.0\lib\net45\IdentityServer3.AccessTokenValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.Admin, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.Admin.1.0.0-beta9\lib\net45\IdentityServer3.Admin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.Admin.EntityFramework, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.Admin.EntityFramework.1.0.0-beta8\lib\net45\IdentityServer3.Admin.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="IdentityServer3.EntityFramework, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\IdentityServer3.EntityFramework.2.6.0\lib\net45\IdentityServer3.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.1\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.IdentityModel.Logging, Version=1.0.0.127, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Logging.1.0.0\lib\net451\Microsoft.IdentityModel.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Protocol.Extensions, Version=1.0.2.33, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Protocol.Extensions.1.0.2.206221351\lib\net45\Microsoft.IdentityModel.Protocol.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.IdentityModel.Tokens, Version=5.0.0.127, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.IdentityModel.Tokens.5.0.0\lib\net451\Microsoft.IdentityModel.Tokens.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.3.0.1\lib\net45\Microsoft.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.FileSystems, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.FileSystems.3.0.1\lib\net45\Microsoft.Owin.FileSystems.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Host.SystemWeb, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Host.SystemWeb.3.0.1\lib\net45\Microsoft.Owin.Host.SystemWeb.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.3.0.1\lib\net45\Microsoft.Owin.Security.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.Jwt, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.Jwt.3.0.1\lib\net45\Microsoft.Owin.Security.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.OAuth, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.OAuth.3.0.1\lib\net45\Microsoft.Owin.Security.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.Security.WsFederation, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.Security.WsFederation.3.0.1\lib\net45\Microsoft.Owin.Security.WsFederation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Owin.StaticFiles, Version=3.0.1.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Owin.StaticFiles.3.0.1\lib\net45\Microsoft.Owin.StaticFiles.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Web.Infrastructure">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mindscape.Raygun4Net, Version=5.3.1.0, Culture=neutral, PublicKeyToken=20dddfb3684a7aa5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mindscape.Raygun4Net.Signed.5.3.1\lib\net40\Mindscape.Raygun4Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Mindscape.Raygun4Net4, Version=5.3.1.0, Culture=neutral, PublicKeyToken=002e1b57394fa9b9, processorArchitecture=MSIL">
+      <HintPath>..\packages\Mindscape.Raygun4Net.Signed.5.3.1\lib\net40\Mindscape.Raygun4Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog, Version=4.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.4.2.3\lib\net45\NLog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NLog.Owin.Logging, Version=1.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLog.Owin.Logging.1.1.0\lib\net45\NLog.Owin.Logging.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Owin, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f0ebd12fd5e55cc5, processorArchitecture=MSIL">
+      <HintPath>..\packages\Owin.1.0\lib\net40\Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SecurityHeadersMiddleware, Version=2.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\SecurityHeadersMiddleware.2.0.0\lib\net45\SecurityHeadersMiddleware.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.3.0\lib\net46\Serilog.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Literate, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Literate.2.0.0\lib\net45\Serilog.Sinks.Literate.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Raygun, Version=1.5.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Raygun.1.5.10\lib\net45\Serilog.Sinks.Raygun.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Serilog.Sinks.Trace, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.Trace.2.1.0\lib\net45\Serilog.Sinks.Trace.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Swashbuckle.Core">
+      <HintPath>..\packages\Swashbuckle.Core.5.5.3\lib\net40\Swashbuckle.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.IdentityModel" />
+    <Reference Include="System.IdentityModel.Tokens.Jwt, Version=4.0.20622.1351, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.IdentityModel.Tokens.Jwt.4.0.2.206221351\lib\net45\System.IdentityModel.Tokens.Jwt.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Http, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.Owin, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Owin.5.2.3\lib\net45\System.Web.Http.Owin.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="WebActivatorEx">
+      <HintPath>..\packages\WebActivatorEx.2.0\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Infrastructure\Certificate\idsrv3test.pfx" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\background.jpg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <Content Include="Infrastructure\ViewService\HttpAssets\favicon.ico" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\icon.jpeg" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\app.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\app.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\crypto.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\crypto.min.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\FormPostResponse.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\icon.png" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\angular\angular-csp.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\angular\angular.1.3.15.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\angular\angular.1.3.15.min.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\css\bootstrap.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\css\bootstrap.min.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\gulpfile.js" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\custom.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\custom.min.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\fonts\glyphicons-halflings-regular.svg" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\js\bootstrap.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\js\bootstrap.min.js" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\bootstrap.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\bootstrap.min.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\encoder\encoder.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\encoder\encoder.min.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\jquery\jquery-1.11.0.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\jquery\jquery-1.11.0.min.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\scripts.2.5.0.js" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\styles.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\styles.min.css" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\authorizeresponse.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\checksession.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\consent.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\error.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\FormPostResponse.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\layout.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\loggedOut.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\login.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\logout.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\permissions.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\SignoutFrame.html" />
+    <EmbeddedResource Include="Infrastructure\ViewService\PageAssets\welcome.html" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-arrows-dark.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-arrows-dark.min.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-arrows.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-arrows.min.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-basic.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether-theme-basic.min.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\css\tether.min.css" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\js\tether.js" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\tether\js\tether.min.js" />
+    <Content Include="packages.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\app\crypto.min.js.map" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\custom.less" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\fonts\glyphicons-halflings-regular.eot" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\fonts\glyphicons-halflings-regular.ttf" />
+    <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\alerts.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\badges.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\bootstrap.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\breadcrumbs.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\button-groups.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\buttons.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\carousel.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\close.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\code.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\component-animations.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\dropdowns.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\forms.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\glyphicons.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\grid.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\input-groups.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\jumbotron.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\labels.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\list-group.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\media.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\mixins.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\modals.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\navbar.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\navs.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\normalize.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\pager.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\pagination.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\panels.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\popovers.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\print.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\progress-bars.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\responsive-utilities.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\scaffolding.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\tables.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\theme.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\thumbnails.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\tooltip.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\type.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\utilities.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\variables.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\libs\bootstrap\less\wells.less" />
+    <Content Include="Infrastructure\ViewService\HttpAssets\package.json" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Packages\IdentityServer3.AspNetIdentity\IdentityServer3.AspNetIdentity.cs" />
+    <Compile Include="App_Start\DependencyInjectionConfig.cs" />
+    <Compile Include="App_Start\MappingConfig.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Configuration\Settings.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
+    <Compile Include="Controllers\WelcomeController.cs" />
+    <Compile Include="Infrastructure\Certificate\Certificate.cs" />
+    <Compile Include="Infrastructure\DependencyInjection\Modules\ApplicationServiceModule.cs" />
+    <Compile Include="Infrastructure\DependencyInjection\Modules\InfrastructureModule.cs" />
+    <Compile Include="Infrastructure\Extensions\OwinEnvironmentExtensions.cs" />
+    <Compile Include="Infrastructure\Extensions\StringsExtensions.cs" />
+    <Compile Include="Infrastructure\ViewService\ActionResults\WelcomeActionResult.cs" />
+    <Compile Include="Infrastructure\ViewService\AssetManager.cs" />
+    <Compile Include="Infrastructure\ViewService\CachingLoader.cs" />
+    <Compile Include="Infrastructure\ViewService\Extensions\EmbeddedFileSystemExtensions.cs" />
+    <Compile Include="Infrastructure\ViewService\AmigoTenantViewService.cs" />
+    <Compile Include="Infrastructure\ViewService\AmigoTenantViewServiceOptions.cs" />
+    <Compile Include="Infrastructure\ViewService\DefaultViewServiceRegistration.cs" />
+    <Compile Include="Infrastructure\ViewService\EmbeddedAssetsViewLoader.cs" />
+    <Compile Include="Infrastructure\ViewService\FileSystemViewLoader.cs" />
+    <Compile Include="Infrastructure\ViewService\FileSystemWithEmbeddedFallbackViewLoader.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\CodeChartHelper.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\Lower.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\LowerMiddle.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\Middle.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\Upper.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\CodeCharts\UpperMiddle.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\Encoder.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\EncoderUtil.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\SafeList.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\UnicodeCharacterEncoder.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\AntiXssLibrary\Utf16StringReader.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.Owin\AutofacAppBuilderExtensions.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.Owin\AutofacMiddleware.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.Owin\Constants.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.Owin\OwinContextExtensions.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.WebApi.Owin\AutofacWebApiAppBuilderExtensions.cs" />
+    <Compile Include="Infrastructure\ViewService\Internal\Autofac.Integration.WebApi.Owin\DependencyScopeHandler.cs" />
+    <Compile Include="Infrastructure\ViewService\IViewLoader.cs" />
+    <Compile Include="Infrastructure\ViewService\ResourceCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Startup.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Amigo.Tenant.IdentityServer.ApplicationServices\Amigo.Tenant.IdentityServer.ApplicationServices.csproj">
+      <Project>{2c9e6eef-8d56-43a2-a870-ae3db02ad39c}</Project>
+      <Name>Amigo.Tenant.IdentityServer.ApplicationServices</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.IndentityServer.DTOs\Amigo.Tenant.IdentityServer.DTOs.csproj">
+      <Project>{15e0c608-7f3e-4516-be8a-a368ec76c44a}</Project>
+      <Name>Amigo.Tenant.IdentityServer.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.IndentityServer.Infrastructure\Amigo.Tenant.IdentityServer.Infrastructure.csproj">
+      <Project>{a9f85813-90d0-4736-b89d-8bd9a090c296}</Project>
+      <Name>Amigo.Tenant.IdentityServer.Infrastructure</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\PublishProfiles\AmigoTenantIdentityServerWebAPI - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\AmigoTenantIdentityServerWebAPIDev - Web Deploy.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>8680</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://127.0.0.1:7071</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="BeforeBuild">
+    <ItemGroup>
+      <SonarQubeSetting Include="sonar.exclusions">
+        <Value>
+          **/build/**/*,**/bin/*,**/obj/*,**/Infrastructure/ViewService/HttpAssets/**/*.js
+        </Value>
+      </SonarQubeSetting>
+    </ItemGroup>
+  </Target>
+  <Import Project="..\packages\OctoPack.3.4.2\tools\OctoPack.targets" Condition="Exists('..\packages\OctoPack.3.4.2\tools\OctoPack.targets')" />
+  <Target Name="EnsureOctoPackImported" BeforeTargets="BeforeBuild" Condition="'$(OctoPackImported)' == ''">
+    <Error Condition="!Exists('..\packages\OctoPack.3.4.2\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="You are trying to build with OctoPack, but the NuGet targets file that OctoPack depends on is not available on this computer. This is probably because the OctoPack package has not been committed to source control, or NuGet Package Restore is not enabled. Please enable NuGet Package Restore to download them. For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\OctoPack.3.4.2\tools\OctoPack.targets') And ('$(RunOctoPack)' != '' And $(RunOctoPack))" Text="OctoPack cannot be run because NuGet packages were restored prior to the build running, and the targets file was unavailable when the build started. Please build the project again to include these packages in the build. You may also need to make sure that your build server does not delete packages prior to each build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

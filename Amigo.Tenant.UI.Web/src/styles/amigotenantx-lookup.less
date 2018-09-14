@@ -1,0 +1,35 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+
+.ro-lookup {
+    position: relative;
+
+    & input {
+        padding-right: 24px;
+
+        & ~ i {
+            display: inline-block;
+            font-size: 16px;
+            height: 30px;
+            opacity: .45;
+            pointer-events: none;
+            position: absolute;
+            right: 7px;
+            top: 20%;
+        }
+
+        &:focus ~ i {
+            color: @accent-color;
+            opacity: 1;
+        }
+    }
+}
+
+.form-group {
+    .ro-lookup {
+
+        & input {
+            min-width: unset;
+        }
+    }
+}

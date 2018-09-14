@@ -1,0 +1,27 @@
+<div class="initial-screen">
+    <div class="brand-logo">
+        <!--<img src="./assets/images/logo.png" alt="">-->
+    </div>
+    <div class="option customer-portal" (click)="loginCustomerPortal()" style="height: calc(100% - 74px);">
+        <div class="overlay"></div>
+        <button type="button">Tenant</button>
+    </div>
+    <!--<div class="option internal-dashboard" (click)="loginInternalDashboard()" style="height: calc(100% - 74px);">
+        <div class="overlay"></div>
+        <button type="button">Amigo Tenant Portal</button>
+    </div>-->
+    <div class="option internal-dashboard" style="height: calc(100% - 74px); cursor: default !important">
+        <div class="overlay"></div>
+        <button type="button">Transportation</button>
+    </div>
+    <div class="brand-policy">
+        <div>
+        </div>
+        <div>
+            <span>Amigo Tenant - Web Application</span> - <span>{{version}}</span>
+        </div>
+        <div>
+            <span>Copyright &copy; {{year}} Amigo Tenant. All rights reserved.</span>
+        </div>
+    </div>
+</div>

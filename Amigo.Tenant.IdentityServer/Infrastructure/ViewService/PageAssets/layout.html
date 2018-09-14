@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html ng-app="app" ng-csp ng-controller="LayoutCtrl">
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>    
+    <title>{siteName}</title>
+    {stylesheets}
+</head>
+<body lang="en" style="padding-top: 5rem;">
+    <div class="navbar navbar-fixed-top navbar-dark bg-inverse navbar-sm">
+        <div class="navbar-header">
+            <a href="{applicationPath}/">
+                <span class="navbar-brand">{siteName}</span>
+            </a>
+        </div>
+        <ul class="nav navbar-nav" ng-show="model.currentUser" ng-cloak>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="supportedContentDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{model.currentUser}}</a>
+                <div class="dropdown-menu" aria-labelledby="supportedContentDropdown">
+                    <a class="dropdown-item" href="{{model.logoutUrl}}">Logout</a>
+                    <div class="dropdown-divider" ng-show="model.loginWithDifferentAccountUrl"></div>
+                    <a class="dropdown-item" href="{{model.loginWithDifferentAccountUrl}}" ng-show="model.loginWithDifferentAccountUrl">Login With Different Account</a>
+                </div>
+            </li>            
+        </ul>
+    </div>
+
+    <div class='container-fluid page-{page}' ng-cloak role="main">
+        {pageContent}
+    </div>
+
+    <script id='modelJson' type='application/json'>{model}</script>
+    <script src="{applicationPath}/content/scripts.2.5.0.js"></script>
+    {scripts}
+</body>
+</html>

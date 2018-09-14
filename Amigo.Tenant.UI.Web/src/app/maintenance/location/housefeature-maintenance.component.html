@@ -1,0 +1,73 @@
+<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} House" 
+    (close)="close()" style="z-index:10003;" id="houseMaintenancePanel">
+
+    <div style="width:800px;height:1px;">&nbsp;</div>
+    <div class="form-horizontal">
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" 
+            [errorMessages]='errorMessages'></biz-val>
+
+        <form #houseForm="ngForm" data-val-form="houseForm" novalidate>
+          <label class="sub-header first-header">General information</label>
+                <!--<fieldset class="scheduler-border">-->
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="featureId" class="col-sm-4 control-label" style="padding-right:7px;">Feature</label>
+                  <div class="col-sm-8">
+                    <!-- <select name="featureId" [(ngModel)]="selectedFeatureId" #selectedFeatureId="ngModel"
+                            class="form-control input-control">
+                        <option *ngFor="let f of features" [ngValue]="f.featureId">{{f.code + ' - ' + f.description}}</option>
+                    </select>-->
+                    <input type="hidden" [(ngModel)]="selectedFeatureId" name="featureId" /> 
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="addressInfo" class="col-sm-2 control-label">Address</label>
+                  <div class="col-sm-10" style="padding-left:7px;">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                        class="form-control" [(ngModel)]="housefeature.addressInfo" name="addressInfo" maxlength="100" />
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="houseFeatureStatusId" class="col-sm-4 control-label">Status</label>
+                  <div class="col-sm-8">
+                    <!-- <select name="houseFeatureStatusId" [(ngModel)]="selectedStatusId" #statusId="ngModel"
+                            class="form-control input-control">
+                        <option *ngFor="let s of entityStatuses" [ngValue]="s.statusId">{{s.name}}</option>
+                    </select> -->
+                    <input type="hidden" [(ngModel)]="selectedStatusId" name="houseFeatureStatusId" />
+                  </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-sm-8">
+              <div class="form-group">
+                  <label for="isRentable" class="col-sm-4 control-label">Rentable</label>
+                  <div class="col-sm-8">
+                      <input type="checkbox" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
+                          [(ngModel)]="housefeature.isRentable" name="isRentable"/>
+                  </div>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                  <label for="rentPrice" class="col-sm-4 control-label">Rent</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" 
+                        class="form-control" [(ngModel)]="housefeature.rentPrice" name="rentPrice" maxlength="100" />
+                  </div>
+              </div>
+            </div>
+          </div>
+        </form>
+    </div>
+    <div class="k-window-buttons">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="houseForm.form.valid" [formName]="'houseForm'"></st-boton-maintenance>
+    </div>
+
+</kendo-dialog>

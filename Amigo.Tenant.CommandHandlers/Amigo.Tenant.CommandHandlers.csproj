@@ -1,0 +1,215 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{DDDE4A34-9B1B-4F47-9B90-499720596BDB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.CommandHandlers</RootNamespace>
+    <AssemblyName>Amigo.Tenant.CommandHandlers</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="ExpressMapper, Version=1.9.1.0, Culture=neutral, PublicKeyToken=ac363faa09311ba0, processorArchitecture=MSIL">
+      <HintPath>..\packages\Expressmapper.1.9.1\lib\net46\ExpressMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="NodaTime, Version=1.3.0.0, Culture=neutral, PublicKeyToken=4226afe0d9b296d1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NodaTime.1.3.2\lib\net35-Client\NodaTime.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Abstract\IAsyncCommandHandler.cs" />
+    <Compile Include="Common\CommandResultExtension.cs" />
+    <Compile Include="Expense\ExpenseDetailDeleteCommandHandler.cs" />
+    <Compile Include="Expense\ExpenseDeleteCommandHandler.cs" />
+    <Compile Include="Expense\ExpenseDetailRegisterCommandHandler.cs" />
+    <Compile Include="Expense\ExpenseRegisterCommandHandler.cs" />
+    <Compile Include="Expense\ExpenseDetailUpdateCommandHandler.cs" />
+    <Compile Include="Expense\ExpenseUpdateCommandHandler.cs" />
+    <Compile Include="Extensions\ActionExtensions.cs" />
+    <Compile Include="Extensions\CityExtensions.cs" />
+    <Compile Include="Extensions\CostCenterExtensions.cs" />
+    <Compile Include="Extensions\DeviceExtensions.cs" />
+    <Compile Include="Extensions\LocationCoordinateExtensions.cs" />
+    <Compile Include="Extensions\LocationExtensions.cs" />
+    <Compile Include="Extensions\LocationTypeExtensions.cs" />
+    <Compile Include="Extensions\ModuleExtensions.cs" />
+    <Compile Include="Extensions\PermissionExtensions.cs" />
+    <Compile Include="Extensions\ProductExtensions.cs" />
+    <Compile Include="Extensions\AmigoTenantTRoleExtensions.cs" />
+    <Compile Include="Extensions\AmigoTenantTUserExtensions.cs" />
+    <Compile Include="Extensions\MoveExtensions.cs" />
+    <Compile Include="Leasing\Contract\ContractDeleteCommandHandler.cs" />
+    <Compile Include="Leasing\Contract\ContractChangeStatusCommandHandler.cs" />
+    <Compile Include="Leasing\Contract\ContractUpdateCommandHandler.cs" />
+    <Compile Include="Leasing\Contract\ContractRegisterCommandHandler.cs" />
+    <Compile Include="Mapping\ContractProfile.cs" />
+    <Compile Include="Mapping\DeviceProfile.cs" />
+    <Compile Include="Mapping\HouseProfile.cs" />
+    <Compile Include="Mapping\LocationCoordinateProfile.cs" />
+    <Compile Include="Mapping\LocationsProfile.cs" />
+    <Compile Include="Mapping\MainTenantProfile.cs" />
+    <Compile Include="Mapping\MovesProfile.cs" />
+    <Compile Include="Mapping\PermissionProfile.cs" />
+    <Compile Include="Mapping\ProductProfile.cs" />
+    <Compile Include="Mapping\AmigoTenantTRoleProfile.cs" />
+    <Compile Include="Mapping\AmigoTenanttServiceProfile.cs" />
+    <Compile Include="Mapping\AmigoTenantTEventLogProfile.cs" />
+    <Compile Include="Mapping\AmigoTenantTUserProfile.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseFeatureCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseServiceCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseFeatureCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseServiceCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseFeatureCommandHandler.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseServiceCommandHandler.cs" />
+    <Compile Include="MasterData\MainTenants\DeleteMainTenantCommandHandler.cs" />
+    <Compile Include="MasterData\MainTenants\RegisterMainTenantCommandHandler.cs" />
+    <Compile Include="MasterData\MainTenants\UpdateMainTenantCommandHandler.cs" />
+    <Compile Include="MasterData\RentalAplications\RentalApplicationDeleteCommandHandler.cs" />
+    <Compile Include="MasterData\RentalAplications\RentalApplicationRegisterCommandHandler.cs" />
+    <Compile Include="MasterData\RentalAplications\RentalApplicationUpdateCommandHandler.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodHeaderCommandHandler.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Authorization\UpdateDeviceAuthorizationCommandHandler.cs" />
+    <Compile Include="Security\CostCenters\DeleteDeviceCommandHandler.cs" />
+    <Compile Include="Security\CostCenters\RegisterCostCenterCommandHandler.cs" />
+    <Compile Include="Security\CostCenters\UpdateCostCenterCommandHandler.cs" />
+    <Compile Include="Security\Modules\DeleteModuleCommandHandler.cs" />
+    <Compile Include="Security\Modules\RegisterModuleCommandHandler.cs" />
+    <Compile Include="Security\Modules\UpdateModuleCommandHandler.cs" />
+    <Compile Include="Security\Permission\DeletePermissionCommandHandler.cs" />
+    <Compile Include="Security\Permission\RegisterPermissionCommandHandler.cs" />
+    <Compile Include="Security\Permission\UpdatePermissionCommandHandler.cs" />
+    <Compile Include="Security\Roles\DeleteAmigoTenantTRoleCommandHandler.cs" />
+    <Compile Include="Security\Roles\RegisterAmigoTenantTRoleCommandHandler.cs" />
+    <Compile Include="Security\Roles\UpdateAmigoTenantTRoleCommandHandler.cs" />
+    <Compile Include="Security\Devices\DeleteDeviceCommandHandler.cs" />
+    <Compile Include="Security\Devices\RegisterDeviceCommandHandler.cs" />
+    <Compile Include="Security\Devices\UpdateDeviceCommandHandler.cs" />
+    <Compile Include="Security\Users\DeleteAmigoTenantTUserCommandHandler.cs" />
+    <Compile Include="Security\Users\UpdateAmigoTenantTUserCommandHandler.cs" />
+    <Compile Include="Security\Users\RegisterAmigoTenantTUserCommandHandler.cs" />
+    <Compile Include="Tracking\Approve\RegisterDriverReportCommandHandler.cs" />
+    <Compile Include="Tracking\Approve\UpdateAmigoTenantTServiceApproveCommandHandler.cs" />
+    <Compile Include="Tracking\Locations\DeleteLocationCommandHandler.cs" />
+    <Compile Include="Tracking\Locations\DeleteLocationCoordinatesCommandHandler.cs" />
+    <Compile Include="Tracking\Locations\RegisterLocationCommandHandler.cs" />
+    <Compile Include="Tracking\Locations\RegisterLocationCoordinatesCommandHandler.cs" />
+    <Compile Include="Tracking\Locations\UpdateLocationCommandHandler.cs" />
+    <Compile Include="Tracking\Moves\RegisterMoveCommandHandler.cs" />
+    <Compile Include="Tracking\Moves\RegisterAmigoTenanttServiceCommandHandler.cs" />
+    <Compile Include="Tracking\Moves\UpdateAmigoTenanttServiceAckCommandHandler.cs" />
+    <Compile Include="Tracking\Moves\CancelAmigoTenanttServiceCommandHandler.cs" />
+    <Compile Include="Tracking\Moves\UpdateAmigoTenanttServiceCommandHandler.cs" />
+    <Compile Include="Tracking\Product\DeleteProductCommandHandler.cs" />
+    <Compile Include="Tracking\Product\RegisterProductCommandHandler.cs" />
+    <Compile Include="Tracking\Product\UpdateProductCommandHandler.cs" />
+    <Compile Include="Tracking\AmigoTenantTEventLog\RegisterAmigoTenantTEventLogCommandHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
+      <Project>{e24205a2-8839-4ad1-aa3a-1f5cb0a5b586}</Project>
+      <Name>Amigo.Tenant.Application.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.CommandModel\Amigo.Tenant.CommandModel.csproj">
+      <Project>{897D8378-F63C-42AA-9C77-ED7A21256F00}</Project>
+      <Name>Amigo.Tenant.CommandModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Commands\Amigo.Tenant.Commands.csproj">
+      <Project>{738CB40B-1024-461E-95F5-92A7D74A4436}</Project>
+      <Name>Amigo.Tenant.Commands</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Common\Amigo.Tenant.Common.csproj">
+      <Project>{9658ea9d-9dbe-42b3-954e-4461e2d4086c}</Project>
+      <Name>Amigo.Tenant.Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Events\Amigo.Tenant.Events.csproj">
+      <Project>{9B14AA79-E7B2-4B63-986D-7AD55138DFE9}</Project>
+      <Name>Amigo.Tenant.Events</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Infrastructure.Persistence.EF\Amigo.Tenant.Infrastructure.Persistence.EF.csproj">
+      <Project>{2276BF6A-F1BE-4AB3-87E4-7CCE49272997}</Project>
+      <Name>Amigo.Tenant.Infrastructure.Persistence.EF</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Infrastructure.Persistence\Amigo.Tenant.Infrastructure.Persistence.csproj">
+      <Project>{42F7694D-E786-4B7B-AC78-3A6C1A21FD43}</Project>
+      <Name>Amigo.Tenant.Infrastructure.Persistence</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.Infrastructure\Amigo.Tenant.Infrastructure.csproj">
+      <Project>{35A06ABC-880A-407F-A6FB-AED95BA31E5E}</Project>
+      <Name>Amigo.Tenant.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.ServiceAgent.IdentityServer\Amigo.Tenant.ServiceAgent.IdentityServer.csproj">
+      <Project>{07959646-B943-448C-B814-931EFF480DFB}</Project>
+      <Name>Amigo.Tenant.ServiceAgent.IdentityServer</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

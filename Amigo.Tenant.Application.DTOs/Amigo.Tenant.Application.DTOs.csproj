@@ -1,0 +1,284 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>10.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{E24205A2-8839-4AD1-AA3A-1F5CB0A5B586}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.Application.DTOs</RootNamespace>
+    <AssemblyName>Amigo.Tenant.Application.DTOs</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AuditDTO.cs" />
+    <Compile Include="Common\BaseDTO.cs" />
+    <Compile Include="IEntity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Requests\Common\AuditBaseRequest.cs" />
+    <Compile Include="Requests\Common\IAuditBaseRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseDetailChangeStatusRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseChangeStatusRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseDetailDeleteRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseDeleteRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseDetailRegisterRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseRegisterRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseSearchRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseDetailUpdateRequest.cs" />
+    <Compile Include="Requests\Expense\ExpenseUpdateRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractDetailObligationRegisterRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractDetailRegisterRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractHouseDetailRegisterRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractDeleteRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractChangeStatusRequest.cs" />
+    <Compile Include="Requests\Leasing\OtherTenantRegisterRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractSearchRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractRegisterRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractUpdateRequest.cs" />
+    <Compile Include="Requests\MasterData\RentalApplicationDeleteRequest.cs" />
+    <Compile Include="Requests\MasterData\RentalApplicationSearchRequest.cs" />
+    <Compile Include="Requests\MasterData\DeleteHouseFeatureRequest.cs" />
+    <Compile Include="Requests\MasterData\DeleteHouseRequest.cs" />
+    <Compile Include="Requests\MasterData\DeleteHouseServiceRequest.cs" />
+    <Compile Include="Requests\MasterData\DeleteMainTenantRequest.cs" />
+    <Compile Include="Requests\MasterData\GetHouseRequest.cs" />
+    <Compile Include="Requests\MasterData\GetMainTenantRequest.cs" />
+    <Compile Include="Requests\MasterData\HouseFeatureRequest.cs" />
+    <Compile Include="Requests\MasterData\HouseSearchRequest.cs" />
+    <Compile Include="Requests\MasterData\HouseServicePeriodRequest.cs" />
+    <Compile Include="Requests\MasterData\HouseServiceRequest.cs" />
+    <Compile Include="Requests\MasterData\MainTenantCodeNameRequest.cs" />
+    <Compile Include="Requests\MasterData\MainTenantSearchRequest.cs" />
+    <Compile Include="Requests\MasterData\RegisterHouseRequest.cs" />
+    <Compile Include="Requests\MasterData\RegisterMainTenantRequest.cs" />
+    <Compile Include="Requests\MasterData\RentalApplicationUpdateRequest.cs" />
+    <Compile Include="Requests\MasterData\RentalApplicationRegisterRequest.cs" />
+    <Compile Include="Requests\MasterData\UpdateHouseRequest.cs" />
+    <Compile Include="Requests\MasterData\UpdateMainTenantRequest.cs" />
+    <Compile Include="Requests\Notification\SendNotificationRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\EmailProcessRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\PaymentPeriodUpdateRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\PaymentPeriodSearchByContractPeriodRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\PaymentPeriodSearchRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\PaymentPeriodRegisterRequest.cs" />
+    <Compile Include="Requests\Product\ProductSearchRequest.cs" />
+    <Compile Include="Requests\Security\ActionStatusRequest.cs" />
+    <Compile Include="Requests\Common\BaseStatusRequest.cs" />
+    <Compile Include="Requests\Common\IMobileRequestBase.cs" />
+    <Compile Include="Requests\Common\MobileRequestBase.cs" />
+    <Compile Include="Requests\Common\PagedRequest.cs" />
+    <Compile Include="Requests\Security\ActionRequest.cs" />
+    <Compile Include="Requests\Security\DeleteDeviceRequest.cs" />
+    <Compile Include="Requests\Security\DeleteModuleRequest.cs" />
+    <Compile Include="Requests\Security\AuthorizationRequest.cs" />
+    <Compile Include="Requests\Security\DeviceSearchRequest.cs" />
+    <Compile Include="Requests\Security\GetRolRequest.cs" />
+    <Compile Include="Requests\Security\GetModuleRequest.cs" />
+    <Compile Include="Requests\Security\MainMenuSearchRequest.cs" />
+    <Compile Include="Requests\Security\RegisterDeviceRequest.cs" />
+    <Compile Include="Requests\Security\RegisterModuleRequest.cs" />
+    <Compile Include="Requests\Security\RegisterRolRequest.cs" />
+    <Compile Include="Requests\Security\AmigoTenanttRolPermissionRequest.cs" />
+    <Compile Include="Requests\Security\UpdateDeviceRequest.cs" />
+    <Compile Include="Requests\Security\UpdateModuleRequest.cs" />
+    <Compile Include="Requests\Security\UserSearchBasicRequest.cs" />
+    <Compile Include="Requests\Tracking\DeleteProductRequest.cs" />
+    <Compile Include="Requests\Tracking\ServiceOrderNoRequest.cs" />
+    <Compile Include="Requests\Tracking\CancelAmigoTenantServiceRequest.cs" />
+    <Compile Include="Requests\Tracking\UpdateProductRequest.cs" />
+    <Compile Include="Responses\Approve\AmigoTenantTEventLogPerHourDTO.cs" />
+    <Compile Include="Responses\Expense\ExpenseDTO.cs" />
+    <Compile Include="Responses\Expense\ExpenseDetailSearchDTO.cs" />
+    <Compile Include="Responses\Expense\ExpenseSearchDTO.cs" />
+    <Compile Include="Responses\Houses\HouseBasicDTO.cs" />
+    <Compile Include="Responses\Houses\HouseFeatureAndDetailDTO.cs" />
+    <Compile Include="Responses\Houses\HouseDTO.cs" />
+    <Compile Include="Responses\Houses\HouseFeatureDTO.cs" />
+    <Compile Include="Responses\Houses\HouseServiceDTO.cs" />
+    <Compile Include="Responses\Houses\HouseServicePeriodDTO.cs" />
+    <Compile Include="Responses\Houses\HouseStatusDTO.cs" />
+    <Compile Include="Responses\Houses\HouseTypeDTO.cs" />
+    <Compile Include="Responses\Houses\HouseWithCoordinatesDTO.cs" />
+    <Compile Include="Responses\Leasing\HouseFeatureDetailContractDTO.cs" />
+    <Compile Include="Responses\Leasing\ContractHouseDetailDTO.cs" />
+    <Compile Include="Responses\Leasing\ContractSearchDTO.cs" />
+    <Compile Include="Responses\Leasing\ContractDTO.cs" />
+    <Compile Include="Responses\MasterData\RentalApplicationSearchDTO.cs" />
+    <Compile Include="Responses\MasterData\RentalApplicationDTO.cs" />
+    <Compile Include="Responses\MasterData\CountryDTO.cs" />
+    <Compile Include="Responses\MasterData\GeneralTableDTO.cs" />
+    <Compile Include="Responses\MasterData\FeatureDTO.cs" />
+    <Compile Include="Responses\MasterData\ConceptDTO.cs" />
+    <Compile Include="Responses\MasterData\PeriodDTO.cs" />
+    <Compile Include="Responses\MasterData\EntityStatusDTO.cs" />
+    <Compile Include="Responses\MasterData\OtherTenantDTO.cs" />
+    <Compile Include="Responses\MasterData\TenantBasicDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPDetailSearchByInvoiceDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPDetailSearchByContractPeriodDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPHeaderSearchByInvoiceDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPHeaderSearchByContractPeriodDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPSearchByContractPeriodDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPPrintDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPSearchDTO.cs" />
+    <Compile Include="Responses\Security\IdentityUserDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTUserAuditDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTUserBasicDTO.cs" />
+    <Compile Include="Responses\Security\UserAuthorizationDTO.cs" />
+    <Compile Include="Requests\Tracking\DashboardCurrentRequest.cs" />
+    <Compile Include="Requests\Tracking\DashboardHistoryRequest.cs" />
+    <Compile Include="Requests\Tracking\DeleteLocationCoordinatesRequest.cs" />
+    <Compile Include="Requests\Security\PermissionSearchRequest.cs" />
+    <Compile Include="Requests\Security\AmigoTenantTRoleSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\DeleteLocationRequest.cs" />
+    <Compile Include="Requests\Tracking\DispatchingPartySearchRequest.cs" />
+    <Compile Include="Requests\Tracking\EquipmentSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\EquipmentStatusSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\CostCenterSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\EquipmentTypeSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\EquipmentSizeSearchRequest.cs" />
+    <Compile Include="Requests\Security\UserSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\GetCitiesRequest.cs" />
+    <Compile Include="Requests\Tracking\GetLocationRequest.cs" />
+    <Compile Include="Requests\Tracking\Last24HoursRequest.cs" />
+    <Compile Include="Requests\Tracking\LatestPositionRequest.cs" />
+    <Compile Include="Requests\Tracking\LocationCoordinatesListRequest.cs" />
+    <Compile Include="Requests\Tracking\LocationSearchRequest.cs" />
+    <Compile Include="Requests\Security\ModuleSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\ProductSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\RegisterLocationCoordinatesRequest.cs" />
+    <Compile Include="Requests\Tracking\RegisterLocationRequest.cs" />
+    <Compile Include="Requests\Tracking\RegisterMoveRequest.cs" />
+    <Compile Include="Requests\Tracking\ActivityTypeSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTEventLogSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceApproveRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceApproveSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceSearchChargeNumRequest.cs" />
+    <Compile Include="Requests\Tracking\DriverPayReportSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\UpdateAmigoTenantTServiceAckRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceChargeRequest.cs" />
+    <Compile Include="Requests\Tracking\AmigoTenantTServiceRequest.cs" />
+    <Compile Include="Requests\Tracking\UpdateAmigoTenantServiceRequest.cs" />
+    <Compile Include="Requests\Tracking\ActivityEventLogSearchRequest.cs" />
+    <Compile Include="Responses\Approve\DriverReportDTO.cs" />
+    <Compile Include="Responses\Approve\PagedListServices.cs" />
+    <Compile Include="Responses\Approve\AmigoTenantTServiceChargeDTO.cs" />
+    <Compile Include="Responses\Common\UserResponse.cs" />
+    <Compile Include="Responses\MasterData\EquipmentTypeResponse.cs" />
+    <Compile Include="Responses\Approve\AmigoTenantTServiceApproveRateDTO.cs" />
+    <Compile Include="Responses\DriverReport\AmigoTenanttServiceLatestDTO.cs" />
+    <Compile Include="Responses\Move\AmigoTenantTServiceReportDTO.cs" />
+    <Compile Include="Responses\Move\AmigoTenanttServiceDTO.cs" />
+    <Compile Include="Responses\Security\ActionDTO.cs" />
+    <Compile Include="Responses\Security\AppVersionDTO.cs" />
+    <Compile Include="Responses\Security\DeviceDTO.cs" />
+    <Compile Include="Responses\Security\ModelDTO.cs" />
+    <Compile Include="Responses\Security\ModuleActionsDTO.cs" />
+    <Compile Include="Responses\Security\MainMenuDTO.cs" />
+    <Compile Include="Responses\Security\OSVersionDTO.cs" />
+    <Compile Include="Responses\Security\RoleDTO.cs" />
+    <Compile Include="Responses\Security\RolPermissionDTO.cs" />
+    <Compile Include="Responses\MasterData\MainTenantDTO.cs" />
+    <Compile Include="Responses\Services\ServiceHouseDTO.cs" />
+    <Compile Include="Responses\Services\ServiceHousePeriodDTO.cs" />
+    <Compile Include="Responses\Tracking\RateDTO.cs" />
+    <Compile Include="Responses\Tracking\ActivityEventLogDTO.cs" />
+    <Compile Include="Responses\Tracking\ActivityTypeDTO.cs" />
+    <Compile Include="Responses\Tracking\CustomAmigoTenantParameterDTO.cs" />
+    <Compile Include="Responses\Tracking\InternalReportDTO.cs" />
+    <Compile Include="Responses\Tracking\ExternalReportDTO.cs" />
+    <Compile Include="Responses\Tracking\Last24HoursDTO.cs" />
+    <Compile Include="Responses\Tracking\CostCenterTypeAheadDTO.cs" />
+    <Compile Include="Responses\Tracking\ProductTypeAheadDTO.cs" />
+    <Compile Include="Responses\Tracking\LocationTypeAheadDTO.cs" />
+    <Compile Include="Responses\Tracking\LocationTypeDTO.cs" />
+    <Compile Include="Responses\Tracking\LocationWithCoordinatesDTO.cs" />
+    <Compile Include="Responses\Tracking\ParameterDTO.cs" />
+    <Compile Include="Responses\Tracking\LatestPositionDTO.cs" />
+    <Compile Include="Responses\Tracking\ParentLocationDTO.cs" />
+    <Compile Include="Responses\Tracking\AmigoTenantParameterDTO.cs" />
+    <Compile Include="Responses\Tracking\AmigoTenantTEventLogDTO.cs" />
+    <Compile Include="Requests\Tracking\ServiceTypeSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\ServiceSearchRequest.cs" />
+    <Compile Include="Requests\Tracking\RegisterProductRequest.cs" />
+    <Compile Include="Requests\Tracking\UpdateLocationRequest.cs" />
+    <Compile Include="Responses\Common\ApplicationMessage.cs" />
+    <Compile Include="Responses\Common\PagedList.cs" />
+    <Compile Include="Responses\Common\ResponseBuilder.cs" />
+    <Compile Include="Responses\Common\ResponseDTO.cs" />
+    <Compile Include="Responses\Security\PermissionDTO.cs" />
+    <Compile Include="Responses\Security\PermissionStatusDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTRoleDropDownDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTRoleDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTRoleStatusDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTUserStatusDTO.cs" />
+    <Compile Include="Responses\Tracking\CityDTO.cs" />
+    <Compile Include="Responses\Tracking\ActionModuleDTO.cs" />
+    <Compile Include="Responses\Tracking\DispatchingPartyDTO.cs" />
+    <Compile Include="Responses\Tracking\EquipmentStatusDTO.cs" />
+    <Compile Include="Responses\Tracking\CostCenterDTO.cs" />
+    <Compile Include="Responses\Security\AmigoTenantTUserDTO.cs" />
+    <Compile Include="Responses\Tracking\EquipmentSizeDTO.cs" />
+    <Compile Include="Responses\Tracking\EquipmentDTO.cs" />
+    <Compile Include="Responses\Tracking\EquipmentTypeDTO.cs" />
+    <Compile Include="Responses\Tracking\LocationCoordinateDTO.cs" />
+    <Compile Include="Responses\Tracking\LocationDTO.cs" />
+    <Compile Include="Responses\Tracking\MoveResponse.cs" />
+    <Compile Include="Responses\Security\ModuleDTO.cs" />
+    <Compile Include="Responses\Tracking\ProductDTO.cs" />
+    <Compile Include="Responses\Tracking\ServiceTypeDTO.cs" />
+    <Compile Include="Responses\Tracking\ServiceDTO.cs" />
+    <Compile Include="Responses\Tracking\AmigoTenantTEventLogSearchResultDTO.cs" />
+    <Compile Include="Responses\Tracking\DriverPayReportDTO.cs" />
+    <Compile Include="Responses\UtilityBills\UtilityBillDTO.cs" />
+    <Compile Include="Responses\UtilityBills\UtilityHouseServiceDTO.cs" />
+    <Compile Include="Responses\UtilityBills\UtilityHouseServicePeriodDTO.cs" />
+    <Compile Include="Responses\UtilityBills\UtilityPeriodDTO.cs" />
+    <Compile Include="Responses\UtilityBills\UtilityServicePeriodDTO.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Responses\IdentityServer\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

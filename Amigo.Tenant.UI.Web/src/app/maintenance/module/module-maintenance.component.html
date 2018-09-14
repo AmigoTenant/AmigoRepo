@@ -1,0 +1,166 @@
+﻿<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} Module" *ngIf="mainPopupOpened" (close)="mainPopupClose()">
+    <div>
+        <div class="form-horizontal">
+            <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+
+            <form #moduleForm="ngForm" data-val-form="moduleForm">
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Code</label>
+                            <div class="col-sm-10">
+                                <input st-autofocus [isFocused]="isNew" type="text" class="form-control" [(ngModel)]="maintenance.code"maxlength="20" required name="code" #code="ngModel" [readOnly] ="!isNew" />
+                                <label [hidden]="code.valid || (code.pristine && code.untouched)" class="message error"  >Code is required</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Name</label>
+                            <div class="col-sm-11">
+                                <input st-autofocus [isFocused]="!isNew" type="text" class="form-control" [(ngModel)]="maintenance.name" maxlength="50" required name="name" #name="ngModel" />
+                                <label [hidden]="name.valid || (name.pristine && name.untouched)" class="message error">Name is required</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="form-group">
+                            <label class="col-sm-1 control-label">Url</label>
+                            <div class="col-sm-11">
+                                <input type="text" class="form-control" [(ngModel)]="maintenance.url" name="url" maxlength="200"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Order</label>
+                            <div class="col-sm-5">
+                               <input type="text" id="idorder" class="form-control" [(ngModel)]="maintenance.sortOrder"                                       
+                                       name="sortOrder" (keypress)="restrictNumeric($event)" maxlength="3"/>
+                                  <!--(keypress)="isNumeric($event)"-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" style="padding-left: 8px;">Parent</label>
+                            <div class="col-sm-5">
+                                <select class="form-control" [(ngModel)]="maintenance.parentModuleCode" style="width: 148px;"
+                                        (change)="onChange($event.target.value)" name="parentModuleCode">
+                                    <!--<option value="">[ Select ]</option> -->
+                                    <option *ngFor="let parent of listParents" [attr.value]='parent.code'>
+                                        {{parent.name}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+
+            <div class="form-group" *ngIf='flgEdition=="E"'>
+                <ul class="ro-toggle">
+                    <li>
+                        <!--<input type="button" class="ro-button btn-default" value="Add Action" (click)="childPopupOpen()">-->
+                        <input type="checkbox" id="cb1" class="toggle-check" />
+                        <label for="cb1" class="ro-button btn-default toggle-button" (click)="actionForm.reset();selectModule({code: maintenance.code})"><span>Add Action</span></label>
+                        <label class="toggle-title">Add Action</label>
+                        <label for="cb1" class="toggle-close"><i class="xico-action-close"></i></label>
+                        <div class="toggle-content">
+                            <form class="form-horizontal" #actionForm="ngForm" role="form" data-val-form="actionForm">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="col-sm-3 control-label">Code</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" [(ngModel)]="actionModel.code" required name="code" #code="ngModel" />
+                                                    <label [hidden]="code.valid || (code.pristine && code.untouched)" class="message error">Code is required</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="col-sm-3 control-label">Name</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" [(ngModel)]="actionModel.name" required name="name" #name="ngModel" />
+                                                    <label [hidden]="name.valid || (name.pristine && name.untouched)" class="message error">Name is required</label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="col-sm-3 control-label">Description</label>
+                                                <div class="col-sm-9">
+                                                    <input type="text" class="form-control" [(ngModel)]="actionModel.description" name="description" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <label class="col-sm-3 control-label">Type</label>
+                                                <div class="col-sm-9">
+                                                    <select class="form-control" id="idType" 
+                                                            (change)="onChangeType($event.target.value)">
+                                                        <!--<option value="">[ Select ]</option>-->
+                                                        <option *ngFor="let type of typeList" [value]='type.code'>
+                                                            {{type.name}}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="k-window-buttons">
+                                <button type="button" class="ro-button btn-submit"  (click)="AddItemAction(actionForm.form.valid)">Add</button>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="k-grid-sm" *ngIf="showAction">
+            <kendo-grid [data]="gridAction" [selectable]="true" [height]="220">
+                <kendo-grid-column field="code" title="Code"></kendo-grid-column>
+                <kendo-grid-column field="name" title="Name"></kendo-grid-column>
+                <kendo-grid-column field="description" title="Description"></kendo-grid-column>
+                <kendo-grid-column field="type" title="Type"></kendo-grid-column>
+                <kendo-grid-column title="" width="60">
+                    <ng-template kendoGridCellTemplate let-dataItem>
+                        <button type="button" class="btn-icon" (click)="setSelected(dataItem.code);">
+                            <i class="xico-action-remove"></i>
+                        </button>
+                    </ng-template>
+                </kendo-grid-column>
+            </kendo-grid>
+        </div>
+        <div class="k-window-buttons">
+            <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="moduleForm.form.valid" [formName]="'moduleForm'"  ></st-boton-maintenance>
+        </div>
+    </div>
+
+</kendo-dialog>
+
+<kendo-dialog title="Confirm" *ngIf="confirmDeletionVisible" (close)="closeConfirmation('cancel')">
+    <div>Delete action?</div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeConfirmation('yes')" class="k-button k-primary" primary="true">Yes</button>
+        <button kendoButton (click)="closeConfirmation('no')" class="k-button">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+
+<kendo-dialog title="Confirm" *ngIf="confirmActionVisible" (close)="closeConfirmation('cancel')">
+    <div class="alert alert-success">Module Saved Successful</div>
+    <div>Do you want to add Action?</div>
+    <kendo-dialog-actions>
+        <button kendoButton (click)="closeActionConfirmation('yes')" class="k-button k-primary" primary="true">Yes</button>
+        <button kendoButton (click)="closeActionConfirmation('no')" class="k-button">No</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

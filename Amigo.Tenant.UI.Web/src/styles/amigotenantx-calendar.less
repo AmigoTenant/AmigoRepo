@@ -1,0 +1,53 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+// Calendar
+
+.ro-modern {
+
+    .ro-calendar {
+        position: relative;
+
+        input {
+            pointer-events: none;
+
+            &:focus ~ .ro-calendar-btn {
+                color: @accent-color;
+                opacity: 1;
+            }
+        }
+
+        .ro-calendar-btn {
+            cursor: pointer;
+            height: 30px;
+            opacity: .45;
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+
+            i {
+                font-size: 16px;
+                pointer-events: none;
+                position: absolute;
+                right: 7px;
+                top: 20%;
+            }
+        }
+
+        table {
+            border-collapse: separate;
+            font-size: 12px;
+
+            button,
+            select {
+                border-radius: 2px;
+                cursor: pointer;
+                font-size: 12px;
+            }
+
+            select {
+                background-position-x: 38px;
+            }
+        }
+    }
+}

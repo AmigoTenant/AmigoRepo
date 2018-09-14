@@ -1,0 +1,249 @@
+<div class="page-header">
+    Daily Move Sheet Approval
+</div>
+
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">All <span class="tab-counter">{{totalResultCount}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <form>
+                        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+                        <div class="filter-bar">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="filter-control">
+                                        <label for="paidBy" class="control-label">Paid By</label>
+                                        <label>
+                                            <select class="form-control" [(ngModel)]="amigoTenantTServiceApproveSearchRequest.paidBy" (ngModelChange)="onSelectPaidBy()" name="paidBy">
+                                                <option *ngFor="let paidBy of paidByList" [ngValue]="paidBy.code">{{paidBy.name}}</option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                    <div class="filter-control">
+                                        <label for="driver" class="control-label">Driver</label>
+                                        <label>
+                                            <ngbd-typeahead-usernew (modelOutput)="getDriver($event)" [currentUser]="currentUser"></ngbd-typeahead-usernew>
+                                        </label>
+                                    </div>
+
+                                    <div class="filter-control" *ngIf="amigoTenantTServiceApproveSearchRequest.paidBy=='M'">
+                                        <label for="from" class="control-label">From</label>
+                                        <label class="ro-calendar">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="from" ngbDatepicker #d1="ngbDatepicker"
+                                                   [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()" [outside-click]="d1">
+                                            <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar"></i></span>
+                                        </label>
+                                    </div>
+                                    <div class="filter-control" *ngIf="amigoTenantTServiceApproveSearchRequest.paidBy=='M'">
+                                        <label for="to" class="control-label">To</label>
+                                        <label class="ro-calendar">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="to" ngbDatepicker #d2="ngbDatepicker" [(ngModel)]="modelTo"
+                                                   (ngModelChange)="onSelectModelTo()" [outside-click]="d2">
+                                            <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar"></i></span>
+                                        </label>
+                                    </div>
+
+                                    <div class="filter-control" *ngIf="amigoTenantTServiceApproveSearchRequest.paidBy=='H'">
+                                        <label for="from" class="control-label">Date</label>
+                                        <label class="ro-calendar">
+                                            <input class="form-control" [placeholder]="localization.dateFormat" name="from" ngbDatepicker #d="ngbDatepicker"
+                                                   [(ngModel)]="modelServiceDate" (ngModelChange)="onSelectModelServiceDate()" [outside-click]="d">
+                                            <span class="ro-calendar-btn" (click)="d.toggle()"><i class="xico-ui-calendar"></i></span>
+                                        </label>
+                                    </div>
+                                    <div class="filter-control">
+                                        <label for="serviceStatusId" class="control-label">Status</label>
+                                        <label>
+                                            <select class="form-control" [(ngModel)]="amigoTenantTServiceApproveSearchRequest.serviceStatusId" name="serviceStatusId" (ngModelChange)="onChangeServiceStatus()">
+                                                <option *ngFor="let item of listServiceStatus" [ngValue]='item.serviceStatusId'>
+                                                    {{item.name}}
+                                                </option>
+                                            </select>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 text-right">
+                                    <div class="button-container">
+                                        <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck [actionCode]="'Approval.Search'">Search</button>
+                                    </div>
+                                    <div class="button-container">
+                                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <!--onApprove()-->
+                                <button type="button" class="ro-button btn-default" (click)="approvedPopupOpen('A')" [disabled]="isValidToApprove" st-authCheck [actionCode]="'Approval.Approve'">Approve</button>
+                            </div>
+                            <div class="button-container">
+                                <button type="button" class="ro-button btn-default" (click)="approvedPopupOpen('R')" [disabled]="isValidToApprove" st-authCheck [actionCode]="'Approval.Approve'">Reject</button>
+                            </div>
+                            <div ro-side-panel-toggle="" class="glance-view isInactive"><i class="xico-glance-view"></i></div>
+                            <div class="counter-container">
+                                <span class="ro-badge">
+                                    <span class="ro-badge-chip approved">{{approvedTotals}}</span>
+                                    <span class="ro-badge-text">Approved</span>
+                                </span>
+                                <span class="ro-badge">
+                                    <span class="ro-badge-chip rejected">{{rejectedTotals}}</span>
+                                    <span class="ro-badge-text">Rejected</span>
+                                </span>
+                                <span class="ro-badge">
+                                    <span class="ro-badge-chip pending">{{pendingTotals}}</span>
+                                    <span class="ro-badge-text">Pending</span>
+                                </span>
+                            </div>
+                        </div>
+                    </form>
+
+
+                    <div class="grid-container">
+                        <kendo-grid id="kgrid-driverApproval" [data]="amigoTenantTServiceReportDTOs" [pageSize]="amigoTenantTServiceApproveSearchRequest.pageSize" [skip]="currentPage" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" [height]="550" (pageChange)="pageChange($event)" [selectable]="true" (selectionChange)="selectionChange($event)">
+
+                            <kendo-grid-column [width]="50">
+                                <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                    <div class="text-center">
+                                        <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" [disabled]="isValidToApprove" value="option" (change)="changeItemHeader()" />
+                                    </div>
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                                    <div class="text-center">
+                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" [disabled]="dataItem.serviceStatus===null?false:true" value="option" [checked]="dataItem.IsSelected" (change)="changeItem(dataItem)" />
+                                        <label htmlFor="{{rowIndex}}"></label>
+
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="userName" title="Driver"></kendo-grid-column>
+                            <kendo-grid-column title="Charge Type">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div *ngIf="dataItem.chargeType=='C'">
+                                        <span>Cost Center</span>
+                                    </div>
+                                    <div *ngIf="dataItem.chargeType=='S'">
+                                        <span>ShipmentID</span>
+                                    </div>
+                                    <div *ngIf="dataItem.serviceStatus===false">
+                                        <label class="label-status rejected">REJECTED</label>
+                                    </div>
+                                    <div *ngIf="dataItem.serviceStatus===true">
+                                        <label class="label-status approved">APPROVED</label>
+                                    </div>
+                                    <div *ngIf="dataItem.serviceStatus===null">
+                                        <label class="label-status pending">PENDING</label>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Charge No">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.chargeNo}}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <!--<kendo-grid-column field="costCenterCode" title="Cost Center"></kendo-grid-column>
+                            <kendo-grid-column field="shipmentID" title="ShipmentID"></kendo-grid-column>-->
+                            <!--<kendo-grid-column field="Charge Number" title="">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.chargeNoType}}<br>{{dataItem.chargeNoTypeDesc}}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>-->
+                            <kendo-grid-column field="equipmentNumber" title="Equipment">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.equipmentNumber}}<br></span>
+                                        <div *ngIf="dataItem.equipmentStatusName!=null && dataItem.equipmentStatusName!=''">
+                                            <label class="label-status default">{{dataItem.equipmentStatusName}}</label>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="equipmentTypeCode" title="Type"></kendo-grid-column>
+                            <kendo-grid-column field="chassisNumber" title="Chassis No"></kendo-grid-column>
+                            <kendo-grid-column field="serviceName" title="Service"></kendo-grid-column>
+                            <kendo-grid-column field="originLocationName" title="From"></kendo-grid-column>
+                            <kendo-grid-column field="destinationLocationName" title="To"></kendo-grid-column>
+                            <kendo-grid-column title="Start (CST)">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <p *ngIf="dataItem.serviceStartDate !=null">
+                                        <span>{{dataItem.localServiceStartDate|date:"MM/dd/yyyy"}}</span><br />
+                                        <span>{{dataItem.localServiceStartDate|date:"HH:mm"}}</span>
+                                    </p>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Finish (CST)">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <p *ngIf="dataItem.serviceFinishDate !=null">
+                                        <span>{{dataItem.localServiceFinishDate| date:"MM/dd/yyyy"  }}</span><br />
+                                        <span>{{dataItem.localServiceFinishDate| date:"HH:mm" }}</span>
+                                    </p>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="productName" title="Product"></kendo-grid-column>
+                            <kendo-grid-column field="payBy" title="Pay By"></kendo-grid-column>
+                            <kendo-grid-column field="acknowledgeBy" title="Acknowledged by"></kendo-grid-column>
+                            <kendo-grid-column field="dispatchingPartyCode" title="Dispatching"></kendo-grid-column>
+                        </kendo-grid>
+                        <side-panel [nameGridRelatedToSidePanel]="'kgrid-driverApproval'">
+                            <div class="side-panel-header">
+                                <div class="header-info">
+                                    <span>Update Activity</span>
+                                </div>
+                                <div></div>
+                            </div>
+                            <div class="side-panel-body">
+                                <div class="wrapper">
+                                    <div class="content">
+                                        <st-approve-service-maintenance (itemSaved)="getUpdate()" [listEquipmentStatus]="listEquipmentStatus" [listMoveTypes]="listMoveTypes" [isValidToApprove]="isValidToApprove" class="col-sm-12"></st-approve-service-maintenance>
+                                        <!--<st-approve-service-maintenance [listEquipmentStatus]="listEquipmentStatus" [listMoveTypes]="listMoveTypes" [isValidToApprove]="isValidToApprove" class="col-sm-12"></st-approve-service-maintenance>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </side-panel>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<div>
+    <kendo-dialog title="{{ approveOrRejectDesc }} Service" *ngIf="approvedByPopupOpened" (close)="approvedByPopupClose()" style="z-index:10003">
+        <div>
+            <div class="form-group" *ngIf="approveOrReject==='A'">
+                <label class="control-label">Enter an user to approve</label>
+                <input type="text" class="form-control" [(ngModel)]="amigoTenantTServiceApproveSearchRequest.approvedBy" [disabled]="true" />
+            </div>
+            <div class="form-group">
+                <label class="control-label">Comments</label>
+                <textarea rows="4" style="height:200px" class="form-control" [(ngModel)]="amigoTenantTServiceApproveSearchRequest.approvalComments"></textarea>
+            </div>
+        </div>
+        <div class="k-window-buttons">
+            <button type="button" class="ro-button btn-submit" (click)="openConfirmation()">{{ approveOrRejectDesc }}</button>
+        </div>
+    </kendo-dialog>
+</div>
+
+<div>
+    <kendo-dialog title="Confirm" *ngIf="confirmProcessVisible" (close)="processConfirmation('cancel')" style="z-index:10004">
+        <p>Process action?</p>
+        <kendo-dialog-actions>
+            <button class="k-button k-primary" (click)="processConfirmation('yes')" primary="true">Yes</button>
+            <button class="k-button" (click)="processConfirmation('no')">No</button>
+        </kendo-dialog-actions>
+    </kendo-dialog>
+</div>

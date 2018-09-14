@@ -1,0 +1,219 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+// Tab Panel
+
+.ro-modern {
+    .ro-tab {
+        &:before, &:after {
+            display: table;
+            content: " ";
+        }
+
+        &:after {
+            clear: both;
+        }
+
+        .nav-tabs {
+            border: none;
+            list-style: none;
+            margin-bottom: 0;
+            margin-top: 0;
+            padding-left: 0;
+            position: relative;
+            width: 100%;
+
+            &:before, &:after {
+                display: table;
+                content: " ";
+            }
+
+            &:after {
+                clear: both;
+            }
+
+            > li {
+                background: #f3f3f3;
+                width: 200px;
+                color: @text-color;
+
+                > input[class^="tab-check"]:checked + label {
+                    background: #fff;
+                    cursor: auto;
+                    z-index: 1004;
+                }
+
+                > label {
+                    cursor: pointer;
+                    display: block;
+                    padding: 10px;
+                    position: relative;
+                    text-decoration: none;
+                    transition: background .1s;
+
+                    i {
+                        margin-right: 10px;
+                    }
+
+                    .tab-counter {
+                        background: @accent-color;
+                        border-radius: 3px;
+                        color: #fff;
+                        font-weight: normal;
+                        float: right;
+                        height: 18px;
+                        line-height: 1;
+                        margin-top: 9px;
+                        padding: 2px 4px;
+                        text-align: center;
+                        text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
+                        text-transform: uppercase;
+                        white-space: nowrap;
+                    }
+                }
+
+                > label:hover,
+                > label:focus {
+                    background: #FFF;
+                }
+
+                input[type="radio"] {
+                    position: absolute;
+                    top: -9999px;
+                    left: -9999px;
+                }
+
+                [class^="tab-check"]:checked ~ .tab-content {
+                    z-index: 1004;
+                }
+
+                [class^="tab-check"]:checked ~ .tab-content > .tab-pane {
+                    display: block;
+                }
+            }
+        }
+
+        &.tabs-bottom > .nav-tabs,
+        &.tabs-right > .nav-tabs,
+        &.tabs-left > .nav-tabs {
+            border-bottom: 0;
+        }
+
+        .tab-content {
+            background-color: #fff;
+            height: 100%;
+            left: 0;
+            position: absolute;
+            width: auto;
+            z-index: -1;
+
+            > .tab-pane {
+                box-sizing: border-box;
+                display: none;
+                height: 100%;
+                padding: 10px;
+            }
+        }
+
+        &.tabs-top {
+            background-color: #EEE;
+
+            > .nav-tabs {
+                padding: 5px 10px 0;
+
+                > li {
+                    border-bottom: solid 5px #EEE;
+                    float: left;
+                    height: 42px;
+                    margin-right: 6px;
+                    max-width: 220px;
+                    min-width: 90px;
+
+                    > label {
+                        border-top: solid thin #4C8DFA;
+                        font-size: 13px;
+                        height: 37px;
+                        line-height: 37px;
+                        padding: 0 5px;
+                    }
+
+                    > input[class="tab-check"]:checked + label {
+                        border-top: solid thin #fff;
+                        font-weight: 500;
+                        height: 42px;
+                    }
+
+                    > .tab-content {
+                        height: auto;
+                        width: 100%;
+
+                        > .tab-pane {
+                            padding: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        &.tabs-bottom {
+            > .nav-tabs {
+                border-top: 1px solid @border-color;
+
+                > li {
+                    margin-top: -1px;
+                    margin-bottom: 0;
+                }
+            }
+        }
+
+        &.tabs-left > .nav-tabs > li,
+        &.tabs-right > .nav-tabs > li {
+            float: none;
+        }
+
+        &.tabs-left > .nav-tabs > li > label,
+        &.tabs-right > .nav-tabs > li > label {
+            min-width: 74px;
+            margin-right: 0;
+        }
+
+        &.tabs-left {
+            > .nav-tabs {
+                float: left;
+                height: 100%;
+
+                > li {
+                    border-bottom: 5px solid #eee;
+
+                    > input[class="tab-check"]:checked + label {
+                        margin-right: -5px;
+                    }
+
+                    > .tab-content {
+                        border-left: 5px solid #eee;
+                        top: 0;
+                        left: 200px;
+                    }
+                }
+            }
+        }
+
+        &.tabs-right {
+            > .nav-tabs {
+                float: right;
+                margin-left: 19px;
+                border-left: 1px solid @border-color;
+
+                > li {
+                    border-bottom: 5px solid #eee;
+
+                    > label {
+                        margin-left: -1px;
+                        -webkit-border-radius: 0 4px 4px 0;
+                        -moz-border-radius: 0 4px 4px 0;
+                        border-radius: 0 4px 4px 0;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<layerModel xmlns:dm0="http://schemas.microsoft.com/VisualStudio/2008/DslTools/Core" xmlns:dm1="http://schemas.microsoft.com/dsltools/SimpleShapesModel" dslVersion="1.0.0.0" Id="482651a3-9fee-4d7f-b33c-c63405cd8fae" xmlns="http://schemas.microsoft.com/VisualStudio/TeamArchitect/LayerDesigner">
+  <comments>
+    <comment Id="0d21cc97-820d-4ca7-ad19-3f1d6b5ec2dd" name="Comment1">
+      <body>The Service Host layer is missing, you can add something like Service Host (WebAPI vXXX)</body>
+    </comment>
+    <comment Id="34fd94af-3768-4f09-b60b-05f0295172fd" name="Comment2">
+      <body>Add a drill down diagram with the full architecture of the Angular 2 presentation layer</body>
+    </comment>
+    <comment Id="d3ceb4dd-6346-48e6-b0eb-20bf5b130040" name="Comment3">
+      <body>Add detail about the mediator bus and how it interfaces with the handlers (command and queries)</body>
+    </comment>
+    <comment Id="8eecff4e-d412-4a80-b3d5-0860c24d8bcc" name="Comment4">
+      <body>Don't expose internal identifiers in SOA, use unique entity keys that have meaning to the business</body>
+    </comment>
+  </comments>
+  <layers>
+    <layer Id="3c86b8af-740b-4a0a-8b04-ab52eafad15a" name="Presentation.UI">
+      <references>
+        <reference Id="2e7b0a8b-857c-4237-af78-b23a13a2845d" name="XPO.ShuttleTracking.UI.Web">
+          <ArtifactNode Label="XPO.ShuttleTracking.UI.Web" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.UI.Web/XPO.ShuttleTracking.UI.Web.csproj)">
+            <Category Ref="File" />
+          </ArtifactNode>
+          <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.UI.Web)" Label="XPO.ShuttleTracking.UI.Web.dll" Category="CodeSchema_Assembly">
+            <Category Ref="FileSystem.Category.FileOfType.dll" />
+            <LinkCategory Ref="Produces" />
+            <LinkCategory Ref="Represents" />
+          </ExpandedNode>
+        </reference>
+      </references>
+    </layer>
+    <layer Id="23c7c264-a478-4c93-a93b-1e89f04770cd" name="Infrastructure.Peristence Layer">
+      <childLayers>
+        <layer Id="bad94eaf-1998-4264-83a3-502fde3e0c4a" name="Infrastructure.Persistence">
+          <references>
+            <reference Id="d55ae013-ad1c-4898-8c18-892b042342c7" name="XPO.ShuttleTracking.Infrastructure.Persistence">
+              <ArtifactNode Label="XPO.ShuttleTracking.Infrastructure.Persistence" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Infrastructure.Persistence/XPO.ShuttleTracking.Infrastructure.Persistence.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Infrastructure.Persistence)" Label="XPO.ShuttleTracking.Infrastructure.Persistence.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+        <layer Id="89437a6f-e184-40ed-ac42-15605c0467e8" name="Infrastructure.Persistence.NPoco">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="47010b24-5581-4574-9b50-294a15e6ddab" direction="Forward">
+              <layerMoniker Id="bad94eaf-1998-4264-83a3-502fde3e0c4a" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+          <references>
+            <reference Id="cb7628a7-bddd-4f89-b116-df92431869dc" name="XPO.ShuttleTracking.Infrastructure.Persistence.NPoco">
+              <ArtifactNode Label="XPO.ShuttleTracking.Infrastructure.Persistence.NPoco" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Infrastructure.Persistence.NPoco/XPO.ShuttleTracking.Infrastructure.Persistence.NPoco.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Infrastructure.Persistence.NPoco)" Label="XPO.ShuttleTracking.Infrastructure.Persistence.NPoco.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+        <layer Id="55d21698-99c7-4343-b8e2-71e669a6af83" name="Infrastructure.Persistence.EF">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="a874e540-2acd-4f2b-993a-daa13ec5a887" direction="Forward">
+              <layerMoniker Id="bad94eaf-1998-4264-83a3-502fde3e0c4a" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+          <references>
+            <reference Id="8b190d9f-4729-43dd-8326-671fec3df00a" name="XPO.ShuttleTracking.Infrastructure.Persistence.EF">
+              <ArtifactNode Label="XPO.ShuttleTracking.Infrastructure.Persistence.EF" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Infrastructure.Persistence.EF/XPO.ShuttleTracking.Infrastructure.Persistence.EF.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Infrastructure.Persistence.EF)" Label="XPO.ShuttleTracking.Infrastructure.Persistence.EF.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+        <layer Id="25dc031d-067e-4c84-b67f-e9cc05a3e12d" name="Infrastructure">
+          <references>
+            <reference Id="4026091a-d103-4195-8596-83529edd4d3d" name="XPO.ShuttleTracking.Infrastructure">
+              <ArtifactNode Label="XPO.ShuttleTracking.Infrastructure" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Infrastructure/XPO.ShuttleTracking.Infrastructure.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Infrastructure)" Label="XPO.ShuttleTracking.Infrastructure.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+      </childLayers>
+    </layer>
+    <layer Id="afccc520-4a6e-4914-bf07-3d5001e2aff1" name="Domain Layer">
+      <childLayers>
+        <layer Id="529a9f52-8b46-47f2-9dd1-cefa2135c748" name="Domain.Query Layer">
+          <childLayers>
+            <layer Id="8c1b044b-ad1c-4a3a-a49f-a0f0353dc578" name="Domain.QueryHandlers">
+              <dependencyToLayers>
+                <dependencyFromLayerToLayer Id="ba9c77e4-587a-4d41-a3d4-cb85e3b598e0" direction="Forward">
+                  <layerMoniker Id="9a5e1e97-9701-4318-9629-99d248549760" />
+                </dependencyFromLayerToLayer>
+                <dependencyFromLayerToLayer Id="6c461cff-6ab7-4715-b8ac-910385ef9ef6" direction="Forward">
+                  <layerMoniker Id="7cd6f55f-27e7-472d-ad7c-d392dc435d72" />
+                </dependencyFromLayerToLayer>
+              </dependencyToLayers>
+              <references>
+                <reference Id="f1df95e8-1eed-4c37-99d3-1473ed396cdb" name="XPO.ShuttleTracking.QueryHandlers">
+                  <ArtifactNode Label="XPO.ShuttleTracking.QueryHandlers" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.QueryHandlers/XPO.ShuttleTracking.QueryHandlers.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.QueryHandlers)" Label="XPO.ShuttleTracking.QueryHandlers.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+            <layer Id="9a5e1e97-9701-4318-9629-99d248549760" name="Domain.Query">
+              <dependencyToLayers>
+                <dependencyFromLayerToLayer Id="a7f51250-85e7-4fff-a5c0-ae432134c9a2" direction="Forward">
+                  <layerMoniker Id="7cd6f55f-27e7-472d-ad7c-d392dc435d72" />
+                </dependencyFromLayerToLayer>
+              </dependencyToLayers>
+              <references>
+                <reference Id="96ff5fcd-5308-4bd2-8caa-e53e6a311272" name="XPO.ShuttleTracking.Query">
+                  <ArtifactNode Label="XPO.ShuttleTracking.Query" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Query/XPO.ShuttleTracking.Query.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Query)" Label="XPO.ShuttleTracking.Query.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+            <layer Id="7cd6f55f-27e7-472d-ad7c-d392dc435d72" name="Domain.QueryModel">
+              <references>
+                <reference Id="e8ad871f-fb6a-42a8-b5d3-3f55cf2da778" name="XPO.ShuttleTracking.QueryModel">
+                  <ArtifactNode Label="XPO.ShuttleTracking.QueryModel" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.QueryModel/XPO.ShuttleTracking.QueryModel.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.QueryModel)" Label="XPO.ShuttleTracking.QueryModel.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+          </childLayers>
+        </layer>
+        <layer Id="770d1b74-2fa1-4455-ad85-9ddd27c41f8a" name="Domain.Command Layer">
+          <childLayers>
+            <layer Id="ea1dbb50-e750-452e-9175-7ec01032bc7b" name="Domain.CommandHandlers">
+              <dependencyToLayers>
+                <dependencyFromLayerToLayer Id="8dcc40a9-3d5c-485f-9910-031ae68f1be6" direction="Forward">
+                  <layerMoniker Id="140b1f98-11fa-4222-9645-9a832fae4498" />
+                </dependencyFromLayerToLayer>
+                <dependencyFromLayerToLayer Id="95767615-7151-40da-b72e-f286a443e4c1" direction="Forward">
+                  <layerMoniker Id="411784f0-7cac-4bff-96d3-6aecbd679cf9" />
+                </dependencyFromLayerToLayer>
+              </dependencyToLayers>
+              <references>
+                <reference Id="e9e9dc37-3122-4179-8550-597fd16c8b4b" name="XPO.ShuttleTracking.CommandHandlers">
+                  <ArtifactNode Label="XPO.ShuttleTracking.CommandHandlers" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.CommandHandlers/XPO.ShuttleTracking.CommandHandlers.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.CommandHandlers)" Label="XPO.ShuttleTracking.CommandHandlers.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+            <layer Id="140b1f98-11fa-4222-9645-9a832fae4498" name="Domain.Commands">
+              <references>
+                <reference Id="254197be-6d59-4bc5-93ec-5dcce064c35d" name="XPO.ShuttleTracking.Commands">
+                  <ArtifactNode Label="XPO.ShuttleTracking.Commands" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Commands/XPO.ShuttleTracking.Commands.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Commands)" Label="XPO.ShuttleTracking.Commands.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+            <layer Id="411784f0-7cac-4bff-96d3-6aecbd679cf9" name="Domain.CommandModel">
+              <references>
+                <reference Id="72834b95-71df-4b91-97a9-aa0a063518ba" name="XPO.ShuttleTracking.CommandModel">
+                  <ArtifactNode Label="XPO.ShuttleTracking.CommandModel" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.CommandModel/XPO.ShuttleTracking.CommandModel.csproj)">
+                    <Category Ref="File" />
+                  </ArtifactNode>
+                  <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.CommandModel)" Label="XPO.ShuttleTracking.CommandModel.dll" Category="CodeSchema_Assembly">
+                    <Category Ref="FileSystem.Category.FileOfType.dll" />
+                    <LinkCategory Ref="Produces" />
+                    <LinkCategory Ref="Represents" />
+                  </ExpandedNode>
+                </reference>
+              </references>
+            </layer>
+          </childLayers>
+        </layer>
+      </childLayers>
+    </layer>
+    <layer Id="1e10265f-bd34-462e-909e-997e4349eb20" name="Application Layer">
+      <childLayers>
+        <layer Id="c84248bb-60ba-4b48-b94a-462ebe87ebd7" name="Application.DTOs">
+          <references>
+            <reference Id="d37a0fab-313d-45cb-b089-f010aa44052e" name="XPO.ShuttleTracking.Application.DTOs1">
+              <ArtifactNode Label="XPO.ShuttleTracking.Application.DTOs" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Application.DTOs/XPO.ShuttleTracking.Application.DTOs.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Application.DTOs)" Label="XPO.ShuttleTracking.Application.DTOs.dll" Category="CodeSchema_Assembly">
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+        <layer Id="0737b7c5-56e8-409e-8f66-ac64374bdd7a" name="Application.Services">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="7d34f26d-853a-4d96-998f-a2c44461c2f9" direction="Forward">
+              <layerMoniker Id="745f0344-365c-4d2d-9440-e61049419682" />
+            </dependencyFromLayerToLayer>
+            <dependencyFromLayerToLayer Id="6c75e052-3310-458d-9af7-898e80c9ea73" direction="Forward">
+              <layerMoniker Id="c84248bb-60ba-4b48-b94a-462ebe87ebd7" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+          <references>
+            <reference Id="503ac616-137f-42e4-a655-d53f34e10db8" name="XPO.ShuttleTracking.Application.Services">
+              <ArtifactNode Label="XPO.ShuttleTracking.Application.Services" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Application.Services/XPO.ShuttleTracking.Application.Services.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Application.Services)" Label="XPO.ShuttleTracking.Application.Services.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+        <layer Id="745f0344-365c-4d2d-9440-e61049419682" name="Application.Services.Interfaces">
+          <dependencyToLayers>
+            <dependencyFromLayerToLayer Id="1776035c-be96-4495-a843-6617d51aff4f" direction="Forward">
+              <layerMoniker Id="c84248bb-60ba-4b48-b94a-462ebe87ebd7" />
+            </dependencyFromLayerToLayer>
+          </dependencyToLayers>
+          <references>
+            <reference Id="2bbfa801-7d93-429e-a396-4a5a2f8e53bc" name="XPO.ShuttleTracking.Application.Services.Interfaces">
+              <ArtifactNode Label="XPO.ShuttleTracking.Application.Services.Interfaces" Category="CodeSchema_Project" Id="(Assembly=../XPO.ShuttleTracking.Application.Services.Interfaces/XPO.ShuttleTracking.Application.Services.Interfaces.csproj)">
+                <Category Ref="File" />
+              </ArtifactNode>
+              <ExpandedNode Id="(Assembly=XPO.ShuttleTracking.Application.Services.Interfaces)" Label="XPO.ShuttleTracking.Application.Services.Interfaces.dll" Category="CodeSchema_Assembly">
+                <Category Ref="FileSystem.Category.FileOfType.dll" />
+                <LinkCategory Ref="Produces" />
+                <LinkCategory Ref="Represents" />
+              </ExpandedNode>
+            </reference>
+          </references>
+        </layer>
+      </childLayers>
+    </layer>
+  </layers>
+</layerModel>

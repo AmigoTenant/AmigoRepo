@@ -1,0 +1,58 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amigo.Tenant.QA.Mobile.SmokeTest", "Amigo.Tenant.QA.Mobile.SmokeTest\Amigo.Tenant.QA.Mobile.SmokeTest.csproj", "{18F3BD14-40A5-485A-B9B1-EC7F7EAF30C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amigo.Tenant.QA.Mobile.EndToEndTest", "Amigo.Tenant.QA.Mobile.EndToEndTest\Amigo.Tenant.QA.Mobile.EndToEndTest.csproj", "{CC828659-7633-4450-ACA7-36465BB0F59A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amigo.Tenant.QA.Common", "Amigo.Tenant.QA.Common\Amigo.Tenant.QA.Common.csproj", "{7FB247FB-4D34-4242-8C6F-566018E12582}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Amigo.Tenant.QA.Mobile.Common", "Amigo.Tenant.QA.Mobile.Common\Amigo.Tenant.QA.Mobile.Common.csproj", "{DD38CBCB-4BB7-4357-AAB8-EAD2A3115C60}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{18F3BD14-40A5-485A-B9B1-EC7F7EAF30C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18F3BD14-40A5-485A-B9B1-EC7F7EAF30C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18F3BD14-40A5-485A-B9B1-EC7F7EAF30C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18F3BD14-40A5-485A-B9B1-EC7F7EAF30C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC828659-7633-4450-ACA7-36465BB0F59A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC828659-7633-4450-ACA7-36465BB0F59A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC828659-7633-4450-ACA7-36465BB0F59A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC828659-7633-4450-ACA7-36465BB0F59A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB247FB-4D34-4242-8C6F-566018E12582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB247FB-4D34-4242-8C6F-566018E12582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB247FB-4D34-4242-8C6F-566018E12582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB247FB-4D34-4242-8C6F-566018E12582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD38CBCB-4BB7-4357-AAB8-EAD2A3115C60}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD38CBCB-4BB7-4357-AAB8-EAD2A3115C60}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD38CBCB-4BB7-4357-AAB8-EAD2A3115C60}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD38CBCB-4BB7-4357-AAB8-EAD2A3115C60}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 5
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.tss.com.pe:8080/tfs/xpo
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Amigo.Tenant.QA.Mobile.SmokeTest\\Amigo.Tenant.QA.Mobile.SmokeTest.csproj
+		SccProjectName1 = Amigo.Tenant.QA.Mobile.SmokeTest
+		SccLocalPath1 = Amigo.Tenant.QA.Mobile.SmokeTest
+		SccProjectUniqueName2 = Amigo.Tenant.QA.Mobile.EndToEndTest\\Amigo.Tenant.QA.Mobile.EndToEndTest.csproj
+		SccProjectName2 = Amigo.Tenant.QA.Mobile.EndToEndTest
+		SccLocalPath2 = Amigo.Tenant.QA.Mobile.EndToEndTest
+		SccProjectUniqueName3 = Amigo.Tenant.QA.Common\\Amigo.Tenant.QA.Common.csproj
+		SccProjectName3 = Amigo.Tenant.QA.Common
+		SccLocalPath3 = Amigo.Tenant.QA.Common
+		SccProjectUniqueName4 = Amigo.Tenant.QA.Mobile.Common\\Amigo.Tenant.QA.Mobile.Common.csproj
+		SccProjectName4 = Amigo.Tenant.QA.Mobile.Common
+		SccLocalPath4 = Amigo.Tenant.QA.Mobile.Common
+	EndGlobalSection
+EndGlobal

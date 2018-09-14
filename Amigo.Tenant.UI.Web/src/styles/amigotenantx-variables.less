@@ -1,0 +1,160 @@
+/*********************Less Variable Kit*************************/
+
+/*Fixed bugs*/
+/*@panel-border: #CCC;
+@panel-bg:#f5f5f5;
+@panel-default-border:#ccc;
+@panel-default-heading-bg: #111;
+@panel-default-heading-text: #f2f2f2;
+@panel-default-text: #111;*/
+
+/*Colors */
+@lightGrey: #d2d2d2;
+@lighterGrey: #f5f5f5;
+@grey: #656565;
+@Black: #333;
+@charcoal: #454545;
+@White: #fff;
+@lightBlue: #4d90fe;
+@lighterBlue: #4787ed;
+@darkerBlue: #3079ed;
+@accent-color: #4C8DFA;
+@black-default: #383838;
+
+@error-color: #FF0000;
+@error-input-color: #F44336;
+@success-color: #009900;
+@warning-color: #FFAA00;
+@info-color: @lightBlue;
+@text-color: rgba(0,0,0,.87);
+@text-color-secondary: rgba(0,0,0, .54);
+@border-color: @lightGrey;
+@link-color: @accent-color;
+@link-color-hover: @Black;
+
+/*Fonts */
+@font-size-base: 11px;
+@fontSize14: 14px;
+@fontSize11: 11px;
+@FontWeight700: 700;
+
+@line-height-base: 1.428571429; // 20/14
+@line-height-computed: floor((@font-size-base * @line-height-base)); // ~20px
+
+/*Positioning*/
+@left: left;
+@right: right;
+@FullWidth: 100%;
+@auto: auto;
+@Fixed: fixed;
+@block: block;
+@hidden: hidden;
+@center: center;
+
+@border-radius-base: 0px;
+
+//Panels
+@panel-bg: @White;
+@panel-border: @border-color;
+@panel-body-padding: 10px;
+@panel-border-radius: @border-radius-base;
+
+//Panel default
+@panel-default-border: @Black;
+@panel-default-heading-bg: @Black;
+@panel-default-heading-text: @White;
+@panel-default-text: @text-color;
+
+//Panel primary
+@panel-primary-border: @border-color;
+@panel-primary-heading-bg: rgb(236,236,236);
+@panel-primary-heading-text: @text-color;
+@panel-primary-text: @text-color;
+
+
+//Tables
+@table-bg-accent: #F8F8F8;
+@table-bg-active: @Black;
+@table-border-color: @border-color;
+
+//Buttons
+//Button default
+@button-default-text: #444;
+
+//Grid System
+//## Define your custom responsive grid.
+//** Number of columns in the grid.
+@grid-columns: 12;
+//** Padding between columns. Gets divided in half for the left and right.
+@grid-gutter-width: 20px;
+// Navbar collapse
+//** Point at which the navbar becomes uncollapsed.
+@grid-float-breakpoint: @screen-sm-min;
+//** Point at which the navbar begins collapsing.
+@grid-float-breakpoint-max: (@grid-float-breakpoint - 1);
+
+/*Media Queries for Desktop and Large Screens Only*/
+@desktop800px: ~"only screen and (min-width: 800px) and (max-width: 1279px)";
+@desktop1280px: ~"only screen and (min-width: 1280px)";
+@desktopL1500px: ~"only screen and (min-width: 1500px) and (max-width: 1700px)";
+@desktopL1701px: ~"only screen and (min-width: 1701px) and (max-width: 2000px)";
+@desktopL2100px: ~"only screen and (min-width: 2100px)";
+
+//== Media queries breakpoints
+//
+//## Define the breakpoints at which your layout will change, adapting to different screen sizes.
+
+// Extra small screen / phone
+// Note: Deprecated @screen-xs and @screen-phone as of v3.0.1
+@screen-xs: 480px;
+@screen-xs-min: @screen-xs;
+@screen-phone: @screen-xs-min;
+
+// Small screen / tablet
+// Note: Deprecated @screen-sm and @screen-tablet as of v3.0.1
+@screen-sm: 768px;
+@screen-sm-min: @screen-sm;
+@screen-tablet: @screen-sm-min;
+
+// Medium screen / desktop
+// Note: Deprecated @screen-md and @screen-desktop as of v3.0.1
+@screen-md: 1200px;
+@screen-md-min: @screen-md;
+@screen-desktop: @screen-md-min;
+
+// Large screen / wide desktop
+// Note: Deprecated @screen-lg and @screen-lg-desktop as of v3.0.1
+@screen-lg: 1600px;
+@screen-lg-min: @screen-lg;
+@screen-lg-desktop: @screen-lg-min;
+
+// So media queries don't overlap when required, provide a maximum
+@screen-xs-max: (@screen-sm-min - 1);
+@screen-sm-max: (@screen-md-min - 1);
+@screen-md-max: (@screen-lg-min - 1);
+
+//== Container sizes
+//
+//## Define the maximum width of `.container` for different screen sizes.
+
+// Small screen / tablet
+@container-tablet: ((720px + @grid-gutter-width));
+//** For `@screen-sm-min` and up.
+@container-sm: @container-tablet;
+
+// Medium screen / desktop
+@container-desktop: ((940px + @grid-gutter-width));
+//** For `@screen-md-min` and up.
+@container-md: @container-desktop;
+
+// Large screen / wide desktop
+@container-large-desktop: ((1140px + @grid-gutter-width));
+//** For `@screen-lg-min` and up.
+@container-lg: @container-large-desktop;
+
+//## Define common padding and border radius sizes and more. Values based on 14px text and 1.428 line-height (~20px to start).
+@padding-base-vertical: 6px;
+
+//Loader variables
+@animation-time: 1s;
+@spinner-size: 50px;

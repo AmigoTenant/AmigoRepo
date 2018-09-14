@@ -1,0 +1,141 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+
+@ro-radio-size: 18px;
+@ro-checkbox-size: 18px;
+@magic-disabled-color: lighten(@border-color, 14%);
+@magic-disabled-checked-color: lighten(@accent-color, 30%);
+
+.ro-checkbox + label {
+    &:before {
+        border-radius: 2px;
+    }
+
+    &:after {
+        border-width: 2px;
+        border-style: solid;
+        border-color: #fff;
+        border-top: 0;
+        border-left: 0;
+        box-sizing: border-box;
+        height: 12px;
+        left: 6px;
+        top: 2px;
+        transform: rotate(45deg);
+        width: 6px;
+    }
+}
+
+.ro-checkbox:checked + label {
+    &:before {
+        background: @accent-color;
+        border: @accent-color;
+    }
+}
+
+.ro-checkbox:checked[disabled] + label {
+    &:before {
+        background: @magic-disabled-checked-color;
+        border: @magic-disabled-checked-color;
+    }
+}
+
+
+.ro-radio,
+.ro-checkbox {
+    display: none;
+    position: absolute;
+}
+
+.ro-radio[disabled],
+.ro-checkbox[disabled] {
+    cursor: not-allowed;
+}
+
+.ro-radio + label,
+.ro-checkbox + label {
+    cursor: pointer;
+    display: inline-block;
+    line-height: 0;
+    position: relative;
+    vertical-align: middle;
+
+    &:hover {
+        &:before {
+            animation-duration: 0.4s;
+            animation-fill-mode: both;
+            animation-name: hover-color;
+        }
+    }
+
+    &:before {
+        border: 2px solid #212121;
+        content: '';
+        display: inline-block;
+        height: @ro-checkbox-size;
+        width: @ro-checkbox-size;
+    }
+
+    &:after {
+        content: '';
+        display: none;
+        position: absolute;
+    }
+}
+
+.ro-radio + label + label,
+.ro-checkbox + label + label {
+    cursor: pointer;
+    margin-left: 3px;
+}
+
+.ro-radio[disabled] + label + label,
+.ro-checkbox[disabled] + label + label {
+    color: rgba(0,0,0,.26);
+    cursor: default;
+}
+
+.ro-radio[disabled] + label,
+.ro-checkbox[disabled] + label {
+    color: @magic-disabled-color;
+    cursor: not-allowed;
+
+    &:hover,
+    &:before,
+    &:after {
+        cursor: not-allowed;
+    }
+
+    &:hover {
+        &:before {
+            animation-name: none;
+            border: 1px solid @magic-disabled-color;
+        }
+    }
+
+    &:before {
+        border-color: @magic-disabled-color;
+    }
+}
+
+
+.ro-radio:checked + label,
+.ro-checkbox:checked + label {
+    &:before {
+        animation-name: none;
+    }
+
+    &:after {
+        display: block;
+    }
+}
+
+@keyframes hover-color {
+    from {
+        border-color: @border-color;
+    }
+
+    to {
+        border-color: @accent-color;
+    }
+}

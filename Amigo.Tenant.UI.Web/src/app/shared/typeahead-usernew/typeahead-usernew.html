@@ -1,0 +1,16 @@
+﻿<ng-template #rt let-r="result" let-t="term">
+  {{ r.customUsername}}
+</ng-template>
+<div class="ro-lookup">
+  <input  type="text" 
+          class="form-control" 
+          [(ngModel)]="model" 
+          [ngbTypeahead]="search"
+          placeholder="Type Driver..."
+          [resultTemplate]="rt" 
+          [inputFormatter]="formatter" 
+          maxlength="64"
+          (ngModelChange)="selectValue($event)"
+          (blur)="findValue($event.target.value)"
+           /><i class="ic-search"></i>
+</div>

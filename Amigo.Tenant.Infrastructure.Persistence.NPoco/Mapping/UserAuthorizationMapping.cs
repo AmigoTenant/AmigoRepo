@@ -1,0 +1,31 @@
+﻿using NPoco.FluentMappings;
+using Amigo.Tenant.Application.DTOs.Requests.Security;
+using Amigo.Tenant.Application.DTOs.Response.Security;
+
+namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Mapping
+{
+    public class UserAuthorizationMapping : Map<UserAuthorizationDTO>
+    {
+        public UserAuthorizationMapping()
+        {
+            TableName("vwUserAuthorization");
+
+            //Columns(x =>
+            //{
+            //    x.Column(y => y.AmigoTenantTUserId);
+            //    x.Column(y => y.EntityStatus).Ignore();
+            //    x.Column(y => y.FirstName).Ignore();
+            //    x.Column(y => y.LastName).Ignore();
+            //    x.Column(y => y.Email).Ignore();
+            //    x.Column(y => y.Password).Ignore();
+            //    x.Column(y => y.Id).Ignore();
+            //    x.Column(y => y.PhoneNumber).Ignore();
+            //    x.Column(y => y.PayByName).Ignore();
+            //    x.Column(y => y.LocationName);
+            //    x.Column(y => y.AmigoTenantTRoleName);
+            //    x.Column(y => y.UserTypeName).Ignore();
+            //    //x.Column(y => y.RowStatus);
+            //});
+        }
+    }
+}

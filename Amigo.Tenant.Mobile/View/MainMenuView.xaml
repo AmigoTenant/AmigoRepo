@@ -1,0 +1,124 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"            
+             xmlns:behaviors="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Behaviors;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.MainMenuView"
+             Title="{x:Static resource:AppString.titleMainMenu}">
+  <ContentPage.Behaviors>
+    <behaviors:ToolbarOnPlatformBehavior>
+      <behaviors:ToolbarOnPlatformBehavior.Android>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarSettings}" Order="Secondary"
+                      Command="{Binding SettingsCommand}"/>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarTos}"      Order="Secondary"
+                      Command="{Binding TosCommand}"/>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarLogOut}"   Order="Secondary"
+                      Command="{Binding LogOutCommand}"/>
+      </behaviors:ToolbarOnPlatformBehavior.Android>
+      <behaviors:ToolbarOnPlatformBehavior.iOS>
+        <ToolbarItem  Text="{x:Static resource:AppString.btnToolbarName}" Order="Primary"
+                      Icon="menu.png" Clicked="ShowActionSheet"/>
+      </behaviors:ToolbarOnPlatformBehavior.iOS>
+    </behaviors:ToolbarOnPlatformBehavior>
+  </ContentPage.Behaviors>
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <Style TargetType="customControls:ExtendedButton">
+        <Setter Property="Margin" Value="0"/>
+        <Setter Property="HeightRequest" Value="80"/>
+        <Setter Property="FontAttributes" Value="None"/>
+        <Setter Property="HorizontalContentAlignment" Value="Start"/>
+                <Setter Property="FontSize" Value="Medium"/>
+                <Setter Property="ContentLayout" Value="Right,100"/>
+        <Setter Property="BackgroundColor" Value="White"/>
+        <Setter Property="BorderColor" Value="Gray"/>
+        <Setter Property="Image" Value="arrow_right.png"/>
+        <Setter Property="BorderRadius" Value="0"/>
+        <Setter Property="ClassId" Value="ExtendedButton"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <StackLayout Style="{StaticResource OuterStackLayout}">
+    <!--Header-->    
+    <StackLayout Spacing="0" VerticalOptions="Fill">
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}" IsVisible="False">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+                    <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+      <StackLayout Opacity="1" BackgroundColor="{Binding ArrivedOnOffDutyColor}">
+        <StackLayout IsVisible="{Binding ShowArrivedHeader}" Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{Binding TextStartedDayMsg}" Style="{StaticResource HeaderLabelText}"></Label>
+          <Label Text="{Binding TextStartedDayTime}" Style="{StaticResource HeaderLabelTextBold}"></Label>
+        </StackLayout>
+      </StackLayout>
+    </StackLayout>
+    <BoxView  HeightRequest="10" BackgroundColor="{StaticResource ColorBackground}"/>
+    <!--Menu-->
+    <ScrollView  VerticalOptions="FillAndExpand">
+    <StackLayout x:Name="stkButtonList" Style="{StaticResource MenuStack}" Spacing="0">
+      <StackLayout Orientation="Horizontal" IsVisible="{Binding ShowOnDuty}" Style="{StaticResource MenuStackDrawer}" HorizontalOptions="FillAndExpand">
+        <Label Text="{Binding TextOnDuty}" Style="{StaticResource MenuLabelText}"></Label>
+        <Label Text="{Binding TextOnDutyMsg}" Style="{StaticResource MenuLabelTextBold}"></Label>
+        <Switch AutomationId="OnDutyStatus" IsToggled="{Binding IsOnBreak}" VerticalOptions="Center" HorizontalOptions="EndAndExpand"></Switch>
+      </StackLayout>
+      <!--Add Move-->
+      <customControls:ExtendedButton x:Name="btnAddMove"
+                                     AutomationId="RegisterMoveButton"
+                                     Text="{x:Static resource:AppString.lblMainMenuAddMove}" 
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding IsWorking}"
+                                     Command="{Binding OnTapRegisterMoves}"/>
+      <!--Add Service-->
+      <customControls:ExtendedButton x:Name="btnAddService"
+                                     Text="{x:Static resource:AppString.lblMainMenuAddService}" 
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding IsWorking}"
+                                     Command="{Binding OnTapAdditionalService}"/>
+      <!--Add Detention-->
+      <customControls:ExtendedButton x:Name="btnAddDetention"
+                                     Text="{x:Static resource:AppString.lblMainMenuAddDetention}"
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding IsWorkingPerMove}"
+                                     Command="{Binding OnTapAddDetention}"/>
+      <!--Add Operate Taylor Lift-->
+      <customControls:ExtendedButton x:Name="btnAddOperateTaylorLift"
+                                     Text="{x:Static resource:AppString.lblMainMenuAddOperateTaylorLift}"
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding IsWorkingPerMove}"
+                                     Command="{Binding OnTapAddOperateTaylorLift}"/>
+      <!--View Summary-->
+      <customControls:ExtendedButton x:Name="btnSummary"
+                                     Text="{x:Static resource:AppString.lblMainMenuViewSummary}" 
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     Command="{Binding OnTapSummary}"/>
+      <!--Daily Activities-->
+      <customControls:ExtendedButton x:Name="btnDailyActivities"
+                                     Text="{x:Static resource:AppString.lblMainMenuDailyActivities}" 
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding ShowDailyActivities}"
+                                     Command="{Binding OnTapDailyActivities}"/>
+      <!--AcknowledgeMove-->
+      <customControls:ExtendedButton x:Name="btnAcknowledge"
+                                     Text="{x:Static resource:AppString.lblMainMenuAcknowledgeMove}"
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     IsVisible="{Binding IsWorking}"
+                                     Command="{Binding OnTapAcknowledgeMove}"/>
+      <!--S&F-->
+      <customControls:ExtendedButton x:Name="btnStoreAndForward"
+                                     Text="{x:Static resource:AppString.lblMainMenuStoreForward}"
+                                     PropertyChanged="BindableObject_OnPropertyChanged"
+                                     Command="{Binding OnTapStoreAndForward}"/>
+
+    </StackLayout>
+    </ScrollView>
+    
+    <StackLayout Padding="20" BackgroundColor="{StaticResource ColorControlBackground}">
+            <Button AutomationId="MainMenuArriveButton" IsVisible="{Binding ShowArriveFacility}" Text="{x:Static resource:AppString.btnMainMenuArrive}" Command="{Binding OnArriveFacilityCommand}" Style="{StaticResource PrimaryButtonS}"></Button>
+            <Button AutomationId="MainMenuDepartButton" IsVisible="{Binding ShowDepartFacility}" Text="{x:Static resource:AppString.btnMainMenuDepart}" Command="{Binding OnDepartFacilityCommand}" Style="{StaticResource PrimaryButtonS}"></Button>
+    </StackLayout>
+    <Button x:Name="BtnLogOut" Command="{Binding LogOutCommand}" IsVisible="False"></Button>
+  </StackLayout>
+</abstract:NavigatingPage>

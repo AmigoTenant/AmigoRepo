@@ -1,0 +1,158 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{738CB40B-1024-461E-95F5-92A7D74A4436}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Amigo.Tenant.Commands</RootNamespace>
+    <AssemblyName>Amigo.Tenant.Commands</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MediatR, Version=2.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MediatR.2.1.0\lib\net45\MediatR.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Common\AuditBaseCommand.cs" />
+    <Compile Include="Common\CommandResult.cs" />
+    <Compile Include="Common\IMobileCommand.cs" />
+    <Compile Include="Common\MobileCommandBase.cs" />
+    <Compile Include="Expense\ExpenseDetailDeleteCommand.cs" />
+    <Compile Include="Expense\ExpenseDeleteCommand.cs" />
+    <Compile Include="Expense\ExpenseDetailRegisterCommand.cs" />
+    <Compile Include="Expense\ExpenseRegisterCommand.cs" />
+    <Compile Include="Expense\ExpenseDetailUpdateCommand.cs" />
+    <Compile Include="Expense\ExpenseUpdateCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractDetailObligationRegisterCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractDetailRegisterCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractHouseDetailRegisterCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractDeleteCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractChangeStatusCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractUpdateCommand.cs" />
+    <Compile Include="Leasing\Contract\OtherTenantDeleteCommand.cs" />
+    <Compile Include="Leasing\Contract\OtherTenantRegisterCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractRegisterCommand.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseCommand.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseFeatureCommand.cs" />
+    <Compile Include="MasterData\Houses\DeleteHouseServiceCommand.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseServicePeriodCommand.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseFeatureCommand.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseServiceCommand.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseFeatureCommand.cs" />
+    <Compile Include="MasterData\Houses\RegisterHouseCommand.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseCommand.cs" />
+    <Compile Include="MasterData\Houses\UpdateHouseServiceCommand.cs" />
+    <Compile Include="MasterData\MainTenants\DeleteMainTenantCommand.cs" />
+    <Compile Include="MasterData\MainTenants\RegisterMainTenantCommand.cs" />
+    <Compile Include="MasterData\MainTenants\UpdateMainTenantCommand.cs" />
+    <Compile Include="MasterData\RentalApplication\RentalApplicationFeatureCommand.cs" />
+    <Compile Include="MasterData\RentalApplication\RentalApplicationDeleteCommand.cs" />
+    <Compile Include="MasterData\RentalApplication\RentalApplicationCityCommand.cs" />
+    <Compile Include="MasterData\RentalApplication\RentalApplicationRegisterCommand.cs" />
+    <Compile Include="MasterData\RentalApplication\RentalApplicationUpdateCommand.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodUpdateCommand.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodRegisterCommand.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodDetailCommand.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodHeaderCommand.cs" />
+    <Compile Include="Security\CostCenter\DeleteCostCenterCommand.cs" />
+    <Compile Include="Security\CostCenter\RegisterCostCenterCommand.cs" />
+    <Compile Include="Security\CostCenter\UpdateCostCenterCommand.cs" />
+    <Compile Include="Tracking\Moves\CancelAmigoTenantServiceCommand.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\Authorization\UserAuthorizationCommand.cs" />
+    <Compile Include="Security\Authorization\UpdateDeviceAuthorizationCommand.cs" />
+    <Compile Include="Security\Module\ActionCommand.cs" />
+    <Compile Include="Security\Module\DeleteModuleCommand.cs" />
+    <Compile Include="Security\Module\RegisterModuleCommand.cs" />
+    <Compile Include="Security\Module\UpdateModuleCommand.cs" />
+    <Compile Include="Security\Permission\DeletePermissionCommand.cs" />
+    <Compile Include="Security\Permission\RegisterPermissionCommand.cs" />
+    <Compile Include="Security\Permission\PermissionCommand.cs" />
+    <Compile Include="Security\Permission\UpdatePermissionCommand.cs" />
+    <Compile Include="Security\AmigoTenantTRole\DeleteAmigoTenantTRoleCommand.cs" />
+    <Compile Include="Security\AmigoTenantTRole\RegisterAmigoTenantTRoleCommand.cs" />
+    <Compile Include="Security\AmigoTenantTRole\AmigoTenantTRoleCommand.cs" />
+    <Compile Include="Security\AmigoTenantTRole\UpdateAmigoTenantTUserCommand.cs" />
+    <Compile Include="Security\Device\DeleteDeviceCommand.cs" />
+    <Compile Include="Security\Device\RegisterDeviceCommand.cs" />
+    <Compile Include="Security\Device\UpdateDeviceCommand.cs" />
+    <Compile Include="Security\AmigoTenantTUsers\DeleteAmigoTenantTUserCommand.cs" />
+    <Compile Include="Security\AmigoTenantTUsers\UpdateAmigoTenantTUserCommand.cs" />
+    <Compile Include="Security\AmigoTenantTUsers\AmigoTenantTUserCommand.cs" />
+    <Compile Include="Security\AmigoTenantTUsers\RegisterAmigoTenantTUserCommand.cs" />
+    <Compile Include="Tracking\Approve\RegisterAmigoTenantTServiceChargeCommand.cs" />
+    <Compile Include="Tracking\Approve\RegisterDriverReportCommand.cs" />
+    <Compile Include="Tracking\Location\DeleteLocationCommand.cs" />
+    <Compile Include="Tracking\Location\DeleteLocationCoordinatesCommand.cs" />
+    <Compile Include="Tracking\Location\RegisterLocationCommand.cs" />
+    <Compile Include="Tracking\Location\RegisterLocationCoordinatesCommand.cs" />
+    <Compile Include="Tracking\Location\UpdateLocationCommand.cs" />
+    <Compile Include="Tracking\Moves\RegisterMoveCommand.cs" />
+    <Compile Include="Tracking\Moves\RegisterAmigoTenanttServiceCommand.cs" />
+    <Compile Include="Tracking\Approve\UpdateAmigoTenantTServiceApproveCommand.cs" />
+    <Compile Include="Tracking\Moves\UpdateAmigoTenantServiceAckCommand.cs" />
+    <Compile Include="Tracking\Moves\UpdateAmigoTenantServiceCommand.cs" />
+    <Compile Include="Tracking\Product\DeleteProductCommand.cs" />
+    <Compile Include="Tracking\Product\RegisterProductCommand.cs" />
+    <Compile Include="Tracking\Product\UpdateProductCommand.cs" />
+    <Compile Include="Tracking\AmigoTenanttEventLog\RegisterAmigoTenanttEventLogCommand.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
+      <Project>{E24205A2-8839-4AD1-AA3A-1F5CB0A5B586}</Project>
+      <Name>Amigo.Tenant.Application.DTOs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.CommandModel\Amigo.Tenant.CommandModel.csproj">
+      <Project>{897D8378-F63C-42AA-9C77-ED7A21256F00}</Project>
+      <Name>Amigo.Tenant.CommandModel</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

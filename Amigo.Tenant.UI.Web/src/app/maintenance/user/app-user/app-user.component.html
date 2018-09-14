@@ -1,0 +1,31 @@
+<div class="page-header">
+    User Maintenance
+</div>
+<div class="ro-tab tabs-top">
+    <ul class="nav nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Users <span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <st-search-user (onAddUser)="addUser($event)"
+                                    (paramsSearchUsersForm)="paramsSearchUsersForm($event)"
+                                    [isOnlyDriver]="isOnlyDriver" style="display: block">
+                    </st-search-user>
+                    <st-grid-user [reloadGrid]="isReloadGrid"
+                                  [searchUsers]="isSearchUsers"
+                                  [paramsSearchUsers]="user"
+                                  (onClickEditUserGrid)="onClickEditUserGrid($event)"
+                                  (counterEvent)="counterSearchEvent($event)">
+                    </st-grid-user>
+                    <st-dialog-user *ngIf="openDialog"
+                                    [isOnlyDriver]="isOnlyDriver"
+                                    [userId]="userId"
+                                    [userSelected] ="userSelected"
+                                    (onClickCloseDialog)="onClickCloseDialog($event)">
+                    </st-dialog-user>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>

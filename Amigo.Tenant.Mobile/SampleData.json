@@ -1,0 +1,12 @@
+﻿{
+  "ConfirmationDetentionView.xaml": {
+    "TextTodayDate": "24/11/2016",
+    "LblId": "10254-256",
+    "LblNumber": "125654456465",
+    "TxtBlock": "456456",
+    "TxtDispatchingParty": "ABVVVV",    
+    "StartTime": "00:54:00",    
+    "StopTime": "00:005:00",
+    "ElapsedTime": "00:00:05"    
+  }
+}

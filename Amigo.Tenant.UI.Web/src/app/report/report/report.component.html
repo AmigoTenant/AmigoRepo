@@ -1,0 +1,328 @@
+
+
+<div class="page-header">
+    {{model.target | titleCase }} Report
+</div>
+
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">{{model.target | titleCase }} Report <span class="tab-counter">{{totalRecords}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <form class="">
+                        <div class="filter-bar form-horizontal">
+                            <div class="row">
+                                <div class="col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Driver</label>
+                                                <label class="col-sm-7">
+                                                    <ngbd-typeahead-usernew (modelOutput)="getDriver($event)" [currentUser]="currentUser"></ngbd-typeahead-usernew>
+                                                </label>
+                                            </div>
+                                            <div class="form-group" *ngIf="model.status != 'current'">
+                                                <label class="col-sm-5 control-label">From</label>
+                                                <label class="col-sm-7">
+                                                    <label class="ro-calendar">
+                                                        <input class="form-control" [placeholder]="localization.dateFormat" name="from" ngbDatepicker #d1="ngbDatepicker" [(ngModel)]="modelFrom"
+                                                               [outside-click]="d1" (ngModelChange)="onSelectModelFrom()">
+                                                        <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar"></i></span>
+                                                    </label>
+                                                </label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Status</label>
+                                                <label class="col-sm-3">
+                                                    <select [(ngModel)]="model.status" name="status" class="form-control input-control" (ngModelChange)="onStatusChange($event)">
+                                                        <option *ngFor="let item of reportTypes" [ngValue]='item.type' [selected]="item.type === model.status">
+                                                            {{item.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                            <div class="form-group" *ngIf="model.status != 'current'">
+                                                <label for="example-search-input" class="col-sm-5 control-label">To</label>
+                                                <label class="col-sm-7">
+                                                    <label class="ro-calendar">
+                                                        <input class="form-control" [placeholder]="localization.dateFormat" name="to" ngbDatepicker #d2="ngbDatepicker"
+                                                               [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()">
+                                                        <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar"></i></span>
+                                                    </label>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Service</label>
+                                                <label class="col-sm-7">
+                                                    <select name="serviceCode" class="form-control" [(ngModel)]="model.serviceCode">
+                                                        <option *ngFor="let item of listMoveTypes" [ngValue]='item.code'>
+                                                            {{item.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Equipment type</label>
+                                                <label class="col-sm-5">
+                                                    <select name="equipmentTypeCode" [(ngModel)]="model.equipmentTypeCode"
+                                                            (ngModelChange)="getEquipmentSizesByEqpType($event)" class="form-control input-control">
+                                                        <option *ngFor="let o of equipmentTypeDTOs" [ngValue]="o.code">{{o.name}}</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Equipment</label>
+                                                <label class="col-sm-5">
+                                                    <input type="text" name="equipment" class="form-control input-control" [(ngModel)]="model.equipment" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Approver</label>
+                                                <label class="col-sm-7">
+                                                    <input type="text" name="approver" class="form-control input-control" [(ngModel)]="model.approver" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Approval status</label>
+                                                <label class="col-sm-4">
+                                                    <select class="form-control input-control" [(ngModel)]="model.approvalStatus" name="approvalStatus">
+                                                        <option *ngFor="let item of listApprovalStatus" [ngValue]='item.serviceStatusId'>
+                                                            {{item.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Equipment size</label>
+                                                <label class="col-sm-5">
+                                                    <select name="equipmentSizeCode" [(ngModel)]="model.equipmentSizeCode" class="form-control">
+                                                        <option *ngFor="let o of equipmentSizeByEqpTypeDTOs" [ngValue]="o.code">{{o.name}}</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label class="col-sm-5 control-label">Charge no</label>
+                                                <label class="col-sm-5">
+                                                    <input type="text" name="chargeNo" class="form-control input-control" [(ngModel)]="model.chargeNo" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Origin</label>
+                                                <label class="col-sm-7">
+                                                    <!--<ngbd-typeahead-locationnew (modelOutput)="getOrigin($event)" [currentLocation]="currentOriginLocation"></ngbd-typeahead-locationnew>-->
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Destination</label>
+                                                <label class="col-sm-7">
+                                                    <!--<ngbd-typeahead-locationnew (modelOutput)="getDestination($event)" [currentLocation]="currentDestinationLocation"></ngbd-typeahead-locationnew>-->
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Equipment Status</label>
+                                                <label class="col-sm-7">
+                                                    <select name="equipmentStatus" [(ngModel)]="model.equipmentStatusId" class="form-control">
+                                                        <option *ngFor="let o of listEquipmentStatus" [ngValue]="o.equipmentStatusId">{{o.name}}</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="example-search-input" class="col-sm-5 control-label">Product</label>
+                                                <label class="col-sm-7">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-2 text-right">
+                                    <div class="button-container">
+                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-default">Search</button>
+                                    </div>
+                                    <div class="button-container">
+                                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
+                                    <i class="xico-file-download"></i>
+                                    Export to Excel
+                                </button>
+                                <button *ngIf="model.target!='external'" type="button" id="btnExport" (click)="onExportForDow()" class="ro-button btn-default">
+                                    <i class="xico-file-download"></i>
+                                    Export for DOW Tank
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="grid-container">
+
+                        <kendo-grid id="kgrid-weeklyReport" [data]="amigoTenantTServiceReportDTOs" [pageSize]="model.pageSize" [skip]="currentPage" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" (pageChange)="pageChange($event)">
+
+                            <kendo-grid-column field="username" title="Driver" width="80"></kendo-grid-column>
+                            <kendo-grid-column field="equipmentNumber" title="Equipment" width="100">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.equipmentNumber}}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="equipmentStatusName" title="Equipment Status" width="100">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <div *ngIf="dataItem.equipmentStatusName!=null && dataItem.equipmentStatusName!=''">
+                                            <label class="label-status default">{{dataItem.equipmentStatusName}}</label>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="equipmentSize" title="Size" width="70"></kendo-grid-column>
+                            <kendo-grid-column field="equipmentType" title="Type" width="70"></kendo-grid-column>
+                            <kendo-grid-column field="chassisNo" title="Chassis No" width="180"></kendo-grid-column>
+                            <kendo-grid-column field="service" title="Service" width="180"></kendo-grid-column>
+                            <kendo-grid-column field="product" title="Product" width="180"></kendo-grid-column>
+                            <kendo-grid-column field="isHazardousLabel" title="Haz" width="50"></kendo-grid-column>
+                            <kendo-grid-column field="chargeNo" title="Charge#" width="100"></kendo-grid-column>
+                            <kendo-grid-column field="originBlock" title="Origin Block" width="100"></kendo-grid-column>
+                            <kendo-grid-column field="destinationBlock" title="Destination Block" width="100"></kendo-grid-column>
+                            <kendo-grid-column field="approver" title="Approver" width="100"></kendo-grid-column>
+                            <kendo-grid-column field="approvalStatus" title="Approval Status" width="100"></kendo-grid-column>
+                            <kendo-grid-column field="dispatchingParty" title="Dispatching Party" width="80"></kendo-grid-column>
+                            <kendo-grid-column title="Start Date" width="100">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.localServiceStartDate|date:"MM/dd/yyyy" }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Start Time" width="80">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.localServiceStartDate|date:"H:mm" }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="serviceStartDayName" title="Start Day" width="80"></kendo-grid-column>
+                            <kendo-grid-column title="Finish Date" *ngIf="model.status!='current'" width="100">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.localServiceFinishDate|date:"MM/dd/yyyy" }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Finish Time" *ngIf="model.status!='current'" width="80">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.localServiceFinishDate|date:"H:mm" }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="serviceFinishDayName" title="Finish Day" *ngIf="model.status!='current'" width="80"></kendo-grid-column>
+                            <kendo-grid-column *ngIf="model.status!='current'" width="80">
+                                <ng-template kendoGridHeaderTemplate let-column>
+                                    <div class="text-right">Total Hours</div>
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{dataItem.serviceTotalHours|number:'1.2-2' }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column *ngIf="model.target!='external'" width="80">
+                                <ng-template kendoGridHeaderTemplate let-column>
+                                    <div class="text-right">Driver Pay</div>
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{dataItem.driverPay|number:'1.2-2' }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+
+                            <kendo-grid-column width="80">
+                                <ng-template kendoGridHeaderTemplate let-column>
+                                    <div class="text-right">Customer Billing</div>
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{dataItem.customerBill|number:'1.2-2' }}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <!--<kendo-grid-column *ngIf="model.target!='external'" title="Comments" width="300">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <button type="button" class="btn-icon" (click)="onViewDriverComments(dataItem)">
+                                            <i class="xico-action-comment-dot"></i>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>-->
+                            <kendo-grid-column *ngIf="model.target!='external'" title="Comments" width="300">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.driverComments}}</span>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<kendo-dialog title="Driver Comments" *ngIf="isDriverCommentsVisible" (close)="closeDriverComments()">
+    <div class="line-breaker">
+        {{driverComments}}
+    </div>
+</kendo-dialog>
+
+<style>
+    .line-breaker {
+        margin-top: -2em;
+        white-space: pre-line;
+    }
+</style>

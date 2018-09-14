@@ -1,0 +1,136 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.DailyActivitiesFilteredItemNewView"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             Title="{x:Static resource:AppString.titleActivityDetail}">
+
+
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converter:StringToBoolConverter x:Key="Str2Bool0" />
+      <converter:StringToBoolConverter x:Key="Str2Bool1" />
+      <converter:StringToBoolConverter x:Key="Str2Bool2" />
+      <converter:StringToBoolConverter x:Key="Str2Bool3" />
+      <converter:StringToBoolConverter x:Key="Str2Bool4" />
+      <converter:StringToBoolConverter x:Key="Str2Bool5" />
+      <converter:StringToBoolConverter x:Key="Str2Bool6" />
+      <converter:StringToBoolConverter x:Key="Str2Bool7" />
+      <converter:StringToBoolConverter x:Key="Str2Bool8" />
+      <converter:StringToBoolConverter x:Key="Str2Bool9" />
+      <converter:StringToBoolConverter x:Key="Str2Bool10" />
+      <converter:StringToBoolConverter x:Key="Str2Bool11" />
+      <converter:StringToBoolConverter x:Key="Str2Bool12" />
+      <converter:StringToBoolConverter x:Key="Str2Bool13" />
+
+      <Style x:Key="DailyActivityActionType" TargetType="Label">
+        <Setter Property="TextColor"  Value="{StaticResource ColorBodyText}" />
+        <Setter Property="FontAttributes" Value="Bold" />
+        <Setter Property="FontSize" Value="Medium" />
+        <Setter Property="VerticalTextAlignment" Value="Center" />
+        <Setter Property="HorizontalTextAlignment" Value="Start" />
+      </Style>
+      <Style x:Key="GeneralLabelTextD" TargetType="Label" BasedOn="{StaticResource GeneralLabelText}">
+        <Setter Property="Margin" Value="0,10,0,0"/>
+      </Style>
+      <Style x:Key="DesctiptionLabelTextD" TargetType="Label" BasedOn="{StaticResource DesctiptionLabelText}">
+        <Setter Property="Margin" Value="0,10,0,0"/>
+      </Style>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <ContentPage.Content>
+    <StackLayout Style="{StaticResource OuterStackLayout}" BackgroundColor="{StaticResource ColorBackground}">
+      <!--Header-->
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{Binding HeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+
+      <!--Scrollable content-->
+      <ScrollView>
+        <StackLayout VerticalOptions="FillAndExpand" Spacing="0">
+          <!--Charge No.-->
+          <StackLayout Padding="20" BackgroundColor="{StaticResource ColorBodyText}">
+            <Label Text="{Binding LblId}" TextColor="{StaticResource ColorActiveFormInput}" VerticalOptions = "Center" HorizontalOptions = "FillAndExpand" HorizontalTextAlignment = "Start" FontAttributes = "Bold" FontSize = "Large"></Label>
+            <Label x:Name="LblChargeNumber" Text="{Binding LblNumber}" TextColor="{StaticResource ColorContrastText}" VerticalOptions = "Center" HorizontalOptions = "FillAndExpand" HorizontalTextAlignment = "Start" FontAttributes = "Bold" FontSize = "Large"></Label>
+          </StackLayout>
+          <!--Body-->
+          <StackLayout VerticalOptions="Fill" Spacing="0" Padding="20" BackgroundColor="{StaticResource ColorControlBackground}">
+            <Grid RowSpacing="0">
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <!--***Action Type-->
+              <Label Grid.Row="0" Grid.Column="0" Text="{Binding ActionType}" Style="{StaticResource DailyActivityActionType}" IsVisible="{Binding ActionType,Converter={StaticResource Str2Bool0}}"></Label>
+              <!--***From Block-->
+              <Label Grid.Row="1" Grid.Column="0" x:Name="lblResumeMoveFromBlock" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding FromBlock,Converter={StaticResource Str2Bool0}}"></Label>
+              <Label Grid.Row="1" Grid.Column="1" Text="{Binding FromBlock}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding FromBlock,Converter={StaticResource Str2Bool0}}"></Label>
+              <!--***To Block-->
+              <Label Grid.Row="2" Grid.Column="0" x:Name="lblResumeMoveToBlock" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding ToBlock,Converter={StaticResource Str2Bool1}}"></Label>
+              <Label Grid.Row="2" Grid.Column="1" Text="{Binding ToBlock}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding ToBlock,Converter={StaticResource Str2Bool1}}"></Label>
+              <!--***Move Type-->
+              <Label Grid.Row="3" Grid.Column="0" Text="{Binding MoveTypeDesc}" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand"  IsVisible="{Binding MoveType,Converter={StaticResource Str2Bool2}}"></Label>
+              <Label Grid.Row="3" Grid.Column="1" Text="{Binding MoveType}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding MoveType,Converter={StaticResource Str2Bool2}}"></Label>
+              <!--***Move Status-->
+              <Label Grid.Row="4" Grid.Column="0" x:Name="lblResumeMoveMoveStatus" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand"  IsVisible="{Binding MoveStatus,Converter={StaticResource Str2Bool3}}"></Label>
+              <Label Grid.Row="4" Grid.Column="1" Text="{Binding MoveStatus}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding MoveStatus,Converter={StaticResource Str2Bool3}}"></Label>
+              <!-- -Move***H34-->
+              <Label Grid.Row="5" Grid.Column="0" x:Name="lblH34" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand"  IsVisible="{Binding Has34,Converter={StaticResource Str2Bool4}}"></Label>
+              <Label Grid.Row="5" Grid.Column="1" Text="{Binding Has34}" Style="{StaticResource DesctiptionLabelTextD}"  IsVisible="{Binding Has34,Converter={StaticResource Str2Bool4}}"></Label>
+              <!--***Equipment Nº-->
+              <Label Grid.Row="6" Grid.Column="0" Text="{Binding EquipmentTypeDesc}" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand"  IsVisible="{Binding EquipmentNumber,Converter={StaticResource Str2Bool5}}"></Label>
+              <Label Grid.Row="6" Grid.Column="1" Text="{Binding EquipmentNumber}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding EquipmentNumber,Converter={StaticResource Str2Bool5}}"></Label>
+              <!--***Equipment Size-->
+              <Label Grid.Row="7" Grid.Column="0" x:Name="lblResumeMoveEquipmentSize" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding EquipmentSizeDesc,Converter={StaticResource Str2Bool6}}"></Label>
+              <Label Grid.Row="7" Grid.Column="1" Text="{Binding EquipmentSizeDesc}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding EquipmentSizeDesc,Converter={StaticResource Str2Bool6}}"></Label>
+              <!--***Equipment Status-->
+              <Label Grid.Row="8" Grid.Column="0" x:Name="lblResumeMoveEquipmentStatus" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding EquipmentStatusDesc,Converter={StaticResource Str2Bool7}}"></Label>
+              <Label Grid.Row="8" Grid.Column="1" Text="{Binding EquipmentStatusDesc}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding EquipmentStatusDesc,Converter={StaticResource Str2Bool7}}"></Label>
+              <!--***Chassis No.-->
+              <Label Grid.Row="9" Grid.Column="0" x:Name="lblChassisNumber" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding ChassisNo,Converter={StaticResource Str2Bool8}}"></Label>
+              <Label Grid.Row="9" Grid.Column="1" Text="{Binding ChassisNo}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding ChassisNo,Converter={StaticResource Str2Bool8}}"></Label>
+              <!--***Product-->
+              <Label Grid.Row="10" Grid.Column="0" x:Name="lblResumeMoveProduct" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding Product,Converter={StaticResource Str2Bool9}}"></Label>
+              <Label Grid.Row="10" Grid.Column="1" Text="{Binding Product}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding Product,Converter={StaticResource Str2Bool9}}"></Label>
+              <!--***Start Time-->
+              <Label Grid.Row="11" Grid.Column="0" x:Name="lblResumeMoveStartTime" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding StartTime,Converter={StaticResource Str2Bool10}}"></Label>
+              <Label Grid.Row="11" Grid.Column="1" Text="{Binding StartTime}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding StartTime,Converter={StaticResource Str2Bool10}}"></Label>
+              <!--***Finish Time-->
+              <Label Grid.Row="12" Grid.Column="0" x:Name="lblResumeMoveFinishTime" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding FinishTime,Converter={StaticResource Str2Bool11}}"></Label>
+              <Label Grid.Row="12" Grid.Column="1" Text="{Binding FinishTime}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding FinishTime,Converter={StaticResource Str2Bool11}}"></Label>
+              <!--***Elapsed Time-->
+              <Label Grid.Row="13" Grid.Column="0" x:Name= "lblTimeElapsed" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding ElapsedTime,Converter={StaticResource Str2Bool12}}"></Label>
+              <Label Grid.Row="13" Grid.Column="1" Text="{Binding ElapsedTime}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding ElapsedTime,Converter={StaticResource Str2Bool12}}"></Label>
+              <!--***Comments-->
+              <Label Grid.Row="14" Grid.Column="0" x:Name= "lblDriverComments" Style="{StaticResource GeneralLabelTextD}" HorizontalOptions="FillAndExpand" IsVisible="{Binding DriverComments,Converter={StaticResource Str2Bool13}}"></Label>
+              <Label Grid.Row="14" Grid.Column="1" Text="{Binding DriverComments}" Style="{StaticResource DesctiptionLabelTextD}" IsVisible="{Binding DriverComments,Converter={StaticResource Str2Bool13}}"></Label>
+            </Grid>
+          </StackLayout>
+        </StackLayout>
+      </ScrollView>
+    </StackLayout>
+  </ContentPage.Content>
+</abstract:NavigatingPage>

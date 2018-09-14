@@ -1,0 +1,186 @@
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Houses <span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <div [hidden]="!visible">
+                        <form class="form-horizontal">
+                            <div class="filter-bar">
+                                <div class="row">
+                                    <div class="col-sm-10">
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">Address</label>
+                                                    <div class="col-sm-8">
+                                                        <input  type="text" class="form-control" [(ngModel)]="searchCriteria.name" 
+                                                            name="searchCriteria.name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="name" class="control-label col-sm-4">House Type</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.houseTypeId" 
+                                                            name="searchCriteria.houseTypeId">
+                                                            <option value=""></option>
+                                                            <option *ngFor="let type of listHouseTypes" [attr.value]='type.id'>
+                                                                {{type.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="status" class="control-label col-sm-4">House Status</label>
+                                                    <div class="col-sm-8">
+                                                        <select class="form-control" [(ngModel)]="searchCriteria.houseStatusId" 
+                                                            name="searchCriteria.houseStatusId">
+                                                            <option value=""></option>
+                                                            <option *ngFor="let status of listHouseStatuses" [attr.value]='status.id'>
+                                                                {{status.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>                                                    
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="phonenumber" class="control-label col-sm-4">Phone Number</label>
+                                                    <div class="col-sm-8">
+                                                        <input st-autofocus type="text" class="form-control" 
+                                                        [(ngModel)]="searchCriteria.phoneNumber" name="phoneNumber" 
+                                                            autofocus maxlength="20" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label for="code" class="control-label col-sm-4">Code</label>
+                                                    <div class="col-sm-8">
+                                                        <input st-autofocus type="text" class="form-control" 
+                                                            [(ngModel)]="searchCriteria.code" name="code" autofocus maxlength="20" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="form-group">
+                                                    <label class="control-label col-sm-4" for="statusId">Status</label>
+                                                    <div class="col-sm-8">
+                                                        <select name="statusId" [(ngModel)]="searchCriteria.statusId"
+                                                                class="form-control input-control">
+                                                            <option *ngFor="let status of activeInactiveStatus" [ngValue]="status.id">
+                                                                {{status.name}}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 text-right">
+                                        <div class="button-container">
+                                            <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default"  st-authCheck >Search</button><!--[actionCode]="'House.Search'"-->
+                                        </div>
+                                        <div class="button-container">
+                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <button type="submit" id="btnNew" (click)="onNew()" class="ro-button btn-success"  
+                                    st-authCheck >Add House</button> <!--[actionCode]="'House.Create'"-->
+                            </div>
+                            <div class="button-container">
+                                <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
+                                    <i class="xico-file-download"></i>
+                                    Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid-container">
+                            <kendo-grid [data]="gridData"
+                                        [pageSize]="searchCriteria.pageSize" [skip]="currentPage"
+                                        [style.height.%]="100" [style.width.%]="100" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" (pageChange)="pageChange($event)" [selectable]="false">
+                                <kendo-grid-column width="20" title="Code">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span>{{dataItem.code}}</span>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="name" title="Name" width="90"></kendo-grid-column>
+                                <kendo-grid-column field="address" title="Address" width="120"></kendo-grid-column>
+                                <kendo-grid-column field="cityName" title="City" width="40"></kendo-grid-column>
+                                <kendo-grid-column field="phoneNumber" title="PhoneNumber" width="30"></kendo-grid-column>
+                                <kendo-grid-column field="rentPrice" title="Rent Price" width="25">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.rentPrice|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="houseTypeName" title="Type" width="35"></kendo-grid-column>
+                                <kendo-grid-column title="Status" width="30">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div *ngIf="dataItem.statusName==='For Rent'">
+                                            <label class="label-status approved">{{dataItem.statusName}}</label>
+                                        </div>
+                                        <div *ngIf="dataItem.statusName==='Rented'">
+                                            <label class="label-status rejected">{{dataItem.statusName}}</label>
+                                        </div>
+                                        <div *ngIf="dataItem.statusName==='Repair'">
+                                            <label class="label-status default">{{dataItem.statusName}}</label>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column title="Is Active" width="20">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <span *ngIf="dataItem.rowStatus">Yes</span>
+                                        <span *ngIf="!dataItem.rowStatus">No</span>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column width="20">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                                <!--st-authCheck [actionCode]="'House.Update'"-->
+                                                <i class="xico-action-edit"></i>
+                                            </button>
+                                            <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                                <!--st-authCheck [actionCode]="'House.Delete'"-->
+                                                <i class="xico-action-remove"></i>
+                                            </button>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+
+<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
+              (close)="closeConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete house?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

@@ -1,0 +1,110 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+
+.ro-modern {
+    .notification-group {
+        border-radius: 2px;
+        color: #FFF;
+        font-size: 13px;
+        padding: 10px;
+        text-align: left;
+        transition: all .3s ease;
+        -webkit-transition: all .3s ease;
+
+        & ul {
+            list-style-type: initial;
+            margin: 0px 15px;
+            max-height: 168px;
+
+            & li {
+                margin-bottom: 10px;
+            }
+
+            & li:last-child {
+                margin-bottom: 0px;
+            }
+
+            & li:only-child {
+                list-style-type: none;
+                margin-bottom: 0px;
+                margin-left: -15px;
+            }
+        }
+
+        & a {
+            margin-top: 10px;
+        }
+
+        &.error {
+            background-color: @error-color;
+        }
+
+        &.warning {
+            background-color: @warning-color;
+        }
+
+        &.success {
+            background-color: @success-color;
+        }
+
+        &.info {
+            background-color: @info-color;
+        }
+
+        &.show-group {
+            margin-bottom: 15px;
+            opacity: 1 !important;
+        }
+
+        &.hide-group {
+            opacity: 0;
+        }
+    }
+
+    .modal-error {
+        background: rgba(255,255,255,0.8);
+        bottom: 0;
+        left: 0;
+        overflow: hidden;
+        position: absolute;
+        right: 0;
+        top: 0;
+        z-index: 999;
+
+        & > .result {
+            left: 50%;
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        & > .result .xico-ui-btn-exclaim {
+            color: #D70f0D;
+        }
+
+        & > .result i {
+            font-size: 85px;
+        }
+
+        & > .result p {
+            font-size: 23px;
+            margin-top: 25px;
+        }
+    }
+
+    .input-data-error ,.ng-invalid:not(form).ng-dirty ,.ng-invalid:not(form).ng-touched {
+        border: 1px solid @error-input-color;
+        padding: 5px;
+
+        & + .message {
+            display: block;
+            margin-top: 4px;
+            font-size: 11px;
+
+            &.error {
+                color: @error-input-color;
+            }
+        }
+    }
+}

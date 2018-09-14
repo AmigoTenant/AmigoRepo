@@ -1,0 +1,15 @@
+﻿{
+  "sender": "Bruno Sonnino",
+  "location": "São Paulo",
+  "tenantFullName": "Augusto Ronceros Altamirano",
+  "dueDate": "28/08/2018",
+  "periodCode": "201809",
+  "paymentPeriodDetail": "<table border='1'><tr><th>Descripcion</th><th>Monto</th></tr><tr><td>Renta</td><td>4500</td></tr><tr><td>Deposito</td><td>500</td></tr></table>",
+  "name": "Bram Stoker",
+  "firstName": "Mary",
+  "lastName": "Shelley",
+  "urlAction": "http://blogs.msmvps.com/bsonnino",
+  "logoImage": "../Imagenes/logo.png",
+  "telefono1": "604-767-8650"
+
+}

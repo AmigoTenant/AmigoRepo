@@ -1,0 +1,17 @@
+﻿<ng-template #rt let-r="result" let-t="term">
+  {{ r.name}}
+</ng-template>
+<div class="ro-lookup">
+  <input  type="text" 
+          class="form-control" 
+          [(ngModel)]="model" 
+          [ngbTypeahead]="search"
+          placeholder="Type House..."
+          [resultTemplate]="rt" 
+          [inputFormatter]="formatter" 
+          maxlength="64"
+          (ngModelChange)="selectValue($event)"
+          [disabled]="_isDisabled"
+           /><i class="ic-search"></i>
+</div>
+<!--(blur)="findValue($event.target.value)"-->

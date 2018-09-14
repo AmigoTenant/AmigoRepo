@@ -1,0 +1,54 @@
+<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} Services" 
+	(close)="close()" style="z-index:10003;width:700px;" id="services">
+
+	<div style="width:600px;height:1px;">&nbsp;</div>
+	<div class="form-horizontal">
+		<form #houseForm="ngForm" data-val-form="houseForm" novalidate>
+			<div class="form-group">
+				<label for="service" class="col-sm-3 control-label" style="padding-right:7px;">Service</label>
+				<div class="col-sm-7">
+					<select name="service" [(ngModel)]="selectedHouseService.serviceId" 
+						(change)="onChangeService($event)" class="form-control input-control"
+						[disabled]="flgEdition === 'E'">
+						<option *ngFor="let s of services" [ngValue]="s.serviceId">
+							{{s.serviceTypeValue + ' - ' + s.conceptDescription + ' - ' + s.businessPartnerName}}
+						</option>
+					</select>
+					<!--<label class="message error" style="color: #F44336; margin-top: 4px;" 
+						>Service is required</label>*ngIf="_formError.serviceError"-->
+					<input type="hidden" [(ngModel)]="selectedHouseService.serviceId" name="service" />
+				</div>
+			</div>
+			<div>
+				<p-dataTable #dt [value]="houseServicePeriods" [editable]="true" emptyMessage="No entries found">
+					<p-column field="monthId" header="Period"></p-column>
+					<p-column field="dueDateMonth" header="Due Date Month" [editable]="true" >
+						<ng-template let-col let-service="rowData" pTemplate="body">
+							<span>{{getMonthById(service[col.field])}}</span>
+						</ng-template>
+						<ng-template let-col let-service="rowData" pTemplate="editor">
+						   <p-dropdown [(ngModel)]="service[col.field]" name="dueDateMonth" [options]="months" 
+							   [autoWidth]="false" [style]="{'width': '100%' }" required="true">
+						   </p-dropdown>
+						</ng-template>
+					</p-column>
+					<p-column field="dueDateDay" header="Due Date Day" [editable]="true"></p-column>
+					<p-column field="cutOffMonth" header="Cut Off Month" [editable]="true">
+						<ng-template let-col let-service="rowData" pTemplate="body">
+							<span>{{getMonthById(service[col.field])}}</span>
+						</ng-template>
+						<ng-template let-col let-service="rowData" pTemplate="editor">
+							<p-dropdown [(ngModel)]="service[col.field]" name="cutOffMonth" [options]="months" 
+								[autoWidth]="false" [style]="{'width': '100%' }" required="true">
+							</p-dropdown>
+						</ng-template>
+					</p-column>
+					<p-column field="cutOffDay" header="Cut Off Day" [editable]="true"></p-column>
+				 </p-dataTable>
+		   </div>
+		</form>
+	</div>
+	<div class="k-window-buttons">
+		<st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="houseForm.form.valid" [formName]="'houseForm'"></st-boton-maintenance>
+	</div>
+</kendo-dialog>

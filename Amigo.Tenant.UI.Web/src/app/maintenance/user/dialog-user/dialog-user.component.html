@@ -1,0 +1,210 @@
+<style>
+    .mandatory {
+        color: red;
+    }
+
+    .left {
+        float: left;
+    }
+
+    .btn-validate {
+        margin-left: -15px;
+    }
+
+    .loading {
+        background-image: url(../assets/images/loading.gif);
+        background-position: right center;
+        background-repeat: no-repeat;
+    }
+
+    .input-success {
+        border: 1px solid green;
+    }
+
+    .success {
+        color: green;
+    }
+</style>
+<kendo-dialog title="{{titleDialog}}" (close)="close()">
+    <div style="width:700px;height:1px;">&nbsp;</div>
+    <div class="form-horizontal">
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+        <form #userForm="ngForm" data-val-form="userForm">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">User name</label>
+                                <div class="col-sm-9">
+                                    <input st-autofocus type="text" [ngClass]="userNameClass" [(ngModel)]="user.username" (ngModelChange)="validateUserName('')" [disabled]="disabledUserId" name="username">
+                                    <label *ngIf="!isValidUserName" [hidden]="isValidUserName" [ngClass]="userNameMessageValidateClass">{{messageDriverIdValidation}}</label>
+                                    <label *ngIf="isValidUserName" [hidden]="isValidUserName" class="message success">{{messageDriverIdValidation}}</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-3 text-left">
+                            <input type="button" class="ro-button btn-default btn-validate" *ngIf="createBtnContinueProcess" value="Continue" (click)="onContinueProcess()">
+                            <input type="button" class="ro-button btn-default btn-validate" *ngIf="createBtnResetUsername" value="Change" (click)="onResetUserName()">
+                        </div>
+                        <div class="col-sm-3 text-right" *ngIf="!isNew">
+                            <st-audit [auditModel]="auditModel"></st-audit>
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+                        <!--User Details-->
+                        <div class="col-md-6" *ngIf="createUserFormControl">
+                            <fieldset class="scheduler-border">
+                                <div class="sub-header">User Details</div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">First Name</label>
+                                    <div class="col-sm-9">
+                                        <input st-autofocus type="text" [ngClass]="firstNameClass" [(ngModel)]="user.firstName" (ngModelChange)="validateFirstName('')" [disabled]="disabledUserDetailControl" name="firstName">
+                                        <label [hidden]="isValidFirstName" class="message error">First Name is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Last Name</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" [ngClass]="lastNameClass" [(ngModel)]="user.lastName" (ngModelChange)="validateLastName('')" [disabled]="disabledUserDetailControl" name="lastName">
+                                        <label [hidden]="isValidLastName" class="message error">Last Name is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Email</label>
+                                    <div class="col-sm-9">
+                                        <input type="email" class="form-control" [(ngModel)]="user.email" [disabled]="disabledUserDetailControl" name="email">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Type</label>
+                                    <div class="col-sm-9">
+                                        <select [ngClass]="typeClass" [(ngModel)]="user.userType" (ngModelChange)="onChangeType($event)" [disabled]="disabledUserDetailControlType" name="type">
+                                            <option *ngFor="let type of typeList" [value]="type.code">{{type.name}}</option>
+                                        </select>
+                                        <label [hidden]="isValidType" class="message error">Type is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Role</label>
+                                    <div class="col-sm-9">
+                                        <select [ngClass]="roleClass" [(ngModel)]="user.amigoTenantTRoleId" (ngModelChange)="validateRole('')" name="rol" [disabled]="isAdminDisabled">
+                                            <option *ngFor="let role of roleList" [value]="role.amigoTenantTRoleId">{{role.name}}</option>
+                                        </select>
+                                        <label [hidden]="isValidRole" class="message error">Role is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="user.deviceId>0">
+                                    <label class="col-sm-3 control-label">Device</label>
+                                    <div class="col-sm-9 form-control-static">
+                                        <a target="_blank" routerLink="/maintenance/device/getDevice/{{user.amigoTenantTUserId}}" routerLinkActive="active">{{user.cellphoneNumber}}</a>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                        <!--Password Details, Driver Details-->
+                        <div class="col-md-6">
+                            <!--Password Details-->
+                            <fieldset class="scheduler-border" *ngIf="createUserFormControl">
+                                <div class="sub-header">
+                                    Password Details
+                                    <button type="button" class="btn-icon" style="float: right; clear: both">
+                                        <i class="xico-action-edit" *ngIf="createIconChangePassword" (click)="changePassword()"></i>
+                                        <i class="xico-action-close" *ngIf="createIconCancelChangePassword" (click)="cancelChangePassword()"></i>
+                                    </button>
+                                </div>
+                                <div class="form-group" *ngIf="createPasswordControl">
+                                    <label class="col-sm-3 control-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" [ngClass]="passwordClass" [(ngModel)]="user.password" [disabled]="disabledPasswordDetailControl" (ngModelChange)="validatePassword('')" name="password">
+                                        <label [hidden]="isValidPassword" class="message error">Password is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="createPasswordControl">
+                                    <label class="col-sm-3 control-label">Confirm Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" [ngClass]="confirmPasswordClass" [(ngModel)]="confirmPassword" [disabled]="disabledPasswordDetailControl" (ngModelChange)="validateConfirmPassword('')" name="confirmPassword">
+                                        <label [hidden]="isValidConfirmPassword" class="message error">{{messagePasswordNotEquals}}</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group" *ngIf="!createPasswordControl">
+                                    <label class="col-sm-3 control-label">Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control input-control" [disabled]="true" name="confirmPasswordFake" value="xpo1234">
+                                    </div>
+                                </div>
+                                <div class="form-group" *ngIf="!createPasswordControl">
+                                    <label class="col-sm-3 control-label">Confirm Password</label>
+                                    <div class="col-sm-9">
+                                        <input type="password" class="form-control input-control" [disabled]="true" name="confirmPasswordFake" value="xpo1234">
+                                    </div>
+                                </div>
+
+
+                            </fieldset>
+
+                            <!--Driver Details-->
+                            <fieldset class="scheduler-border" *ngIf="createUserFormControl">
+                                <div class="sub-header">Driver Details</div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Paid by</label>
+                                    <div class="col-sm-9">
+                                        <select [ngClass]="paidByClass" [(ngModel)]="user.payBy" (ngModelChange)="validatePaidBy('')" [disabled]="disabledDriverDetailControl" name="payBy">
+                                            <option *ngFor="let paidBy of paidByList" [value]="paidBy.code">{{paidBy.name}}</option>
+                                        </select>
+                                        <label [hidden]="isValidPaidBy" class="message error">Paid By is required</label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Dedicated Location</label>
+                                    <div class="col-sm-9">
+                                        <!--<ngbd-typeahead-locationnew (modelOutput)="geLocation($event)" [currentLocation]="currentOriginLocation" [isDisabled]="disabledDriverDetailControl"></ngbd-typeahead-locationnew>-->
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Unit Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" [(ngModel)]="user.unitNumber" name="unitNumber" [disabled]="disabledDriverDetailControl">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Tractor Number</label>
+                                    <div class="col-sm-9">
+                                        <input type="text" class="form-control" [(ngModel)]="user.tractorNumber" name="tractorNumber" [disabled]="disabledDriverDetailControl">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="offset-sm-3 col-sm-9">
+                                        <input type="hidden" [(ngModel)]="user.bypassDeviceValidation" name="bypassDeviceValidation">
+                                        <input id="chk-bypassDeviceValidation" type="checkbox" class="ro-checkbox"
+                                               [checked]="user.bypassDeviceValidation === confirmList[1].code"
+                                               (change)="$event.target.checked? (user.bypassDeviceValidation =  confirmList[1].code) : (user.bypassDeviceValidation = confirmList[2].code)" name="bypassDeviceValidation" [disabled]="disabledDriverDetailControl">
+                                        <label for="chk-bypassDeviceValidation"></label>
+                                        <label for="chk-bypassDeviceValidation">Bypass Device Validation</label>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </form>
+    </div>
+
+    <div class="k-window-buttons" *ngIf="createBtnOnlyCancel">
+        <div>
+            <button type="button" class="ro-button btn-default" (click)="onExecuteEvent('k')">Cancel</button>
+        </div>
+    </div>
+
+    <div class="k-window-buttons" *ngIf="!createBtnOnlyCancel">
+        <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="userForm.form.valid" [formName]="'userForm'"></st-boton-maintenance>
+    </div>
+
+</kendo-dialog>

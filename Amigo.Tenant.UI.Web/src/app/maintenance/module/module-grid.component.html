@@ -1,0 +1,54 @@
+﻿<div class="grid-container">
+    <!--<kendo-grid [data]="gridData" [selectable]="true" (selectionChange)="selectionChange($event)">-->
+    <kendo-grid [data]="gridData" [sortable]="{ mode: 'multiple' }" [sort]="sort" (sortChange)="sortChange($event)"
+                [pageSize]="modelParameters.pageSize" [skip]="currentPage" [pageable]="{
+            buttonCount: buttonCount,
+            info: info,
+            type: type,
+            pageSizes: pageSizes,
+            previousNext: previousNext
+        }" [height]="550" (pageChange)="pageChange($event)" [selectable]="false">
+        <!--<kendo-grid-column field="N°" width="15">
+                                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">{{currentPage + rowIndex + 1}}</ng-template>
+                            </kendo-grid-column>-->
+        <kendo-grid-column width="20" title="Code">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <span>{{dataItem.code}}</span>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column width="100" title="Name">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <span>{{dataItem.name}}</span>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column width="140" title="Url">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <span>{{dataItem.url}}</span>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="parentModuleName" title="Parent Module" width="60"></kendo-grid-column>
+        <kendo-grid-column field="sortOrder" width="20" title="Order"></kendo-grid-column>
+        <kendo-grid-column width="20">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="text-right">
+                    <button type="button" class="btn-icon" (click)="onEdit(dataItem)"  st-authCheck [actionCode]="'Module.Update'">
+                        <i class="xico-action-edit"></i>
+                    </button>
+                    <button type="button" class="btn-icon" (click)="onDelete(dataItem.code);" st-authCheck [actionCode]="'Module.Delete'">
+                        <i class="xico-action-remove"></i>
+                    </button>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+        
+    </kendo-grid>
+</div>
+
+<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
+              (close)="closeConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete module?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

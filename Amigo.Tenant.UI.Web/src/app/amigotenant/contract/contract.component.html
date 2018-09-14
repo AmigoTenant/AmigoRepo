@@ -1,0 +1,286 @@
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Contract <span class="tab-counter">{{totalResultCount}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <form>
+                        <div class="filter-bar form-horizontal">
+                            <div class="row">
+                                <div class="col-lg-10 col-md-10 col-sm-10">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="driver" class="col-sm-5 control-label">Lease No</label>
+                                                <label class="col-sm-7">
+                                                    <input type="text" name="LeaseNo" class="form-control" [(ngModel)]="model.contractCode" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">From</label>
+                                                <label class="ro-calendar col-sm-7">
+                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="BeginDate" ngbDatepicker #d1="ngbDatepicker"
+                                                    [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()">
+                                                    <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="to" class="col-sm-5 control-label">To</label>
+                                                <label class="ro-calendar col-sm-7">
+                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="EndDate" ngbDatepicker #d2="ngbDatepicker"
+                                                    [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()">
+                                                    <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Tenant</label>
+                                                <label class="col-sm-7">
+                                                  <input type="text" name="FullName" class="form-control" [(ngModel)]="model.tenantFullName" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Days To Collect</label>
+                                                <label class="col-sm-7">
+                                                  <select name="nextDaysToCollect" [(ngModel)]="model.nextDaysToCollect" class="form-control">
+                                                        <option *ngFor="let o of _listNextDaysToCollect" [ngValue]="o.id">{{o.name}}</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="chargeNoType" class="col-sm-5 control-label">Status</label>
+                                                <label class="col-sm-7">
+                                                    <select name="contractStatusId" [(ngModel)]="model.contractStatusId" class="form-control">
+                                                        <option *ngFor="let o of _listEntityStatus" [ngValue]="o.entityStatusId">{{o.name}}</option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Period</label>
+                                                <label class="col-sm-7">
+                                                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
+                                                    <!--<select name="houseId" [(ngModel)]="model.houseId" class="form-control">
+                                                        <option *ngFor="let o of _listProperties" [ngValue]="o.houseId">{{o.name}}</option>
+                                                    </select>-->
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">House</label>
+                                                <label class="col-sm-7">
+                                                    <!--<ss-multiselect-dropdown [options]="featureListMultiSelect" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="selectedOptionsFeature" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>-->
+                                                    <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label for="chargeNoType" class="col-sm-5 control-label">Unpaid Periods</label>
+                                                <label class="col-sm-7">
+                                                    <select class="form-control" [(ngModel)]="model.unpaidPeriods" name="unpaidPeriods">
+                                                        <option *ngFor="let item of _listUnpaidPeriods" [ngValue]='item.code'>
+                                                            {{item.name}}
+                                                        </option>
+                                                    </select>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-2 col-sm-2 text-right">
+                                    <div class="button-container">
+                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary" >Search</button>
+                                    </div>
+                                    <div class="button-container">
+                                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="action-bar">
+                            <div class="button-container">
+                                <button type="button" class="ro-button btn-success" (click)="onInsert()" >
+                                    <i class="xico-action-edit"></i>
+                                    Add Lease
+                                </button>
+                            </div>
+                            <div class="button-container">
+                                <button type="button" class="ro-button btn-default" (click)="onPrint($event)" >
+                                    <i class="xico-action-print"></i>
+                                    Print
+                                </button>
+                            </div>
+                            <div class="button-container">
+                                <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
+                                    <i class="xico-file-download"></i>
+                                    Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="grid-container">
+                        <kendo-grid id="kgrid-Contract" 
+                                    [data]="contractSearchDTOs" 
+                                    [pageSize]="model.pageSize" 
+                                    [skip]="currentPage" 
+                                    [style.height.%]="100" [style.width.%]="100"
+                                    [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" (pageChange)="pageChange($event)" [selectable]="false">
+                            <!--<kendo-grid-column [width]="50" >
+                                <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                    <div class="text-center">
+                                        <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" [disabled]="isValidToApprove" value="option" (change)="changeItemHeader()" />
+                                    </div>
+                                </ng-template>
+                                <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                                    <div class="text-center">
+                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.IsSelected" (change)="changeItem(dataItem)" />
+                                        <label htmlFor="{{rowIndex}}"></label>
+
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>-->
+                            <kendo-grid-column field="contractCode" title="Lease No" width="6%"></kendo-grid-column>
+                            <kendo-grid-column field="periodCode" title="Period" width="5%" ></kendo-grid-column>
+                            <kendo-grid-column field="tenantFullName" title="Tenant" width="10%"></kendo-grid-column>
+                            <kendo-grid-column field="houseName" title="Property" width="10%"></kendo-grid-column>
+                            <kendo-grid-column field="creationDate" title="Lease Date" width="5%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.creationDate|date:"MM/dd/yyyy" }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="beginDate" title="Begin Date" width="5%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.beginDate|date:"MM/dd/yyyy" }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="endDate" title="End Date" width="5%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.endDate|date:"MM/dd/yyyy" }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="nextDueDate" title="Next Due Date" width="5%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div>
+                                        <span>{{dataItem.nextDueDate|date:"MM/dd/yyyy" }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="RentPrice" title="Rent" width="4%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{dataItem.rentPrice|number:'2.2-2' }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="RentDeposit" title="Deposit" width="4%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{dataItem.rentDeposit|number:'2.2-2' }}</span><br />
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column field="nextDaysToCollect" title="Days To collect" width="6%"></kendo-grid-column>
+                            <kendo-grid-column field="unpaidPeriods" title="Unpaid Periods" width="6%"></kendo-grid-column>
+                            <kendo-grid-column title="Status" width="6%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div *ngIf="dataItem.contractStatusCode==='DRAFT'">
+                                        <label class="label-status rejected">{{dataItem.contractStatusCode}}</label>
+                                    </div>
+                                    <div *ngIf="dataItem.contractStatusCode!=='DRAFT'">
+                                        <label class="label-status approved">{{dataItem.contractStatusCode}}</label>
+                                    </div>
+                                    <!--<div *ngIf="dataItem.serviceStatus===null">
+                                        <label class="label-status pending">PENDING</label>
+                                    </div>-->
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Is Active" width="5%">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span *ngIf="dataItem.rowStatus">Yes</span>
+                                    <span *ngIf="!dataItem.rowStatus">No</span>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column width="8%">
+                                <span>dataItem.contractStatusCode</span>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div *ngIf="dataItem.contractStatusCode!='FORMAL'">
+                                        <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                            <i class="xico-action-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                            <i class="xico-action-remove"></i>
+                                        </button>
+                                        <button type="button" class="btn-icon" (click)="onChangeStatus(dataItem);">
+                                            <i class="xico-action-send-doc"></i>
+                                        </button>
+                                   </div>
+
+                                   <div *ngIf="dataItem.contractStatusCode=='FORMAL'">
+                                       <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                           <i class="xico-action-remove"></i>
+                                       </button>
+                                   </div>
+
+            <!--<div class="text-right">
+                <button ng-show=false type="button" class="btn-icon" (click)="onChangeStatus(dataItem)">
+                    <i class="xico-action-edit"></i>
+                </button>
+            </div>-->
+</ng-template>
+                            </kendo-grid-column>
+                            
+                        </kendo-grid>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
+    <div>{{deleteMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesDelete()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Confirmation" *ngIf="openedChangeStatusConfimation" (close)="closeChangeStatusConfirmation()">
+    <div>{{changeStatusMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeChangeStatusConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesChangeStatus()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<div >
+    <div>
+        <at-contract-maintenance></at-contract-maintenance>
+    </div>
+</div>

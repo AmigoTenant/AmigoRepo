@@ -1,0 +1,1 @@
+export {AmigoTenantLayoutModule} from './layout.module';

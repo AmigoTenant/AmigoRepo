@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"             
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             x:Class="XPO.ShuttleTracking.Mobile.View.ProductSearchView"
+             Title ="{x:Static resource:AppString.titleSearchProduct}">
+ 
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <DataTemplate x:Key="SearchProductItemTemplate">
+        <ViewCell>
+          <StackLayout Padding="15,15,15,15">
+            <Grid >
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+              </Grid.RowDefinitions>
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+
+              <Label Grid.Row="0" Grid.Column="0" Text="{Binding Name}" Style="{StaticResource GeneralLabelTextN}"></Label>
+              <Image Grid.Row="0" Grid.Column="1" Source="arrow_right.png" HeightRequest="15" WidthRequest="15" VerticalOptions="Center" HorizontalOptions="End"></Image>
+              
+            </Grid>
+          </StackLayout>
+
+        </ViewCell>
+      </DataTemplate>
+    </ResourceDictionary>
+  </ContentPage.Resources>
+
+  <StackLayout  Orientation="Vertical">
+    <SearchBar Text="{Binding Product}" Placeholder="{x:Static resource:AppString.lblSearchProduct}"></SearchBar>
+    <customControls:ListView ItemsSource="{Binding LstProducts}"
+          HasUnevenRows="True"
+          VerticalOptions="FillAndExpand"
+          ItemTemplate="{StaticResource SearchProductItemTemplate}"
+          ItemClickCommand="{Binding GetSearchProductItem}"  IsRefreshing="{Binding IsLoading}"/>
+  </StackLayout>
+</abstract:NavigatingPage>

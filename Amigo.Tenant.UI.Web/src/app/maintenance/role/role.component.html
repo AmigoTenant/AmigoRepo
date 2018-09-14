@@ -1,0 +1,112 @@
+<div class="page-header">
+    Role Maintenance
+</div>
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Role <span class="tab-counter">{{countItems}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <form class="form-horizontal">
+                        <div class="filter-bar">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <div class="filter-row">
+                                        <div class="filter-control">
+                                            <label for="code" class="control-label">Code</label>
+                                            <label>
+                                                <input st-autofocus type="text" class="form-control" [(ngModel)]="searchCriteria.code"
+                                                       name="code" autofocus maxlength="20" />
+                                            </label>
+                                        </div>
+                                        <div class="filter-control">
+                                            <label for="name" class="control-label">Name</label>
+                                            <label>
+                                                <input type="text" class="form-control " [(ngModel)]="searchCriteria.name"
+                                                       name="name" maxlength="50"
+                                                       style="width: 250px;" />
+                                            </label>
+                                        </div>
+                                        <div class="filter-control">
+                                            <label for="code" class="control-label">Is Admin</label>
+                                            <label>
+                                                <select class="form-control" [(ngModel)]="searchCriteria.isAdmin" name="isAdmin"
+                                                        (change)="onChangeType($event.target.value)">
+                                                    <!--[attr.value]='type.code'-->
+                                                    <option *ngFor="let type of typeListAdmin" [value]='type.code'>
+                                                        {{type.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-3 text-right">
+                                    <div class="button-container">
+                                        <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck [actionCode]="'Role.Search'">Search</button>
+                                    </div>
+                                    <div class="button-container">
+                                        <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="action-bar">
+                        <div class="button-container">
+                            <button type="submit" id="btnNew" (click)="onNew()" class="ro-button btn-default" st-authCheck [actionCode]="'Role.Create'">Add Role</button>
+                        </div>
+                    </div>
+                    <div class="grid-container">
+                        <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage" [pageable]="{
+                                buttonCount: buttonCount,
+                                info: info,
+                                type: type,
+                                pageSizes: pageSizes,
+                                previousNext: previousNext
+                            }" [height]="550" (pageChange)="pageChange($event)" [selectable]="false">
+                            <kendo-grid-column width="20" title="Code">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span>{{dataItem.code}}</span>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column title="Name" field="name" width="120">
+                            </kendo-grid-column>
+                            <kendo-grid-column width="20" title="Is Administrator">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <span>{{dataItem.isAdmin === true ? "Yes": "No"}}</span>
+                                </ng-template>
+                            </kendo-grid-column>
+                            <kendo-grid-column width="12">
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <button type="button" class="btn-icon"
+                                                (click)="editor.onEdit(dataItem);" st-authCheck [actionCode]="'Role.Update'">
+                                            <i class="xico-action-edit"></i>
+                                        </button>
+                                        <button type="button" class="btn-icon" (click)="onDelete(dataItem.amigoTenantTRoleId);" st-authCheck [actionCode]="'Role.Delete'">
+                                            <i class="xico-action-remove"></i>
+                                        </button>
+                                    </div>
+                                </ng-template>
+                            </kendo-grid-column>
+                        </kendo-grid>
+                    </div>
+                </div>
+                <div>
+                    <st-rol-maintenance [inputTypeListAdmin]="typeListAdmin" #editor></st-rol-maintenance>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
+              (close)="closeConfirmation('cancel')" style="z-index: 7888">
+    <div>Delete role?</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="onConfirmation('NO')">No</button>
+        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

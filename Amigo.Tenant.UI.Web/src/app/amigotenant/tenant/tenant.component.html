@@ -1,0 +1,26 @@
+<!--<div class="page-header">
+    Tenant Maintenance
+</div>-->
+<div class="ro-tab tabs-top">
+    <ul class="nav-tabs">
+        <li>
+            <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
+            <label for="tab1Main">Tenants <span class="tab-counter">{{totalRecords}}</span></label>
+            <div class="tab-content">
+                <div class="tab-pane">
+                    <at-tenant-search  (dataRefreshed)='onDataRefreshed($event)' 
+                        (itemSelectedEdit)='onItemSelectedEdit($event)' 
+                        (onAddTenant)="onAddTenant($event)"
+                        ></at-tenant-search>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
+<!--<st-tenant-maintenance #editor [listParents]="listParents"></st-tenant-maintenance>-->
+<at-tenant-maintenance *ngIf="openDialog" (onClickCloseDialog)="onClickCloseDialog($event)"
+                       [inputSelectedTenant]="selectedTenant"
+                       [entityStatuses]="entityStatuses"
+                       [tenantTypes]="tenantTypes"
+                       [countries]="countries"></at-tenant-maintenance>
+

@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView 
+    xmlns="http://xamarin.com/schemas/2014/forms" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+    x:Class="XPO.ShuttleTracking.Mobile.CustomControls.CircularProgress"
+    xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+    xmlns:xfShapeView="clr-namespace:XFShapeView;assembly=XFShapeView">
+  <ContentView.Content>
+        <xfShapeView:ShapeView x:Name="ShapeProgress" Margin="0,20,0,0" BackgroundColor="{StaticResource ColorControlBackground}" HorizontalOptions="Center" VerticalOptions="FillAndExpand"
+                                   ShapeType="ProgressCircle" HeightRequest="120" WidthRequest="120" ProgressBorderColor="{StaticResource ColorStatusManual}" BorderColor="Gray"
+                                   Color="Transparent"  BorderWidth="10" ProgressBorderWidth="10">
+            <StackLayout VerticalOptions="Center" HorizontalOptions="Center">
+                <Label Text="{x:Static resource:AppString.lblInProgress}" HorizontalOptions="Center" HorizontalTextAlignment="Center"></Label>
+                <Label x:Name="TextLabel" TextColor="{StaticResource ColorBodyText}" HorizontalOptions="Fill" VerticalOptions="Fill"
+                       VerticalTextAlignment="Center" HorizontalTextAlignment="Center" FontSize="Large"></Label>
+            </StackLayout>
+        </xfShapeView:ShapeView>
+    </ContentView.Content>
+</ContentView>

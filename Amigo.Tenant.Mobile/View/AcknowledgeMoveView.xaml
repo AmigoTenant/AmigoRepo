@@ -1,0 +1,317 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<abstract:NavigatingPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="XPO.ShuttleTracking.Mobile.View.AcknowledgeMoveView"
+             xmlns:converter="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Converter;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:customControls="clr-namespace:XPO.ShuttleTracking.Mobile.CustomControls;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:resource="clr-namespace:XPO.ShuttleTracking.Mobile.Resource;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:effects="clr-namespace:XPO.ShuttleTracking.Mobile.Helpers.Effects;assembly=XPO.ShuttleTracking.Mobile"
+             xmlns:abstract="clr-namespace:XPO.ShuttleTracking.Mobile.View.Abstract;assembly=XPO.ShuttleTracking.Mobile"
+             Title="Acknowledge">
+  <ContentPage.Resources>
+    <ResourceDictionary>
+      <converter:ItemsFoundToBoolConverter x:Key="Lst2Bool" />
+      <converter:StringToDate x:Key="Str2Date" />
+      <converter:BoolToStringConverter x:Key="Bool2Str" />
+      <converter:StringToBoolConverter x:Key="Str2Bool" />
+      <DataTemplate x:Key="MoveTemplate">
+        <ViewCell>
+          <StackLayout >
+            <Grid Padding="0,10,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+              </Grid.RowDefinitions>
+
+              <Label  Grid.Row="0" Grid.Column="0" Text="{x:Static resource:AppString.lblSummaryChargeNo}" Style="{StaticResource GeneralLabelText}"/>
+              <Label  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ChargeNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+              <Switch Grid.Row="0" Grid.Column="2" IsToggled="{Binding IsSelected}" VerticalOptions="End"></Switch>
+
+              <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveFromBlock}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.StartName}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveToBlock}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.FinishName}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resource:AppString.lblMoveType}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="3" Grid.Column="1" Text="{Binding MoveLine.MoveTypeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="4" Grid.Column="0" Text="Container" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.EquipmentNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resource:AppString.lblSize}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.EquipmentSizeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resource:AppString.lblStatus}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.EquipmentStatusDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="7" Grid.Column="0" Text="{x:Static resource:AppString.lblChassis}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.ChassisNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="8" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveProduct}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.ProductDescription}" Style="{StaticResource GeneralLabelTextN}"/>
+              
+              <Label Grid.Row="9" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveStartTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.ServiceStartDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+              
+              <Label Grid.Row="10" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveFinishTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding MoveLine.ServiceFinishDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+              
+            </Grid>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+      <DataTemplate x:Key="ServiceTemplate">
+        <ViewCell>
+          <StackLayout>
+            <Grid Padding="0,10,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+              </Grid.RowDefinitions>
+              
+              <Label  Grid.Row="0" Grid.Column="0" Text="{x:Static resource:AppString.lblSummaryChargeNo}" Style="{StaticResource GeneralLabelText}"/>
+              <Label  Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ChargeNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+              <Switch Grid.Row="0" Grid.Column="2" IsToggled="{Binding IsSelected}" VerticalOptions="End"></Switch>
+              
+              <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resource:AppString.lblBlock}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.StartName}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resource:AppString.lblH34}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="2" Grid.Column="1" Text="{Binding ServiceLine.HasH34,Converter={StaticResource Bool2Str}}" Grid.ColumnSpan="2" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resource:AppString.lblService}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="3" Grid.Column="1" Text="{Binding ServiceLine.MoveTypeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="4" Grid.Column="0" Text="Container" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.EquipmentNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resource:AppString.lblSize}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.EquipmentSizeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resource:AppString.lblStatus}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.EquipmentStatusDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="7" Grid.Column="0" Text="{x:Static resource:AppString.lblChassis}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.ChassisNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="8" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveProduct}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.ProductDescription}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="9" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveStartTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.ServiceStartDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="10" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveFinishTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ServiceLine.ServiceFinishDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            </Grid>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+      <DataTemplate x:Key="DetentionTemplate">
+        <ViewCell>
+          <StackLayout>
+            <Grid Padding="0,10,0,0">
+              <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+              </Grid.ColumnDefinitions>
+              <Grid.RowDefinitions>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+                <RowDefinition Height="{StaticResource HeaderRow}"/>
+              </Grid.RowDefinitions>
+
+              <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resource:AppString.lblSummaryChargeNo}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ChargeNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+              <Switch Grid.Row="0" Grid.Column="2" IsToggled="{Binding IsSelected}" VerticalOptions="End"></Switch>
+              
+              <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resource:AppString.lblBlock}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.StartName}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resource:AppString.lblH34}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.HasH34,Converter={StaticResource Bool2Str}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resource:AppString.lblService}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="3" Grid.Column="1" Text="{Binding DetentionLine.MoveTypeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="4" Grid.Column="0" Text="Container" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.EquipmentNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resource:AppString.lblSize}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.EquipmentSizeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resource:AppString.lblStatus}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.EquipmentStatusDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="7" Grid.Column="0" Text="{x:Static resource:AppString.lblChassis}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.ChassisNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="8" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveProduct}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.ProductDescription}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="9" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveStartTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.ServiceStartDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+              <Label Grid.Row="10" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveFinishTime}" Style="{StaticResource GeneralLabelText}"/>
+              <Label Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding DetentionLine.ServiceFinishDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+            </Grid>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+      <DataTemplate x:Key="OperateTemplate">
+        <ViewCell>
+          <StackLayout>
+            <Grid Padding="0,10,0,0">
+            <Grid.ColumnDefinitions>
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+              <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+              <RowDefinition Height="{StaticResource HeaderRow}"/>
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" Grid.Column="0" Text="{x:Static resource:AppString.lblSummaryChargeNo}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding ChargeNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+            <Switch Grid.Row="0" Grid.Column="2" IsToggled="{Binding IsSelected}" VerticalOptions="End"></Switch>
+              
+            <Label Grid.Row="1" Grid.Column="0" Text="{x:Static resource:AppString.lblBlock}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.StartName}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="2" Grid.Column="0" Text="{x:Static resource:AppString.lblH34}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.HasH34,Converter={StaticResource Bool2Str}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="3" Grid.Column="0" Text="{x:Static resource:AppString.lblService}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="3" Grid.Column="1" Text="{Binding OperateTaylorLine.MoveTypeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="4" Grid.Column="0" Text="Container" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.EquipmentNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="5" Grid.Column="0" Text="{x:Static resource:AppString.lblSize}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="5" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.EquipmentSizeDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="6" Grid.Column="0" Text="{x:Static resource:AppString.lblStatus}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="6" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.EquipmentStatusDesc}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="7" Grid.Column="0" Text="{x:Static resource:AppString.lblChassis}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.ChassisNumber}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="8" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveProduct}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="8" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.ProductDescription}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="9" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveStartTime}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="9" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.ServiceStartDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+            <Label Grid.Row="10" Grid.Column="0" Text="{x:Static resource:AppString.lblResumeMoveFinishTime}" Style="{StaticResource GeneralLabelText}"/>
+            <Label Grid.Row="10" Grid.Column="1" Grid.ColumnSpan="2" Text="{Binding OperateTaylorLine.ServiceFinishDate,Converter={StaticResource Str2Date}}" Style="{StaticResource GeneralLabelTextN}"/>
+
+          </Grid>
+          </StackLayout>
+        </ViewCell>
+      </DataTemplate>
+      <converter:AcknowledgeDataTemplateSelector x:Key="acknowledgeDataTemplateSelector"
+                MoveTemplate="{StaticResource MoveTemplate}"
+                ServiceTemplate="{StaticResource ServiceTemplate}"
+                DetentionTemplate="{StaticResource DetentionTemplate}"
+                OperateTemplate="{StaticResource OperateTemplate}" />
+    </ResourceDictionary>
+  </ContentPage.Resources>
+  <ContentPage.Content>
+    <!--Header-->
+    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand">
+
+      <StackLayout Style="{StaticResource HeaderStackLastUpdate}">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="CenterAndExpand" VerticalOptions="Fill">
+          <Label Text="{x:Static resource:AppString.lblHeaderTimeMsg}" Style="{StaticResource HeaderLabelText}" HorizontalOptions="Center"></Label>
+          <Label Text="{Binding TextTodayDate}" Style="{StaticResource HeaderLabelTextBold}" HorizontalOptions="Center"></Label>
+        </StackLayout>
+      </StackLayout>
+      <StackLayout Orientation="Vertical" Padding="15,0,15,15">
+        <StackLayout>
+          <StackLayout.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding SelectChargeNumberCommand}"></TapGestureRecognizer>
+          </StackLayout.GestureRecognizers>
+          <Label Text="{x:Static resource:AppString.lblSummaryChargeNo}" Style="{StaticResource GeneralLabelText}"/>
+          <Label HorizontalOptions="FillAndExpand" Text="{Binding SelectedChargeNoDesc}" LineBreakMode="WordWrap">
+            <Label.Effects>
+              <effects:LabelBorderEffect/>
+            </Label.Effects>
+          </Label>
+        </StackLayout>
+        
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+          <Label Text="{Binding SelectedLabel}" Style="{StaticResource SimpleLabelTextN}" IsVisible="{ Binding ShowContent}" HorizontalOptions="Start" HorizontalTextAlignment="Start"/>
+          <Label HorizontalOptions="EndAndExpand" HorizontalTextAlignment="End" Text="Select All" Style="{StaticResource SimpleLabelTextN}" IsVisible="{ Binding ShowContent}"/>
+          <Switch HorizontalOptions="End" IsToggled="{Binding IsAllSelected}" IsVisible="{ Binding ShowContent}"></Switch>
+        </StackLayout>
+      </StackLayout>
+      <StackLayout Padding="15,0,15,15" VerticalOptions="FillAndExpand">
+        <Label Margin="20" Text="{x:Static resource:AppString.lblNotRecordSelected}" FontSize="Large" FontAttributes="Bold" IsVisible="{Binding LstAcknowledge,Converter={StaticResource Lst2Bool}}" HorizontalOptions="FillAndExpand" HorizontalTextAlignment="Center"></Label>
+        <customControls:ListView
+                               ItemsSource="{Binding LstAcknowledge}"
+                               ItemTemplate="{StaticResource acknowledgeDataTemplateSelector}"
+                               HasUnevenRows="True"
+                               VerticalOptions="FillAndExpand"
+                               IsVisible="{ Binding ShowContent}" >
+          <customControls:ListView.Footer>
+            <StackLayout Orientation="Vertical" Padding="0,10,0,0">
+              <Label Text="Authorized by" Margin="0,10,0,0" Style="{StaticResource GeneralLabelText}" IsVisible="{ Binding ShowContent}"/>
+              <customControls:CustomEntry x:Name="TxtAuthorizedBy" Style="{StaticResource GeneralEntryText}" IsPassword="True" IsVisible="{ Binding ShowContent}" Text="{Binding TxtAuthorizedBy}"></customControls:CustomEntry>
+              <Label x:Name="LblAuthorizedByError" Text="{Binding LblAuthorizedByError}"  Style="{StaticResource GeneralErrorText}" />
+              <Label Text="{Binding LblListByError}"  Style="{StaticResource GeneralErrorText}" IsVisible="{Binding LblListByError,Converter={StaticResource Str2Bool}}"/>
+              <Button x:Name="btnNext" Text="Approve" Command="{Binding SendAcknowledgeInformation}" Style="{StaticResource PrimaryButtonS}" IsVisible="{ Binding ShowContent}"></Button>
+            </StackLayout>
+          </customControls:ListView.Footer>
+        </customControls:ListView>
+      </StackLayout>
+    </StackLayout>
+  </ContentPage.Content>
+</abstract:NavigatingPage>

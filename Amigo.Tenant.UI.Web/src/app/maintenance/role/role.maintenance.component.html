@@ -1,0 +1,59 @@
+<kendo-dialog title="{{flgEdition === 'E'?'Edit':'Add'}} Role" *ngIf="mainPopupOpened" (close)="mainPopupClose()">
+    <div>
+        <div class="form-horizontal">
+            <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+
+            <form #rolForm="ngForm" data-val-form="rolForm">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Code</label>
+                            <div class="col-sm-10">
+                                <input st-autofocus [isFocused]="flgEdition === 'N'" type="text" class="form-control" [(ngModel)]="maintenance.code"  [readOnly] ="showTree"
+                                 required name="code" #code="ngModel" maxlength="20" />
+                                <label [hidden]="code.valid || (code.pristine && code.untouched)" class="message error">Code is required</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input st-autofocus [isFocused]="flgEdition === 'E'" type="text" class="form-control" [(ngModel)]="maintenance.name"
+                                 required name="name" #name="ngModel" maxlength="50" />
+                                <label [hidden]="name.valid || (name.pristine && name.untouched)" class="message error">Name is required</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="offset-sm-2 col-sm-10">
+                            <div class="form-control-static">
+                                <input id="chk-isAdmin" type="checkbox" class="ro-checkbox" [(ngModel)]="maintenance.isAdmin" name="isAdmin">
+                                <label for="chk-isAdmin"></label>
+                                <label for="chk-isAdmin">
+                                    Is Administrator
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6"></div>
+                </div>
+                <div [hidden]="!showTree">
+                    <div class="sub-header">Allowed options</div>
+                </div>
+            </form>
+            
+        </div>
+        <div *ngIf="showTree" style="height:300px; overflow: scroll; overflow-x:hidden;padding: 5px 0 10px 10px;">
+            <st-action-permission [inputMuduleTree]="ModuleTree" [inputCodeRol]="maintenance.code"></st-action-permission>
+        </div>
+        
+        <div class="k-window-buttons">
+            <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="rolForm.form.valid" [formName]="'rolForm'"></st-boton-maintenance>
+        </div>
+    </div>
+
+</kendo-dialog>
+

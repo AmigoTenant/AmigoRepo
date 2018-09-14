@@ -1,0 +1,47 @@
+﻿<div>
+    <form class="form-horizontal">
+        <div class="filter-bar">
+            <div class="row">
+                <div class="col-sm-8">
+                    <div class="filter-row">
+                        <div class="filter-control">
+                            <label for="code" class="control-label">Code</label>
+                            <label>
+                                <input st-autofocus type="text" class="form-control" [(ngModel)]="model.code" name="code" autofocus maxlength="20" />
+                            </label>
+                        </div>
+                        <div class="filter-control">
+                            <label for="name" class="control-label">Name</label>
+                            <label>
+                                <input type="text" class="form-control" [(ngModel)]="model.name" name="name" maxlength="50" style="width: 250px;"/>
+                            </label>
+                        </div>
+                        <div class="filter-control">
+                            <label for="name" class="control-label">Parent</label>
+                            <label>
+                                <input type="text" class="form-control" [(ngModel)]="model.parentName" name="parentName" maxlength="50" style="width: 250px;" />
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <div class="button-container">
+                        <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck [actionCode]="'Module.Search'">Search</button>
+                    </div>
+                    <div class="button-container">
+                        <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="action-bar">
+            <div class="button-container">
+                <button type="button"  data-am-button="secondary" class="ro-button btn-default" (click)="editor.newModule($event);"  st-authCheck [actionCode]="'Module.Create'">Add Module</button>
+            </div>
+        </div>
+    </form>
+    <st-module-grid [modelParameters]="model" [imodulo]="modulo" (itemSelected)="editor.selectModule($event);" (counterGridEvent)="counterGridEvent($event)"  #editorGrid></st-module-grid>
+</div>
+<div>
+    <st-module-maintenance #editor [listParents]="listParents" (searchModule)="editorGrid.onSearch();"></st-module-maintenance>
+</div>

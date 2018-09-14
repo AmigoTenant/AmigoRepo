@@ -1,0 +1,88 @@
+<div class="form-horizontal">
+   <div class="page-header">Register Utility Bill</div>
+   <div class="action-bar-container">
+      <st-boton-maintenance [formValid]="utilityServiceForm.form.valid" [formName]="'utilityServiceForm'"></st-boton-maintenance>
+   </div>
+
+   <form #utilityServiceForm="ngForm" class="form-horizontal" novalidate data-val-form="utilityServiceForm">
+      <div class="filter-bar">
+         <div class="form-group row">
+            <label for="service" class="col-sm-1 col-form-label">Service</label>
+            <div class="col-sm-5">
+               <select name="service" [(ngModel)]="selectedHouseService.houseServiceId" 
+                  (change)="onChangeService($event)" class="form-control input-control"
+                  [disabled]="flgEdition === 'E'">
+                  <option *ngFor="let s of houseServices" [ngValue]="s.houseServiceId">
+                  {{s.serviceTypeValue + ' - ' + s.conceptDescription + ' - ' + s.businessPartnerName}}
+                  </option>
+               </select>
+               <input type="hidden" [(ngModel)]="selectedHouseService.houseServiceId" name="service" />
+            </div>
+         </div>
+      </div>
+   </form>
+   
+   <div class="row">
+      <div class="col-sm-12">
+         <p-dataTable #dt [value]="edittingServicePeriods" emptyMessage="No entries found">
+            <p-column field="periodCode" header="Period"></p-column>
+            <p-column field="monthId" header="Month"></p-column>
+            <p-column field="dueDateMonth" header="Due Month" >
+               <ng-template let-col let-service="rowData" pTemplate="body">
+                  <span>{{getMonthById(service[col.field])}}</span>
+               </ng-template>
+               <ng-template let-col let-service="rowData" pTemplate="editor">
+                  <p-dropdown [(ngModel)]="service[col.field]" name="dueDateMonth" [options]="months" 
+                  [autoWidth]="false" [style]="{'width': '100%' }" required="true">
+                  </p-dropdown>
+               </ng-template>
+            </p-column>
+            <p-column field="dueDateDay" header="Due Day"></p-column>
+            <p-column field="cutOffMonth" header="Cut Month">
+               <ng-template let-col let-service="rowData" pTemplate="body">
+                  <span>{{getMonthById(service[col.field])}}</span>
+               </ng-template>
+               <ng-template let-col let-service="rowData" pTemplate="editor">
+                  <p-dropdown [(ngModel)]="service[col.field]" name="cutOffMonth" [options]="months" 
+                  [autoWidth]="false" [style]="{'width': '100%' }" required="true">
+                  </p-dropdown>
+               </ng-template>
+            </p-column>
+            <p-column field="cutOffDay" header="Cut Day"></p-column>
+
+            <p-column field="amount" header="Amount"></p-column>
+            <p-column field="adjust" header="Adjust"></p-column>
+            <p-column field="consumption" header="Consumption"></p-column>
+            <p-column field="UM" header="Unit Measure"></p-column>
+            <p-column field="servicePeriodStatusId" header="Status"></p-column>
+         </p-dataTable>
+      </div>
+   </div>
+</div>     
+
+<p-dialog header="Utility Bill Detail" [(visible)]="displayDialog" [responsive]="true" showEffect="fade" [modal]="true">
+   <div class="ui-grid ui-grid-responsive ui-fluid" *ngIf="servicePeriod">
+         <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="amount">Amount</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="amount" [(ngModel)]="servicePeriod.vin" /></div>
+         </div>
+         <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="adjust">Adjust</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="adjust" [(ngModel)]="servicePeriod.year" /></div>
+         </div>
+         <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="consumption">Consumption</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="consumption" [(ngModel)]="servicePeriod.consumption" /></div>
+         </div>
+         <div class="ui-grid-row">
+            <div class="ui-grid-col-4"><label for="unitmeasure">Unit measure</label></div>
+            <div class="ui-grid-col-8"><input pInputText id="unitmeasure" [(ngModel)]="servicePeriod.UM" /></div>
+         </div>
+   </div>
+   <p-footer>
+         <div class="ui-dialog-buttonpane ui-helper-clearfix">
+            <button type="button" pButton icon="fa-close" (click)="delete()" label="Delete"></button>
+            <button type="button" pButton icon="fa-check" (click)="save()" label="Save"></button>
+         </div>
+   </p-footer>
+</p-dialog>

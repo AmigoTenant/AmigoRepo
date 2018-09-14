@@ -1,0 +1,89 @@
+﻿// For LESS file includes
+@import "amigotenantx-variables.less";
+// Tables
+
+.ro-modern {
+
+    .grid-container {
+        position: relative;
+        z-index: 0;
+    }
+}
+
+.k-grid {
+
+    .k-grid-header {
+        background: #FFF linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0.05) 10%);
+    }
+
+    & .k-grid-header th.k-header, & .k-filter-row th {
+        background: #FFF linear-gradient(to bottom, rgba(0, 0, 0, 0.15) 0, rgba(0, 0, 0, 0.05) 10%);
+        border-right: none;
+        color: #000;
+        font-weight: 500;
+        font-size: @font-size-base;
+        height: 60px;
+        padding: 0px 10px 0 10px;
+        text-align: left;
+        text-decoration: none;
+        vertical-align: middle;
+        white-space: normal;
+    }
+
+    & td {
+        border-left: none;
+        border-right: none;
+        line-height: 16px;
+        color: @text-color;
+        padding: 8px 10px 8px 10px;
+        font-size: @font-size-base;
+        border-bottom: 1px solid @table-border-color;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    & .k-alt {
+        background-color: inherit;
+    }
+
+    & .k-grid-content {
+        & tr {
+            &.k-state-selected {
+                td {
+                    background-color: @table-bg-active;
+                    color: white;
+                }
+
+                & .ro-checkbox + label:before {
+                    border-color: #fff;
+                }
+            }
+
+            &.k-state-selected:hover {
+                td {
+                    a {
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        & tr:last-child td {
+            border-bottom-width: 1px;
+        }
+    }
+}
+
+&.k-grid-sm {
+    .k-grid {
+        .k-grid-header th.k-header, .k-filter-row th {
+            height: 28px;
+            padding: 8px 0 8px 15px;
+        }
+
+        td {
+            height: auto;
+            padding: 8px 0 8px 15px;
+        }
+    }
+}
