@@ -14,6 +14,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Net.Mail;
 using System.Text;
 using System.Threading.Tasks;
@@ -79,6 +80,27 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         {
             var resp = await _paymentPeriodApplicationService.CalculateOnAccountByContractAndPeriodAsync(search);
             return resp;
+        }
+
+        [HttpGet]
+        [Route("exportToExcel/{periodId}/{houseId}/{contractCode}/{paymentPeriodStatusId}/{tenantId}/{hasPendingServices}/{hasPendingFines}/{hasPendingLateFee}/{page}/{pageSize}"), AllowAnonymous]//ShuttleClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.WeeklyReportSearch)
+        public async Task<HttpResponseMessage> ExportToExcel([FromUri]PaymentPeriodSearchRequest search)
+        //public HttpResponseMessage ExportToExcel(int? periodId, int? houseId, string contractCode, int? paymentPeriodStatusId, int? tenantId,
+        //    bool? hasPendingServices, bool? hasPendingFines, bool? hasPendingLateFee, int? page, int? pageSize)
+        {
+            var response = Request.CreateResponse();
+            //PaymentPeriodSearchRequest search = new PaymentPeriodSearchRequest();
+            //search.Page = 1;
+            //search.PageSize = 20000;
+            search.ContractCode = null;
+            response.Content = new PushStreamContent((outputStream, httpContent, transportContext)
+                => _paymentPeriodApplicationService.GenerateDataCsvToReportExcel(outputStream, httpContent, transportContext, search), new MediaTypeHeaderValue("text/csv"));
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
+            {
+                FileName = "paymentPeriod.csv",
+                DispositionType = "inline"
+            };
+            return response;
         }
 
         [AllowAnonymous]

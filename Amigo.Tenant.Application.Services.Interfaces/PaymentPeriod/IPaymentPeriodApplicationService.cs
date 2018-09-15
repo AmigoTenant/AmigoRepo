@@ -19,5 +19,7 @@ namespace Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod
         Task<ResponseDTO<PPDetailSearchByContractPeriodDTO>> CalculateLateFeeByContractAndPeriodAsync(PaymentPeriodSearchByContractPeriodRequest search);
         Task<ResponseDTO<PPDetailSearchByContractPeriodDTO>> CalculateOnAccountByContractAndPeriodAsync(PaymentPeriodSearchByContractPeriodRequest search);
         Task<ResponseDTO<List<PPHeaderSearchByInvoiceDTO>>> SearchInvoiceByIdAsync(string invoiceNo);
+        Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent, TransportContext transportContext, PaymentPeriodSearchRequest search);
+
     }
 }

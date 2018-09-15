@@ -52,6 +52,7 @@ import { ExpenseComponent } from './expense/expense.component';
 import { MasterDataService } from '../shared/api/master-data-service';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.component';
+import { PaymentServiceNew } from './payment/payment.service';
 
 
 
@@ -113,7 +114,8 @@ import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.compo
       NotificationService,
       PaymentService,
       UtilityBillServiceClient,
-      MasterDataService
+      MasterDataService,
+      PaymentServiceNew
     ],
 })
 export class AmigotenantModule { }

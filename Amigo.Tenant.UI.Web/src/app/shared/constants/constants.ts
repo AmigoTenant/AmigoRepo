@@ -11,4 +11,10 @@
             'getCurrentPeriod': 'Period/getCurrentPeriod'
         };
     }
+
+    public static get PAYMENTPERIOD_URL_PATH(): any {
+        return {
+            'exportToExcel': 'api/payment/exportToExcel'
+        };
+    }
 }

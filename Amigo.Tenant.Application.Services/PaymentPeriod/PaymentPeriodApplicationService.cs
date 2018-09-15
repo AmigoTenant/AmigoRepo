@@ -11,9 +11,13 @@ using Amigo.Tenant.Infrastructure.Persistence.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Extensions;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
+using System.Web;
 
 namespace Amigo.Tenant.Application.Services.PaymentPeriod
 {
@@ -505,69 +509,70 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
         /*EXCEL REPORT*/
 
-        //public async Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent,
-        //    TransportContext transportContext, PaymentPeriodSearchRequest search)
-        //{
-        //    var list = await SearchPaymentPeriodAsync(search);
-        //    try
-        //    {
-        //        if (list.Data.Items.Count > 0)
-        //            using (var writer = new StreamWriter(outputStream))
-        //            {
-        //                var headers = new List<string>
-        //                {
-        //                    "PaymentPeriod Code",
-        //                    "Period",
-        //                    "Tenant",
-        //                    "Property",
-        //                    "Start",
-        //                    "Finish",
-        //                    "Deposit",
-        //                    "Rent",
-        //                    "Unpaid periods",
-        //                    "Due Date",
-        //                    "Days to collect"
-        //                };
-        //                await writer.WriteLineAsync(ExcelHelper.GetHeaderDetail(headers));
-        //                foreach (var item in list.Data.Items)
-        //                    await writer.WriteLineAsync(ProcessCellDataToReport(item));
-        //            }
-        //    }
-        //    catch (HttpException ex)
-        //    {
-        //    }
-        //    finally
-        //    {
-        //        outputStream.Close();
-        //    }
-        //}
+        public async Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent,
+            TransportContext transportContext, PaymentPeriodSearchRequest search)
+        {
+            var list = await SearchPaymentPeriodAsync(search);
+            try
+            {
+                if (list.Data.Items.Count > 0)
+                    using (var writer = new StreamWriter(outputStream))
+                    {
+                        var headers = new List<string>
+                        {
+                            "Period",
+                            "DueDate",
+                            "Contract",
+                            "Tenant",
+                            "House",
+                            "Rent Status",
+                            "Rent",
+                            "Pending Deposit",
+                            "Pending Fine",
+                            "Pending Services",
+                            "Pending Fee"
+                        };
+                        await writer.WriteLineAsync(ExcelHelper.GetHeaderDetail(headers));
+                        foreach (var item in list.Data.Items)
+                            await writer.WriteLineAsync(ProcessCellDataToReport(item));
+                    }
+            }
+            catch (HttpException ex)
+            {
+            }
+            finally
+            {
+                outputStream.Close();
+            }
+        }
 
-        //private string ProcessCellDataToReport(PPSearchDTO item)
-        //{
-        //    var startDate = string.Format("{0:MM/dd/yyyy HH:mm}", item.BeginDate) ?? "";
-        //    var finishDate = string.Format("{0:MM/dd/yyyy HH:mm}", item.EndDate) ?? "";
-        //    //var product = !string.IsNullOrEmpty(item.ProductName) ? item.ProductName.Replace(@",", ".") : "";
-        //    //var total = string.Format("{0:0.00}", item.DriverPay);
-        //    var rentPrice = string.Format("{0:0.00}", item.RentPrice);
-        //    var rentDeposit = string.Format("{0:0.00}", item.RentDeposit);
-        //    var unpaidPeriods = string.Format("{0:0}", item.UnpaidPeriods);
-        //    var nextDueDate = string.Format("{0:MM/dd/yyyy HH:mm}", item.NextDueDate) ?? "";
-        //    var nextDaystoCollect = string.Format("{0:0}", item.NextDaysToCollect);
+        private string ProcessCellDataToReport(PPSearchDTO item)
+        {
+            var dueDate = string.Format("{0:MM/dd/yyyy}", item.DueDate) ?? "";
+            //var product = !string.IsNullOrEmpty(item.ProductName) ? item.ProductName.Replace(@",", ".") : "";
+            //var total = string.Format("{0:0.00}", item.DriverPay);
+            var pendingRent = string.Format("{0:0.00}", item.PaymentAmount);
+            var pendingDeposit = string.Format("{0:0.00}", item.DepositAmountPending);
+            var pendingService = string.Format("{0:0.00}", item.ServicesAmountPending);
+            var pendingLateFee = string.Format("{0:0.00}", item.LateFeesAmountPending);
+            var pendingFine = string.Format("{0:0.00}", item.FinesAmountPending);
 
-        //    var textProperties = ExcelHelper.StringToCSVCell(item.PaymentPeriodCode) + "," +
-        //                         ExcelHelper.StringToCSVCell(item.PeriodCode) + "," +
-        //                         ExcelHelper.StringToCSVCell(item.TenantFullName) + "," +
-        //                         ExcelHelper.StringToCSVCell(item.HouseName) + "," +
-        //                         ExcelHelper.StringToCSVCell(startDate) + "," +
-        //                         ExcelHelper.StringToCSVCell(finishDate) + "," +
-        //                         ExcelHelper.StringToCSVCell(rentDeposit) + "," +
-        //                         ExcelHelper.StringToCSVCell(rentPrice) + "," +
-        //                         ExcelHelper.StringToCSVCell(unpaidPeriods) + "," +
-        //                         ExcelHelper.StringToCSVCell(nextDueDate) + "," +
-        //                         ExcelHelper.StringToCSVCell(nextDaystoCollect) ;
+            var textProperties = ExcelHelper.StringToCSVCell(item.PeriodCode) + "," +
+                                 ExcelHelper.StringToCSVCell(dueDate) + "," +
+                                 ExcelHelper.StringToCSVCell(item.ContractCode) + "," +
+                                 ExcelHelper.StringToCSVCell(item.TenantFullName) + "," +
+                                 ExcelHelper.StringToCSVCell(item.HouseName) + "," +
+                                 ExcelHelper.StringToCSVCell(item.PaymentPeriodStatusCode) + "," +
+                                 ExcelHelper.StringToCSVCell(pendingRent) + "," +
+                                 ExcelHelper.StringToCSVCell(pendingDeposit) + "," +
+                                 ExcelHelper.StringToCSVCell(pendingFine) + "," +
+                                 ExcelHelper.StringToCSVCell(pendingService) + "," +
+                                 ExcelHelper.StringToCSVCell(pendingLateFee);
 
-        //    return textProperties;
-        //}
+            return textProperties;
+        }
+
+
 
     }
 }

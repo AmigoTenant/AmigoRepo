@@ -15,6 +15,7 @@ import { ListsService } from '../../shared/constants/lists.service';
 
 import { ConfirmationList, ConfirmationIntResult } from '../../model/confirmation.dto';
 import { PaymentService, PaymentPeriodSearchRequest } from "../../shared/api/payment.service";
+import { PaymentServiceNew } from './payment.service';
 
 declare var $: any;
 
@@ -58,7 +59,9 @@ export class PaymentComponent implements OnInit {
         private _listsService: ListsService,
         private listConfirmation: ConfirmationList,
         private entityStatusClient: EntityStatusClient,
-        public serviceOrderService: PaymentService) { }
+        public serviceOrderService: PaymentService,
+        public paymentServiceNew: PaymentServiceNew
+    ) { }
 
     //@ViewChild(PaymentMaintenanceComponent) viewPaymentComponent: PaymentMaintenanceComponent;
 
@@ -115,7 +118,7 @@ export class PaymentComponent implements OnInit {
     onSearch() {
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
-
+debugger;
         this.paymentDataService.search(
             this.searchCriteria.periodId,
             this.searchCriteria.houseId,
@@ -276,6 +279,23 @@ export class PaymentComponent implements OnInit {
 
         }
         return true;
+    }
+
+
+    exportToExcel() {
+        let period = this.paymentServiceNew.exportToExcel(
+            this.searchCriteria.periodId,
+            this.searchCriteria.houseId,
+            this.searchCriteria.contractCode,
+            this.searchCriteria.paymentPeriodStatusId,
+            this.searchCriteria.tenantId,
+            this.searchCriteria.hasPendingServices,
+            this.searchCriteria.hasPendingFines,
+            this.searchCriteria.hasPendingLateFee,
+            this.searchCriteria.hasPendingDeposit,
+            this.searchCriteria.page,
+            this.searchCriteria.pageSize
+        );
     }
 }
 
