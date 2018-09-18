@@ -209,7 +209,7 @@ export class NotificationServiceUI extends AmigoTenantServiceBase implements INo
             "&custom_uid=" + msgId + 
             "&text=" + textMessage;
         
-        //debugger;
+        
         return this.http.request(url_, this.transformOptions({
             body: content_,
             method: "post",
@@ -218,7 +218,7 @@ export class NotificationServiceUI extends AmigoTenantServiceBase implements INo
                 "Accept": "application/json; charset=UTF-8"
             })
         })).map((response) => {
-            //debugger;
+            
             return this.transformResult(url_, response, (response) => this.processSendNotification(response));
         }).catch((response: any, caught: any) => {
             if (response instanceof Response) {

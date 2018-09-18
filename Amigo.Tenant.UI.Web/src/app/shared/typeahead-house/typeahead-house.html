@@ -11,7 +11,7 @@
           [inputFormatter]="formatter" 
           maxlength="64"
           (ngModelChange)="selectValue($event)"
-          [disabled]="_isDisabled"
+          [disabled]="isDisabled"
            /><i class="ic-search"></i>
 </div>
 <!--(blur)="findValue($event.target.value)"-->

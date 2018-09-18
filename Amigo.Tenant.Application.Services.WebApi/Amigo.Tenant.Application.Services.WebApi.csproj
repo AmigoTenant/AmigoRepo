@@ -429,6 +429,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AmigoInvoice.xlsx" />
+    <None Include="Properties\PublishProfiles\amigotenant - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\AmigoTenantApplicationServicesWebApi - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\AmigoTenantApplicationServicesWebApiDev - Web Deploy.pubxml" />
     <Content Include="Templates\EmailData.json" />
   </ItemGroup>

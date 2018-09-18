@@ -233,7 +233,7 @@
                                 <span>dataItem.contractStatusCode</span>
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div *ngIf="dataItem.contractStatusCode!='FORMAL'">
-                                        <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                        <button type="button" class="btn-icon" (click)="onEdit(dataItem, false)">
                                             <i class="xico-action-edit"></i>
                                         </button>
                                         <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
@@ -247,6 +247,9 @@
                                    <div *ngIf="dataItem.contractStatusCode=='FORMAL'">
                                        <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
                                            <i class="xico-action-remove"></i>
+                                       </button>
+                                       <button type="button" class="btn-icon" (click)="onView(dataItem);">
+                                           <i class="xico-shipment-find"></i>
                                        </button>
                                    </div>
 

@@ -246,7 +246,7 @@ export class ApproveServiceMaintenanceComponent extends EnvironmentComponent imp
     }
 
     sendDataToChild(data) {
-        //debugger;
+        
         this.getServiceById(data.amigoTenantTServiceId);
         this.flgEdition = "E";
         this.mainPopupOpen();

@@ -230,7 +230,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     getRentalApplication(): void {
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
-        //debugger;
+        
         this.rentalApplicationClient.search(this.model.periodId, this.model.propertyTypeId,
             this.model.applicationDateFrom, this.model.applicationDateTo,
             this.model.fullName,
@@ -252,7 +252,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
             this.model.pageSize)
             .subscribe(response => {
                 var datagrid: any = response;
-                //debugger;
+                
                 this.rentalApplicationSearchDTOs = {
                     data: datagrid.data.items,
                     total: datagrid.data.total
@@ -303,7 +303,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     getBudgets(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("BudgetRange")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listBudgets = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -318,7 +318,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     getReferredBy(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("ReferredBy")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listReferredBy = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -388,7 +388,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     //===========
 
     onEdit(data): void {
-        //debugger;
+        
         this.router.navigate(['/leasing/rentalApp/edit', data.rentalApplicationId]); // + data.rentalApplicationId);
     }
 
@@ -470,7 +470,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     }
 
     onSend() {
-        //debugger;
+        
         let numbers = this.rentalApplicationSearchDTOs.data.filter((value, index) => {
             return value.isSelected;
         }).map((value, index) => {
@@ -479,7 +479,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
         this.notificationService
             .sendNotification(numbers, encodeURIComponent(this.message))
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this.openedWhatsAppMessageConfimation = false;
                 this.openedSendConfimationMsg = false;
@@ -499,7 +499,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     public sendMessage: string = "Are you sure to Formalize this Lease?";
 
     SendAppMessage() {
-        //debugger;
+        
         //this.yesWhatsAppMessage();
         this.openedSendConfimationMsg = true;
     }

@@ -30,7 +30,7 @@
                                     <label for="from" class="col-sm-5 control-label">Begin Date</label>
                                     <label class="ro-calendar col-sm-7">
                                         <input class="form-control" [placeholder]="localization.dateFormat" name="BeginDate" ngbDatepicker #d1="ngbDatepicker"
-                                               [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()" [disabled]="_isDisabled">
+                                               [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()" [disabled]="_isDisabled || _isView">
                                         <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.beginDateError">Begin date is required</label>
                                     </label>
@@ -45,7 +45,7 @@
                                     <label for="from" class="col-sm-5 control-label">End Date</label>
                                     <label class="ro-calendar col-sm-7">
                                         <input class="form-control" [placeholder]="localization.dateFormat" name="EndDate" ngbDatepicker #d2="ngbDatepicker"
-                                               [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()" [disabled]="_isDisabled">
+                                               [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()" [disabled]="_isDisabled || _isView">
                                         <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.endDateError">End Date is required</label>
                                     </label>
@@ -76,14 +76,14 @@
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Tenant</label>
                                     <label class="col-sm-7">
-                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>
+                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [isDisabled]="_isView" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.tenantError">Tenant is required</label>
                                     </label>
                                 </div>
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Payment mode</label>
                                     <label class="col-sm-7">
-                                        <select name="paymentModeId" [(ngModel)]="model.paymentModeId" class="form-control" (ngModelChange)="onPaymentModeChange()">
+                                        <select name="paymentModeId" [disabled]="_isView" [(ngModel)]="model.paymentModeId" class="form-control" (ngModelChange)="onPaymentModeChange()">
                                             <option *ngFor="let o of _listPaymentMode" [ngValue]="o.generalTableId">{{o.value}}</option>
                                         </select>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.paymentModeError">Payment mode is required</label>
@@ -92,7 +92,7 @@
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Referenced By</label>
                                     <label class="col-sm-7">
-                                        <input type="text" name="referencedBy" class="form-control" [(ngModel)]="model.referencedBy" />
+                                        <input type="text" [disabled]="_isView" name="referencedBy" class="form-control" [(ngModel)]="model.referencedBy" />
                                     </label>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                         <div class="row" style="margin-bottom: 10px;border: 2px">
                                             <label for="from" class="col-sm-3 control-label">Add others tenants</label>
                                             <label class="col-sm-7">
-                                                <ngbd-typeahead-tenant (modelOutput)="getOtherTenant($event)" [currentTenant]="_currentOtherTenant"></ngbd-typeahead-tenant>
+                                                <ngbd-typeahead-tenant (modelOutput)="getOtherTenant($event)" [isDisabled]="_isView" [currentTenant]="_currentOtherTenant"></ngbd-typeahead-tenant>
                                             </label>
                                             <div style="clear: both"></div>
                                         </div>
@@ -131,28 +131,28 @@
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Property</label>
                                     <label class="col-sm-7">
-                                        <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse" ></ngbd-typeahead-house>
+                                        <ngbd-typeahead-house [isDisabled]="_isView" (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse" ></ngbd-typeahead-house>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.houseError">Property is required</label>
                                     </label>
                                 </div>
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Deposit</label>
                                     <label class="col-sm-7">
-                                        <input type="text" name="deposit" class="form-control" [(ngModel)]="model.rentDeposit" />
+                                        <input type="text" [disabled]="_isView" name="deposit" class="form-control" [(ngModel)]="model.rentDeposit" />
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.depositError">Deposit is required</label>
                                     </label>
                                 </div>
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-5 control-label">Rent</label>
                                     <label class="col-sm-7">
-                                        <input type="text" name="rent" class="form-control" [(ngModel)]="model.rentPrice" value="model.rentPrice|number:'2.2-2'" />
+                                        <input type="text" [disabled]="_isView" name="rent" class="form-control" [(ngModel)]="model.rentPrice" value="model.rentPrice|number:'2.2-2'" />
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.rentError">Rent is required</label>
                                     </label>
                                 </div>
                             </div>
 
                             <div class="col-sm-6" *ngIf="hasFeatures">
-                                <at-contract-house-feature [_listHouseFeature]="_listHouseAndDetails" (outputPrices)="getPrices($event)" [_isDisabled]=false></at-contract-house-feature>
+                                <at-contract-house-feature [_listHouseFeature]="_listHouseAndDetails" (outputPrices)="getPrices($event)" [_isDisabled]="false || _isView"  ></at-contract-house-feature>
                                 <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.contractHouseDetailError">House Feature is required</label>
                             </div>
                             

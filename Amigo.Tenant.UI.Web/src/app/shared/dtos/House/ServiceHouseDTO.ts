@@ -101,7 +101,7 @@ export class ServiceHouseDTO implements IServiceHouseDTO {
 
         data["Checked"] = this.checked !== undefined ? this.checked : null;
 
-        //debugger;
+        
         data["ServiceHousePeriods"] = this.serviceHousePeriods !== undefined ? this.serviceHousePeriods : null;
 
         return data;

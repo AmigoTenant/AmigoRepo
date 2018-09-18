@@ -44,7 +44,7 @@ export class PaymentComponent implements OnInit {
     getEntityStatus(): void {
         this.entityStatusClient.getEntityStatusByEntityCodeAsync("PP")
             .subscribe(response => {
-                //debugger;
+                
                 var dataResult: any = response;
                 this._listEntityStatus = dataResult.data;
                 let entity = new EntityStatusDTO();

@@ -46,7 +46,7 @@ export class TenantSearchComponent implements OnInit {
   public currentPage: number = 0;
 
   public pageChange({ skip, take }: PageChangeEvent): void {
-      //debugger;
+      
       this.currentPage = skip;
       this.model.pageSize = take;
       let isExport: boolean = false;
@@ -252,7 +252,7 @@ export class TenantSearchComponent implements OnInit {
     //-------------------------------------------------------------------------
 
   onEdit(data): void {
-      //debugger;
+      
       this.itemSelectedEdit.emit({
           'tenant': data,
           'entityStatuses': this.activeInactiveStatus,
@@ -278,7 +278,7 @@ export class TenantSearchComponent implements OnInit {
     this.notificationService
         .sendNotification(dataItem.phoneN01, encodeURIComponent("http://rpp.pe/"))
         .subscribe(res => {
-            //debugger;
+            
             var dataResult: any = res;
         });
 

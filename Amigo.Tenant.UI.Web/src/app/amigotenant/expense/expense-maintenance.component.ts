@@ -228,7 +228,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         //this.setHouseFeatureToDB();
         if (this.isValidData()) {
             if (this.flgEdition == "N") {
-                // debugger
                 //NEW
                 //this.model.contractStatusId = 2; //DRAFT
                 // this.model.rowStatus = true;
@@ -372,7 +371,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     getBudgets(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("BudgetRange")
             .subscribe(res => {
-                //debugger;
                 var dataResult: any = res;
                 this._listBudgets = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -387,7 +385,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     getReferredBy(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("ReferredBy")
             .subscribe(res => {
-                //debugger;
                 var dataResult: any = res;
                 this._listReferredBy = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -400,10 +397,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
     getCompleteShared(): void {
-        //debugger;
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("CompleteShared")
             .subscribe(res => {
-                //debugger;
                 var dataResult: any = res;
                 this._listCompleteShared = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -418,7 +413,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     getOutInDowntown(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("OutInDowntown")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listOutInDowntown = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {

@@ -18,7 +18,7 @@ import { ExpenseComponent } from './expense/expense.component';
 export const routes: Routes = [
   { path: 'contract', component: ContractComponent, data: { pageTitle: 'Contract' }, canActivate: [LoginRouteGuard] },
   { path: 'contract/new', component: ContractMaintenanceComponent, data: { pageTitle: 'Contract-New' }, canActivate: [LoginRouteGuard] },
-  { path: 'contract/edit/:code', component: ContractMaintenanceComponent, data: { pageTitle: 'Contract-Edit' }, canActivate: [LoginRouteGuard] },  
+  { path: 'contract/edit/:code/:isView', component: ContractMaintenanceComponent, data: { pageTitle: 'Contract-Edit' }, canActivate: [LoginRouteGuard] },  
   { path: 'tenant', component: TenantComponent, data: { pageTitle: 'Tenant' }, canActivate: [LoginRouteGuard]},
   { path: 'house', component: HouseComponent, data: { pageTitle: 'House' }, canActivate: [LoginRouteGuard]} ,    
   { path: 'house/new', component: HouseMaintenanceComponent , data: { pageTitle: 'House-New' },canActivate: [LoginRouteGuard]},

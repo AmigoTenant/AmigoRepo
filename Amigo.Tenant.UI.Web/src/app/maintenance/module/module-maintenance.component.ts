@@ -278,7 +278,7 @@ private resetGrid():void {
             //------------------------------
             this.moduleDataService.update(module)
                     .subscribe(res => {
-                        //debugger;
+                        
                 var dataResult: any = res; 
 
                     this.successFlag = dataResult.isValid;

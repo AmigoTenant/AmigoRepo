@@ -199,7 +199,7 @@ export class DialogUserComponent implements OnInit {
                 var items = response.data.items;
                 this.roleList = [];
                 if (this.isOnlyDriver) {
-                    //debugger;
+                    
                     for (var i = 0, j = items.length; i < j; i++) {
                         if (items[i].code == 'DRIVER') {
                             this.roleList = [items[i]];
@@ -278,7 +278,7 @@ export class DialogUserComponent implements OnInit {
     }
 
     public updateUser() {
-        //////////debugger;
+        ////////
         //----------------------------------------------------
         //          validate password confirmation
         //----------------------------------------------------
@@ -385,7 +385,7 @@ export class DialogUserComponent implements OnInit {
                             }
                             break;
                         case '2':
-                            //////////debugger;
+                            ////////
                             var isValidFirstName = this.validateFirstName('showError');
                             var isValidLastName = this.validateLastName('showError');
                             var isValidType = this.validateType('showError');
@@ -505,7 +505,7 @@ export class DialogUserComponent implements OnInit {
     }
 
     public onValidateUser() {
-        //debugger;
+        
         this.resetUserForm();
         this._cleanValidationMessage();
 
@@ -704,7 +704,7 @@ export class DialogUserComponent implements OnInit {
     }
 
     public onChangeType(value: string) {
-        ////debugger;
+        //
         ////console.log('closeeeeeeeeeeeeeeeeeeee', value, this.userTypeList.List[0].code);
         this.disabledDriverDetailControl = true;
         this.user.unitNumber = '';
@@ -715,7 +715,7 @@ export class DialogUserComponent implements OnInit {
             this.disabledDriverDetailControl = false;
             this.isMandatoryDriverDetail = true;
             this.userPaidByList.List.forEach(paidBy => {
-                ////debugger;
+                //
                 this.paidByList.push(paidBy);
             });
         }

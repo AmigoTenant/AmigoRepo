@@ -64,7 +64,7 @@ export class ListsService {
     }
 
     public ActivityLogResult() {
-        //debugger;
+        
         return [
             {
                 "resultCode": "",

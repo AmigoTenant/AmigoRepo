@@ -14078,7 +14078,7 @@ export class ContractClient extends AmigoTenantServiceBase implements IContractC
      * @return OK
      */
     changeStatus(contract: ContractChangeStatusRequest): Observable<ResponseDTO | null> {
-        //debugger;
+        
         let url_ = this.baseUrl + "/api/contract/changeStatus";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -15678,7 +15678,7 @@ export class HouseClient extends AmigoTenantServiceBase implements IHouseClient 
         let url_ = this.baseUrl + "/api/house/updateFeature";
 
         const content_ = JSON.stringify(feature ? feature.toJS() : null);
-        //debugger;
+        
         return this.http.request(url_, this.transformOptions({
             body: content_,
             method: "post",
@@ -18156,7 +18156,7 @@ export class TenantClient extends AmigoTenantServiceBase implements ITenantClien
                 "Accept": "application/json; charset=UTF-8"
             })
         })).map((response) => {
-            //debugger;
+            
             return this.transformResult(url_, response, (response) => this.processSearchTenantById(response));
         }).catch((response: any, caught: any) => {
             if (response instanceof Response) {
@@ -18236,7 +18236,7 @@ export class TenantClient extends AmigoTenantServiceBase implements ITenantClien
         let url_ = this.baseUrl + "/api/tenant/update";
 
         const content_ = JSON.stringify(tenant ? tenant.toJS() : null);
-        //debugger;
+        
         return this.http.request(url_, this.transformOptions({
             body: content_,
             method: "post",
@@ -19093,7 +19093,7 @@ export class UpdateTenantRequest {
     creationDate: Date;
 
     constructor(data?: any) {
-        //debugger;
+        
         if (data !== undefined) {
             this.tenantId = data["TenantId"] !== undefined ? data["TenantId"] : null;
             this.statusId = data["StatusId"] !== undefined ? data["StatusId"] : null;

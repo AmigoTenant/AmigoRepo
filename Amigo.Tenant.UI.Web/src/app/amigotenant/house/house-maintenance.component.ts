@@ -405,7 +405,7 @@ export class HouseMaintenanceComponent implements OnInit, OnDestroy {
         if (this.houseMaintenance.address != "" || this.houseMaintenance.address == null) {
             this.geocodingService.codeAddress(this.houseMaintenance.address)
                 .subscribe((res) => {
-                    //debugger;
+                    
                     var result = res;
                     var lat = result[0].geometry.location.lat();
                     var lng = result[0].geometry.location.lng();

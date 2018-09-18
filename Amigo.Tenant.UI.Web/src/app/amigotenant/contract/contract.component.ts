@@ -344,8 +344,8 @@ ngOnInit() {
     //EDIT
     //===========
 
-    onEdit(data): void {
-        this.router.navigate(['/amigotenant/contract/edit', data.contractId]); // + data.contractId);
+    onEdit(data, isView): void {
+        this.router.navigateByUrl('/amigotenant/contract/edit/'+ data.contractId+ '/' + isView); // + data.contractId);
     }
 
     //=========== 
@@ -465,7 +465,6 @@ ngOnInit() {
     }
 
     setCurrentPeriod() {
-        debugger;
         let period = this.masterDataService.getCurrentPeriod().subscribe(
             res => 
             {
@@ -478,11 +477,11 @@ ngOnInit() {
             this._currentPeriod.PeriodId:this.model.periodId;
             this.getContract();
         });
-
-        //this._currentPeriod = new PeriodDTO();
-        //this._currentPeriod.periodId = 46;
-        //this._currentPeriod.code = '201809';
         
+    }
+
+    onView(data){
+        this.onEdit(data, true);
     }
 
 }

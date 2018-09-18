@@ -124,7 +124,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
 
     
     ngOnInit() {
-        //debugger;
+        
         this.model = new RentalApplicationRegisterRequest();
         this.initializeForm();
         this.sub = this.route.params.subscribe(params => {
@@ -314,7 +314,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
                     //this.getHouseFeatureDetailContract();
                     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
                     if (this.successFlag) {
-                        //debugger;
+                        
                         this.getRentalApplicationById(dataResult.pk);
                         this.flgEdition = "E";
                         this._isDisabled = false;
@@ -448,7 +448,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     getBudgets(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("BudgetRange")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listBudgets = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -463,7 +463,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     getReferredBy(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("ReferredBy")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listReferredBy = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -476,10 +476,10 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     }
 
     getCompleteShared(): void {
-        //debugger;
+        
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("CompleteShared")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listCompleteShared = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -494,7 +494,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     getOutInDowntown(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("OutInDowntown")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listOutInDowntown = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {

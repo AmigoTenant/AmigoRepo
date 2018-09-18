@@ -26,7 +26,7 @@ export class NgbdTypeaheadPeriod implements OnChanges{
     ngOnChanges(changes: any)
     {
         this.model = this.currentPeriod === undefined ? null : this.currentPeriod;
-        //debugger;
+        
         if (this.searchByPeriodId != undefined && this.searchByPeriodId > 0) {
 
             this.periodClient.getPeriodById(this.searchByPeriodId)
@@ -40,7 +40,7 @@ export class NgbdTypeaheadPeriod implements OnChanges{
     }
 
     getPeriod(term) {
-        //debugger;
+        
         var resp = this.periodClient.searchForTypeAhead(term)
             .map(response => 
                 response.data

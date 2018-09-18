@@ -21,14 +21,14 @@ export class NgbdTypeaheadHouse implements OnChanges{
     @Input() currentHouse: HouseBasicDTO;
     @Input() searchByHouseId: number;
     @Input() typeId: number;
-    @Input() _isDisabled;
+    @Input() isDisabled:boolean;
 
     constructor(private houseClient: HouseClient) {}
 
     ngOnChanges(changes: any)
     {
         this.model = this.currentHouse === undefined ? null : this.currentHouse;
-        //debugger;
+        
         if (this.searchByHouseId != undefined && this.searchByHouseId > 0) {
 
              this.houseClient.getById(this.searchByHouseId)

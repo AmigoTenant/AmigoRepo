@@ -58,7 +58,7 @@ export class ExportCsv {
     }
 
     downloadFile(text, filename) {
-        //debugger;
+        
         var blob = new Blob([text], { type: 'text/csv;charset=utf-8;' });
         if (navigator.msSaveBlob) { // IE 10+
             navigator.msSaveBlob(blob, filename);
@@ -79,7 +79,7 @@ export class ExportCsv {
     }
 
     downloadFile2(text, filename) {
-        //debugger;
+        
 
         // var file = new File;
 

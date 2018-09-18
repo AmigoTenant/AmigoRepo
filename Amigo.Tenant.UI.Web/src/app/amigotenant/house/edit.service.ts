@@ -139,7 +139,7 @@ export class EditService extends BehaviorSubject<any[]> {
     private fetch(action: string = "", data?: any): Observable<any[]> {
         return this.houseDataService.getServiceHousesAll()
             .map(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 var result = dataResult.data;
                 // this.services = result;

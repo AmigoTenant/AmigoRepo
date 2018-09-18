@@ -89,7 +89,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
 
     //To manage the status if it is Editing or Adding
     _isDisabled: boolean;
-
+    _isView: boolean;
     constructor(
             private route: ActivatedRoute, 
             private router: Router,
@@ -116,9 +116,10 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     ngOnInit() {
         this.model = new ContractRegisterRequest();
         this.initializeForm();
+        this._isView = true;
         this.sub = this.route.params.subscribe(params => {
-
             let code = params['code'];
+            this._isView = (params['isView']==='true');
             if (code != null && typeof (code) != 'undefined') {
                 this.getContractById(code);
                 this.flgEdition = "E";

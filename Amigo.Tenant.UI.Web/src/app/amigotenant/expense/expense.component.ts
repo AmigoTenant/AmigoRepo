@@ -204,7 +204,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     getExpense(): void {
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
-        //debugger;
+        
         //this.expenseClient.search(this.model.periodId, this.model.propertyTypeId,
         //    this.model.applicationDateFrom, this.model.applicationDateTo,
         //    this.model.fullName,
@@ -226,7 +226,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         //    this.model.pageSize)
         //    .subscribe(response => {
         //        var datagrid: any = response;
-        //        //debugger;
+        //        
         //        this.expenseSearchDTOs = {
         //            data: datagrid.data.items,
         //            total: datagrid.data.total
@@ -254,7 +254,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     getPaymentTypes(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("PaymentType")
             .subscribe(res => {
-                //debugger;
+                
                 var dataResult: any = res;
                 this._listStatus = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -325,7 +325,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //===========
 
     //onEdit(data): void {
-    //    //debugger;
+    //    
     //    this.router.navigate(['/leasing/rentalApp/edit', data.expenseId]); // + data.expenseId);
     //}
 

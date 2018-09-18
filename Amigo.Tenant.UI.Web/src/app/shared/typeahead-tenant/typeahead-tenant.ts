@@ -22,12 +22,13 @@ export class NgbdTypeaheadTenant implements OnChanges{
     @Input() searchByTenantId: number;
     @Input() typeId: number;
     @Input() validateInActiveContract: boolean=false;
-    constructor(private tenantClient: TenantClient) {}
+    @Input() isDisabled:boolean;
+    constructor(private tenantClient: TenantClient) {
+    }
 
     ngOnChanges(changes: any)
     {
         this.model = this.currentTenant === undefined ? null : this.currentTenant;
-        //debugger;
         if (this.searchByTenantId != undefined && this.searchByTenantId > 0) {
 
              this.tenantClient.getById(this.searchByTenantId, this.typeId)
@@ -41,15 +42,9 @@ export class NgbdTypeaheadTenant implements OnChanges{
     }
 
     getTenant(term) {
-        //debugger;
         var resp = this.tenantClient.searchForTypeAhead(term, this.validateInActiveContract)
             .map(response => response.data);
         return resp;
-
-        //.map(response => {
-        //    var dataResult: any = response;
-        //    dataResult.value.data;
-        //});
     }
 
     search = (text$: Observable<string>) =>
