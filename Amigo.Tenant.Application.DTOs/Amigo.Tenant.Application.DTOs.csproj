@@ -148,6 +148,7 @@
     <Compile Include="Responses\MasterData\EntityStatusDTO.cs" />
     <Compile Include="Responses\MasterData\OtherTenantDTO.cs" />
     <Compile Include="Responses\MasterData\TenantBasicDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PaymentPeriodGroupedStatusAndConceptDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPDetailSearchByInvoiceDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPDetailSearchByContractPeriodDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPHeaderSearchByInvoiceDTO.cs" />

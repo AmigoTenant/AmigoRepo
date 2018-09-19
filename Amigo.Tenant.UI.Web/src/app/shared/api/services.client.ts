@@ -15035,7 +15035,7 @@ export class HouseClient extends AmigoTenantServiceBase implements IHouseClient 
       })).map((response) => {
           return this.transformResult(url_, response, (response) => this.processSearch(response));
       }).catch((response: any, caught: any) => {
-        // debugger;
+        
         if (response instanceof Response) {
             try {
                 return Observable.of(this.transformResult(url_, response, (response) => this.processSearch(response)));
@@ -18006,7 +18006,7 @@ export class TenantClient extends AmigoTenantServiceBase implements ITenantClien
       })).map((response) => {
           return this.transformResult(url_, response, (response) => this.processSearch(response));
       }).catch((response: any, caught: any) => {
-        // debugger;
+        
         if (response instanceof Response) {
             try {
                 return Observable.of(this.transformResult(url_, response, (response) => this.processSearch(response)));
@@ -18063,7 +18063,7 @@ export class TenantClient extends AmigoTenantServiceBase implements ITenantClien
       })).map((response) => {
           return this.transformResult(url_, response, (response) => this.processSearchCodeName(response));
       }).catch((response: any, caught: any) => {
-        // debugger;
+        
         if (response instanceof Response) {
             try {
                 return Observable.of(this.transformResult(url_, response, (response) => this.processSearchCodeName(response)));

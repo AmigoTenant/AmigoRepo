@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     }
 
     toggleImage(){
-        // debugger;
+        
         this.securityService.Authorize();
     }
 

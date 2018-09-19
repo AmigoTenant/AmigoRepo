@@ -112,7 +112,6 @@ export class NavigationComponent implements OnInit {
     };
 
     private getAllMenu(): void {
-        debugger;
         this.allMenus = [];
         this.parentModules.forEach(module => {
             let menu = this.fillMenu(module);

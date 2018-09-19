@@ -58,8 +58,9 @@
                                         (pageChange)="pageChange1($event)">
                                 <kendo-grid-column [width]="50">
                                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                            <!-- [disabled]="isValidToCheck" -->
                                         <div class="text-center">
-                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" [disabled]="isValidToCheck" value="option" (change)="changeItemHeader()" />
+                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
                                         </div>
                                     </ng-template>
                                     <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">

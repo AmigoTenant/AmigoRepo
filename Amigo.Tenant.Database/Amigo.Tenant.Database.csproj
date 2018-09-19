@@ -108,6 +108,9 @@
     <Content Include="AmigoTenantTrackingDb\views\dbo.vwFeature.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AmigoTenantTrackingDb\views\dbo.vwPaymentPeriodGroupedStatusAndConcept.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AmigoTenantTrackingDb\views\dbo.vwPaymentPeriodInvoicePrint.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

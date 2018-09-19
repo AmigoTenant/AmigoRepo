@@ -11,8 +11,7 @@ import { PaymentPeriodClient, PPHeaderSearchByContractPeriodDTO, PPDetailSearchB
 
 declare var $: any;
 
-export class dataDetailClass
-{
+export class dataDetailClass {
     public paymentPeriodId: string;
     public paymentTypeCode: string;
     public comment: string;
@@ -87,9 +86,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     private getPaymentDetailByContract(contractId, periodId): void {
         this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
             .subscribe(res => {
-                var dataResult: any = res;
-                this.paymentMaintenance = dataResult.data; 
-                var dataResult: any = res;
+                let dataResult: any = res;
+                this.paymentMaintenance = dataResult.data;
                 this.countItemsDet = dataResult.data.pPDetail.length;
                 this.gridDataDet = {
                     data: dataResult.data.pPDetail,
@@ -248,18 +246,20 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     }
 
     public calculatePendingToPay() {
-        //let c = this.gridDataDet.data.length;
-        var totalDeposit = 0;
-        var totalRent = 0;
-        var totalFine = 0;
-        var totalLateFee = 0;
-        var totalService = 0;
-        var totalOnAccount = 0;
-        var total = 0;
+        let pendingRows = this.gridDataDet.data.filter(q => q.paymentPeriodStatusCode === 'PPPENDING').length;
+        let rowsSelected = 0;
+        let totalDeposit = 0;
+        let totalRent = 0;
+        let totalFine = 0;
+        let totalLateFee = 0;
+        let totalService = 0;
+        let totalOnAccount = 0;
+        let total = 0;
 
-        //let index = 0; //this.amigoTenantTServiceApproveSearchRequest.page * this.amigoTenantTServiceApproveSearchRequest.pageSize - this.amigoTenantTServiceApproveSearchRequest.pageSize;
         for (let item in this.gridDataDet.data) {
-
+            if (this.gridDataDet.data[item].isSelected) {
+                rowsSelected++;
+            }
 
             if ((this.gridDataDet.data[item].isSelected == null && this.gridDataDet.data[item].isRequired && this.gridDataDet.data[item].paymentPeriodStatusCode == 'PPPENDING') ||
                 (this.gridDataDet.data[item].isSelected && this.gridDataDet.data[item].paymentPeriodStatusCode == 'PPPENDING')) {
@@ -276,9 +276,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                 if (this.gridDataDet.data[item].paymentTypeCode == 'ONACCOUNT')
                     totalOnAccount += this.gridDataDet.data[item].paymentAmount;
                 total += this.gridDataDet.data[item].paymentAmount;
-
             }
-            //index++;
         }
         this.paymentMaintenance.pendingDeposit = totalDeposit;
         this.paymentMaintenance.pendingRent = totalRent;
@@ -287,6 +285,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.paymentMaintenance.pendingService = totalService;
         this.paymentMaintenance.pendingOnAccount = totalOnAccount;
         this.paymentMaintenance.pendingTotal = total;
+        this.paymentMaintenance.isPayInFull = rowsSelected === pendingRows;
 
     }
 
@@ -306,9 +305,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     saveDetailPopup(data): void {
         let paymentperiod: PPDetailSearchByContractPeriodDTO[];
-        paymentperiod = this.gridDataDet.data.filter(q => q.paymentPeriodId == data.paymentPeriodId);
-        if (paymentperiod.length > 0)
-        {
+        paymentperiod = this.gridDataDet.data.filter(q => q.paymentPeriodId === data.paymentPeriodId);
+        if (paymentperiod.length > 0) {
             if (paymentperiod[0].paymentAmount != Number(data.paymentAmount)
                 || paymentperiod[0].comment != data.comment) {
                 paymentperiod[0].paymentAmount = Number(data.paymentAmount);
@@ -341,9 +339,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                         this.writeMessage(false, 'There is no Late fee to calculate');
                     }
                 });
-        }
-        else
-        {
+        } else {
             this.writeMessage(false, 'Late fee already exist');
         }
     }
@@ -365,9 +361,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.successFlag = isValid;
         if (isValid) {
             this.successMessage = message;
-        }
-        else
-        {
+        } else {
             var arrMessages = [];
             var appMessage = new ApplicationMessage();
             appMessage.key = 'Error';
@@ -391,10 +385,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     public dataLatestInvoiceId: any;
 
-    onPrint(invoiceNo)
-    {
-        if (invoiceNo === '' || invoiceNo == undefined || invoiceNo == null)
-        {
+    onPrint(invoiceNo) {
+        if (invoiceNo === '' || invoiceNo == undefined || invoiceNo == null) {
             this.writeMessage(false, 'There is no invoice to print');
             return;
         }

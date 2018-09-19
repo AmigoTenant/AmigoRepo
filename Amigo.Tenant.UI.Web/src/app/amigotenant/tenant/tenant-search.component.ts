@@ -200,7 +200,7 @@ export class TenantSearchComponent implements OnInit {
             this.model.pageSize
         )
         .subscribe(res => {
-            // debugger;
+            
             var dataResult: any = res;
             this.tenantsDTOs = {
                 data: dataResult.data.items,

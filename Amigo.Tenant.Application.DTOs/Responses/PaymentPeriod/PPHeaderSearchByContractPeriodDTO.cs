@@ -27,5 +27,8 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public decimal? TotalOnAcount { get; set; }
         public int? LatestInvoiceId { get; set; }
         public string Email { get; set; }
+        public int? TenantId { get; set; }
+        public int? PaymentTypeId { get; set; }
+        public bool IsPayInFull { get; set; }
     }
 }

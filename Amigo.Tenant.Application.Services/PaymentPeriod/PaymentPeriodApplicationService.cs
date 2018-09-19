@@ -34,7 +34,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IQueryDataAccess<PPHeaderSearchByInvoiceDTO> _paymentPeriodSearchByInvoiceDataAccess;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
         private readonly IAppSettingApplicationService _appSettingApplicationService;
-
+        private readonly IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> _paymentPeriodGroupedStatusAndConceptDTOApplication;
+        
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
             IQueryDataAccess<PaymentPeriodRegisterRequest> paymentPeriodDataAccess,
@@ -45,7 +46,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             IMapper mapper,
             IGeneralTableApplicationService generalTableApplicationService,
             IQueryDataAccess<PPHeaderSearchByInvoiceDTO> paymentPeriodSearchByInvoiceDataAccess,
-            IAppSettingApplicationService appSettingApplicationService)
+            IAppSettingApplicationService appSettingApplicationService,
+            IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> paymentPeriodGroupedStatusAndConceptDTOApplication)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -60,6 +62,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             _generalTableApplicationService = generalTableApplicationService;
             _paymentPeriodSearchByInvoiceDataAccess = paymentPeriodSearchByInvoiceDataAccess;
             _appSettingApplicationService = appSettingApplicationService;
+            _paymentPeriodGroupedStatusAndConceptDTOApplication = paymentPeriodGroupedStatusAndConceptDTOApplication;
         }
 
         private async Task<int?> GetStatusbyCodeAsync(string entityCode, string statusCode)
@@ -225,6 +228,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.ContractId = header.ContractId;
                 ppHeaderSearchByContractPeriodDTO.DueDate = header.DueDate;
                 ppHeaderSearchByContractPeriodDTO.Email = header.Email;
+                ppHeaderSearchByContractPeriodDTO.TenantId = header.TenantId;
+                ppHeaderSearchByContractPeriodDTO.PaymentTypeId = header.PaymentTypeId;
+                ppHeaderSearchByContractPeriodDTO.IsPayInFull = false; //Required To apply OnAccount concept when Tenant is paying (false: pay independent concept, true: pay for the total)
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
                 var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
@@ -249,6 +255,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.InvoiceId = item.InvoiceId;
                     detail.InvoiceNo = item.InvoiceNo;
                     detail.InvoiceDate = item.InvoiceDate;
+                    detail.ConceptId = item.ConceptId;
                     detail.ConceptCode = item.ConceptCode;
                     detail.IsTenantFavorable = item.IsTenantFavorable;
                     detailList.Add(detail);
@@ -499,13 +506,27 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 errorMessage = "No puedes grabar un Payment con monto en cero";
             }
 
-            //var paymentPeriod = await _paymentPeriodDataAccess.FirstOrDefaultAsync(queryFilter);
+            var concept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.OnAccount);
+            var existJustOneOnAccountRecord = request.PPDetail.Count(q => q.ConceptId == concept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending);
+            if (existJustOneOnAccountRecord>1)
+            {
+                isValid = false;
+                errorMessage = "Please group the OnAccount Concept in one record and save it";
+            }
 
-            //if (paymentPeriod != null)
-            //{
-            //    isValid = false;
-            //    errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
-            //}
+
+            var onAccountAmountClient = request.PPDetail.Where(q=> q.ConceptId == concept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending).Sum(q=> q.PaymentAmount);
+            var amountsInDB = await _paymentPeriodGroupedStatusAndConceptDTOApplication.FirstOrDefaultAsync(q => q.TenantId == request.TenantId && q.PeriodId == request.PeriodId);
+            var totalIncomeInDB = amountsInDB != null ? amountsInDB.TotalDepositAmountPending + amountsInDB.TotalRentAmountPending + amountsInDB.TotalFineInfracAmountPending + amountsInDB.TotalLateFeeAmountPending + amountsInDB.TotalSvcEnergyAmountPending + amountsInDB.TotalSvcWaterAmountPending: 0;
+            var totalOnAccountInDB = amountsInDB != null ? amountsInDB.TotalOnAccountAmountPayed : 0;
+
+            if (amountsInDB != null && onAccountAmountClient + totalOnAccountInDB > totalIncomeInDB )
+            {
+                isValid = false;
+                //No debes poder agregar A Cuenta mas de lo que esta pendiente por Ingresos
+                //Si tienes renta y deposito por 2000, no debes crear registros OnAccount en el Cliente y en BD por mas de esta cifra.
+                errorMessage = "OnAccount amount must be leaser or equal than other income concepts ";
+            }
 
             var response = new ResponseDTO()
             {

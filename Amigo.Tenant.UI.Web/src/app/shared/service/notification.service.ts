@@ -237,7 +237,6 @@ export class NotificationServiceUI extends AmigoTenantServiceBase implements INo
         const status = response.status;
 
         if (status === 200) {
-            debugger;
             let result200: ResponseDTO = null;
             let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
             result200 = resultData200 ? ResponseDTO.fromJS(resultData200) : new ResponseDTO();

@@ -22,7 +22,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public int? ConceptId { get; set; }
         public int? ContractId { get; set; }
         public int? TenantId { get; set; }
-        public string PaymentTypeId { get; set; }
+        public int? PaymentTypeId { get; set; }
         public DateTime? DueDate { get; set; }
         public string Comment { get; set; }
         public DateTime? PaymentDate { get; set; }

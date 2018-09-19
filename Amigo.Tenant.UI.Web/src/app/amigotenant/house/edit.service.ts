@@ -40,7 +40,7 @@ export class EditService extends BehaviorSubject<any[]> {
 
         this.fetch()
             .do(data => this.data = data)
-            .do(data => { /*debugger; */ this.originalData = cloneData(data); })
+            .do(data => { this.originalData = cloneData(data); })
             .subscribe(data => {
                 super.next(data);
             });

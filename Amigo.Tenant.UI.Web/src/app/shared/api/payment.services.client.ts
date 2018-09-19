@@ -975,14 +975,14 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     paymentDate: Date | null;
     userId: number | null;
     username: string | null;
-    paymentType: number | null; 
+    paymentType: number | null;
     pendingDeposit: number | null;
     pendingRent: number | null;
     pendingFine: number | null;
     pendingLateFee: number | null;
-    pendingService: number | null; 
+    pendingService: number | null;
     pendingOnAccount: number | null;
-    pendingTotal: number | null; 
+    pendingTotal: number | null;
     contractId: number | null;
     dueDate: Date | null;
 
@@ -992,15 +992,16 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     totalLateFee: number | null;
     totalService: number | null;
     totalFine: number | null;
-    totalOnAcount: number | null; 
+    totalOnAcount: number | null;
 
     latestInvoiceId: number | null;
-
-
+    tenantId: number | null;
+    paymentTypeId: number | null;
+    isPayInFull: boolean;
 
     constructor(data?: IPPHeaderSearchByContractPeriodDTO) {
         if (data) {
-            for (var property in data) {
+            for (let property in data) {
                 if (data.hasOwnProperty(property))
                     (<any>this)[property] = (<any>data)[property];
             }
@@ -1044,6 +1045,9 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.totalOnAcount = data["TotalOnAcount"] !== undefined ? data["TotalOnAcount"] : <any>null;
 
             this.latestInvoiceId = data["LatestInvoiceId"] !== undefined ? data["LatestInvoiceId"] : <any>null;
+            this.tenantId = data["TenantId"] !== undefined ? data["TenantId"] : <any>null;
+            this.paymentTypeId = data["PaymentTypeId"] !== undefined ? data["PaymentTypeId"] : <any>null;
+            this.isPayInFull = data["IsPayInFull"] !== undefined ? data["IsPayInFull"] : false;
             
         }
     }
@@ -1088,9 +1092,10 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["TotalService"] = this.totalService !== undefined ? this.totalService : <any>null;
         data["TotalFine"] = this.totalFine !== undefined ? this.totalFine : <any>null;
         data["TotalOnAcount"] = this.totalOnAcount !== undefined ? this.totalOnAcount : <any>null;
-        
         data["LatestInvoiceId"] = this.latestInvoiceId !== undefined ? this.latestInvoiceId : <any>null;
-
+        data["TenantId"] = this.tenantId !== undefined ? this.tenantId : <any>null;
+        data["PaymentTypeId"] = this.paymentTypeId !== undefined ? this.paymentTypeId : <any>null;
+        data["IsPayInFull"] = this.isPayInFull !== undefined ? this.isPayInFull : false;
         return data;
     }
 
@@ -1118,11 +1123,13 @@ export interface IPPHeaderSearchByContractPeriodDTO {
     pendingRent: number | null;
     pendingFine: number | null;
     pendingLateFee: number | null;
-    pendingService: number | null; 
-    pendingOnAccount: number | null; 
-    paymentType: number | null; 
+    pendingService: number | null;
+    pendingOnAccount: number | null;
+    paymentType: number | null;
     contractId: number;
-
+    tenantId: number | null;
+    paymentTypeId: number | null;
+    isPayInFull: boolean;
 }
 
 export class ResponseDTOOfPPDetailSearchByContractPeriodDTO implements IResponseDTOOfPPDetailSearchByContractPeriodDTO {

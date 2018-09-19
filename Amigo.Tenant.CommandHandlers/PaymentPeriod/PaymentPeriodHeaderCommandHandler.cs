@@ -24,6 +24,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<PaymentPeriod> _repositoryPayment;
         private readonly IRepository<Invoice> _repositoryInvoice;
+        private readonly IRepository<InvoiceDetail> _repositoryInvoiceDetail;
         private readonly IRepository<EntityStatus> _repositoryEntityStatus;
 
 
@@ -33,7 +34,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
          IUnitOfWork unitOfWork,
          IRepository<PaymentPeriod> repositoryPayment,
          IRepository<Invoice> repositoryInvoice,
-         IRepository<EntityStatus> repositoryEntityStatus)
+         IRepository<EntityStatus> repositoryEntityStatus,
+         IRepository<InvoiceDetail> repositoryInvoiceDetail)
         {
             _bus = bus;
             _mapper = mapper;
@@ -41,6 +43,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
             _repositoryPayment = repositoryPayment;
             _repositoryInvoice = repositoryInvoice;
             _repositoryEntityStatus = repositoryEntityStatus;
+            _repositoryInvoiceDetail = repositoryInvoiceDetail;
         }
 
 
@@ -80,6 +83,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     invoiceEntity.TotalOnAcount = message.TotalOnAcount;
                     invoiceEntity.TotalRent = message.TotalRent;
                     invoiceEntity.TotalService = message.TotalService;
+                    invoiceEntity.PaymentTypeId = message.PaymentTypeId;
 
                     invoiceEntity.RowStatus = true;
                     invoiceEntity.CreationDate = DateTime.Now;
@@ -107,36 +111,57 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                         index = await CreatePaymentPeriod(item, message, c, paymentPeriodPayed);
                         invoiceDetailEntity.PaymentPeriodId = index;
                         invoiceDetailsEntity.Add(invoiceDetailEntity);
-                        //invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
                     }
 
                     //TODO: TRAER EL CODIGO DE LOS CONCEPTOS QUE RESTAN
-                    var paymentsForDiscount = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == 23 && q.PaymentPeriodStatusId == 12);
-
-                    foreach (var payment in paymentsForDiscount)
+                    if (message.IsPayInFull)
                     {
-                        --c;
-                        var invoiceDetailEntity = new InvoiceDetail();
-                        invoiceDetailEntity.ConceptId = payment.ConceptId;
-                        invoiceDetailEntity.Qty = 1;
-                        invoiceDetailEntity.TotalAmount = payment.PaymentAmount *-1;
-                        invoiceDetailEntity.UnitPrice = payment.PaymentAmount;
-                        invoiceDetailEntity.InvoiceDetailId = c;
-                        invoiceDetailEntity.InvoiceId = -1;
-                        invoiceDetailEntity.TotalAmount = payment.PaymentAmount;
-                        invoiceDetailEntity.RowStatus = true;
-                        invoiceDetailEntity.CreationDate = DateTime.Now;
-                        invoiceDetailEntity.CreatedBy = message.UserId;
-                        invoiceDetailEntity.UpdatedDate = DateTime.Now;
-                        invoiceDetailEntity.UpdatedBy = message.UserId;
-                        //index = await CreatePaymentPeriod(item, message, c, paymentPeriodPayed);
-                        invoiceDetailEntity.PaymentPeriodId = payment.PaymentPeriodId;
-                        invoiceDetailsEntity.Add(invoiceDetailEntity);
-                        invoiceEntity.TotalAmount -= invoiceDetailEntity.TotalAmount;
+                        var existOnlyOnAccountCpt = message.PPDetail.Count(q => q.ConceptId != 23); //DISTINTOS A ONACCOUNT
+                        if (existOnlyOnAccountCpt > 0)
+                        {
+                            //Ingresara solo si existen otros conceptos de Pago como Renta o Deposito u otro,
+                            //Caso contrario no grabara los onaccounts en negativo en los Invoice
+                            var paymentsForDiscount = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId
+                            && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == 23 && q.PaymentPeriodStatusId == 12);
+
+
+                            var existDiscount = false;
+                            foreach (var payment in paymentsForDiscount)
+                            {
+                                var existsOnAccountsOnInvoices = await _repositoryInvoiceDetail.AnyAsync(q => q.PaymentPeriodId == payment.PaymentPeriodId
+                                                                                                         && q.TotalAmount.Value < 0
+                                                                                                         && q.RowStatus.Value);
+                                //Valida que no exista en otra factura los descuentos (ONACCOUNT)
+                                //Aqui esta fallando para los onaccounts nuevos, ya que estos si los esta agregando ya 
+                                //que al ser nuevos aun no existen en una factura (CORREGIR!!!)
+                                if (!existsOnAccountsOnInvoices)
+                                {
+                                    existDiscount = true;
+                                    --c;
+                                    var invoiceDetailEntity = new InvoiceDetail();
+                                    invoiceDetailEntity.ConceptId = payment.ConceptId;
+                                    invoiceDetailEntity.Qty = 1;
+                                    invoiceDetailEntity.UnitPrice = payment.PaymentAmount;
+                                    invoiceDetailEntity.InvoiceDetailId = c;
+                                    invoiceDetailEntity.InvoiceId = -1;
+                                    invoiceDetailEntity.TotalAmount = payment.PaymentAmount * -1;
+                                    invoiceDetailEntity.RowStatus = true;
+                                    invoiceDetailEntity.CreationDate = DateTime.Now;
+                                    invoiceDetailEntity.CreatedBy = message.UserId;
+                                    invoiceDetailEntity.UpdatedDate = DateTime.Now;
+                                    invoiceDetailEntity.UpdatedBy = message.UserId;
+                                    invoiceDetailEntity.PaymentPeriodId = payment.PaymentPeriodId;
+                                    invoiceDetailsEntity.Add(invoiceDetailEntity);
+                                    invoiceEntity.TotalAmount += invoiceDetailEntity.TotalAmount;
+                                }
+                            }
+
+                            if (existDiscount)
+                                invoiceEntity.Comment = string.Format("On Account concepts were applied ");
+                        }
                     }
 
                     invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
-
 
                     _repositoryInvoice.Add(invoiceEntity);
 

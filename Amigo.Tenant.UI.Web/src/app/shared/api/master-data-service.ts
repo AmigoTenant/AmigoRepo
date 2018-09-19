@@ -33,12 +33,7 @@ export class MasterDataService extends BaseService {
     }
 
     getCurrentPeriod(): Observable<PeriodDTO[] | any> {
-        // const url = `${this.baseUrl}${Constants.MASTER_DATA_URL_PATH.getTypes}`;
-        // return this.http.get<any>(url, { headers: this.headers }).map(r => <any[]>r)
-        // .catch(this.handleError);
-        debugger;
         let token = localStorage.getItem('authorizationData');
-        //if(token == null)return options;
         token = token.substr(1);
         token = token.substr(0, (token.length - 1));
 

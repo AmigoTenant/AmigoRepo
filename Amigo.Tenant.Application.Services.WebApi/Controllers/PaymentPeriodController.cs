@@ -105,12 +105,15 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         [HttpGet, Route("searchCriteriaByInvoice")]
         public async Task<HttpResponseMessage> PrintInvoiceById(string invoiceNo)
         {
-            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo);
+            var rowInicioDetalle = 16;
+            var rowTitulosDetalle = 15;
 
+            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo);
+            var c = 1;
             var listFilter = from data in resp.Data
                              select new
                              {
-                                 Sequence = data.PaymentTypeSequence,
+                                 Sequence = c++,
                                  PaymentType = data.PaymentTypeCode,
                                  Description = data.PaymentDescription,
                                  Amount = data.PaymentAmount
@@ -125,10 +128,13 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                 factory.SetPreHeader(
                     new List<ReportHeader> {
                         new ReportHeader() { Position = 6, PositionY = 2, Name =  resp.Data[0].InvoiceNo },
+                        new ReportHeader() { Position = 6, PositionY = 4, Name =  resp.Data[0].PeriodCode },
                         new ReportHeader() { Position = 7, PositionY = 2, Name =  resp.Data[0].InvoiceDate.Value.ToShortDateString() },
+                        new ReportHeader() { Position = 7, PositionY = 4, Name =  resp.Data[0].UserName},
                         new ReportHeader() { Position = 8, PositionY = 2, Name =  resp.Data[0].TenantFullName },
                         new ReportHeader() { Position = 9, PositionY = 2, Name =  resp.Data[0].HouseName },
-                        new ReportHeader() { Position = 23, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() }
+                        new ReportHeader() { Position = 10, PositionY = 2, Name =  resp.Data[0].Comment },
+                        new ReportHeader() { Position = 26, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() }
                     });
 
                 factory.SetHeader(
@@ -137,10 +143,10 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                         new ReportHeader() { Position = 2, Name =   "Payment Type" },
                         new ReportHeader() { Position = 3, Name =   "Description"},
                         new ReportHeader() { Position = 4, Name =   "Amount"},
-                    }, 12);
+                    }, rowTitulosDetalle);
 
                 factory.SetBody(listFilter.ToList());
-                factory.Export("Invoice" + resp.Data[0].InvoiceNo + DateTime.Now.ToString("dd_MM_yy"), 13);
+                factory.Export("Invoice" + resp.Data[0].InvoiceNo + DateTime.Now.ToString("dd_MM_yy"), rowInicioDetalle);
 
             }
             catch (Exception ex)
