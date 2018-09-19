@@ -16,6 +16,7 @@ import { ListsService } from '../../shared/constants/lists.service';
 import { ConfirmationList, ConfirmationIntResult } from '../../model/confirmation.dto';
 import { PaymentService, PaymentPeriodSearchRequest } from "../../shared/api/payment.service";
 import { PaymentServiceNew } from './payment.service';
+import { MasterDataService } from '../../shared/api/master-data-service';
 
 declare var $: any;
 
@@ -60,7 +61,8 @@ export class PaymentComponent implements OnInit {
         private listConfirmation: ConfirmationList,
         private entityStatusClient: EntityStatusClient,
         public serviceOrderService: PaymentService,
-        public paymentServiceNew: PaymentServiceNew
+        public paymentServiceNew: PaymentServiceNew,
+        public masterDataService: MasterDataService
     ) { }
 
     //@ViewChild(PaymentMaintenanceComponent) viewPaymentComponent: PaymentMaintenanceComponent;
@@ -91,34 +93,40 @@ export class PaymentComponent implements OnInit {
 
     searchCriteria = new PaymentPeriodSearchRequest();
     //deletePayment = new DeletePaymentRequest();
-    sub: Subscription;
+    //sub: Subscription;
 
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
+    // ngOnDestroy() {
+    //     this.sub.unsubscribe();
+    // }
 
     ngOnInit() {
-        
-        this.searchCriteria.pageSize = 40;
-        this.currentPage = 0;
-        this.sub = this.route.params.subscribe(params => {
-            setTimeout(() => {
-                    this.onSearch();
-                }, 500);
-        });
+        // this.sub = this.route.params.subscribe(params => {
+        //     setTimeout(() => {
+        //             this.onSearch();
+        //         }, 500);
+        // });
 
-        this.getEntityStatus();
-
-        this.confirmationFilter();
-
+        this.initializeForm(true);
         $(document).ready(() => { this.resizeGrid(); });
         $(window).bind('load resize scroll', (e) => { this.resizeGrid(); });
     }
 
+    initializeForm(isCurrentPeriod: boolean): void {
+        this.searchCriteria = new PaymentPeriodSearchRequest();
+        this.searchCriteria.pageSize = 40;
+        this.currentPage = 0;
+        this.errorMessages = [];
+        this._currentTenant = null;
+        this._currentPeriod = null;
+        this._currentHouse = null;
+        this.getEntityStatus();
+        this.confirmationFilter();
+        this.setCurrentPeriod(isCurrentPeriod);
+      }
+
     onSearch() {
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
-debugger;
         this.paymentDataService.search(
             this.searchCriteria.periodId,
             this.searchCriteria.houseId,
@@ -133,7 +141,7 @@ debugger;
             this.searchCriteria.pageSize
         )
             .subscribe(res => {
-                var dataResult: any = res;
+                let dataResult: any = res;
                 this.countItems = dataResult.data.total;
                 this.gridData = {
                     data: dataResult.data.items,
@@ -142,21 +150,12 @@ debugger;
             });
     };
 
-    deleteFilters(): void {
-        this.searchCriteria = new PaymentPeriodSearchRequest();
-        this.searchCriteria.pageSize = 40; this.currentPage = 0;
-        this.errorMessages= [];
-        setTimeout(() => {
-            $(window).resize();
-        }, 300);
-        this.onSearch();
-        this._currentTenant = null;
-        this._currentPeriod = null;
-        this._currentHouse = null;
+    onReset(): void {
+        this.initializeForm(false);
     }
 
     public cancel(): void {
-        this.deleteFilters();
+        this.onReset();
         $(window).resize();
     }
 
@@ -164,7 +163,7 @@ debugger;
         this.router.navigateByUrl('amigotenant/payment/edit/' + dataItem.contractId + '/' + dataItem.periodId);
     }
 
-    onReloadGrid():void {
+    onReloadGrid(): void {
         this.searchCriteria.pageSize = 40;
         this.currentPage = 0;
         this.onSearch();
@@ -238,7 +237,14 @@ debugger;
     public errorMessages: any[];
     public successMessage: string;
 
+    public confirmSendPayNotification() {
+        this.openedConfimationPopup = true;
+        this.confirmMessage = 'Are you sure to send email notification. Some emails will not be sent, so you must to verify which emails were not sent in the send email folder';
+    }
+
     public onSendPayNotification(){
+
+
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
         
@@ -257,7 +263,7 @@ debugger;
             100
         )
             .subscribe(res => {
-                var dataResult: any = res;
+                let dataResult: any = res;
                 this.successFlag = dataResult.isValid;
                 this.errorMessages = dataResult.messages;
                 this.successMessage = 'Emails has been sent Successfully';
@@ -270,7 +276,7 @@ debugger;
             this.errorMessages = [{message: 'Period is required to send Notification'}];
             this.successMessage = null;
 
-            setTimeout(() => { 
+            setTimeout(() => {
                 this.successFlag = null;
                 this.errorMessages = null;
                 this.successMessage = null; }, 5000);
@@ -297,6 +303,37 @@ debugger;
             this.searchCriteria.pageSize
         );
     }
+
+    setCurrentPeriod(currentPeriod) {
+        let period = this.masterDataService.getCurrentPeriod().subscribe(
+            res => {
+                this._currentPeriod = res.Data;
+            })
+        .add(x => {
+            if (currentPeriod) {
+                this.searchCriteria.periodId = this.searchCriteria.periodId === null || this.searchCriteria.periodId === undefined?
+                this._currentPeriod.PeriodId : this.searchCriteria.periodId;
+            }
+            this.onSearch();
+
+        });
+    }
+
+    //===========
+    //SEND EMAIL
+    //===========
+    public confirmMessage: string;
+    public openedConfimationPopup = false;
+
+    public yesConfirm() {
+        this.onSendPayNotification();
+        this.openedConfimationPopup = false;
+    }
+
+    public closeConfirmation() {
+        this.openedConfimationPopup = false;
+    }
+
 }
 
 

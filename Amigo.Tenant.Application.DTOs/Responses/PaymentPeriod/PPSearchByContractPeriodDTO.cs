@@ -41,5 +41,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public string InvoiceNo { get; set; }
         public DateTime? InvoiceDate { get; set; }
         public string Email { get; set; }
+        public string ConceptCode { get; set; }
+        public bool?  IsTenantFavorable { get; set; }
     }
 }

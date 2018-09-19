@@ -131,7 +131,7 @@ ngOnInit() {
 
     // });
 
-    this.initializeForm();
+    this.initializeForm(true);
     this.resetResults();
 }
 
@@ -146,12 +146,12 @@ ngOnInit() {
   }
 
   onReset(): void {
-        this.initializeForm();
+        this.initializeForm(false);
         //this.isColumnHeaderSelected = true;
         //$("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
   }
 
-  initializeForm(): void {
+  initializeForm(isCurrentPeriod: boolean): void {
       this.model = new ContractSearchRequest();
       this.setDatesFromTo();
       this.resetGrid();
@@ -168,12 +168,10 @@ ngOnInit() {
       this.model.nextDaysToCollect = undefined;
       this.model.pageSize = 20;
       this.totalResultCount = 0;
-      this.setCurrentPeriod();
-      
+      this.setCurrentPeriod(isCurrentPeriod);
     }
 
   public setDatesFromTo() {
-      var date = new Date();
       this.modelTo = new modelDate();
       this.modelFrom = new modelDate();
       this.onSelectModelFrom();
@@ -181,10 +179,9 @@ ngOnInit() {
   }
 
   onSelectModelFrom(): void {
-    if (this.modelFrom != null)
+    if (this.modelFrom != null) {
         this.model.beginDate = new Date(this.modelFrom.year, this.modelFrom.month - 1, this.modelFrom.day, 0, 0, 0, 0);
-    //else
-    //    this.model.beginDate = new Date();
+    }
   }
 
   onSelectModelTo(): void {
@@ -251,18 +248,6 @@ ngOnInit() {
                 this._listProperties.unshift(entity);
               })
     }
-
-    //public getFeatures(): void {
-    //    this.featureClient.searchFeatureAll("")
-    //        .subscribe(response => {
-    //            var dataResult: any = response;
-    //            dataResult.value.data.forEach(item => {
-    //                this.featureListMultiSelect.push({ id: item.featureId, name: item.description });
-    //                this.selectedOptionsFeature.push(item.featureId);
-    //                this.selectedOptionsFeatureBackup.push(item.featureId);
-    //            });
-    //        });
-    //}
 
     public confirmationFilter(): void {
         var confirmation = this.listConfirmation.List;
@@ -464,20 +449,19 @@ ngOnInit() {
             20000);
     }
 
-    setCurrentPeriod() {
+    setCurrentPeriod(currentPeriod) {
         let period = this.masterDataService.getCurrentPeriod().subscribe(
-            res => 
-            {
+            res => {
                 this._currentPeriod = res.Data;
-            },
-        error => { },
-        () => { }).add(x=>
-        {
-            this.model.periodId = this.model.periodId==null || this.model.periodId === undefined?
-            this._currentPeriod.PeriodId:this.model.periodId;
+            })
+        .add(x => {
+            if (currentPeriod) {
+                this.model.periodId = this.model.periodId === null || this.model.periodId === undefined?
+                this._currentPeriod.PeriodId : this.model.periodId;
+            }
             this.getContract();
+
         });
-        
     }
 
     onView(data){

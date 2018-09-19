@@ -1,6 +1,7 @@
 ﻿using Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod;
 using Amigo.Tenant.Application.DTOs.Responses.Common;
 using Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod;
+using Amigo.Tenant.Application.Services.Interfaces.MasterData;
 using Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod;
 using Amigo.Tenant.Application.Services.WebApi.Validation.Fluent;
 using Amigo.Tenant.Mail;
@@ -27,10 +28,12 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
     public class PaymentPeriodController : ApiController
     {
         private readonly IPaymentPeriodApplicationService _paymentPeriodApplicationService;
+        private readonly IConceptApplicationService _conceptApplicationService;
 
-        public PaymentPeriodController(IPaymentPeriodApplicationService paymentPeriodApplicationService)
+        public PaymentPeriodController(IPaymentPeriodApplicationService paymentPeriodApplicationService, IConceptApplicationService conceptApplicationService)
         {
             _paymentPeriodApplicationService = paymentPeriodApplicationService;
+            _conceptApplicationService = conceptApplicationService;
         }
 
         [HttpGet, Route("searchCriteria")]
@@ -85,13 +88,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         [HttpGet]
         [Route("exportToExcel/{periodId}/{houseId}/{contractCode}/{paymentPeriodStatusId}/{tenantId}/{hasPendingServices}/{hasPendingFines}/{hasPendingLateFee}/{page}/{pageSize}"), AllowAnonymous]//ShuttleClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.WeeklyReportSearch)
         public async Task<HttpResponseMessage> ExportToExcel([FromUri]PaymentPeriodSearchRequest search)
-        //public HttpResponseMessage ExportToExcel(int? periodId, int? houseId, string contractCode, int? paymentPeriodStatusId, int? tenantId,
-        //    bool? hasPendingServices, bool? hasPendingFines, bool? hasPendingLateFee, int? page, int? pageSize)
         {
             var response = Request.CreateResponse();
-            //PaymentPeriodSearchRequest search = new PaymentPeriodSearchRequest();
-            //search.Page = 1;
-            //search.PageSize = 20000;
             search.ContractCode = null;
             response.Content = new PushStreamContent((outputStream, httpContent, transportContext)
                 => _paymentPeriodApplicationService.GenerateDataCsvToReportExcel(outputStream, httpContent, transportContext, search), new MediaTypeHeaderValue("text/csv"));
@@ -117,6 +115,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                                  Description = data.PaymentDescription,
                                  Amount = data.PaymentAmount
                              };
+
             try
             {
                 var ruta = System.Web.Hosting.HostingEnvironment.MapPath("~/AmigoInvoice.xlsx");
@@ -198,6 +197,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var userName = System.Configuration.ConfigurationManager.AppSettings["userName"];
             var password = System.Configuration.ConfigurationManager.AppSettings["password"];
             var msg = new StringBuilder();
+            
 
             foreach (var header in resp.Data.Items.ToList())
             {
@@ -273,8 +273,18 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             StringBuilder str = new StringBuilder();
             str.AppendLine("<table border = '1'><tr><th>Descripcion</th><th>Monto</th></tr>");
             pPDetail.ForEach(q => {
-                totalAmount += q.PaymentAmount;
-                str.AppendLine(string.Format("<tr><td>{0}</td><td align='right'>{1}</td></tr>", q.PaymentDescription, string.Format("{0:N2}", q.PaymentAmount)));
+                if (!q.IsTenantFavorable.Value)
+                {
+                    totalAmount += q.PaymentAmount;
+                    str.AppendLine(string.Format("<tr><td>{0}</td><td align='right'>{1}</td></tr>", q.PaymentDescription, string.Format("{0:N2}", q.PaymentAmount)));
+                }
+                else
+                {
+                    totalAmount -= q.PaymentAmount;
+                    str.AppendLine(string.Format("<tr><td>{0}</td><td align='right' style='color: blue'>({1})</td></tr>", q.PaymentDescription, string.Format("{0:N2}", q.PaymentAmount)));
+                }
+
+                
             });
             str.AppendLine(string.Format("<tr><td><b>Total</b></td><td align='right'><b>{0}</b></td></tr>", string.Format("{0:N2}", totalAmount)));
             str.AppendLine("</table>");

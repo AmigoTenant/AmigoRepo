@@ -280,7 +280,15 @@ namespace Amigo.Tenant.Common
             public const string OnAccount = "ONACCOUNT";
 
         }
+        public struct AppSettingCode
+        {
+            public const string CptsReqPay = "CPTSREQPAY";
+            public const string LateFeeXDay = "LATEFEEXDY";
+            public const string CptToFavTn = "CPTTOFAVTN";
+        }
     }
 
+    
 
-}
+
+    }

@@ -85,7 +85,8 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Abstract
                 new ExpenseSearchMapping(),
                 new ExpenseRegisterMapping(),
                 new ExpenseDetailSearchMapping(),
-                new ExpenseDetailRegisterMapping()
+                new ExpenseDetailRegisterMapping(),
+                new AppSettingMapping(),
 
             });            
 

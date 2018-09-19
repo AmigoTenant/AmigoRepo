@@ -33,6 +33,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IQueryDataAccess<PPSearchByContractPeriodDTO> _paymentPeriodSearchByContractDataAccess;
         private readonly IQueryDataAccess<PPHeaderSearchByInvoiceDTO> _paymentPeriodSearchByInvoiceDataAccess;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
+        private readonly IAppSettingApplicationService _appSettingApplicationService;
 
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
@@ -43,7 +44,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             IQueryDataAccess<PPSearchByContractPeriodDTO> paymentPeriodSearchByContractDataAccess,
             IMapper mapper,
             IGeneralTableApplicationService generalTableApplicationService,
-            IQueryDataAccess<PPHeaderSearchByInvoiceDTO> paymentPeriodSearchByInvoiceDataAccess)
+            IQueryDataAccess<PPHeaderSearchByInvoiceDTO> paymentPeriodSearchByInvoiceDataAccess,
+            IAppSettingApplicationService appSettingApplicationService)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -57,6 +59,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             _paymentPeriodSearchByContractDataAccess = paymentPeriodSearchByContractDataAccess;
             _generalTableApplicationService = generalTableApplicationService;
             _paymentPeriodSearchByInvoiceDataAccess = paymentPeriodSearchByInvoiceDataAccess;
+            _appSettingApplicationService = appSettingApplicationService;
         }
 
         private async Task<int?> GetStatusbyCodeAsync(string entityCode, string statusCode)
@@ -201,6 +204,12 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
             var paymentsPeriod = await _paymentPeriodSearchByContractDataAccess.ListAsync(queryFilter);
             var lateFeePaymenType = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.LateFee);
+            var appSettingTenantFavorable = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.CptToFavTn);
+            var isLateFeeTenantFavorable = appSettingTenantFavorable != null && appSettingTenantFavorable.AppSettingValue.Contains(Constants.ConceptCode.LateFee);
+
+            var appSettingLateFeeXDay = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.LateFeeXDay);
+            var lateFeeXDayValue = appSettingLateFeeXDay != null && appSettingLateFeeXDay.AppSettingValue!= string.Empty? decimal.Parse(appSettingLateFeeXDay.AppSettingValue):0;
+
             var entityStatusPayment = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
             var concept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.LateFee);
             
@@ -240,6 +249,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.InvoiceId = item.InvoiceId;
                     detail.InvoiceNo = item.InvoiceNo;
                     detail.InvoiceDate = item.InvoiceDate;
+                    detail.ConceptCode = item.ConceptCode;
+                    detail.IsTenantFavorable = item.IsTenantFavorable;
                     detailList.Add(detail);
 
                     if (!existLateFeeInDB
@@ -249,7 +260,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.PaymentPeriodId = -1;
                         lateFeeDetail.ContractId = header.ContractId;
                         lateFeeDetail.PeriodId = header.PeriodId;
-                        lateFeeDetail.PaymentAmount =  25 * (decimal?)delayDays;
+                        lateFeeDetail.PaymentAmount = lateFeeXDayValue * (decimal?)delayDays;
                         lateFeeDetail.PaymentTypeId = lateFeePaymenType.GeneralTableId;
                         lateFeeDetail.PaymentTypeValue = lateFeePaymenType.Value;
                         lateFeeDetail.PaymentTypeCode = lateFeePaymenType.Code;
@@ -261,7 +272,10 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
                         lateFeeDetail.PaymentDescription = lateFeePaymenType.Value;
                         lateFeeDetail.ConceptId = concept.Data.ConceptId;
+                        lateFeeDetail.ConceptCode = concept.Data.Code;
                         lateFeeDetail.TenantId = header.TenantId;
+                        lateFeeDetail.IsTenantFavorable = isLateFeeTenantFavorable;
+
                         lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
 
                         if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
@@ -387,6 +401,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         onAccountDetail.ConceptId = concept.Data.ConceptId;
                         onAccountDetail.TenantId = header.TenantId;
                         onAccountDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+
                         return ResponseBuilder.Correct(onAccountDetail);
                   }
             }
@@ -549,8 +564,6 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private string ProcessCellDataToReport(PPSearchDTO item)
         {
             var dueDate = string.Format("{0:MM/dd/yyyy}", item.DueDate) ?? "";
-            //var product = !string.IsNullOrEmpty(item.ProductName) ? item.ProductName.Replace(@",", ".") : "";
-            //var total = string.Format("{0:0.00}", item.DriverPay);
             var pendingRent = string.Format("{0:0.00}", item.PaymentAmount);
             var pendingDeposit = string.Format("{0:0.00}", item.DepositAmountPending);
             var pendingService = string.Format("{0:0.00}", item.ServicesAmountPending);

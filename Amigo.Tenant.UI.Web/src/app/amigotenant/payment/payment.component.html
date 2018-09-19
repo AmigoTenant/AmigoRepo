@@ -132,7 +132,7 @@
                                             <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck>Search</button><!--[actionCode]="'House.Search'"-->
                                         </div>
                                         <div class="button-container">
-                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="deleteFilters()">Clear</button>
+                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="onReset()">Clear</button>
                                         </div>
                                     </div>
                                 </div>
@@ -140,7 +140,7 @@
                         </form>
                         <div class="action-bar">
                             <div class="button-container">
-                                <button type="submit" id="btnSendPayNotification" (click)="onSendPayNotification()" class="ro-button btn-success">
+                                <button type="submit" id="btnSendPayNotification" (click)="confirmSendPayNotification()" class="ro-button btn-success">
                                     <i class="xico-file-download"></i>
                                     Send Email Notification
                                 </button>
@@ -239,18 +239,15 @@
         </li>
     </ul>
 </div>
-
-<!--<kendo-dialog title="Confirmation" *ngIf="confirmDeletionVisible"
-              (close)="closeConfirmation('cancel')" style="z-index: 7888">
-    <div>Delete house?</div>
-    <kendo-dialog-actions>
-        <button class="k-button" (click)="onConfirmation('NO')">No</button>
-        <button class="k-button k-primary" (click)="onConfirmation('YES')" primary="true">Yes</button>
-    </kendo-dialog-actions>
-</kendo-dialog>-->
-<!--<div class="location-details">-->
 <div>
     <div>
         <at-payment-maintenance></at-payment-maintenance>
     </div>
 </div> 
+<kendo-dialog title="Confirmation" *ngIf="openedConfimationPopup" (close)="closeConfirmation()">
+    <div>{{confirmMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesConfirm()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

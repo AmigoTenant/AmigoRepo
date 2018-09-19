@@ -49,7 +49,6 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
             try
             {
                 var paymentPeriodPayed = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.PaymentPeriod && q.Code == Constants.EntityStatus.PaymentPeriod.Payed);
-                //var entityToSave = new PaymentPeriod();
                 int c = 0;
                 var index = 0;
                 if (message.PPDetail.Any(q => q.IsSelected.Value))
@@ -108,8 +107,36 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                         index = await CreatePaymentPeriod(item, message, c, paymentPeriodPayed);
                         invoiceDetailEntity.PaymentPeriodId = index;
                         invoiceDetailsEntity.Add(invoiceDetailEntity);
-                        invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
+                        //invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
                     }
+
+                    //TODO: TRAER EL CODIGO DE LOS CONCEPTOS QUE RESTAN
+                    var paymentsForDiscount = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == 23 && q.PaymentPeriodStatusId == 12);
+
+                    foreach (var payment in paymentsForDiscount)
+                    {
+                        --c;
+                        var invoiceDetailEntity = new InvoiceDetail();
+                        invoiceDetailEntity.ConceptId = payment.ConceptId;
+                        invoiceDetailEntity.Qty = 1;
+                        invoiceDetailEntity.TotalAmount = payment.PaymentAmount *-1;
+                        invoiceDetailEntity.UnitPrice = payment.PaymentAmount;
+                        invoiceDetailEntity.InvoiceDetailId = c;
+                        invoiceDetailEntity.InvoiceId = -1;
+                        invoiceDetailEntity.TotalAmount = payment.PaymentAmount;
+                        invoiceDetailEntity.RowStatus = true;
+                        invoiceDetailEntity.CreationDate = DateTime.Now;
+                        invoiceDetailEntity.CreatedBy = message.UserId;
+                        invoiceDetailEntity.UpdatedDate = DateTime.Now;
+                        invoiceDetailEntity.UpdatedBy = message.UserId;
+                        //index = await CreatePaymentPeriod(item, message, c, paymentPeriodPayed);
+                        invoiceDetailEntity.PaymentPeriodId = payment.PaymentPeriodId;
+                        invoiceDetailsEntity.Add(invoiceDetailEntity);
+                        invoiceEntity.TotalAmount -= invoiceDetailEntity.TotalAmount;
+                    }
+
+                    invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
+
 
                     _repositoryInvoice.Add(invoiceEntity);
 
@@ -135,13 +162,9 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                 entityToSave.PaymentPeriodId = index;
                 return entityToSave.ToRegisterdResult().WithId(index);
 
-
-                //return null; // entity.ToRegisterdResult().WithId(entity.ContractId);
-            }
+                            }
             catch (Exception ex)
             {
-                //await SendLogToAmigoTenantTEventLog(message, ex.Message);
-
                 throw;
             }
 

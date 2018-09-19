@@ -11,18 +11,6 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Mapping
         public PaymentPeriodPrintMapping()
         {
             TableName("vwPaymentPeriodInvoicePrint");
-            Columns(x =>
-            {
-                //x.Column(y => y.IsSelected).Ignore();
-                //x.Column(y => y.FinesAmountPending).Ignore();
-                //x.Column(y => y.DepositAmountPending).Ignore();
-                //x.Column(y => y.LateFeesAmountPending).Ignore();
-                ////x.Column(y => y.OnAccountAmountPending).Ignore();
-                //x.Column(y => y.PaymentAmount).Ignore();
-                //x.Column(y => y.ServicesAmountPending).Ignore();
-                //x.Column(y => y.TotalAmountPending).Ignore();
-                //x.Column(y => y.Code);
-            });
         }
     }
 }

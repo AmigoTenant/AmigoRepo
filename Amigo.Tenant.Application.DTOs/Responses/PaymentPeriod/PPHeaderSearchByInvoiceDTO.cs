@@ -33,6 +33,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public Decimal? PaymentAmount { get; set; }
         public DateTime? PeriodDueDate { get; set; }
         public int? PaymentTypeSequence { get; set; }
+        public bool? IsTenantFavorable { get; set; }
 
     }
 }

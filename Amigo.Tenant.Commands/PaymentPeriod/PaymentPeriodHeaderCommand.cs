@@ -25,5 +25,6 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
         public decimal? TotalService { get; set; }
         public decimal? TotalFine { get; set; }
         public decimal? TotalOnAcount { get; set; }
+        public int? TenantId { get; set; }
     }
 }

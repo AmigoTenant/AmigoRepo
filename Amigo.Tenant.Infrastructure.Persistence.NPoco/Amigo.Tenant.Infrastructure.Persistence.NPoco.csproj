@@ -66,6 +66,7 @@
     <Compile Include="Mapping\CountryMapping.cs" />
     <Compile Include="Mapping\EntityStatusMapping.cs" />
     <Compile Include="Mapping\FeatureMapping.cs" />
+    <Compile Include="Mapping\AppSettingMapping.cs" />
     <Compile Include="Mapping\HouseFeatureDetailContractMapping.cs" />
     <Compile Include="Mapping\HouseFeatureMapping.cs" />
     <Compile Include="Mapping\HouseMapping.cs" />

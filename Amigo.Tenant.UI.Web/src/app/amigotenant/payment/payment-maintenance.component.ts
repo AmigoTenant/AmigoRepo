@@ -141,7 +141,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     onExecuteEvent($event) {
         switch ($event) {
             case "s":
-                this.savePaymentDetail();
+                //this.savePaymentDetail();
+                this.openedConfimationPopup = true;
                 break;
             case "c":
                 //this.onClear();
@@ -398,6 +399,25 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
             return;
         }
         this.paymentDataService.searchInvoiceById(invoiceNo);
+    }
+
+
+
+
+    //===========
+    //SAVE
+    //===========
+
+    public confirmMessage: string = "Are you sure to save this Payment?";
+    public openedConfimationPopup = false;
+
+    public yesConfirm() {
+        this.savePaymentDetail();
+        this.openedConfimationPopup = false;
+    }
+
+    public closeConfirmation() {
+        this.openedConfimationPopup = false;
     }
 
 }
