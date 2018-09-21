@@ -79,45 +79,6 @@ export class NgbdTypeaheadHouse implements OnChanges{
         this.modelOutput.unsubscribe();
     }
 
-    //findValue(item)
-    //{
-    //    if (item != "" && item != undefined) {
-    //        if (typeof item != "object") {
-    //            if (item.length > 5) // Cause 6 this is the longitude of housename, valid only for copy Paste Code
-    //            {
-    //                this.houseClient.searchCodeName(item, undefined, 1, 10)
-    //                    .subscribe(response => {
-    //                        if (response.data.items.length>0) {
-    //                            this.model = new BasicHouseDTO();
-    //                            this.model.houseId = response.data.items[0].houseId;
-    //                            this.model.fullName = response.data.items[0].fullName;
-    //                             //console.log("entro 0");
-    //                         }
-    //                         else {
-    //                             //console.log("entro 1");
-    //                             //this.model = null;
-    //                             this.createModelEmpty();
-    //                         }
-    //                         //console.log("entro 2");
-    //                         this.modelOutput.emit(this.model);
-    //                     });
-    //            }
-    //            else {
-    //                this.createModelEmpty();
-    //            }
-    //        }
-    //        else {
-    //            //console.log("entro 3");
-    //            this.createModelEmpty();
-    //        }
-    //    }
-    //    else
-    //    {
-    //        this.createModelEmpty();
-    //    }
-    //    //console.log("entro 5");
-    //}
-
     createModelEmpty()
     {
         this.model = new HouseBasicDTO();

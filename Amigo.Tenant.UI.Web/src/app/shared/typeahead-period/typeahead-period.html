@@ -10,7 +10,11 @@
           [resultTemplate]="rt" 
           [inputFormatter]="formatter" 
           maxlength="64"
-          (ngModelChange)="selectValue($event)"
+          [disabled]="isDisabled"
+          (selectItem)="selectValue($event)"
+          (ngModelChange)="lookup($event)"
            /><i class="ic-search"></i>
 </div>
+{{ model123 | json}}
+<!-- (ngModelChange)="selectValue($event)" -->
 <!--(blur)="findValue($event.target.value)"-->

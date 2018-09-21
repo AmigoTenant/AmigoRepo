@@ -13,36 +13,18 @@ import 'rxjs/add/operator/switchMap';
     templateUrl: './typeahead-period.html'
 })
 
-
-export class NgbdTypeaheadPeriod implements OnChanges{
+export class NgbdTypeaheadPeriod {
     model: any;
-    
     @Output() modelOutput = new EventEmitter<any>();
     @Input() currentPeriod: PeriodDTO;
     @Input() searchByPeriodId: number;
+    @Input() isDisabled: boolean;
 
     constructor(private periodClient: PeriodClient) {}
 
-    ngOnChanges(changes: any)
-    {
-        this.model = this.currentPeriod === undefined ? null : this.currentPeriod;
-        
-        if (this.searchByPeriodId != undefined && this.searchByPeriodId > 0) {
-
-            this.periodClient.getPeriodById(this.searchByPeriodId)
-                 .subscribe(response => {
-                     this.model = new PeriodDTO();
-                     this.model.periodId = response.data.periodId;
-                     this.model.code = response.data.code;
-                 });
-        }
-        
-    }
-
     getPeriod(term) {
-        
-        var resp = this.periodClient.searchForTypeAhead(term)
-            .map(response => 
+        let resp = this.periodClient.searchForTypeAhead(term)
+            .map(response =>
                 response.data
             );
         return resp;
@@ -52,38 +34,23 @@ export class NgbdTypeaheadPeriod implements OnChanges{
         text$
             .debounceTime(300)
             .distinctUntilChanged()
-            .switchMap(term => term.length < 2? []
-                :this.getPeriod(term)) ;
+            .switchMap(term => term.length < 2 ? [] : this.getPeriod(term)) ;
 
     formatter = (x: {code: string}) => x.code;
 
+    lookup(item) {
+        if (item === '' || item === undefined || typeof item !== 'object') {
+            this.modelOutput.emit('');
+        }
+    }
+
     selectValue(item) {
-        if (item === "" || item === undefined || typeof item != "object")
-        {
-            console.log("selectValue emit " + item);
-            this.modelOutput.emit("");
-        }
-        else
-        {
-            if (typeof item.item == "object")
-            {
-                this.modelOutput.emit(item.item);
-            }
-            else if (typeof item == "object" )
-            this.modelOutput.emit(item);
-        }
+        this.modelOutput.emit(item);
     }
 
-    ngOnDestroy() {
-        this.modelOutput.unsubscribe();
-    }
-
-
-    createModelEmpty()
-    {
+    createModelEmpty() {
         this.model = new PeriodDTO();
         this.model.periodId = 0;
-        this.model.code = "";
-        this.modelOutput.emit(this.model);
+        this.model.code = '';
     }
 }

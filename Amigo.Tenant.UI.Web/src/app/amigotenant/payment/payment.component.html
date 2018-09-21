@@ -22,6 +22,7 @@
                                                     <div class="col-sm-8">
                                                         <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
                                                     </div>
+                                                    {{_currentPeriod | json}}
                                                 </div>
                                             </div>
 
@@ -61,6 +62,7 @@
                                                     <label for="name" class="control-label col-sm-4">Property</label>
                                                     <div class="col-sm-8">
                                                         <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                                        
                                                     </div>
                                                 </div>
                                             </div>

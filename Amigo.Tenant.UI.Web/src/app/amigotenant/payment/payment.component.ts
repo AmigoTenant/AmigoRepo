@@ -122,6 +122,7 @@ export class PaymentComponent implements OnInit {
         this.getEntityStatus();
         this.confirmationFilter();
         this.setCurrentPeriod(isCurrentPeriod);
+        this.periodIdToSendEmail = undefined;
       }
 
     onSearch() {
@@ -199,14 +200,17 @@ export class PaymentComponent implements OnInit {
         
     }
 
+    periodIdToSendEmail: number | null;
     getPeriod = (item) => {
         if (item != null && item != undefined && item != "") {
             this.searchCriteria.periodId = item.periodId;
             this._currentPeriod = item;
+            this.periodIdToSendEmail = item.periodId;
         }
         else {
             this.searchCriteria.periodId = undefined;
             this._currentPeriod = undefined;
+            this.periodIdToSendEmail = undefined;
         }
     };
 
@@ -238,6 +242,10 @@ export class PaymentComponent implements OnInit {
     public successMessage: string;
 
     public confirmSendPayNotification() {
+        if (!this.isValidateToSendEmailNotification()){
+            return;
+        }
+
         this.openedConfimationPopup = true;
         this.confirmMessage = 'Are you sure to send email notification. Some emails will not be sent, so you must to verify which emails were not sent in the send email folder';
     }
@@ -248,8 +256,7 @@ export class PaymentComponent implements OnInit {
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
         
-        if (!this.isValidateToSendEmailNotification())
-            return;
+        
 
         this.paymentDataService.sendPayNotification(
             this.searchCriteria.periodId,
@@ -271,7 +278,7 @@ export class PaymentComponent implements OnInit {
     }
 
     isValidateToSendEmailNotification(){
-        if (this._currentPeriod === null || this._currentPeriod === undefined){
+        if (this.periodIdToSendEmail === null || this.periodIdToSendEmail === undefined || this.periodIdToSendEmail === 0){
             this.successFlag = false;
             this.errorMessages = [{message: 'Period is required to send Notification'}];
             this.successMessage = null;
