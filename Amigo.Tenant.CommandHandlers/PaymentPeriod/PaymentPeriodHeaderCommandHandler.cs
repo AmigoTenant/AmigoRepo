@@ -116,15 +116,16 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     //TODO: TRAER EL CODIGO DE LOS CONCEPTOS QUE RESTAN
                     if (message.IsPayInFull)
                     {
-                        var existOnlyOnAccountCpt = message.PPDetail.Count(q => q.ConceptId != 23); //DISTINTOS A ONACCOUNT
+                        var existOnlyOnAccountCpt = message.PPDetail.Count(q => q.ConceptId != 23); //SI EXISTEN CONCEPTOS PARA RESTAR ACCOUNTS
+
                         if (existOnlyOnAccountCpt > 0)
                         {
                             //Ingresara solo si existen otros conceptos de Pago como Renta o Deposito u otro,
                             //Caso contrario no grabara los onaccounts en negativo en los Invoice
                             var paymentsForDiscount = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId
                             && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == 23 && q.PaymentPeriodStatusId == 12);
-
-
+                            // 12: PPPAYED
+                            // 23: ONACCOUNT Concept
                             var existDiscount = false;
                             foreach (var payment in paymentsForDiscount)
                             {
@@ -159,6 +160,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                             if (existDiscount)
                                 invoiceEntity.Comment = string.Format("On Account concepts were applied ");
                         }
+
+
                     }
 
                     invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
