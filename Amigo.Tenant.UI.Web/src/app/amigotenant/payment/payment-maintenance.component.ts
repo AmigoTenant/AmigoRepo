@@ -55,7 +55,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         private paymentDataService: PaymentPeriodClient,
         private router: Router) {
         this.paymentMaintenance = new PPHeaderSearchByContractPeriodDTO();
-        //this.paymentMaintenance.hasGeofence = false;
     }
 
     ngOnDestroy() {
@@ -109,6 +108,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.paymentMaintenance.totalLateFee = this.paymentMaintenance.pendingLateFee;
         this.paymentMaintenance.totalOnAcount = this.paymentMaintenance.pendingOnAccount;
         this.paymentMaintenance.totalService = this.paymentMaintenance.pendingService;
+        this.calculatePendingToPay();
 
         this.paymentDataService.update(this.paymentMaintenance)
             .subscribe(res => {

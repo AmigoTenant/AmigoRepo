@@ -34,6 +34,9 @@ export class PaymentComponent implements OnInit {
     _listEntityStatus: any[];
     _listYesNoBool: ConfirmationIntResult[] = [];
 
+    //GRID
+    isColumnHeaderSelected: boolean = true;
+
     public confirmationFilter(): void {
         var confirmation = this.listConfirmation.ListIntResult;
         confirmation.forEach(obj => {
@@ -45,7 +48,6 @@ export class PaymentComponent implements OnInit {
     getEntityStatus(): void {
         this.entityStatusClient.getEntityStatusByEntityCodeAsync("PP")
             .subscribe(response => {
-                
                 var dataResult: any = response;
                 this._listEntityStatus = dataResult.data;
                 let entity = new EntityStatusDTO();
@@ -78,34 +80,13 @@ export class PaymentComponent implements OnInit {
     public pageSizes: any = [20, 50, 100, 200];
     public previousNext: boolean = true;
     public currentPage: number = 0;
-    //public flgMantenance: boolean = true;
-
-    //confirmDeletionVisible: boolean = false;
-    //confirmDeletionResponse: boolean = false;
-    //confirmDeletionActionCode: string;
     countItems: number = 0;
     visible: boolean = true;
-
-    //public activeInactiveStatus: any[] = this._listsService.ActiveInactiveStatus();
-
     @Output() open: EventEmitter<any> = new EventEmitter();
     @Output() close: EventEmitter<any> = new EventEmitter();
 
     searchCriteria = new PaymentPeriodSearchRequest();
-    //deletePayment = new DeletePaymentRequest();
-    //sub: Subscription;
-
-    // ngOnDestroy() {
-    //     this.sub.unsubscribe();
-    // }
-
     ngOnInit() {
-        // this.sub = this.route.params.subscribe(params => {
-        //     setTimeout(() => {
-        //             this.onSearch();
-        //         }, 500);
-        // });
-
         this.initializeForm(true);
         $(document).ready(() => { this.resizeGrid(); });
         $(window).bind('load resize scroll', (e) => { this.resizeGrid(); });
@@ -255,8 +236,6 @@ export class PaymentComponent implements OnInit {
 
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
-        
-        
 
         this.paymentDataService.sendPayNotification(
             this.searchCriteria.periodId,
@@ -339,6 +318,28 @@ export class PaymentComponent implements OnInit {
 
     public closeConfirmation() {
         this.openedConfimationPopup = false;
+    }
+
+
+
+    public changeItemHeader() {
+        let c = this.gridData.data.length;
+        let index = this.searchCriteria.page * this.searchCriteria.pageSize - this.searchCriteria.pageSize;
+        for (let item in this.gridData.data) {
+            $("#" + index)[0].checked = this.isColumnHeaderSelected;
+            this.gridData.data[item].isSelected = this.isColumnHeaderSelected;
+            index++;
+        }
+        this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
+    }
+
+    public changeItem(d) {
+        d.isSelected = !d.isSelected;
+    }
+
+    public deselectColumnAll() {
+        this.isColumnHeaderSelected = true;
+        $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
     }
 
 }

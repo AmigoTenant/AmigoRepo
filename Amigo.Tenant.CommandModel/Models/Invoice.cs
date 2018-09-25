@@ -29,6 +29,8 @@ namespace Amigo.Tenant.CommandModel.Models
         public decimal? TotalService { get; set; }
         public decimal? TotalFine { get; set; }
         public decimal? TotalOnAcount { get; set; }
+        public int? TenantId { get; set; }
+        public int? PeriodId { get; set; }
         public List<InvoiceDetail> InvoiceDetails { get; set; }
     }
 }

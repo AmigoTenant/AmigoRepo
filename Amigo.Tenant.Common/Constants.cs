@@ -210,7 +210,7 @@ namespace Amigo.Tenant.Common
             public struct ContractDetail
             {
                 public const string Pending = "PENDING";
-                public const string Payed = "PAYED";
+                public const string Payed = "PAID";
             }
             public struct PaymentPeriod
             {
@@ -221,7 +221,7 @@ namespace Amigo.Tenant.Common
             public struct PaymentPeriodStatusName
             {
                 public const string Pending = "PENDING";
-                public const string Payed = "PAYED";
+                public const string Payed = "PAID";
             }
 
             public struct HouseServicePeriodStatus

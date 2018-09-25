@@ -998,6 +998,9 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     tenantId: number | null;
     paymentTypeId: number | null;
     isPayInFull: boolean;
+    totalInvoice: number | null;
+    totalIncome: number | null;
+    balance: number | null;
 
     constructor(data?: IPPHeaderSearchByContractPeriodDTO) {
         if (data) {
@@ -1049,6 +1052,9 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.paymentTypeId = data["PaymentTypeId"] !== undefined ? data["PaymentTypeId"] : <any>null;
             this.isPayInFull = data["IsPayInFull"] !== undefined ? data["IsPayInFull"] : false;
             
+            this.totalIncome = data["TotalIncome"] !== undefined ? data["TotalIncome"] : <any>null;
+            this.totalInvoice = data["TotalInvoice"] !== undefined ? data["TotalInvoice"] : <any>null;
+            this.balance = data["Balance"] !== undefined ? data["Balance"] : <any>null;
         }
     }
 
@@ -1096,6 +1102,9 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["TenantId"] = this.tenantId !== undefined ? this.tenantId : <any>null;
         data["PaymentTypeId"] = this.paymentTypeId !== undefined ? this.paymentTypeId : <any>null;
         data["IsPayInFull"] = this.isPayInFull !== undefined ? this.isPayInFull : false;
+        data["TotalIncome"] = this.totalIncome !== undefined ? this.totalIncome : <any>null;
+        data["TotalInvoice"] = this.totalInvoice !== undefined ? this.totalInvoice : <any>null;
+        data["Balance"] = this.balance !== undefined ? this.balance : <any>null;
         return data;
     }
 
@@ -1130,6 +1139,9 @@ export interface IPPHeaderSearchByContractPeriodDTO {
     tenantId: number | null;
     paymentTypeId: number | null;
     isPayInFull: boolean;
+    totalInvoice: number | null;
+    totalIncome: number | null;
+    balance: number | null;
 }
 
 export class ResponseDTOOfPPDetailSearchByContractPeriodDTO implements IResponseDTOOfPPDetailSearchByContractPeriodDTO {

@@ -125,6 +125,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
                 var factory = ReportExportFactory.Create("EXCEL", ruta);
 
+                var balance = resp.Data[0].TotalIncome - resp.Data[0].TotalInvoice;
+
                 factory.SetPreHeader(
                     new List<ReportHeader> {
                         new ReportHeader() { Position = 6, PositionY = 2, Name =  resp.Data[0].InvoiceNo },
@@ -134,7 +136,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                         new ReportHeader() { Position = 8, PositionY = 2, Name =  resp.Data[0].TenantFullName },
                         new ReportHeader() { Position = 9, PositionY = 2, Name =  resp.Data[0].HouseName },
                         new ReportHeader() { Position = 10, PositionY = 2, Name =  resp.Data[0].Comment },
-                        new ReportHeader() { Position = 26, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() }
+                        new ReportHeader() { Position = 26, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() },
+                        new ReportHeader() { Position = 29, PositionY = 4, Name =  balance.ToString() }
                     });
 
                 factory.SetHeader(

@@ -22,7 +22,6 @@
                                                     <div class="col-sm-8">
                                                         <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
                                                     </div>
-                                                    {{_currentPeriod | json}}
                                                 </div>
                                             </div>
 
@@ -62,7 +61,6 @@
                                                     <label for="name" class="control-label col-sm-4">Property</label>
                                                     <div class="col-sm-8">
                                                         <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
-                                                        
                                                     </div>
                                                 </div>
                                             </div>
@@ -162,6 +160,20 @@
                                 pageSizes: pageSizes,
                                 previousNext: previousNext
                             }" [height]="580" (pageChange)="pageChange($event)" [selectable]="false">
+                                <kendo-grid-column [width]="50">
+                                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                                        <div class="text-center">
+                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
+                                        </div>
+                                    </ng-template>
+                                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                                        <div class="text-center">
+                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
+                                            <label htmlFor="{{rowIndex}}"></label>
+
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
                                 <kendo-grid-column field="periodCode" title="Period" width="90"></kendo-grid-column>
                                 <kendo-grid-column field="dueDate" title="Due Date" width="90">
                                     <ng-template kendoGridCellTemplate let-dataItem>

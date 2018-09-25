@@ -231,6 +231,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.TenantId = header.TenantId;
                 ppHeaderSearchByContractPeriodDTO.PaymentTypeId = header.PaymentTypeId;
                 ppHeaderSearchByContractPeriodDTO.IsPayInFull = false; //Required To apply OnAccount concept when Tenant is paying (false: pay independent concept, true: pay for the total)
+                ppHeaderSearchByContractPeriodDTO.TotalInvoice = header.TotalInvoice;
+                ppHeaderSearchByContractPeriodDTO.TotalIncome = header.TotalIncome;
+
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
                 var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
@@ -290,6 +293,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                             //Inserting at Final
                             detailList.Add(lateFeeDetail);
                             isLateFeeIncluded = true;
+
+                            ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                         }
                     }
 
@@ -301,6 +306,10 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
 
                 ppHeaderSearchByContractPeriodDTO.PPDetail = detailList;
+
+                //ReCalculando el Balance
+
+                ppHeaderSearchByContractPeriodDTO.Balance = ppHeaderSearchByContractPeriodDTO.TotalIncome - ppHeaderSearchByContractPeriodDTO.TotalInvoice;
 
             }
 
@@ -506,16 +515,17 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 errorMessage = "No puedes grabar un Payment con monto en cero";
             }
 
-            var concept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.OnAccount);
-            var existJustOneOnAccountRecord = request.PPDetail.Count(q => q.ConceptId == concept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending);
+            var onAccountConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.OnAccount);
+            var existJustOneOnAccountRecord = request.PPDetail.Count(q => q.ConceptId == onAccountConcept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending);
             if (existJustOneOnAccountRecord>1)
             {
                 isValid = false;
-                errorMessage = "Please group the OnAccount Concept in one record and save it";
+                //errorMessage = "Please group the OnAccount Concept in one record and save it";
+                errorMessage = "Por favor agrupa los pagos acuenta en uno solo";
             }
 
 
-            var onAccountAmountClient = request.PPDetail.Where(q=> q.ConceptId == concept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending).Sum(q=> q.PaymentAmount);
+            var onAccountAmountClient = request.PPDetail.Where(q=> q.ConceptId == onAccountConcept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending).Sum(q=> q.PaymentAmount);
             var amountsInDB = await _paymentPeriodGroupedStatusAndConceptDTOApplication.FirstOrDefaultAsync(q => q.TenantId == request.TenantId && q.PeriodId == request.PeriodId);
             var totalIncomeInDB = amountsInDB != null ? amountsInDB.TotalDepositAmountPending + amountsInDB.TotalRentAmountPending + amountsInDB.TotalFineInfracAmountPending + amountsInDB.TotalLateFeeAmountPending + amountsInDB.TotalSvcEnergyAmountPending + amountsInDB.TotalSvcWaterAmountPending: 0;
             var totalOnAccountInDB = amountsInDB != null ? amountsInDB.TotalOnAccountAmountPayed : 0;
@@ -525,7 +535,27 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 isValid = false;
                 //No debes poder agregar A Cuenta mas de lo que esta pendiente por Ingresos
                 //Si tienes renta y deposito por 2000, no debes crear registros OnAccount en el Cliente y en BD por mas de esta cifra.
-                errorMessage = "OnAccount amount must be leaser or equal than other income concepts ";
+                //errorMessage = "OnAccount amount must be leaser or equal than other income concepts ";
+                errorMessage = "El total de los pagos a cuenta no deben exceder al total de los conceptos de ingresos pendiente (Renta, Deposito, etc)";
+            }
+
+            var exist = request.PPDetail.Any(q => q.ConceptId != onAccountConcept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending && q.IsSelected.Value);
+            if (amountsInDB != null && onAccountAmountClient + totalOnAccountInDB == totalIncomeInDB && !exist)
+            {
+                isValid = false;
+                //Cuando lo unico que se ha seleccionado es un concepto OnAccount y el monto que se quiere pagar YA es Igual al Total de Ingresos (Renta, Deposito, etc)
+                //Selecciona todos los conceptos de pago por ingresos en ve de ingresar un concepto por pago a cuenta, por que hemos detectado que quieres pagar el total del periodo.
+                //errorMessage = "Select all income concepts allowed instead of OnAccount concept, because we have detected that you wanna to pay in full the period";
+                errorMessage = "Hemos detectado que con el pago a cuenta que quieres ingresar, estas saldando la deuda del periodo, para hacer esto, deberias seleccionar los conceptos de ingreso pendientes, en lugar de intentar registrar pagos a cuenta.";
+            }
+
+            var existOnACcountConcepts = request.PPDetail.Any(q => q.ConceptId == onAccountConcept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending && q.IsSelected.Value);
+            var existIncomeConcepts = request.PPDetail.Any(q => q.ConceptId != onAccountConcept.Data.ConceptId && q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending && q.IsSelected.Value);
+
+            if (amountsInDB != null && existOnACcountConcepts && request.IsPayInFull)
+            {
+                isValid = false;
+                errorMessage = "Estas intentando pagar la totalidad de la deuda, pero agregando pagos a cuenta adicionales, elimina el pago a cuenta y selecciona todos los conceptos de ingreso.";
             }
 
             var response = new ResponseDTO()

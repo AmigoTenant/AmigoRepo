@@ -99,7 +99,7 @@ namespace Amigo.Tenant.Application.Services.MasterData
         public async Task<ResponseDTO<PeriodDTO>> GetCurrentPeriodAsync()
         {
             Expression<Func<PeriodDTO, bool>> queryFilter = c => true;
-            queryFilter = queryFilter.And(p => p.Code == string.Format("{0:yyyyMM}", DateTime.Now));
+            queryFilter = queryFilter.And(p => p.Code == string.Format("{0:yyyyMM}", DateTime.Now.AddMonths(1)));
             var period = await _periodDataAccess.FirstOrDefaultAsync(queryFilter);
 
             return ResponseBuilder.Correct(period);

@@ -90,6 +90,10 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     invoiceEntity.CreatedBy = message.UserId;
                     invoiceEntity.UpdatedDate = DateTime.Now;
                     invoiceEntity.UpdatedBy = message.UserId;
+                    invoiceEntity.TenantId = message.TenantId;
+                    invoiceEntity.PeriodId = message.PeriodId;
+
+                    
                     var invoiceDetailsEntity = new List<InvoiceDetail>();
                     
                     foreach (var item in message.PPDetail.Where(q=> q.IsSelected.Value))

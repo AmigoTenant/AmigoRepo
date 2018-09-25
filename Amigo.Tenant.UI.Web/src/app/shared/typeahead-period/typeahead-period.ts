@@ -34,7 +34,7 @@ export class NgbdTypeaheadPeriod {
         text$
             .debounceTime(300)
             .distinctUntilChanged()
-            .switchMap(term => term.length < 2 ? [] : this.getPeriod(term)) ;
+            .switchMap(term => term.length < 5 ? [] : this.getPeriod(term)) ;
 
     formatter = (x: {code: string}) => x.code;
 
@@ -45,7 +45,7 @@ export class NgbdTypeaheadPeriod {
     }
 
     selectValue(item) {
-        this.modelOutput.emit(item);
+        this.modelOutput.emit(item.item);
     }
 
     createModelEmpty() {

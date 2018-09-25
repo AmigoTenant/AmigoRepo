@@ -121,16 +121,24 @@
                                                     <i class="xico-device-printer"></i>
                                                 </button>
                                             </div>
-                                            
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                               
                             </kendo-grid>
                         </div>
+                        <div class="row">
+                            <div class="col-sm-10">Total Income:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">Total Invoice:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.totalInvoice|number:'2.2-2' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">BALANCE:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.balance|number:'2.2-2' }}</div>
+                        </div>
                     </div>
-                    <!--<div class="col-sm-1">
-                    </div>-->
                     <div class="col-sm-3" style="padding-right:6px;padding-left:100px">
                         <div class="sub-header">RESUME</div>
                         <form #locationForm="ngForm" data-val-form="locationForm">
@@ -192,11 +200,11 @@
                     </div>
 
                 </div>
-
-                
                 <div class="row col-sm-1">
                     &nbsp;
                 </div>
+                
+
 
             </ng-template>
         </ngb-tab>
