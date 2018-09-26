@@ -964,6 +964,7 @@ export interface IResponseDTOOfPPHeaderSearchByContractPeriodDTO {
 }
 
 export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContractPeriodDTO {
+    isSelected: boolean | null;
     paymentPeriodId: number | null;
     periodId: number | null;
     periodCode: string | null;
@@ -1013,6 +1014,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
 
     init(data?: any) {
         if (data) {
+            this.isSelected = data["IsSelected"] !== undefined ? data["IsSelected"] : <any>null;
             this.paymentPeriodId = data["PaymentPeriodId"] !== undefined ? data["PaymentPeriodId"] : <any>null;
             this.periodId = data["PeriodId"] !== undefined ? data["PeriodId"] : <any>null;
             this.periodCode = data["PeriodCode"] !== undefined ? data["PeriodCode"] : <any>null;
@@ -1066,6 +1068,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
 
     toJSON(data?: any) {
         data = typeof data === 'object' ? data : {};
+        data["IsSelected"] = this.isSelected !== undefined ? this.isSelected : <any>null;
         data["PaymentPeriodId"] = this.paymentPeriodId !== undefined ? this.paymentPeriodId : <any>null;
         data["PeriodId"] = this.periodId !== undefined ? this.periodId : <any>null;
         data["PeriodCode"] = this.periodCode !== undefined ? this.periodCode : <any>null;
@@ -1117,6 +1120,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
 }
 
 export interface IPPHeaderSearchByContractPeriodDTO {
+    isSelected: boolean | null;
     paymentPeriodId: number | null;
     periodId: number | null;
     periodCode: string | null;

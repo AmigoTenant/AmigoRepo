@@ -160,7 +160,7 @@
                                 pageSizes: pageSizes,
                                 previousNext: previousNext
                             }" [height]="580" (pageChange)="pageChange($event)" [selectable]="false">
-                                <kendo-grid-column [width]="50">
+                                <kendo-grid-column [width]="30">
                                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                         <div class="text-center">
                                             <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
@@ -174,18 +174,18 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="periodCode" title="Period" width="90"></kendo-grid-column>
-                                <kendo-grid-column field="dueDate" title="Due Date" width="90">
+                                <kendo-grid-column field="periodCode" title="Period" width="40"></kendo-grid-column>
+                                <kendo-grid-column field="dueDate" title="Due Date" width="40">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div>
                                             <span>{{dataItem.dueDate|date:"MM/dd/yyyy" }}</span><br />
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="contractCode" title="Contract" width="90"></kendo-grid-column>
+                                <kendo-grid-column field="contractCode" title="Contract" width="50"></kendo-grid-column>
                                 <kendo-grid-column field="tenantFullName" title="Tenant" width="120"></kendo-grid-column>
-                                <kendo-grid-column field="houseName" title="House" width="90"></kendo-grid-column>
-                                <kendo-grid-column title="Status" width="30">
+                                <kendo-grid-column field="houseName" title="House" width="120"></kendo-grid-column>
+                                <kendo-grid-column title="Status" width="50">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
                                             <label class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>

@@ -293,7 +293,6 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                             //Inserting at Final
                             detailList.Add(lateFeeDetail);
                             isLateFeeIncluded = true;
-
                             ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                         }
                     }
@@ -302,7 +301,10 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
                 //Inserting at Final
                 if (!isLateFeeIncluded && lateFeeDetail.PaymentPeriodId.HasValue)
+                {
+                    ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                     detailList.Add(lateFeeDetail);
+                }
 
 
                 ppHeaderSearchByContractPeriodDTO.PPDetail = detailList;

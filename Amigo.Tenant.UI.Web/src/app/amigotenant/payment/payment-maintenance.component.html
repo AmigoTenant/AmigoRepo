@@ -57,15 +57,14 @@
                             <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail" style="height: 300px;"
                                         (pageChange)="pageChange1($event)">
                                 <kendo-grid-column [width]="50">
-                                    <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                                            <!-- [disabled]="isValidToCheck" -->
+                                    <!--<ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                         <div class="text-center">
-                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
+                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" />
                                         </div>
-                                    </ng-template>
+                                    </ng-template>-->
                                     <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                         <div class="text-center">
-                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" (change)="changeItem(dataItem)" [disabled]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" />
+                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected || dataItem.paymentPeriodStatusCode==='PPPAYED'" (change)="changeItem(dataItem)" [disabled]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" />
                                             <label htmlFor="{{rowIndex}}"></label>
                                         </div>
                                     </ng-template>
