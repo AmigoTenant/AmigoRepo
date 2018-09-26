@@ -9,10 +9,19 @@ export class BaseService {
     public http: HttpClient = null;
     public baseUrl: string;
     public jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+    public token: any;
+
 
     constructor( @Inject(HttpClient) http: HttpClient, @Optional() @Inject(API_BASE_URL) baseUrl?: string) {
         this.http = http;
         this.baseUrl = baseUrl ? baseUrl : '';
+        this.getToken();
+    }
+
+    getToken(): void {
+        this.token = localStorage.getItem('authorizationData');
+        this.token = this.token.substr(1);
+        this.token = this.token.substr(0, (this.token.length - 1));
     }
 
     handleError(error: HttpErrorResponse) {
@@ -32,6 +41,6 @@ export class BaseService {
     }
 
     get headers() {
-        return new HttpHeaders({ 'Content-Type': 'application/json', 'Accept-Language': 'es-cl' });
+        return new HttpHeaders({ accept: 'application/json', 'Content-Type': 'application/json', 'Accept-Language': 'es-cl' });
     }
 }

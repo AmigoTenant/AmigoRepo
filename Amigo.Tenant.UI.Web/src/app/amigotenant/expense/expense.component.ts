@@ -100,12 +100,9 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
 
 
     constructor(
-        //private expenseClient: ExpenseClient,
         private listConfirmation: ConfirmationList,
-        //private listsService: ListsService,
         private route: ActivatedRoute,
         private router: Router,
-        private houseDataService: HouseClient,
         private gnrlTableDataService: GeneralTableClient,
         private notificationService: NotificationService,
         private masterDataService: MasterDataService,
@@ -114,21 +111,22 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         super();
     }
 
-    ngOnDestroy() {
-        this.sub.unsubscribe();
-    }
+    // ngOnDestroy() {
+    //     this.sub.unsubscribe();
+    // }
 
-    sub: Subscription;
+    //sub: Subscription;
     ngOnInit() {
 
-        this.sub = this.route.params.subscribe(params => {
+        // this.sub = this.route.params.subscribe(params => {
 
-            setTimeout(() => {
-                this.onSelect();
-            }, 100);
+        //     setTimeout(() => {
+        //         this.onSelect();
+        //     }, 100);
 
-        });
+        // });
 
+        this.buildForm();
         this.initializeForm();
         this.resetResults();
     }
@@ -147,9 +145,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         this.initializeForm();
     }
 
-    expenseSearchForm: FormGroup;
-
-
+    public expenseSearchForm: FormGroup;
 
     initializeForm(): void {
         //this.model = new ExpenseSearchRequest();
@@ -164,38 +160,51 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     }
 
     buildForm() {
-        if (!this.expenseSearchForm) {
-            this.expenseSearchForm = this.formBuilder.group({
-                PaymentTypeId: [null],
-                HouseTypeId: [null],
-                TenantId: [null],
-                StatusId: [null],
-                ConceptId: [null],
-                HouseId: [null],
-                PeriodoId: [null],
-                FromDate: [null],
-                ToDate: [null]
-            });
-        }
+
+        this.expenseSearchForm = this.formBuilder.group({
+            paymentTypeId: null,
+            houseTypeId: null,
+            tenantId: null,
+            statusId: null,
+            conceptId: null,
+            houseId: null,
+            periodoId: null,
+            expenseDateFrom: null,
+            expenseDateTo: null
+         });
+
+        // if (!this.expenseSearchForm) {
+        //     this.expenseSearchForm = this.formBuilder.group({
+        //         paymentTypeId: [null],
+        //         houseTypeId: [null],
+        //         tenantId: [null],
+        //         statusId: [null],
+        //         conceptId: [null],
+        //         houseId: [null],
+        //         periodoId: [null],
+        //         expenseDateFrom: [null],
+        //         expenseDateTo: [null]
+        //     });
+        // }
     }
 
     public setDatesFromTo() {
-        var date = new Date();
+        let date = new Date();
         this.modelExpenseDateFrom = new modelDate();
         this.modelExpenseDateTo = new modelDate();
-        this.onSelectModelApplicationDateFrom();
-        this.onSelectModelApplicationDateTo();
+        // this.onSelectModelApplicationDateFrom();
+        // this.onSelectModelApplicationDateTo();
     }
 
-    onSelectModelApplicationDateFrom(): void {
-        if (this.modelExpenseDateFrom != null)
-            this.model.applicationDateFrom = new Date(this.modelExpenseDateFrom.year, this.modelExpenseDateFrom.month - 1, this.modelExpenseDateFrom.day, 0, 0, 0, 0);
-    }
+    // onSelectModelApplicationDateFrom(): void {
+    //     if (this.modelExpenseDateFrom != null)
+    //         this.model.applicationDateFrom = new Date(this.modelExpenseDateFrom.year, this.modelExpenseDateFrom.month - 1, this.modelExpenseDateFrom.day, 0, 0, 0, 0);
+    // }
 
-    onSelectModelApplicationDateTo(): void {
-        if (this.modelExpenseDateTo != null)
-            this.model.applicationDateTo = new Date(this.modelExpenseDateTo.year, this.modelExpenseDateTo.month - 1, this.modelExpenseDateTo.day, 0, 0, 0, 0);
-    }
+    // onSelectModelApplicationDateTo(): void {
+    //     if (this.modelExpenseDateTo != null)
+    //         this.model.applicationDateTo = new Date(this.modelExpenseDateTo.year, this.modelExpenseDateTo.month - 1, this.modelExpenseDateTo.day, 0, 0, 0, 0);
+    // }
 
     onSelect(): void {
         this.getExpense();
@@ -236,17 +245,18 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     }
 
     getHouseTypes(): void {
-        this.houseDataService.getHouseTypes()
+        debugger;
+        this.masterDataService.getHouseTypes()
             .subscribe(res => {
-                var dataResult: any = res;
-                this._listHouseTypes = dataResult.data;
+                let dataResult: any = res;
+                this._listHouseTypes = dataResult.Data;
             });
     }
 
     getConceptByTypes(): void {
         this.masterDataService.getConceptsByTypeIdList([31, 29])
             .subscribe(res => {
-                var dataResult: any = res;
+                let dataResult: any = res;
                 this._listHouseTypes = dataResult.data;
             });
     }
@@ -254,7 +264,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     getPaymentTypes(): void {
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("PaymentType")
             .subscribe(res => {
-                
                 var dataResult: any = res;
                 this._listStatus = [];
                 for (var i = 0; i < dataResult.value.data.length; i++) {
@@ -266,7 +275,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
             });
     }
 
-    
     //=========== 
     //GRID
     //===========

@@ -2,7 +2,8 @@
 
     public static get MASTER_DATA_URL_PATH(): any {
         return {
-            'getConceptsByTypeId': '/getConceptsByTypeId'
+            'getConceptsByTypeId': '/getConceptsByTypeId',
+            'getHouseTypes': 'house/getHouseTypes'
             };
     }
 

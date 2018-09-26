@@ -270,6 +270,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <TypeScriptCompile Include="src\app\shared\dto\house-type-dto.ts" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
@@ -280,8 +281,6 @@
     <TypeScriptCompile Include="src\app\amigotenant\expense\data.service.ts" />
     <Content Include="src\app\amigotenant\expense\expense-maintenance.component.ts" />
     <Content Include="src\app\amigotenant\expense\expense.component.ts" />
-    <Content Include="src\app\amigotenant\expense\expense.module.ts" />
-    <Content Include="src\app\amigotenant\expense\expense.routing.ts" />
     <TypeScriptCompile Include="src\app\amigotenant\house\dataService.ts" />
     <TypeScriptCompile Include="src\app\amigotenant\house\house-map-maintenance.component.ts" />
     <TypeScriptCompile Include="src\app\amigotenant\house\house-service.component.ts" />

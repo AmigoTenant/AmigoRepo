@@ -5,12 +5,13 @@ import { Observable } from 'rxjs/Observable';
 import { BaseService } from './base.service';
 import { Constants } from '../constants/constants';
 import { PeriodDTO } from './services.client';
+import { HouseTypeDTO } from '../dto/house-type-dto';
 
 
 @Injectable()
 export class MasterDataService extends BaseService {
 
-    getConceptsByTypeIdList(typeIdList:number[]): Observable<any[]> {
+    getConceptsByTypeIdList(typeIdList: number[]): Observable<any[]> {
 
         const url = `${this.baseUrl}${Constants.MASTER_DATA_URL_PATH.getLocations}/${typeIdList}`;
         return this.http.get<any>(url, { headers: this.headers })
@@ -21,10 +22,6 @@ export class MasterDataService extends BaseService {
 
 
     getTypes(): Observable<any[]> {
-        // const url = `${this.baseUrl}${Constants.MASTER_DATA_URL_PATH.getTypes}`;
-        // return this.http.get<any>(url, { headers: this.headers }).map(r => <any[]>r)
-        // .catch(this.handleError);
-
         const url = `${this.baseUrl}${Constants.MASTER_DATA_URL_PATH.getTypes}`;
         return this.http.get<any>(url, { headers: this.headers }) //.map(r => <any[]>r)
         .pipe(
@@ -33,15 +30,23 @@ export class MasterDataService extends BaseService {
     }
 
     getCurrentPeriod(): Observable<PeriodDTO[] | any> {
-        let token = localStorage.getItem('authorizationData');
-        token = token.substr(1);
-        token = token.substr(0, (token.length - 1));
+        // let token = localStorage.getItem('authorizationData');
+        // token = token.substr(1);
+        // token = token.substr(0, (token.length - 1));
 
         const url = `${this.baseUrl}api/${Constants.PERIOD_URL_PATH.getCurrentPeriod}`;
-        return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + token) }) 
+        return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token) })
             .pipe(
             catchError(this.handleError)
             );
     }
 
+    //HOUSE
+    getHouseTypes(): Observable<any> {
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;
+        return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            .pipe(
+            catchError(this.handleError)
+            );
+    }
 }

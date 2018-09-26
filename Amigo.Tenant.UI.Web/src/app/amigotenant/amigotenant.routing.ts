@@ -27,7 +27,7 @@ export const routes: Routes = [
   { path: 'payment/edit/:contractId/:periodId', component: PaymentMaintenanceComponent, data: { pageTitle: 'Massive Payment Detail' }, canActivate: [LoginRouteGuard] },  
   { path: 'utilitybill', component: UtilityBillComponent, data: { pageTitle: 'Utility Bills'}, canActivate : [LoginRouteGuard] },  
   { path: 'utilitybill/edit/:houseId', component: UtilityBillMaintenanceComponent, data: { pageTitle: 'Register Utility Bills' }, canActivate: [LoginRouteGuard] },
-  { path: 'expense', component: PaymentComponent, data: { pageTitle: 'Payment' }, canActivate: [LoginRouteGuard] },
+  { path: 'expense', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] },
   { path: 'expense/edit/:expenseId', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] }
 
 ];

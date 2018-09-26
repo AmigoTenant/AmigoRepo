@@ -5,7 +5,7 @@
             <label for="tab1Main">Rental Application <span class="tab-counter">{{totalResultCount}}</span></label>
             <div class="tab-content">
                 <div class="tab-pane">
-                    <form>
+                    <form [formGroup] ="expenseSearchForm">
                         <div class="filter-bar form-horizontal">
                             <div class="row">
                                 <div class="col-lg-10 col-md-10 col-sm-10">
@@ -45,7 +45,7 @@
                                                         <!-- <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDateFrom" ngbDatepicker #d1="ngbDatepicker"
                                                         [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" (ngModelChange)="onSelectModelExpenseDateFrom()"> -->
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDateFrom" ngbDatepicker #d1="ngbDatepicker"
-                                                           [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" >
+                                                           [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" formControlName="expenseDateFrom" >
                                                     <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
@@ -57,7 +57,7 @@
                                                     <!-- <input class="form-control" [placeholder]="localization.dateFormat" name="ExpenseDateTo" ngbDatepicker #d2="ngbDatepicker"
                                                            [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" (ngModelChange)="onSelectModelExpenseDateTo()"> -->
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="ExpenseDateTo" ngbDatepicker #d2="ngbDatepicker"
-                                                        [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" >
+                                                        [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" formControlName="expenseDateTo">
                                                     <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
