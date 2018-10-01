@@ -18,4 +18,11 @@
             'exportToExcel': 'api/payment/exportToExcel'
         };
     }
+
+    public static get PAYMENTPERIOD_URL_PATH(): any {
+        return {
+            'getConceptsByTypeId': '/sendPaymentNotificationEmail',
+            'getHouseTypes': 'house/getHouseTypes'
+            };
+    }
 }

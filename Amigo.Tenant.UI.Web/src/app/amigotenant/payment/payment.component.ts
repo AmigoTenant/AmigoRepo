@@ -234,26 +234,34 @@ export class PaymentComponent implements OnInit {
     public onSendPayNotification(){
 
 
-        this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
-        this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
+        let numbers = this.gridData.data.filter((value, index) => {
+            return value.isSelected;
+        }).map((value, index) => {
+            return JSON.stringify(value.paymentPeriodId).replace(/\W/g, '');
+        });
 
-        this.paymentDataService.sendPayNotification(
-            this.searchCriteria.periodId,
-            11, //PPPENDING
-            this.searchCriteria.tenantId,
-            this.searchCriteria.hasPendingServices,
-            this.searchCriteria.hasPendingFines,
-            this.searchCriteria.hasPendingLateFee,
-            this.searchCriteria.hasPendingDeposit,
-            1,
-            100
-        )
-            .subscribe(res => {
-                let dataResult: any = res;
-                this.successFlag = dataResult.isValid;
-                this.errorMessages = dataResult.messages;
-                this.successMessage = 'Emails has been sent Successfully';
-            });
+        this.paymentDataService
+
+        // this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
+        // this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
+
+        // this.paymentDataService.sendPayNotification(
+        //     this.searchCriteria.periodId,
+        //     11, //PPPENDING
+        //     this.searchCriteria.tenantId,
+        //     this.searchCriteria.hasPendingServices,
+        //     this.searchCriteria.hasPendingFines,
+        //     this.searchCriteria.hasPendingLateFee,
+        //     this.searchCriteria.hasPendingDeposit,
+        //     1,
+        //     100
+        // )
+        //     .subscribe(res => {
+        //         let dataResult: any = res;
+        //         this.successFlag = dataResult.isValid;
+        //         this.errorMessages = dataResult.messages;
+        //         this.successMessage = 'Emails has been sent Successfully';
+        //     });
     }
 
     isValidateToSendEmailNotification(){

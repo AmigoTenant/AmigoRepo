@@ -30,10 +30,6 @@ export class MasterDataService extends BaseService {
     }
 
     getCurrentPeriod(): Observable<PeriodDTO[] | any> {
-        // let token = localStorage.getItem('authorizationData');
-        // token = token.substr(1);
-        // token = token.substr(0, (token.length - 1));
-
         const url = `${this.baseUrl}api/${Constants.PERIOD_URL_PATH.getCurrentPeriod}`;
         return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token) })
             .pipe(
@@ -49,4 +45,14 @@ export class MasterDataService extends BaseService {
             catchError(this.handleError)
             );
     }
+
+
+    sendEmailNotification(): Observable<any> {
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;
+        return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            .pipe(
+            catchError(this.handleError)
+            );
+    }
+
 }
