@@ -6,7 +6,7 @@ import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { ConfirmationList, Confirmation } from '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
-import { HouseClient, GeneralTableClient } from '../../shared/api/services.client';
+import { HouseClient,    GeneralTableClient,    ResponseDTOOfListOfHouseTypeDTO} from '../../shared/api/services.client';
 //import { ExpenseClient, ExpenseSearchRequest, ExpenseDeleteRequest } from '../../shared/api/rentalapplication.services.client';
 //SEARCH CRITERIA:End
 import { EnvironmentComponent } from '../../shared/common/environment.component';
@@ -16,6 +16,7 @@ import { NotificationService } from '../../shared/service/notification.service';
 import { accessSync } from 'fs';
 import { DataService } from '../house/dataService';
 import { MasterDataService } from '../../shared/api/master-data-service';
+import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 
 declare var $: any;
 
@@ -153,7 +154,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         this.resetGrid();
         this.getHouseTypes();
         this.getPaymentTypes();
-        //this.getConceptsByTypeIdList();
+        this.getConceptByTypes();
         //this.getStatus();
         //this.model.pageSize = 20;
         this.totalResultCount = 0;
@@ -235,7 +236,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         //    this.model.pageSize)
         //    .subscribe(response => {
         //        var datagrid: any = response;
-        //        
         //        this.expenseSearchDTOs = {
         //            data: datagrid.data.items,
         //            total: datagrid.data.total
@@ -245,31 +245,31 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     }
 
     getHouseTypes(): void {
-        debugger;
         this.masterDataService.getHouseTypes()
             .subscribe(res => {
-                let dataResult: any = res;
-                this._listHouseTypes = dataResult.Data;
-            });
-    }
-
-    getConceptByTypes(): void {
-        this.masterDataService.getConceptsByTypeIdList([31, 29])
-            .subscribe(res => {
-                let dataResult: any = res;
+                let dataResult = new ResponseListDTO(res);
                 this._listHouseTypes = dataResult.data;
             });
     }
 
-    getPaymentTypes(): void {
-        this.gnrlTableDataService.getGeneralTableByTableNameAsync("PaymentType")
+
+    getConceptByTypes(): void {
+        this.masterDataService.getConceptsByTypeIdList([31, 29])
             .subscribe(res => {
-                var dataResult: any = res;
+                let dataResult = new ResponseListDTO(res);
+                this._listConcepts = dataResult.data;
+            });
+    }
+
+    getPaymentTypes(): void {
+        this.masterDataService.getGeneralTableByTableName('PaymentType')
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
                 this._listStatus = [];
-                for (var i = 0; i < dataResult.value.data.length; i++) {
+                for (let i = 0; i < dataResult.data.length; i++) {
                     this._listPaymentTypes.push({
-                        "typeId": dataResult.value.data[i].generalTableId,
-                        "name": dataResult.value.data[i].value
+                        'typeId': dataResult.data[i].generalTableId,
+                        'name': dataResult.data[i].value
                     });
                 }
             });

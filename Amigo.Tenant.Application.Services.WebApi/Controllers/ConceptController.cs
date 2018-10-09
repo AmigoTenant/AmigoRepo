@@ -33,8 +33,9 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return resp;
         }
 
-        [HttpGet, Route("getConceptByTypeIdList")]
-        public async Task<ResponseDTO<List<ConceptDTO>>> getConceptByTypeIdList([FromUri] List<string> idList)
+        [HttpPost]
+        [Route("getConceptByTypeIdList")]
+        public async Task<ResponseDTO<List<ConceptDTO>>> getConceptByTypeIdList([FromBody] List<string> idList)
         {
             var resp = await _conceptApplicationService.GetConceptByTypeIdListAsync(idList);
             return resp;

@@ -2,8 +2,9 @@
 
     public static get MASTER_DATA_URL_PATH(): any {
         return {
-            'getConceptsByTypeId': '/getConceptsByTypeId',
-            'getHouseTypes': 'house/getHouseTypes'
+            'getConceptByTypeIdList': 'concept/getConceptByTypeIdList',
+            'getHouseTypes': 'house/getHouseTypes',
+            'getGeneralTableByTableNameAll': 'generalTable/getGeneralTableByTableNameAll',
             };
     }
 
@@ -19,10 +20,10 @@
         };
     }
 
-    public static get PAYMENTPERIOD_URL_PATH(): any {
-        return {
-            'getConceptsByTypeId': '/sendPaymentNotificationEmail',
-            'getHouseTypes': 'house/getHouseTypes'
-            };
-    }
+    // public static get PAYMENTPERIOD_URL_PATH(): any {
+    //     return {
+    //         'getConceptsByTypeId': '/sendPaymentNotificationEmail',
+    //         'getHouseTypes': 'house/getHouseTypes'
+    //         };
+    // }
 }

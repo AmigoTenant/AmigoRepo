@@ -1,10 +1,11 @@
-﻿import { catchError } from 'rxjs/operators';
+﻿import {tap} from 'rxjs/operators/tap';
+import { catchError, map } from 'rxjs/operators';
 import { Http, Response, Headers, RequestOptions, URLSearchParams } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseService } from './base.service';
 import { Constants } from '../constants/constants';
-import { PeriodDTO } from './services.client';
+import { PeriodDTO, ResponseDTOOfListOfHouseTypeDTO } from './services.client';
 import { HouseTypeDTO } from '../dto/house-type-dto';
 
 
@@ -13,11 +14,15 @@ export class MasterDataService extends BaseService {
 
     getConceptsByTypeIdList(typeIdList: number[]): Observable<any[]> {
 
-        const url = `${this.baseUrl}${Constants.MASTER_DATA_URL_PATH.getLocations}/${typeIdList}`;
-        return this.http.get<any>(url, { headers: this.headers })
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getConceptByTypeIdList}`;
+        return this.http.post<any>(url, JSON.stringify(typeIdList),  { headers: this.headers.set("Authorization", "Bearer " + this.token) })
             .pipe(
             catchError(this.handleError)
             );
+
+    //         return this.http.post(url, JSON.stringify(containerPckTypeList), { headers: this.headers })
+    //   .map((resultData => resultData as OperationResult<any[]>))
+    //   .catch(this.handleError);
     }
 
 
@@ -42,10 +47,13 @@ export class MasterDataService extends BaseService {
         const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;
         return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
             .pipe(
-            catchError(this.handleError)
+                map(r => r),
+                catchError(this.handleError)
             );
+            // return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            // .map(r => r as ResponseDTOOfListOfHouseTypeDTO)
+            // .catch(this.handleError);
     }
-
 
     sendEmailNotification(): Observable<any> {
         const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;
@@ -54,5 +62,15 @@ export class MasterDataService extends BaseService {
             catchError(this.handleError)
             );
     }
+
+    getGeneralTableByTableName(tableName: string): Observable<any | null> {
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getGeneralTableByTableNameAll}?tableName=${tableName}`;
+        return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            .pipe(
+                map(r => r),
+                catchError(this.handleError)
+            );
+    }
+
 
 }
