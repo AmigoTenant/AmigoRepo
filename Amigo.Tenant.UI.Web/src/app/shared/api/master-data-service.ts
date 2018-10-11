@@ -19,10 +19,6 @@ export class MasterDataService extends BaseService {
             .pipe(
             catchError(this.handleError)
             );
-
-    //         return this.http.post(url, JSON.stringify(containerPckTypeList), { headers: this.headers })
-    //   .map((resultData => resultData as OperationResult<any[]>))
-    //   .catch(this.handleError);
     }
 
 

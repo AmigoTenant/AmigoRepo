@@ -180,31 +180,27 @@
                         </div>
                         <div class="action-bar">
                             <div class="button-container">
-                                <!-- <button type="button" class="ro-button btn-success" (click)="onInsert()" >
-                                    <i class="xico-action-edit"></i>
-                                    Add Application
-                                </button> -->
                                 <button type="button" class="ro-button btn-success" >
                                         <i class="xico-action-edit"></i>
-                                        Add Application
+                                        Add Expense
                                     </button>
                             </div>
-                            <!--<div class="button-container">
-                                <button type="button" id="btnExport" (click)="onOpenWhatsAppMessage()" class="ro-button btn-default">
+                            <div class="button-container">
+                                <button type="button" id="btnGeneratePayment" class="ro-button btn-default">
                                     <i class="xico-action-mail"></i>
-                                    Send WhatsApp Message
+                                    Generate Payment
                                 </button>
-                            </div>-->
-                            <!--<div class="button-container">
+                            </div>
+                            <div class="button-container">
                                 <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
                                     <i class="xico-file-download"></i>
                                     Export to Excel
                                 </button>
-                            </div>-->
+                            </div>
                         </div>
                     </form>
-                    <!--<div class="grid-container">
-                        <kendo-grid id="kgrid-Contract" [data]="rentalApplicationSearchDTOs" [pageSize]="model.pageSize" [skip]="currentPage" [pageable]="{
+                    <div class="grid-container">
+                        <kendo-grid id="kgrid-Contract" [data]="expenseSearchDTOs" [pageSize]="model.pageSize" [skip]="currentPage" [pageable]="{
                                 buttonCount: buttonCount,
                                 info: info,
                                 type: type,
@@ -225,60 +221,21 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column title="Priority">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div *ngIf="dataItem.priorityName==='Hight'">
-                                        <label class="label-status approved">{{dataItem.priorityName}}</label>
-                                    </div>
-                                    <div *ngIf="dataItem.priorityName==='Medium'">
-                                        <label class="label-status pending">{{dataItem.priorityName}}</label>
-                                    </div>
-                                    <div *ngIf="dataItem.priorityName==='Low'">
-                                        <label class="label-status">{{dataItem.priorityName}}</label>
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="applicationDate" title="Application Date">
+                            <kendo-grid-column field="period" title="Period"></kendo-grid-column>
+                            <kendo-grid-column field="expenseDate" title="Expense Date">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div>
-                                        <span>{{dataItem.applicationDate|date:"MM/dd/yyyy" }}</span><br />
+                                        <span>{{dataItem.expenseDate|date:"MM/dd/yyyy" }}</span><br />
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
                             <kendo-grid-column field="propertyTypeName" title="Property Type"></kendo-grid-column>
+                            <kendo-grid-column field="houseName" title="Property"></kendo-grid-column>
                             <kendo-grid-column field="fullName" title="Name"></kendo-grid-column>
-                            <kendo-grid-column field="email" title="E-Mail"></kendo-grid-column>
-                            <kendo-grid-column field="cellPhone" title="Cellphone"></kendo-grid-column>
-                            <kendo-grid-column field="checkIn" title="Check In">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div>
-                                        <span>{{dataItem.checkIn|date:"MM/dd/yyyy" }}</span><br />
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="checkOut" title="Check Out">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div>
-                                        <span>{{dataItem.checkOut|date:"MM/dd/yyyy" }}</span><br />
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
-                            <kendo-grid-column field="residenseCountryName" title="Residence Country"></kendo-grid-column>
-                            <kendo-grid-column field="budgetName" title="Budget"></kendo-grid-column>
-                            <kendo-grid-column field="housePartName" title="Complete/Shared"></kendo-grid-column>
-                            <kendo-grid-column field="outInDownName" title="In DownTown"></kendo-grid-column>
-
-                            <kendo-grid-column field="personNo" title="Person No"></kendo-grid-column>
-                            <kendo-grid-column field="referredByName" title="Referred By"></kendo-grid-column>
-                            <kendo-grid-column field="referredByOther" title="Referred By Other"></kendo-grid-column>
-                            <kendo-grid-column field="hasNotification" title="Notification">
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div>
-                                        <span *ngIf="dataItem.hasNotification" class="label-status rejected">Alert</span><br />
-                                    </div>
-                                </ng-template>
-                            </kendo-grid-column>
-
+                            <kendo-grid-column field="paymentTypeName" title="Payment Type"></kendo-grid-column>
+                            <kendo-grid-column field="referenceNo" title="reference No."></kendo-grid-column>
+                            <kendo-grid-column field="statusName" title="Status"></kendo-grid-column>
+                            <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
 
                             <kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>
@@ -294,54 +251,21 @@
                             </kendo-grid-column>
 
                          </kendo-grid>
-                    </div>-->
+                    </div>
                 </div>
             </div>
         </li>
     </ul>
 </div>
-<!-- <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
+ <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
     <div>{{deleteMessage}}</div>
     <kendo-dialog-actions>
         <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
         <button type="button" class="k-button k-primary" (click)="yesDelete()">Yes</button>
     </kendo-dialog-actions>
-</kendo-dialog> -->
-
-<!--<kendo-dialog title="Send Message" *ngIf="openedWhatsAppMessageConfimation" (close)="closeWhatsAppMessageConfirmation()">
+</kendo-dialog> 
+<div>
     <div>
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label for="driver" class="col-sm-5 control-label">Message</label>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="form-group">
-                    <label class="col-sm-12">
-                        <textarea type="text" name="txtMessage" style="height:100px" 
-                            [(ngModel)]="message" class="form-control" ></textarea>
-                    </label>
-                </div>
-            </div>
-        </div>
-        <kendo-dialog-actions>
-            <button type="button" class="k-button" (click)="closeWhatsAppMessageConfirmation()">Cancel</button>
-            <button type="button" class="k-button k-primary" (click)="SendAppMessage()">Send</button>
-        </kendo-dialog-actions>
+        <at-expense-maintenance></at-expense-maintenance>
     </div>
-</kendo-dialog>-->
-
-<!--<kendo-dialog title="Confirmation" *ngIf="openedSendConfimationMsg" (close)="closeSendConfirmationMsg()">
-    <div>Are you sure to send this message to the list of cellphones</div>
-    <kendo-dialog-actions>
-        <button type="button" class="k-button" (click)="closeSendConfirmationMsg()">No</button>
-        <button type="button" class="k-button k-primary" (click)="onSend()">Yes</button>
-    </kendo-dialog-actions>
-</kendo-dialog>-->
-
-<!--<div>
-    <div>
-        <at-rentalapplication-maintenance></at-rentalapplication-maintenance>
-    </div>
-</div>-->
+</div>

@@ -1,3 +1,4 @@
+import { ExpenseDataService } from './expense/expense-data.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AmigotenantRouting } from './amigotenant.routing';
@@ -115,7 +116,8 @@ import { PaymentServiceNew } from './payment/payment.service';
       PaymentService,
       UtilityBillServiceClient,
       MasterDataService,
-      PaymentServiceNew
+      PaymentServiceNew,
+      ExpenseDataService
     ],
 })
 export class AmigotenantModule { }

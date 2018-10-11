@@ -17,6 +17,9 @@ import { accessSync } from 'fs';
 import { DataService } from '../house/dataService';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { ResponseListDTO } from '../../shared/dto/response-list-dto';
+import { ExpenseDeleteRequest } from "./dto/expense-delete-request";
+import { ExpenseDataService } from "./expense-data.service";
+import { ExpenseSearchRequest } from "./dto/expense-search-request";
 
 declare var $: any;
 
@@ -34,7 +37,7 @@ export class modelDate {
 
 export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     expenseSearchDTOs: GridDataResult;
-    model: any; //ExpenseSearchRequest;
+    model: ExpenseSearchRequest;
     public modelExpenseDateFrom: any;
     public modelExpenseDateTo: any;
 
@@ -101,13 +104,14 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
 
 
     constructor(
-        private listConfirmation: ConfirmationList,
+        //private listConfirmation: ConfirmationList,
         private route: ActivatedRoute,
         private router: Router,
         private gnrlTableDataService: GeneralTableClient,
-        private notificationService: NotificationService,
+        //private notificationService: NotificationService,
         private masterDataService: MasterDataService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        private expenseDataService: ExpenseDataService
     ) {
         super();
     }
@@ -149,14 +153,14 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     public expenseSearchForm: FormGroup;
 
     initializeForm(): void {
-        //this.model = new ExpenseSearchRequest();
+        this.model = new ExpenseSearchRequest();
         this.setDatesFromTo();
         this.resetGrid();
         this.getHouseTypes();
         this.getPaymentTypes();
         this.getConceptByTypes();
         //this.getStatus();
-        //this.model.pageSize = 20;
+        this.model.pageSize = 20;
         this.totalResultCount = 0;
     }
 
@@ -214,34 +218,15 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     getExpense(): void {
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
-        
-        //this.expenseClient.search(this.model.periodId, this.model.propertyTypeId,
-        //    this.model.applicationDateFrom, this.model.applicationDateTo,
-        //    this.model.fullName,
-        //    this.model.email,
-        //    this.model.checkInFrom, this.model.checkInTo,
-        //    this.model.checkOutFrom, this.model.checkOutTo,
-        //    this.model.residenseCountryId,
-        //    this.model.residenseCountryName,
-        //    this.model.budgetId,
-        //    undefined,
-        //    undefined,
-        //    this.model.cityOfInterestId,
-        //    this.model.housePartId,
-        //    this.model.personNo,
-        //    this.model.outInDownId,
-        //    this.model.referredById,
-        //    this.model.hasNotification,
-        //    this.model.page,
-        //    this.model.pageSize)
-        //    .subscribe(response => {
-        //        var datagrid: any = response;
-        //        this.expenseSearchDTOs = {
-        //            data: datagrid.data.items,
-        //            total: datagrid.data.total
-        //        };
-        //        this.totalResultCount = datagrid.data.total;
-        //    });
+        this.expenseDataService.search(this.model)
+           .subscribe(response => {
+               var datagrid: any = response;
+               this.expenseSearchDTOs = {
+                   data: datagrid.data.items,
+                   total: datagrid.data.total
+               };
+               this.totalResultCount = datagrid.data.total;
+           });
     }
 
     getHouseTypes(): void {
@@ -349,28 +334,28 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //DELETE
     //===========
 
-    //public deleteMessage: string = "Are you sure to delete this Rental Application?";
-    //expenseToDelete: any;
+    public deleteMessage: string = "Are you sure to delete this Rental Application?";
+    expenseToDelete: any;
 
-    //onDelete(entityToDelete) {
-    //    this.expenseToDelete = new ExpenseDeleteRequest();
-    //    this.expenseToDelete.expenseId = entityToDelete.expenseId;
-    //    this.openedDeletionConfimation = true;
-    //}
+    onDelete(entityToDelete) {
+       this.expenseToDelete = new ExpenseDeleteRequest();
+       this.expenseToDelete.expenseId = entityToDelete.expenseId;
+       this.openedDeletionConfimation = true;
+    }
 
-    //yesDelete() {
-    //    this.expenseClient.delete(this.expenseToDelete)
+    yesDelete() {
+    //    this.expenseDataService.delete(this.expenseToDelete)
     //        .subscribe(response => {
     //            this.onSelect();
     //            this.openedDeletionConfimation = false;
     //        });
-    //}
+    }
 
-    //public openedDeletionConfimation: boolean = false;
+    public openedDeletionConfimation: boolean = false;
 
-    //public closeDeletionConfirmation() {
-    //    this.openedDeletionConfimation = false;
-    //}
+    public closeDeletionConfirmation() {
+       this.openedDeletionConfimation = false;
+    }
 
     //===========
     //EXPORT
