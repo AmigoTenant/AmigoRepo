@@ -6,7 +6,6 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
 {
     public class ExpenseSearchRequest : PagedRequest
     {
-        public int? ExpenseId { get; set; }
         public DateTime? ExpenseDateFrom { get; set; }
         public DateTime? ExpenseDateTo { get; set; }
         public int? PaymentTypeId { get; set; }
@@ -17,6 +16,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
         public int? ExpenseDetailStatusId { get; set; }
         public string Remark { get; set; }
         public int? ConceptId { get; set; }
+        public int? TenantId { get; set; }
 
     }
 }

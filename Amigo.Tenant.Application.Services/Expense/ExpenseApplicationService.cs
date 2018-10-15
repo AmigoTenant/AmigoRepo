@@ -287,8 +287,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             orderExpressionList.Add(new OrderExpression<ExpenseDetailSearchDTO>(OrderType.Asc, p => p.ConceptName));
             Expression<Func<ExpenseDetailSearchDTO, bool>> queryFilter = c => true;
             
-            if (search.ExpenseId.HasValue)
-                queryFilter = queryFilter.And(p => p.ExpenseId == search.ExpenseId);
+            //if (search.ExpenseId.HasValue)
+            //    queryFilter = queryFilter.And(p => p.ExpenseId == search.ExpenseId);
 
 
             var expense = await _expenseDetailSearchDataAccess.ListPagedAsync

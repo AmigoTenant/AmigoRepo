@@ -28,7 +28,7 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Payment Type</label>
                                                 <label class="col-sm-7">
-                                                    <select name="ConceptId" formControlName ="conceptId"
+                                                    <select name="ConceptId" formControlName ="paymentTypeId"
                                                             class="form-control input-control">
                                                         <option value=""></option>
                                                         <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">

@@ -21,8 +21,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             _expenseApplicationService = expenseApplicationService;
         }
 
-        [HttpGet, Route("searchCriteria")]
-        public async Task<ResponseDTO<PagedList<ExpenseSearchDTO>>> Search([FromUri]ExpenseSearchRequest search)
+        [HttpPost, Route("searchCriteria")]
+        public async Task<ResponseDTO<PagedList<ExpenseSearchDTO>>> Search([FromBody]ExpenseSearchRequest search)
         {
             var resp = await _expenseApplicationService.SearchExpenseAsync(search);
             return resp;            

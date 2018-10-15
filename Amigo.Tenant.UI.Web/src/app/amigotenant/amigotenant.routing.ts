@@ -13,6 +13,7 @@ import { PaymentMaintenanceComponent } from './payment/payment-maintenance.compo
 import { UtilityBillComponent } from './utilitybill/utilitybill.component';
 import { UtilityBillMaintenanceComponent } from './utilitybill/utilitybill-maintenance.component';
 import { ExpenseComponent } from './expense/expense.component';
+import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.component';
 
 
 export const routes: Routes = [
@@ -28,7 +29,7 @@ export const routes: Routes = [
   { path: 'utilitybill', component: UtilityBillComponent, data: { pageTitle: 'Utility Bills'}, canActivate : [LoginRouteGuard] },  
   { path: 'utilitybill/edit/:houseId', component: UtilityBillMaintenanceComponent, data: { pageTitle: 'Register Utility Bills' }, canActivate: [LoginRouteGuard] },
   { path: 'expense', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] },
-  { path: 'expense/edit/:expenseId', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] }
+  { path: 'expense/edit/:expenseId', component: ExpenseMaintenanceComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] }
 
 ];
 

@@ -1,3 +1,4 @@
+import {ExpenseDataService} from './expense-data.service';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
 import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy} from '@angular/core';
 import { Http, Jsonp, URLSearchParams} from '@angular/http';
@@ -12,6 +13,7 @@ import { EnvironmentComponent } from '../../shared/common/environment.component'
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
 import { ValidationService } from '../../shared/validations/validation.service';
+import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 
 
 declare var $: any;
@@ -79,15 +81,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     _isDisabled: boolean;
 
     constructor(
-            private route: ActivatedRoute, 
+            private route: ActivatedRoute,
             private router: Router,
-            //private expenseClient: ExpenseClient, 
-            //private featureClient: FeatureClient,
             private listConfirmation: ConfirmationList,
             private listsService: ListsService,
             private houseDataService: HouseClient,
-            //private countryDataService: CountryClient,
-            private gnrlTableDataService: GeneralTableClient
+            private gnrlTableDataService: GeneralTableClient,
+            private expenseDataService: ExpenseDataService
         ) {
         super();
     }
@@ -101,6 +101,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
     ngOnInit() {
+        debugger
         this.model = new ExpenseRegisterRequest();
         this.initializeForm();
         this.sub = this.route.params.subscribe(params => {
@@ -125,15 +126,16 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     getExpenseById(id):void
     {
         //TODO: Hacer este servicio getById
-        // this.expenseClient.getById(id).subscribe(
-        //     response => {
-        //         var dataResult: any = response;
-        //         this.model = dataResult.data;
-        //         // this.modelApplicationDate = this.getDateFromModel(this.model.applicationDate);
-        //         // this.modelCheckIn = this.getDateFromModel(this.model.checkIn);
-        //         // this.modelCheckOut = this.getDateFromModel(this.model.checkOut);
-        //         // this.modelAlertDate = this.getDateFromModel(this.model.alertDate);
-        //     });
+        this.expenseDataService.getById(id).subscribe(
+            response => {
+                debugger;
+                let dataResult: any = new ResponseListDTO(response);
+                this.model = dataResult.dat;
+                // this.modelApplicationDate = this.getDateFromModel(this.model.applicationDate);
+                // this.modelCheckIn = this.getDateFromModel(this.model.checkIn);
+                // this.modelCheckOut = this.getDateFromModel(this.model.checkOut);
+                // this.modelAlertDate = this.getDateFromModel(this.model.alertDate);
+            });
     }
 
     public getDateFromModel(dateFromModel: Date): modelDate {
