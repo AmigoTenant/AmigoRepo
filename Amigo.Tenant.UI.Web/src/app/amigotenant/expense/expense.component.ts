@@ -102,7 +102,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private gnrlTableDataService: GeneralTableClient,
         private masterDataService: MasterDataService,
         private formBuilder: FormBuilder,
         private expenseDataService: ExpenseDataService
