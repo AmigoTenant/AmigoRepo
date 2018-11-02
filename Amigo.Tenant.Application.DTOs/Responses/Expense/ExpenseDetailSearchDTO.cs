@@ -15,7 +15,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.Expense
         public int? TenantId { get; set; }
         public string TenantFullName { get; set; }
         public string Remark { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal? SubTotalAmount { get; set; }
         public decimal? Quantity { get; set; }
         public decimal? Tax { get; set; }
         public decimal? TotalAmount { get; set; }

@@ -18,6 +18,8 @@ using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Amigo.Tenant.Application.Services.Expense
 {
@@ -281,25 +283,23 @@ namespace Amigo.Tenant.Application.Services.Expense
             return ResponseBuilder.Correct(resp);
         }
 
-        public async Task<ResponseDTO<PagedList<ExpenseDetailSearchDTO>>> GetDetailByExpenseIdAsync(ExpenseSearchRequest search)
+        public async Task<ResponseDTO<PagedList<ExpenseDetailSearchDTO>>> GetDetailByExpenseIdAsync(int? id)
         {
             List<OrderExpression<ExpenseDetailSearchDTO>> orderExpressionList = new List<OrderExpression<ExpenseDetailSearchDTO>>();
             orderExpressionList.Add(new OrderExpression<ExpenseDetailSearchDTO>(OrderType.Asc, p => p.ConceptName));
             Expression<Func<ExpenseDetailSearchDTO, bool>> queryFilter = c => true;
             
-            //if (search.ExpenseId.HasValue)
-            //    queryFilter = queryFilter.And(p => p.ExpenseId == search.ExpenseId);
+            if (id.HasValue)
+                queryFilter = queryFilter.And(p => p.ExpenseId == id);
 
-
-            var expense = await _expenseDetailSearchDataAccess.ListPagedAsync
-                (queryFilter, search.Page, search.PageSize, orderExpressionList.ToArray());
+            var expense = (await _expenseDetailSearchDataAccess.ListAsync(queryFilter, orderExpressionList.ToArray())).ToList();
 
             var pagedResult = new PagedList<ExpenseDetailSearchDTO>()
             {
-                Items = expense.Items,
-                PageSize = expense.PageSize,
-                Page = expense.Page,
-                Total = expense.Total
+                Items = expense,
+                PageSize = 500,
+                Page = 0,
+                Total = expense.Count
             };
 
             return ResponseBuilder.Correct(pagedResult);

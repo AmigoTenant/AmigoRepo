@@ -1,0 +1,1346 @@
+{
+  "home.dashboard": "Dashboard",
+  "core": {
+    "title": " - Sistema Logístico",
+    "home": "Inicio",
+    "docs": "Documentación",
+    "profile": "Perfil",
+    "logout": "Cerrar Sesión",
+    "info": "Info"
+  },
+  "common": {
+    "button": {
+      "save": "Guardar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "cancel": "Cancelar",
+      "next": "Siguiente",
+      "previous": "Anterior",
+      "start": "Inicio",
+      "createorder": "Crear Orden",
+      "closeDetailPanel": "Ocultar panel de detalle",
+      "refresh": "Limpiar Filtros",
+      "clear": "Limpiar Filtros",
+      "new": "Nuevo",
+      "add": "Agregar",
+      "addEntity": "Adicionar",
+      "close": "Cerrar",
+      "approve": "Aprobar",
+      "add-user": "Agregar Usuario"
+    },
+    "autocomplete": {
+      "placeholder": "Ingrese texto para buscar...",
+      "noResults": "No se encontraron resultados"
+    },
+    "grid": {
+      "noResults": "No existen registros",
+      "loading": "Cargando registros..."
+    },
+    "filter-section": {
+      "button-text-hide-filters": "Ocultar Filtros",
+      "button-text-show-filters": "Mostrar Filtros",
+      "button-text-search": "Buscar",
+      "button-text-reset": "Limpiar Filtros",
+      "button-text-export": "Exportar a Excel"
+    },
+    "options-yesno": {
+      "yes": "Si",
+      "no": "No"
+    },
+    "section": {
+      "new": "Nuevo",
+      "edit": "Edición"
+    },
+    "requiredField": "Campo requerido",
+    "minNumberValue": "El mínimo valor es ",
+    "maxNumberValue": "El máximo valor es ",
+    "minNumberValueSet": "El mínimo valor es {{value}}",
+    "maxNumberValueSet": "El máximo valor es {{value}}",
+    "minCharsValue": "El mínimo de caracteres es ",
+    "maxCharsValue": "El máximo de caracteres es ",
+    "maxLength": "El máximo de caracteres es {{value}} ",
+    "minLength": "El mínimo de caracteres es {{value}}",
+    "notValidFormat": "Formato no válido",
+    "notValidPercentage": "Formato no válido (0.00 a 100.00)",
+    "notValidRutFormat": "Formato no válido #########(#/K)",
+    "alphanumericmax10": "Formato no válido (1 a 10 caracteres alfanuméricos)",
+    "alphadashmax10": "Formato no válido (1 a 10 caracteres alfabeticos y guión opcional)",
+    "alphadashmax12": "Formato no válido (1 a 12 caracteres alfabeticos y guión opcional)",
+    "pattern": "Formato Incorrecto",
+    "nonValidDate": "Fecha no válida",
+    "todayDate": "La fecha no puede ser posterior a hoy",
+    "beforeDate": "La fecha no puede ser anterior a hoy por más de {{value}} dia(s).",
+    "back-query": "Regresar a la búsqueda",
+    "number": " Nro:",
+    "unauthorized": "No autorizado",
+    "unauthorized-message": "No tiene los permisos suficientes para acceder a la pantalla solicitada."
+  },
+  "notification": {
+    "title": "Error",
+    "invalid-item": "El Item ingresado no es válido:",
+    "select-item": "Debe seleccionar al menos un item."
+  },
+  "service-order-creation": {
+    "step-one-title": "Crear Orden de Servicio - Información General - Paso 1/3",
+    "step-two-title": "Crear Orden de Servicio - Servicio e Items - Paso 2/3",
+    "step-three-title": "Crear Orden de Servicio - Resumen - Paso 3/3",
+    "confirmation-cancel-order": "¿ Desea cancelar la creación de la Orden de Servicio ?",
+    "validation-message-shipping-code-valid": "Las siguientes navieras no son válidas: ",
+    "validation-message-must-item-to-continue": "Debe haber Items para continuar con la creación de la Orden de Servicio",
+    "validation-message-items-without-type": "Los items deben tener Tipo para validar el dígito verificador",
+    "validation-message-items-without-code-type": "Los items deben tener Código y Tipo para validar el dígito verificador",
+    "validation-message-items-code-invalid": "Los siguientes items no son válidos: ",
+    "validation-message-items-duplicated": "Existen Items Id duplicados",
+    "validation-message-import-items-empty": "Los Items de importación no deben estar vacíos",
+    "validation-message-items-mandatory": "Tipo de Item es mandatorio, no debe estar vacío",
+    "validation-message-items-types-invalid": "Los siguientes tipos no son válidos: ",
+    "validation-message-bolno-invalid": "No deberian haber BL/BookingNo con longitud mayor a 20 caracteres",
+    "validation-message-refno-invalid": "No deberian haber OC/Ref.Cliente con longitud mayor a 20 caracteres",
+    "validation-message-weigth-invalid": "El peso contiene valores inválidos, deben ser numericos entre (0 - 999999)"
+  },
+  "alert-messages": {
+    "confirm-title": "Confirmar",
+    "button-text-close": "Cerrar",
+    "button-text-yes": "Sí",
+    "button-text-no": "No",
+    "alert-title": "Advertencia"
+  },
+  "service-order-content": {
+    "confirm-delete": "¿Desea eliminar el contenido?"
+  },
+  "service-order-mgmt": {
+    "panel-activity-title": "Búsqueda de Actividades",
+    "confirmation-annul-activity": "¿Desea anular las actividades seleccionadas?",
+    "select-activity": "Debe seleccionar al menos una actividad.",
+    "button": {
+      "confirmOrder": "Confirmar OS",
+      "annulOrder": "Anular OS",
+      "recalculateRoute": "Recalcular Ruta",
+      "annulActivities": "Anular Actividades"
+    },
+    "routes": {
+      "transportation-type": "Medio de Transporte:",
+      "confirm-remove-convoy": "El item {{itemNo}} está asociado a un convoy. Si la ruta cambia el item será removido del convoy. ¿Desea continuar?."
+    }
+  },
+  "service-order-mgmt-general":{
+    "title": "General",
+    "business-unit": "U. Negocio:",
+    "date":"Fecha:",
+    "contract": "Contrato:",
+    "service-type":"Tipo:",
+    "customs-condition": "Cond. Aduanera:",
+    "customer":"Cliente:",
+    "bill-to": "Facturar a:", 
+    "rut":"RUT:",
+    "address": "Dirección:",
+    "commune": "Comuna:",
+    "city": "Ciudad:",
+    "vessel": "Nave/Viaje:",
+    "terminal": "Terminal:",
+    "extraport-terminal": "Terminal Extraportuario:",
+    "service":{
+      "title": "Servicios",
+      "code": "Código",
+      "name": "Nombre",
+      "currency": "Moneda",
+      "rate": "Precio",
+      "quantity":"Cantidad",
+      "total": "Total"
+    }
+
+  },
+  "service-order-mgmt-transport":{
+    "item": "Item",
+    "service":"Servicio:",
+    "origin-zone": "Zona Inicio:",
+    "origin-address": "Dirección Inicio:",
+    "activity":"Actividad:",
+    "destination-zone":"Zona Fin:",
+    "destination-address": "Dirección Fin:",
+    "remarks":"Observaciones:",
+    "stop-zone":"Zona Parada",
+    "stops":{
+      "stop":"Parada",
+      "zone": "Zona",
+      "name": "Nombre",
+      "address":"Dirección",
+      "add-button": "Agregar Zona Parada"
+    },
+    "grid":{
+      "sec-item":"Sec. Item",
+      "item-id":"Item Id",
+      "service":"Servicio",
+      "sec-act":"Sec. Act.",
+      "activity":"Actividad",
+      "origin-zone":"Zona Inicio",
+      "stop-zone":"Zona Parada",
+      "destination-zone":"Zona Fin",
+      "status": "Estado",
+      "remarks":"Obs.",
+      "stops":"Paradas"
+
+    }
+
+  },
+  "service-order-mgmt-content":{
+    "add-content": "Agregar Contenido",
+    "item-id":"Item Id:",
+    "document-no":"Nro Doc/BL/Guía:", 
+    "consignee-shipper-name": "Consignatario/Embarcador:",
+    "bulk-type":"Tipo Bulto:",
+    "quantity": "Cantidad:",
+    "weight":"Peso",
+    "volumen" : "Volumen",
+    "mark" : "Marca:",
+    "trip-type": "Tipo Retiro:",
+    "terminal": "Terminal:",
+    "terminal-location": "Ubicación:",
+    "countermark": "Ref. Cliente:",
+    "remarks": "Observaciones:",
+    "content-detail": "Detalle Contenido",
+    "type":"Tipo",
+    "sec-item": "Sec. Item",
+    "sec-cont": "Sec. Cont"
+  }
+  ,
+  "service-order-route": {
+    "header-title-read-only": "Detalle de Transportista",
+    "header-title-edit-mode": "Asignación de Transportista",
+    "label-carrier": "Transportista:",
+    "label-truck-plate": "Patente Camión:",
+    "label-chassis-plate": "Patente Chasis:",
+    "label-driver-id": "RUT Conductor:",
+    "label-driver-name": "Nombre Conductor:",
+    "label-driver-phone": "Teléfono:",
+    "label-scheduled-start-date": "Hora Planificada Inicio:",
+    "label-remark": "Observaciones:"
+  },
+  "service-order-items": {
+    "add-item": {
+      "button-title": "Agregar Item",
+      "button-title-anull": "Anular Item",
+      "adding-title": "Agregar Item",
+      "detail-title": "Detalle Item #",
+      "item-id": "Item Id:",
+      "item-type": "Tipo:",
+      "bulk-type": "Tipo Bulto:",
+      "item-weight": "Peso(Kg):",
+      "item-volume": "Volumen:",
+      "demurrage-expiration": "Venc. Demurrage:",
+      "item-days": "Días:",
+      "document-label-imp": "B/L:",
+      "document-label-exp": "Booking No.:",
+      "document-label-otr": "Nro. Documento:",
+      "customer-reference": "OC/REF Cliente:",
+      "item-seals": "Sellos:",
+      "shipping-company": "Naviera:",
+      "manifest-number": "Nro. Manifiesto:",
+      "item-commodity": "Producto:",
+      "cargo-care": "Cuidado Carga:",
+      "empty-repository": "Depósito Vacío:",
+      "date-time-at-port": "Secuencia Puerto:",
+      "date-time-at-customer": "Presentación Cliente:",
+      "item-currency": "Moneda:",
+      "cargo-commercial-value": "Val. Comercial:",
+      "additional-insurance-premium-value": "Val. Prima Adicional:",
+      "additional-insurance-premium-cost": "Costo Prima Adicional:",
+      "delivery-condition": "Condición Entrega:",
+      "container-condition": "Condición Contenedor:",
+      "item-remarks": "Observaciones:"
+    },
+    "add-item-service": {
+      "button-title": "Asignar Servicio a Item",
+      "button-assign-title": "Asignar",
+      "section-title": "Asignar Servicio a Item",
+      "service-code": "Servicio:",
+      "transport-code-to": "Asociar a:"
+    },
+    "remove-item-service": {
+      "button-title": "Remover Servicio a Item",
+      "button-remove-title": "Remover",
+      "section-title": "Remover Servicio a Item",
+      "service-code": "Servicio:"
+    }
+  },
+  "service-order-route-stop": {
+    "header-title-item": "Item",
+    "header-title-act": "Act.",
+    "label-port-sequence": "Secuencia Puerto:",
+    "label-origin-zone": "Zona Inicio:",
+    "label-origin-address": "Dirección Inicio:",
+    "label-datetime-at-customer": "Presentación Cliente:",
+    "label-destination-zone": "Zona Fin:",
+    "label-destination-address": "Dirección Fin:",
+    "label-mt-container-wh": "Depósito Vacío:",
+    "label-transportation-type": "Medio de Transporte:",
+    "label-remark": "Observaciones:",
+    "label-stop-zone": "Zona Parada:",
+    "button-add-stop": "Agregar Zona Parada",
+    "table-header-stop": "Parada",
+    "table-header-stop-zone": "Zona Parada",
+    "table-header-stop-name": "Nombre",
+    "table-header-stop-address": "Dirección"
+  },
+  "service-order-actuals": {
+    "label-start-stacking": "Inicio Stacking:",
+    "label-end-stacking": "Fin Stacking:",
+    "label-port-sequence": "Secuencia de Puerto:",
+    "label-customer-presentation": "Presentacion Cliente:",
+    "label-carrier": "Transportista:",
+    "label-driver": "Conductor:",
+    "label-truck-plate": "Patente Camión:",
+    "label-chassis-plate": "Patente Chasis:",
+    "label-planned-hour": "Hora Planificada Inicio:"
+  },
+  "cfs-schedule-mgmt": {
+    "panel-general-title": "Información General",
+    "command-task-scheduling": "Programar Actividad",
+    "command-finish-task": "Finalizar Actividad",
+    "command-tarja-approval": "Aprobar Tarja",
+    "label-location": "Terminal:",
+    "label-location-per-terminal": "Ubicación:",
+    "label-from-schedule-date": "Fecha Programada Inicio:",
+    "label-to-schedule-date": "Fecha Programada Fin:",
+    "label-duration": "Duración:",
+    "label-from-executed-date": "Fecha Real Inicio:",
+    "label-to-executed-date": "Fecha Real Fin:",
+    "label-remarks": "Observaciones:",
+    "label-tarja-approval-date": "Fecha de Aprobación de Tarja:",
+    "label-resource": "Recurso:",
+    "label-transload": "Trasvasije:",
+    "button-hint-add-resource": "Agregar Recurso",
+    "button-hint-add-transload": "Agregar Trasvasije",
+    "grid-resource-column-resource-type": "Tipo",
+    "grid-resource-column-resource-name": "Nombre",
+    "grid-transload-column-item-id": "Item Id",
+    "grid-transload-column-item-type": "Tipo",
+    "label-date-time-at-customer": "Presentación Cliente:",
+    "label-start-stacking-date": "Fecha Inicio Stacking:",
+    "label-demurrage-expiration-date": "Venc. Demurrage:"
+  },
+  "yard-schedule-mgmt": {
+    "panel-general-title": "General",
+    "panel-resources-title": "Recursos",
+    "confirmation-delete-resource": "¿ Desea eliminar el recurso seleccionado ?",
+    "validation-repeated-resource": "El recurso seleccionado ya se encuentra agregado.",
+    "validation-empty-resource": "Debe agregar al menos un recurso.",
+    "validation-schedule-date": "La fecha programada es requerida.",
+    "validation-terminal-location": "Las ubicaciones inicial y final son requeridas.",
+    "button": {
+      "finalize": "Finalizar Actividad",
+      "delete": "Eliminar Recurso",
+      "add": "Agregar Recurso"
+    }
+  },
+  "gate-schedule-mgmt": {
+    "panel-general-title": "Información General",
+    "panel-files-title": "Archivos Adjuntos",
+    "confirmation-delete-file": "¿Desea eliminar el archivo seleccionado?",
+    "button": {
+      "delete": "Eliminar Archivo"
+    },
+    "fields": {
+      "serviceOrderNo": "O/S",
+      "workOrderNo": "WO No.",
+      "itemId": "Item ID",
+      "cargoTypeCode": "Uso Chasis",
+      "carrierName": "Transportista",
+      "truckPlate": "Patente Camión",
+      "chassisPlate": "Patente Chasis",
+      "driverRut": "RUT Conductor",
+      "driverName": "Nombre Conductor",
+      "dispatchNote": "Nro. Guía",
+      "dispatchNoteIssuedBy": "Emisor Guía",
+      "dispatchNoteDate": "Fecha Guía",
+      "eir": "EIR",
+      "eirIn": "EIR Origen",
+      "eirOut": "EIR Salida",
+      "eirIssuedBy": "Emisor EIR",
+      "activityName": "Actividad",
+      "gateTypeCode": "Tipo Gate",
+      "origDestZoneCode": "Origen/Destino",
+      "outgateDueDate": "Permiso Hasta",
+      "customerName": "Cliente",
+      "gateDate": "Fecha/Hora Gate",
+      "sealNo": "Sellos",
+      "remark1": "Indicaciones",
+      "remark2": "Observaciones de Gate",
+      "fileRepositoryCount": "Archivos Adjuntos",
+      "activityStatus": "Estado Actividad",
+      "gateDateFrom": "Fecha Gate Desde",
+      "gateDateTo": "Fecha Gate Hasta"
+    },
+    "panel-files-uploadSelect": "Cargar Archivo",
+    "panel-files-invalidFileExt": "Tipo de archivo no permitido. Extensiones permitidas: ({{value}})",
+    "panel-files-invalidMaxFileSize": "Tamaño máximo permitido ({{value}}MB).",
+    "panel-files-uploadSelectedFiles": "Subir Archivo.",
+    "panel-files-clearSelectedFiles": "Anular Selección."
+  },
+  "transport-convoy": {
+    "common": {
+      "work-order-number": "WO No.",
+      "work-order-no": "WO No.",
+      "service-type-code": "Tipo de Servicio",
+      "carrier-code": "Transportista",
+      "port-code": "Puerto",
+      "land-fall-code": "Naviera",
+      "business-unit-code": "Unidad de Negocio",
+      "schedule-start-from": "Fecha Programación Desde",
+      "schedule-start-to": "Fecha Programación Hasta",
+      "item-id": "Item Id",
+      "zone-start-code": "Zona Inicio",
+      "zone-end-code": "Zona Fin",
+      "convoy-status": "Estado",
+      "convoy-status-code": "Estado de Convoy",
+      "transport-type": "Medio de Transporte",
+      "train-plate": "Placa / Patente de Tren",
+      "train-carrier": "Transportista",
+      "train-driver": "Conductor",
+      "truck-plate": "Placa / Patente",
+      "truck-carrier": "Transportista",
+      "truck-driver": "Conductor",
+      "truck-chassis": "Chasis",
+      "vessel-imo": "IMO",
+      "vessel-name": "Nombre Barco",
+      "vessel-landfall": "Recalada",
+      "convoy-received": "Convoy Cerrado",
+      "schedule-date": "Fecha Programación"
+    },
+    "search": {
+      "title": "Programación de Convoy",
+      "button-new": "Adicionar Convoy",
+      "error-performing-search": "Ocurrió un error al buscar los convoys",
+      "error-performing-export": "Ocurrió un error al exportar los convoys"
+    },
+    "management": {
+      "title": "Programación de Convoy",
+      "general": {
+        "title": "Información de WO",
+        "start-end-zone-required": "Debe ingresar una Zona Inicio o una Zona Fin",
+        "start-end-zone-changed-confirmation": "La información de la zona inicio y zona fin ha cambiado, se borrarán los items actuales del convoy ¿Desea Continuar?"
+      },
+      "activities": {
+        "title": "Items & Actividades",
+        "paste-info": "CTRL + V para pegar los items desde excel",
+        "paste-confirmation": "La información de los items actuales del convoy será sobreescrita ¿Desea Continuar?",
+        "update-actual": "Horas Reales",
+        "update-route": "Ruta Carga",
+        "item-id": "Item ID",
+        "service-order": "O/S",
+        "activity-code": "Actividad",
+        "start-zone": "Zona Inicio",
+        "end-zone": "Zona Fin",
+        "status": "Estado"
+      },
+      "route": {
+        "title": "Ruta Carga",
+        "label-origin-zone": "Zona Inicio:",
+        "label-origin-address": "Dirección Inicio:",
+        "label-destination-zone": "Zona Fin:",
+        "label-destination-address": "Dirección Fin:",
+        "label-stop-zone": "Zona Parada:",
+        "button-add-stop": "Agregar Zona Parada",
+        "table-header-stop": "Parada",
+        "table-header-stop-zone": "Zona Parada",
+        "table-header-stop-name": "Nombre",
+        "table-header-stop-address": "Dirección",
+        "filter-item-id": "Item ID:"
+      },
+      "actuals": {
+        "zone-code": "Zona",
+        "address-code": "Dirección",
+        "actual-arrival": "Hora Real In",
+        "actual-departure": "Hora Real Out",
+        "over-stay-hours": "Horas Estadía",
+        "journey-hours": "Horas Travesía"
+      }
+    }
+  },
+  "dashboard": {
+    "service-order": {
+      "general": "Información General",
+      "item": "Items y Servicios",
+      "routes": "Rutas",
+      "contents": "Detalle de Contenido",
+      "activity": "Actividades"
+    },
+    "transport": {
+      "title": "Programación de Transporte",
+      "general": "Ruta y Asignación de Transportista",
+      "actuals": "Horas Reales",
+      "routes": "Agregar Actividades",
+      "filters": {
+        "customer": "Cliente:",
+        "type": "Tipo:",
+        "vessel-trip": "Nave/Viaje:",
+        "port": "Puerto:",
+        "shipping-company": "Naviera:",
+        "eta-from": "ETA Desde:",
+        "eta-to": "ETA Hasta:",
+        "datetime-at-customer-from": "Presentación Cliente Desde:",
+        "datetime-at-customer-to": "Presentación Cliente Hasta:",
+        "datetime-at-port-from": "Secuencia Puerto Desde:",
+        "datetime-at-port-to": "Secuencia Puerto Hasta:",
+        "item-id": "Item Id:",
+        "start-zone": "Zona Inicio:",
+        "transport-status": "Estado de Transporte:",
+        "carrier": "Transportista:",
+        "truck-plate": "Patente Camión:",
+        "item-type": "Tipo Item:",
+        "container-condition": "Condición de Contenedor:",
+        "routing-type": "Tipo Ruta:"
+      }
+    },
+    "yard": {
+      "title": "Programación de Patio",
+      "general": "Información General"
+    },
+    "cfs": {
+      "title": "Programación de CFS",
+      "general": "Información General"
+    },
+    "gate": {
+      "title": "Actividades de Gate",
+      "general": "Información General",
+      "files": "Archivos Adjuntos"
+    },
+    "message-error": {
+      "app-setting-cvs": "No se ha definido la cantidad maxima de lineas a exportar para esta pantalla."
+    }
+  },
+  "businessunit": {
+    "search-place-holder": "Código, Descripción, Código de Zona...",
+    "edit": {
+      "code": "Código:",
+      "name": "Nombre:",
+      "zone-code": "Código de Zona:"
+    },
+    "grid": {
+      "code": "Código",
+      "name": "Nombre",
+      "zone-code": "Código de Zona"
+    }
+  },
+  "activities": {
+    "common": {
+      "activity-code": "Código Actividad:",
+      "activity-name": "Nombre:",
+      "activity-short-name": "Nombre Corto:",
+      "operative-unit": "Unidad Operativa:",
+      "operation-unit": "Unidad de Operación:",
+      "equivalent-service": "Servicio Equivalente:",
+      "labor-type": "Tipo Faena:",
+      "cargo-type": "Uso Chasis:",
+      "routing-type": "Tipo Ruta:",
+      "routing-logic": "Lógica de Ruta:",
+      "gate-type": "Tipo Gate:",
+      "duration": "Duración (mins):",
+      "sap-item-code": "Artículo SAP:"
+    },
+    "search": {
+      "title": "Actividades",
+      "button-new": "Adicionar Actividad"
+    },
+    "management": {
+      "button-active": "Activar Actividad",
+      "button-inactive": "Desactivar Actividad",
+      "status-active": "Activo",
+      "status-inactive": "Inactivo",
+      "titleForNew": "Crear Actividad",
+      "titleForEdit": "Actividad",
+      "header": {
+        "title": "Información General"
+      },
+      "resources": {
+        "title": "Recursos por Actividad"
+      },
+      "costs": {
+        "title": "Costo Estándar Por Unidad de Negocio"
+      }
+    },
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?",
+      "enable": "¿Desea activar el registro seleccionado?",
+      "disable": "¿Desea desactivar el registro seleccionado?"
+    }
+  },
+  "customer-preinvoice": {
+    "common": {
+      "order-no": "Nro. Orden:",
+      "customer": "Cliente:",
+      "billing-status": "Estado Fact. Servicio:",
+      "service-type": "Tipo:",
+      "item-id": "Item Id:",
+      "pre-invoice-no": "Nro. Pre-Factura:",
+      "order-date-from": "Fecha Orden Desde:",
+      "order-date-to": "Fecha Orden Hasta:",
+      "preinvoice-date-from": "F.Pre-Factura Desde:",
+      "preinvoice-date-to": "F.Pre-Factura Hasta:",
+      "cargo-manifest-no": "Nro. Manifiesto",
+      "customer-reference-no": "OC/Ref Cliente",
+      "landfall": "Nave/Viaje:",
+      "export-pdf": "Imprimir Pre-Factura",
+      "export-excel": "Exportar a Excel",
+      "annul-confirm": "¿Desea anular la Pre-Factura?",
+      "approve-confirm": "¿Desea aprobar la Pre-Factura?",
+      "print-pre-invoice": "¿Desea imprimir la Pre-Factura?",
+      "continue-pre-invoice": "¿Desea continuar Pre-Facturando?",
+      "total-amount-validation": "El porcentaje a facturar no debe exceder el porcentaje del saldo pendiente"
+    },
+    "search": {
+      "title": "Pre-Facturación",
+      "button-new": "Generar Pre-Factura",
+      "error-performing-search": "Ocurrió un error al buscar las pre-facturas",
+      "error-performing-export": "Ocurrió un error al exportar las pre-facturas"
+    },
+    "view": {
+      "print-pre-invoice": "Imprimir Pre-Factura",
+      "export-to-excel": "Exportar a Excel"
+    },
+    "management": {
+      "title": "Pre-Factura",
+      "approve-button": "Aprobar Pre-Factura",
+      "annul-button": "Anular Pre-Factura",
+      "header": {
+        "title": "Información de Pre-Factura",
+        "business-unit": "Unidad de Negocio:",
+        "pre-invoice-date": "Fecha Pre-Factura:",
+        "invoice-no": "Nro. Factura:",
+        "currency-code": "Moneda:",
+        "bill-to": "Facturar A:",
+        "address": "Dirección Legal:",
+        "rut": "RUT:",
+        "business-purpose": "Giro:",
+        "generate": "Generar Pre-Factura",
+        "cancel": "Cancelar",
+        "max-date": "La fecha no puede ser posterior a hoy",
+        "min-date": "La fecha no puede ser anterior a {{value}}"
+      },
+      "detail": {
+        "title": "Detalle"
+      },
+      "footer": {
+        "remark1": "Glosa a incluir en la Factura",
+        "remark2": "Documentación requerida por el cliente en la Factura",
+        "net-amount": "Subtotal:",
+        "discount": "Descuento:",
+        "taxes": "IVA:",
+        "total-amount": "Total:"
+      }
+    }
+  },
+  "contracts": {
+    "common": {
+      "customer": "Cliente:",
+      "currency": "Moneda:",
+      "business-unit": "Unidad de Negocio:",
+      "service-agreement-type": "Tipo de Contrato:",
+      "service-type": "Tipo de Servicio:",
+      "expired": "Expirados:",
+      "expired-from": "Vigencia Desde:",
+      "expired-to": "Vigencia Hasta:",
+      "contract-number": "Nro. Contrato:",
+      "contract-status": "Estado Contrato:",
+      "free-time": "Horas Libres:",
+      "tolerance-minutes": "Minutos Tolerancia:",
+      "storage-free-days": "Días Libres Almacenaje:",
+      "rate-basis": "Base de Cobro:",
+      "container-packaging-type": "Tipo Contenedor:",
+      "favorite-address": "Dirección Favorita:",
+      "over-stay-currency": "Moneda Sobrestadía:",
+      "over-stay-rate": "Tarifa x Sobrestadía:",
+      "custom-condition": "Condición Aduanera:",
+      "references": "Referencias:",
+      "service": "Servicio:",
+      "rate": "Precio:",
+      "warranty": "Garantía:",
+      "volume": "Volumen:",
+      "default": "Defecto"
+    },
+    "search": {
+      "title": "Contratos / Acuerdos Comerciales",
+      "button-new": "Adicionar Contrato",
+      "error-performing-search": "Ocurrió un error al buscar los contratos.",
+      "error-performing-export": "Ocurrió un error al exportar los contratos."
+    },
+    "management": {
+      "title": "Contratos / Acuerdos Comerciales",
+      "approve-button": "Aprobar Contrato",
+      "approve-confirm": "¿Desea aprobar el contrato?",
+      "annul-button": "Anular Contrato",
+      "annul-confirm": "¿Desea anular el contrato?",
+      "delete-confirm": "¿Desea eliminar el servicio seleccionado?",
+      "approve-service-confirm": "¿Desea aprobar el servicio seleccionado?",
+      "error-loading-header": "Ocurrió un error al cargar la sección de información de contrato",
+      "error-loading-services": "Ocurrió un error al cargar la sección de servicios",
+      "error-loading-activities": "Ocurrió un error al cargar la sección de actividades",
+      "header": {
+        "title": "Información de Contrato"
+      },
+      "services": {
+        "title": "Servicios"
+      },
+      "activities": {
+        "title": "Actividades"
+      }
+    }
+  },
+  "vendor-contracts": {
+    "common": {
+      "vendor": "Proveedor:",
+      "business-unit": "Unidad de Negocio:",
+      "service-agreement-type": "Tipo de Contrato:",
+      "operative-unit": "Unidad Operativa:",
+      "operation-unit": "Unidad Operación:",
+      "expired": "Expirados:",
+      "expired-from": "Vigencia Desde:",
+      "expired-to": "Vigencia Hasta:",
+      "contract-number": "Nro. Contrato:",
+      "contract-status": "Estado Contrato:",
+      "free-time": "Horas Libres:",
+      "rate-basis": "Base de Cobro:",
+      "favorite-address": "Dirección Favorita:",
+      "over-stay-currency": "Moneda Sobrestadía:",
+      "over-stay-rate": "Tarifa x Sobrestadía:",
+      "custom-condition": "Condición Aduanera:",
+      "references": "Referencias:",
+      "service": "Servicio:",
+      "rate": "Tarifa:",
+      "warranty": "Garantía:",
+      "volume": "Volumen:",
+      "default": "Defecto",
+      "external-agreement-no": "Código de Referencia:",
+      "activity": "Actividad:",
+      "resource-type": "Tipo de Recurso:",
+      "currency": "Moneda:",
+      "pay-cycle": "Ciclo de Pago:"
+    },
+    "search": {
+      "title": "Contratos Proveedores",
+      "button-new": "Adicionar Contrato",
+      "error-performing-search": "Ocurrió un error al buscar los contratos.",
+      "error-performing-export": "Ocurrió un error al exportar los contratos."
+    },
+    "management": {
+      "title": "Contratos Proveedores",
+      "approve-button": "Aprobar Contrato",
+      "approve-confirm": "¿Desea aprobar el contrato?",
+      "annul-button": "Anular Contrato",
+      "annul-confirm": "¿Desea anular el contrato?",
+      "delete-confirm": "¿Desea eliminar el servicio seleccionado?",
+      "error-loading-header": "Ocurrió un error al cargar la sección de información de contrato",
+      "error-loading-routes": "Ocurrió un error al cargar la sección de rutas",
+      "error-loading-activities": "Ocurrió un error al cargar la sección de actividades",
+      "header": {
+        "title": "Información de Contrato"
+      },
+      "activities": {
+        "title": "Actividades",
+        "delete-confirm": "¿Desea eliminar la actividad seleccionada?"
+      },
+      "routes": {
+        "title": "Rutas",
+        "transport-type": "Medio de Transporte",
+        "origin-zone": "Zona Inicio",
+        "stop-zone": "Zona Stop",
+        "destination-zone": "Zona Destino",
+        "rate": "Tarifa",
+        "currency": "Moneda",
+        "creation-date": "Fecha Creación",
+        "delete-confirm": "¿Desea eliminar la ruta seleccionada?"
+      }
+    }
+  },
+  "routes": {
+    "search": {
+      "title": "Rutas",
+      "button-new": "Adicionar Ruta",
+      "filters": {
+        "originZone": "Zona Inicio:",
+        "destinationZone": "Zona Fin:",
+        "stopZone": "Zona Parada:",
+        "transportationType": "Medio de Transporte",
+        "kilometers": "Kilómetros",
+        "transitTime": "Tiempo de Tránsito (Min.)"
+      }
+    },
+    "grid": {
+      "active":"Activo",
+      "originZone": "Zona Inicio",
+      "destinationZone": "Zona Fin",
+      "stopZone": "Zona Parada",
+      "transportationType": "Medio de Transporte",
+      "kilometers": "Kms",
+      "transitTime": "Tiempo de Tránsito (Min.)"
+    }
+  },
+  "zone": {
+    "search": {
+      "title": "Zonas",
+      "button-new": "Adicionar Zona",
+      "filters": {
+        "code": "Código:",
+        "name": "Nombre:",
+        "zone-type-code": "Tipo de Zona:"
+      }
+    }
+  },
+  "vessel": {
+    "search": {
+      "title": "Naves",
+      "button-new": "Adicionar Naves",
+      "filters": {
+        "code": "Código:",
+        "name": "Nombre:",
+        "imo": "IMO:",
+        "build": "Fecha de Construcción:",
+        "status": "Estado",
+        "dateName": "Vigencia Nombre:"
+      }
+    }
+  },
+  "resources": {
+    "common": {
+      "code": "Código:",
+      "name": "Nombre:",
+      "resource-type": "Tipo de Recurso:",
+      "vendor": "Proveedor:",
+      "remarks": "Referencias:",
+      "business-unit": "Unidad de Negocio:",
+      "available-from": "Disponible Desde:",
+      "available-to": "Disponible Hasta:",
+      "is-external": "Recurso externo"
+    },
+    "reports": {
+      "title": "Reportes"
+    },
+    "search": {
+      "title": "Recursos de Operación",
+      "button-new": "Adicionar Recurso de Operación"
+    },
+    "management": {
+      "title": "Recursos de Operación",
+      "header": {
+        "title": "Información de Recurso"
+      },
+      "details": {
+        "title": "Unidad de Negocio"
+      }
+    },
+    "button": {
+      "activate": "Activar Recurso",
+      "deactivate": "Desactivar Recurso"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?",
+      "activate": "¿Desea activar este recurso?",
+      "deactivate": "¿Desea desactivar este recurso?"
+    }
+  },
+  "businesspartner": {
+    "search": {
+      "title": "Socio de Negocio",
+      "button-new": "Adicionar Socio de Negocio",
+      "filters": {
+        "long-name": "Nombre o Razón Social:",
+        "short-name": "Nombre Corto:",
+        "rut": "RUT:",
+        "parent-name": "Entidad Predecesora:",
+        "role": "Tipo:",
+        "status": "Estado:"
+      }
+    },
+    "mgmt": {
+      "title": "Socio de Negocio",
+      "button-active": "Activar Socio de Negocio",
+      "button-inactive": "Desactivar Socio de Negocio",
+      "status-active": "Activo",
+      "status-inactive": "Inactivo",
+      "header": {
+        "title": "Información de Socio de Negocio",
+        "rut": "RUT:",
+        "name": "Nombre o Razón Social:",
+        "short-name": "Nombre Corto:",
+        "parent-name": "Entidad Predecesora:",
+        "country": "País:",
+        "reference-code": "Código de Referencia:",
+        "business-purpose": "Giro Comercial:"
+      },
+      "role": {
+        "title": "Tipos de Socio de Negocio",
+        "button-add": "Adicionar Tipo",
+        "type": "Tipo:",
+        "column-type": "Tipos de Socio de Negocio"
+      },
+      "address": {
+        "title": "Direcciones",
+        "button-add": "Adicionar dirección",
+        "active": "Activo",
+        "addressName": "Nombre",
+        "address": "Dirección",
+        "district": "Localidad",
+        "zoneCode": "Zona",
+        "latitude": "Latitud",
+        "longitude": "Longitud",
+        "IsBillingAddress": "Legal",
+        "IsShippingAddress": "Operación"
+      },
+      "contact": {
+        "title": "Contactos",
+        "button-add": "Adicionar Contacto",
+        "active": "Activo",
+        "name": "Nombre",
+        "job-position": "Cargo",
+        "email": "Correo Electrónico",
+        "phone1": "Teléfono Fijo",
+        "phone2": "Teléfono Celular",
+        "address": "Dirección"
+      },
+      "demurrage": {
+        "title": "Demurrage",
+        "button-add": "Adicionar demurrage",
+        "active": "Activo",
+        "shipping-company": "Naviera",
+        "container": "Tipo Contenedor",
+        "demurrage-days": "Nro. Días",
+        "effective-date": "Fecha Inicio",
+        "expiration-date": "Fecha Fin"
+      },
+      "holding": {
+        "title": "Socios de Negocio Relacionados",
+        "button": "Ver Holding",
+        "column-name": "Nombre o Razón Social",
+        "column-level": "Nivel"
+      },
+      "confirm": {
+        "delete": "¿Desea eliminar el registro seleccionado?",
+        "activate": "¿Desea activar este Socio de Negocio?",
+        "deactivate": "¿Desea desactivar este Socio de Negocio?"
+      }
+    }
+  },
+  "service": {
+    "common": {
+      "code": "Código:",
+      "name": "Nombre:",
+      "operation-unit": "Unidad de Operacion:",
+      "trip-type": "Tipo de Retiro:",
+      "business-unit": "Unidad de Negocio:",
+      "price-list": "Precio de Lista:",
+      "effective-date": "Fecha efectividad:",
+      "expiration-date": "Fecha expiración:",
+      "activity": "Actividad",
+      "operative-unit": "Unidad Operativa",
+      "activity-sequence": "Secuencia",
+      "sap-item-code": "Artículo SAP:",
+      "service-nature": "Naturaleza de Servicio:",
+      "container-packaging-type-code": "Tipo de Contenedor:"
+    },
+    "search": {
+      "title": "Servicios",
+      "button-new": "Adicionar Servicio"
+    },
+    "management": {
+      "title": "Servicio",
+      "active-button": "Activar Servicio",
+      "inactive-button": "Desactivar Servicio",
+      "header": {
+        "title": "Información del Servicio"
+      },
+      "details": {
+        "title": "Unidad de Negocio"
+      },
+      "details-activity": {
+        "title": "Actividades"
+      }
+    },
+    "button": {
+      "activate": "Activar Servicio",
+      "deactivate": "Desactivar Servicio"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?",
+      "activate": "¿Desea activar este servicio?",
+      "deactivate": "¿Desea desactivar este servicio?"
+    }
+  },
+  "business-unit": {
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?"
+    }
+  },
+  "driver": {
+    "common": {
+      "code": "Código:",
+      "name": "Nombre:",
+      "rut": "RUT/ C. Identidad:",
+      "driver-type-code": "Tipo Conductor:",
+      "country-code": "País:",
+      "last-name": "Apellido:",
+      "phone": "Celular:",
+      "email": "Correo:",
+      "expiration-driver-license": "Vigencia Licencia:",
+      "is-black-list": "Prohibición de Ingreso:",
+      "remarks": "Observaciones:"
+    },
+    "search": {
+      "title": "Conductor",
+      "button-new": "Adicionar Conductor"
+    },
+    "management": {
+      "title": "Mantenimiento de Conductores",
+      "active-button": "Activar Conductor",
+      "inactive-button": "Desactivar Conductor",
+      "header": {
+        "title": "Información del Conductor"
+      }
+    },
+    "button": {
+      "activate": "Activar Conductor",
+      "deactivate": "Desactivar Conductor"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?",
+      "activate": "¿Desea activar este Conductor?",
+      "deactivate": "¿Desea desactivar este Conductor?"
+    }
+  },
+  "truck": {
+    "common": {
+      "truck-plate": "Placa / Patente:",
+      "brand": "Marca:",
+      "model": "Modelo:",
+      "tecnical-revision-date": "Fecha Vigencia Revisión Técnica:",
+      "circulation-permit-date": "Fecha Vigencia Permiso Circulación:",
+      "year": "Año:",
+      "power": "Potencia (hp):",
+      "gps-id": "Id GPS:",
+      "traction": "Tracción:",
+      "remark": "Observaciones:"
+    },
+    "search": {
+      "button-new": "Adicionar Camión",
+      "title": "Camiones",
+      "filters": {
+        "plate": "Placa/Patente",
+        "model": "Modelo",
+        "year": "Año de Fabricación",
+        "brand": "Marca",
+        "state": "Estado"
+      }
+    },
+    "management": {
+      "title": "Mantenimiento de Camiones",
+      "active-button": "Activar Camión",
+      "inactive-button": "Desactivar Camión",
+      "header": {
+        "title": "Información del Camión"
+      }
+    },
+    "button": {
+      "activate": "Activar Camión",
+      "deactivate": "Desactivar Camión"
+    },
+    "status": {
+      "active": "Activo",
+      "inactive": "Inactivo"
+    },
+    "confirm": {
+      "delete": "¿Desea eliminar el registro seleccionado?",
+      "activate": "¿Desea activar este Camión?",
+      "deactivate": "¿Desea desactivar este Camión?"
+    }
+  },
+  "landfall": {
+    "common": {
+      "port": "Puerto",
+      "terminal": "Terminal Portuario",
+      "vessel": "Nave",
+      "trip-no": "Nro. Viaje",
+      "eta": "ETA",
+      "etd": "ETD",
+      "eta-from": "ETA Desde",
+      "eta-to": "ETA Hasta",
+      "import-trip-no": "Nro. Viaje Importación",
+      "export-trip-no": "Nro. Viaje Exportación",
+      "arrival-date": "Fecha Arribo",
+      "departure-date": "Fecha Zarpe",
+      "start-stacking": "Fecha Inicio Stacking",
+      "end-stacking": "Fecha Fin Stacking",
+      "activate": "Activo",
+      "status": "Estado"
+    },
+    "search": {
+      "title": "Recaladas",
+      "button-new": "Adicionar Recalada",
+      "error-performing-search": "Ocurrió un error al buscar las recaladas.",
+      "error-performing-export": "Ocurrió un error al exportar las recaladas."
+    }
+  },
+  "preinvoice": {
+    "common": {
+      "status": "Estado Proforma",
+      "preinvoice-number": "Nro. Proforma",
+      "business-unit": "Unidad de Negocio",
+      "operative-unit": "Unidad Operativa",
+      "truck-plate": "Patente Camión:",
+      "date-preinvoice": "Fecha Proforma",
+      "vendor": "Proveedor",
+      "net-cost": "Costo Neto",
+      "currency": "Moneda",
+      "oc-sap": "O/C SAP",
+      "invoice-number": "Nro. Factura Proveedor",
+      "invoice-date": "Fecha Factura Proveedor",
+      "vendor-info-incomplete": "Requerido"
+    },
+    "search": {
+      "title": "Proformas",
+      "print-pre-invoice": "Imprimir Proforma",
+      "creation-date-from": "Creación Desde",
+      "creation-date-to": "Creación Hasta",
+      "button-new": "Proforma Manual",
+      "button-approve": "Aprobar Proforma",
+      "error-performing-search": "Ocurrió un error al buscar las proformas.",
+      "error-performing-export": "Ocurrió un error al exportar las proformas.",
+      "no-data-to-approve": "Debe seleccionar al menos una proforma a aprobar.",
+      "no-draft-selected": "Sólo se deben seleccionar proformas que se encuentren en estado borrador.",
+      "confirm-approval": "¿Desea aprobar las proformas seleccionadas?"
+    }
+  },
+  "home": "Inicio",
+  "masterdata": "Master Data",
+  "masterdata.businesspartner": "Socio de Negocio",
+  "masterdata.businesspartner.entityName": "Socio de Negocio",
+  "masterdata.bulk": "Tipo de Bulto",
+  "masterdata.bulk.entityName": "Tipo de Bulto",
+  "masterdata.cargocare": "Características de Carga",
+  "masterdata.cargocare.entityName": "Característica de Carga",
+  "masterdata.currency": "Moneda",
+  "masterdata.currency.entityName": "Moneda",
+  "masterdata.exchangerate": "Tipo de Cambio",
+  "masterdata.ports": "Puertos",
+  "masterdata.ports.entityName": "Puerto",
+  "masterdata.operationunit": "Unidades de Operación y Cobro",
+  "masterdata.operationunit.entityName": "Unidad de Operación y Cobro",
+  "masterdata.operativeunit": "Unidad Operativa",
+  "masterdata.operativeunit.entityName": "Unidad Operativa",
+  "masterdata.truck": "Camiones",
+  "masterdata.vessel": "Naves",
+  "masterdata.zone": "Zonas",
+  "masterdata.businessunit": "Unidad de Negocio",
+  "masterdata.businessunit.entityName": "Unidad de Negocio",
+  "masterdata.routes": "Rutas",
+  "masterdata.activity": "Actividades",
+  "masterdata.driver": "Conductores",
+  "customerservice": "Customer Service",
+  "customerservice.socreation": "Creación de O.S.",
+  "customerservice.somanagement": "Gestión de O.S.",
+  "customerservice.commercialcontracts": "Contratos Comerciales",
+  "customerservice.preinvoice": "Pre-Facturación",
+  "yardschedule": "Programación de Patio",
+  "yardschedule.yardschedule": "Programación de Patio",
+  "transportmanagement": "Programación de Transporte",
+  "transportmanagement.transportmanagement": "Programación de Transporte",
+  "operations": "Operaciones",
+  "transportconvoy": "Programación de Convoy",
+  "gateinout": "Gate IN/Gate OUT",
+  "yardschedulemgmt": "Programación de Actividades de Patio",
+  "cfsschedulemgmt": "Programación de Actividades de CFS",
+  "transportschedulemgmt": "Programación de Transporte",
+  "masterdata.resources": "Recursos de Operación",
+  "masterdata.country": "País",
+  "masterdata.country.entityName": "País",
+  "masterdata.state": "Región",
+  "masterdata.state.entityName": "Región",
+  "masterdata.district": "Comuna",
+  "masterdata.district.entityName": "Comuna",
+  "masterdata.containerpackagingtype": "Tipos de Contenedor",
+  "masterdata.containerpackagingtype.entityName": "Tipo de Contenedor",
+  "commercial": "Comercial",
+  "commercial.contracts": "Contratos",
+  "masterdata.service": "Servicio",
+  "masterdata.applicationsetting": "Parámetros del Sistema",
+  "masterdata.applicationsetting.entityName": "Parámetros del Sistema",
+  "vendor": "Adm Proveedores",
+  "vendor.vendorcontracts": "Contratos de Proveedores",
+  "vendor.vendorpreinvoice": "Proformas",
+  "masterdata.landfall": "Recaladas",
+  "virtualgate": "Gate Virtual",
+  "master-data": {
+    "common": {
+      "code": "Código",
+      "name": "Nombre",
+      "status": "Estado",
+      "maxlength": "El máximo de caracteres es 50"
+    },
+    "operation-unit": {
+      "quantity": "Cantidad",
+      "min": "El mínimo valor es es 0.",
+      "max": "El máximo valor es 99999999."
+    },
+    "container-packaging-type": {
+      "teus": "Teus",
+      "min": "El mínimo valor es 1",
+      "max": "El máximo valor es 10"
+    }
+  },
+  "exchange-rate": {
+    "date": "Fecha",
+    "base-currency": "Moneda Base",
+    "alt-currency": "Moneda Alterna",
+    "exchange-rate": "Tipo de Cambio",
+    "add": "Agregar Tipo de Cambio",
+    "date-from": "Fecha desde:",
+    "date-to": "Fecha hasta:",
+    "match": "Las monedas no deben ser iguales",
+    "max-date": "La fecha no puede ser posterior a hoy",
+    "min-date": "La fecha no puede ser anterior a {{value}} días."
+  },
+  "vendor-preinvoice": {
+    "mgmt": {
+      "title": "Proforma Proveedores",
+      "button-save": "Grabar",
+      "button-approve": "Aprobar Proforma",
+      "button-void": "Anular Proforma",
+      "button-generate": "Obtener Datos",
+      "button-create": "Crear Proforma",
+      "status-draft": "Borrador",
+      "status-approved": "Aprobado",
+      "status-voided": "Anulado",
+      "general": {
+        "title": "Información de Proforma",
+        "button-detail": "Calcular Detalle",
+        "preinvoice-number": "Nro. Proforma:",
+        "preinvoice-date": "Fecha Proforma:",
+        "vendor-name": "Proveedor:",
+        "vendor-rut": "RUT:",
+        "business-unit": "Unidad de Negocio:",
+        "operative-unit": "Unidad Operativa:",
+        "truck-plate": "Patente Camión:",
+        "currency": "Moneda:",
+        "sale-order-nuber": "O/C SAP:",
+        "vendor-invoice-number": "Factura de Proveedor:",
+        "vendor-invoice-date": "Fecha de Factura:"
+      },
+      "detail": {
+        "title": "Actividades",
+        "so-number": "O/S",
+        "customer-name": "Cliente",
+        "work-order": "Orden Trabajo",
+        "activity": "Actividad",
+        "execution-date": "Fecha Actividad",
+        "item-id": "Item Id.",
+        "resource": "Recurso",
+        "route": "Ruta",
+        "amount": "Tarifa Neta"
+      },
+      "footer": {
+        "currency": "Moneda:",
+        "sub-total": "Sub total:",
+        "discount": "Descuento:",
+        "iva": "IVA:",
+        "total": "Total:"
+      },
+      "confirm": {
+        "creation": "¿Desea crear la Proforma con las actividades seleccionadas?",
+        "approve": "¿Desea aprobar la Proforma?",
+        "void": "¿Desea anular la Proforma?",
+        "unselect": "Se excluirá lo siguiente:",
+        "atleast-oneselected-detail": "Debe existir al menos un detalle seleccionado.",
+        "no-data-found": "No se encontraron datos para los criterios seleccionados."
+      }
+    }
+  },
+  "virtual-gate": {
+    "common": {
+      "code": "Código",
+      "item-id": "Item Id",
+      "gate-type-code": "Tipo Gate",
+      "gate-date": "Fecha",
+      "gate-time": "Fecha",
+      "zone-code": "Zona",
+      "container-condition-code": "Condicion Contenedor",
+      "gate-from": "Desde",
+      "gate-to": "Hasta",
+      "activate": "Activo",
+      "status": "Estado",
+      "customer-code": "Cliente",
+      "service-order-code": "Orden Servicio",
+      "service-order-no": "O/S",
+      "customer-name": "Cliente",
+      "gate-type-name": "Gate",
+      "zone-name": "Zona",
+      "container-condition-name": "Condicion del Contenedor",
+      "origin-item-id": "Item Id Origen",
+      "exists-business-unit-msg": "Esta Zona pertenece a un terminal de  y tiene su propia pantalla de Gate. ¿Está seguro que desea continuar?"
+    },
+    "search": {
+      "title": "Gate Virtual",
+      "button-new": "Adicionar Gate Virtual",
+      "error-performing-search": "Ocurrió un error al buscar los gates virtuales.",
+      "error-performing-export": "Ocurrió un error al exportar los gates virtuales."
+    }
+  },
+  "service-order": "Orden de Servicio",
+  "reports": "Reportes",
+  "reports-loading-message": "Estamos consultando los reportes disponibles...",
+  "no-reports-message": "No se han encontrado reportes.",
+  "report-generate-title": "Generación de Reporte",
+  "generate-report": "Generar reporte",
+  "your-downlod-will-start": "La descarga del reporte comenzará en breve.",
+  "report": {
+    "common": {
+      "business-unit": "Unidad de Negocio:",
+      "date-from": "Fecha inicio:",
+      "date-to": "Fecha fin:",
+      "customer": "Cliente:",
+      "port": "Puerto:",
+      "status": "Estados:",
+      "service-order-type": "Tipo de Orden de Servicio:",
+      "date-before-to": "La 'Fecha fin' no puede ser menor a la 'Fecha inicio'."
+    },
+    "report": "Reportes"
+  },
+  "main-dashboard": {
+    "loading": "Calculando estadisticas...",
+    "service-orders": "Ordenes de Servicio",
+    "service-order-uncompleted": "Ordenes de Servicio (No Finalizadas)",
+    "transports": "Actividades de Transporte (No Iniciadas)",
+    "yards": "Actividades de Patio (No Programadas)",
+    "cfs": "Actividades de CFS (No Programadas)",
+    "gates": "Actividades de Gate (No Iniciadas)",
+    "chart-transports": "Actividades de Transporte",
+    "chart-yards": "Actividades de Patio",
+    "chart-cfs": "Actividades de CFS",
+    "chart-gates": "Actividades de Gate"
+  },
+  "statuses": {
+    "ANUL": "Anulado",
+    "BORR": "Borrador",
+    "NOIN": "No Iniciado",
+    "NPRG": "No Programado",
+    "APRO": "Aprobado",
+    "PARC": "Parcial",
+    "PROG": "Programado",
+    "FINA": "Finalizado",
+    "CONF": "Confirmado",
+    "ENRU": "En Ruta",
+    "ENCL": "En Cliente",
+    "ENPU": "En Puerto",
+    "RECE": "Recibido",
+    "DESP": "Despachado"
+  }
+}

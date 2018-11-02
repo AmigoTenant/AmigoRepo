@@ -6,6 +6,8 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseService } from '../../shared/api/base.service';
 import { ExpenseEditRequest } from './dto/expense-edit-request';
+import { ExpenseDetailDto } from './dto/expense-detail-dto';
+import { ExpenseRegisterRequest } from './dto/expense-register-request';
 
 @Injectable()
 export class ExpenseDataService extends BaseService {
@@ -26,6 +28,28 @@ export class ExpenseDataService extends BaseService {
             ).pipe(
                 map(r => r),
                 catchError(this.handleError)
+            );
+    }
+
+    //EXPENSE DETAIL
+
+    getExpenseDetailByExpenseId(id: number): Observable<any[] | ExpenseDetailDto[]> {
+        const url = `${this.baseUrl}api/expense/getExpenseDetailByExpenseId?id=${id}`;
+        return this.http.get<any>(url,
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                map(r => r),
+                catchError(this.handleError)
+            );
+    }
+
+    getExpenseDetailByExpenseDetailId(id: number): Observable<any | ExpenseRegisterRequest> {
+        const url = `${this.baseUrl}api/expense/getExpenseDetailByExpenseDetailId?id=${id}`;
+        return this.http.get<any>(url,
+            { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+        ).pipe(
+            map(r => r),
+            catchError(this.handleError)
             );
     }
 

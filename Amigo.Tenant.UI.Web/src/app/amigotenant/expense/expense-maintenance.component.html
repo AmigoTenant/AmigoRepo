@@ -13,118 +13,137 @@
             </div>
         </div>
         <div class="row">&nbsp;</div>
+        {{ displayMessage | json }}
         <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
-            <div class="row">
-                <form [formGroup]="expenseForm">
+        <div class="row">
+            <form [formGroup]="expenseForm">
                 <!-- <form data-val-form="expenseForm" class="col-sm-12" [formGroup]="expenseForm"> -->
 
-                    <ngb-tabset>
-                        <ngb-tab title="Expense Header">
-                            <ng-template ngbTabContent>
+                <ngb-tabset>
+                    <ngb-tab title="Expense Header">
+                        <ng-template ngbTabContent>
 
-                                <div class="row col-sm-8">
-                                    <div class="form-group col-sm-12"></div>
+                            <div class="row col-sm-8">
+                                <div class="form-group col-sm-12"></div>
 
-                                    <div class="form-group col-sm-12">
+                                <div class="form-group col-sm-12">
 
-                                        
-                                        <label for="from" class="col-sm-3 control-label">Expense Date</label>
-                                        <label class="ro-calendar col-sm-3">
-                                            <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDate" ngbDatepicker #d1="ngbDatepicker"
-                                                    [outside-click]="d1" (ngModelChange)="onSelectModelExpenseDate()" [disabled]="_isDisabled" formControlName="expenseDate">
 
-                                            <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
-                                        </label>
+                                    <label for="from" class="col-sm-3 control-label">Expense Date</label>
+                                    <label class="ro-calendar col-sm-3">
+                                        <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDate" ngbDatepicker #d1="ngbDatepicker"
+                                            [outside-click]="d1" (ngModelChange)="onSelectModelExpenseDate()" [disabled]="_isDisabled"
+                                            formControlName="expenseDate">
 
-                                    </div>
-                                    <div class="form-group col-sm-12">
-                                        
-                                        <label for="from" class="col-sm-3 control-label">Property</label>
-                                        <label class="col-sm-3">
-                                                <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
-                                        </label>
-                                        
-                                    </div>
-                                    <div class="form-group col-sm-12">
-                                            <label for="from" class="col-sm-3 control-label">Period</label>
-                                            <label class="col-sm-3">
-                                                
-                                                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
-                                                
-                                            </label>
+                                        <span class="ro-calendar-btn" (click)="d1.toggle()">
+                                            <i class="xico-ui-calendar" style="width:30px"></i>
+                                        </span>
+                                    </label>
+                                    <span class="help-block text-danger" *ngIf="displayMessage['expenseDate']">
+                                        {{ displayMessage['expenseDate'] }}
+                                    </span>
 
-                                            <label for="from" class="col-sm-3 control-label">Sub Total</label>
-                                            <label class="col-sm-3">
-                                                <input type="number" name="subTotalAmount" class="form-control" [disabled]="_isDisabled" formControlName = "subTotalAmount" />
-                                            </label>
+                                </div>
+                                <div class="form-group col-sm-12">
 
-                                    </div>
+                                    <label for="from" class="col-sm-3 control-label">Property
+                                        <span class="required"></span>
+                                    </label>
+                                    <label class="col-sm-3">
+                                        <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                        <input type="hidden" formControlName="houseId" />
+                                        <span class="help-block text-danger" *ngIf="displayMessage['houseId']">
+                                            {{ displayMessage['houseId'] }}
+                                        </span>
+                                    </label>
 
-                                    <div class="form-group col-sm-12">
-                                            <label for="from" class="col-sm-3 control-label">Payment Type</label>
-                                            <label class="col-sm-3">
-                                                    <select name="ConceptId" formControlName ="paymentTypeId"
-                                                            class="form-control input-control">
-                                                        <option value=""></option>
-                                                        <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">
-                                                            {{paymentType.name}}
-                                                        </option>
-                                                    </select>
-                                            </label>
-                                        
-                                            <label for="from" class="col-sm-3 control-label">Tax</label>
-                                            <label class="col-sm-3">
-                                                <input type="number" name="tax" class="form-control" [disabled]="_isDisabled" formControlName = "tax" />
-                                            </label>
-                                        
-                                    </div>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="from" class="col-sm-3 control-label">Period</label>
+                                    <label class="col-sm-3">
 
-                                    <div class="form-group col-sm-12">
-                                        
-                                            <label for="from" class="col-sm-3 control-label">Reference No</label>
-                                            <label class="col-sm-3">
-                                                <input type="text" name="referenceNo" class="form-control" [disabled]="_isDisabled" formControlName = "referenceNo" />
-                                            </label>
-                                        
-                                            <label for="from" class="col-sm-3 control-label">Total Amount</label>
-                                            <label class="col-sm-3">
-                                                <input type="number" name="totalAmount" class="form-control" [disabled]="_isDisabled" formControlName = "totalAmount" />
-                                            </label>
-                                    </div>
+                                        <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
 
-                                    <div class="form-group col-sm-12">
-                                            <label for="from" class="col-sm-3 control-label">Remark</label>
-                                            <label class="col-sm-9">
-                                                <textarea type="txtRemark" rows="4" style="height:150px" name="Remark" class="form-control" [disabled]="_isDisabled" formControlName="remark">
+                                    </label>
+
+                                    <label for="from" class="col-sm-3 control-label">Sub Total</label>
+                                    <label class="col-sm-3">
+                                        <input type="number" name="subTotalAmount" class="form-control" [disabled]="_isDisabled" formControlName="subTotalAmount"
+                                        />
+                                    </label>
+
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <label for="from" class="col-sm-3 control-label">Payment Type</label>
+                                    <label class="col-sm-3">
+                                        <select name="ConceptId" formControlName="paymentTypeId" class="form-control input-control">
+                                            <option value=""></option>
+                                            <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">
+                                                {{paymentType.name}}
+                                            </option>
+                                        </select>
+                                    </label>
+
+                                    <label for="from" class="col-sm-3 control-label">Tax</label>
+                                    <label class="col-sm-3">
+                                        <input type="number" name="tax" class="form-control" [disabled]="_isDisabled" formControlName="tax" />
+                                    </label>
+
+                                </div>
+
+                                <div class="form-group col-sm-12">
+
+                                    <label for="from" class="col-sm-3 control-label">Reference No</label>
+                                    <label class="col-sm-3">
+                                        <input type="text" name="referenceNo" class="form-control" [disabled]="_isDisabled" formControlName="referenceNo" />
+                                    </label>
+
+                                    <label for="from" class="col-sm-3 control-label">Total Amount</label>
+                                    <label class="col-sm-3">
+                                        <input type="number" name="totalAmount" class="form-control" [disabled]="_isDisabled" formControlName="totalAmount" />
+                                    </label>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <label for="from" class="col-sm-3 control-label">Remark</label>
+                                    <label class="col-sm-9">
+                                        <textarea type="txtRemark" rows="4" style="height:150px" name="Remark" class="form-control" [disabled]="_isDisabled" formControlName="remark">
                                                 </textarea>
-                                            </label>
-                                    </div>
+                                    </label>
                                 </div>
-                            </ng-template>
-                        </ngb-tab>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
 
-                        <ngb-tab title="Expense Detail">
-                            <ng-template ngbTabContent>
-                                <div class="row col-sm-8">
-                                    <div class="form-group col-sm-12"></div>
-                                    <div class="form-group col-sm-12">
-                                        
-                                            <label for="from" class="col-sm-3 control-label">Detail Information</label>
-                                            <label class="ro-calendar col-sm-3">
-                                                <input class="form-control" [placeholder]="localization.dateFormat" name="alertDate" ngbDatepicker #d4="ngbDatepicker"
-                                                       [outside-click]="d4" [(ngModel)]="modelAlertDate" (ngModelChange)="onSelectModelAlertDate()" [disabled]="_isDisabled">
-                                                <span *ngIf="_isDisabled===false" class="ro-calendar-btn" (click)="d4.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
-                                            </label>
-                                        
+                    <ngb-tab title="Expense Detail">
+                        <ng-template ngbTabContent>
+                            <div class="row col-sm-8">
+                                <div class="form-group col-sm-12"></div>
+                                <div class="form-group col-sm-12">
 
-                                    </div>
+                                    <label for="from" class="col-sm-3 control-label">Detail Information</label>
+                                    <label class="ro-calendar col-sm-3">
+                                        <input class="form-control" [placeholder]="localization.dateFormat" name="alertDate" ngbDatepicker #d4="ngbDatepicker" [outside-click]="d4"
+                                            [(ngModel)]="modelAlertDate" (ngModelChange)="onSelectModelAlertDate()" [disabled]="_isDisabled">
+                                        <span *ngIf="_isDisabled===false" class="ro-calendar-btn" (click)="d4.toggle()">
+                                            <i class="xico-ui-calendar" style="width:30px"></i>
+                                        </span>
+                                    </label>
+
+
                                 </div>
-                            </ng-template>
-                        </ngb-tab>
-                    </ngb-tabset>
-                </form>
-            </div>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+                </ngb-tabset>
+
+            </form>
         </div>
+        <div class="row">
+            <at-expense-detail-grid></at-expense-detail-grid>
+        </div>
+    </div>
 </div>
 
 <!-- <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">

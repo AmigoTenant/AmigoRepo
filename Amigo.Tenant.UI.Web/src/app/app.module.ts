@@ -1,3 +1,4 @@
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { AnalyticsModule } from './dashboard/analytics/analytics.module';
 import { maintenanceRouting } from './maintenance/maintenance.routing';
@@ -25,6 +26,8 @@ import { DashboardRoutingModule } from './dashboard/dashboard.routing';
 import { TooltipModule } from "ngx-tooltip";
 import { FwModule } from '../fw/fw.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
 
 @NgModule({
     declarations: [
@@ -43,7 +46,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
             apiKey: 'AIzaSyA6r4xrcWWBceY_1RLVo16sM18iCRrGXlc'
         }),
         SimpleNotificationsModule.forRoot(),
-        TooltipModule
+        TooltipModule,
+        TranslateModule.forRoot({
+            loader: {
+              provide: TranslateLoader,
+              useFactory: (createTranslateLoader),
+              deps: [HttpClient]
+            }
+          }),
     ],
     providers: [
         { provide: API_BASE_URL, useValue: environment.serviceUrl },
@@ -55,3 +65,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     bootstrap: [AppComponent]
 })
 export class AppModule { } 
+
+export function createTranslateLoader(http: HttpClient) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}

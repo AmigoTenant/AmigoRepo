@@ -1,0 +1,11 @@
+{
+    "core": {
+        "title": "amigo tenan system",
+        "home": "Home",
+        "docs": "Documentation",
+        "profile": "Profile",
+        "logout": "Logout",
+        "info": "Info"        
+    },
+    "reports":"Reports"
+}

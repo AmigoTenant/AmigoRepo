@@ -449,9 +449,9 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
         this.gnrlTableDataService.getGeneralTableByTableNameAsync("BudgetRange")
             .subscribe(res => {
                 
-                var dataResult: any = res;
+                let dataResult: any = res;
                 this._listBudgets = [];
-                for (var i = 0; i < dataResult.value.data.length; i++) {
+                for (let i = 0; i < dataResult.value.data.length; i++) {
                     this._listBudgets.push({
                         "typeId": dataResult.value.data[i].generalTableId,
                         "name": dataResult.value.data[i].value

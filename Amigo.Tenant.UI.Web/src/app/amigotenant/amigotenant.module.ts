@@ -54,6 +54,8 @@ import { MasterDataService } from '../shared/api/master-data-service';
 import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.component';
 import { PaymentServiceNew } from './payment/payment.service';
+import { ExpenseMaintenanceSearchGridComponent } from './expense/expense-maintenance-search-grid.component';
+//import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance-detail.component';
 
 
 
@@ -92,7 +94,8 @@ import { PaymentServiceNew } from './payment/payment.service';
     UtilityBillMaintenanceComponent,
     PaymentMaintenanceReportComponent,
     ExpenseComponent,
-    ExpenseMaintenanceComponent
+    ExpenseMaintenanceComponent//,
+    //ExpenseMaintenanceDetailComponent
   ],
   providers: [
       TenantClient,

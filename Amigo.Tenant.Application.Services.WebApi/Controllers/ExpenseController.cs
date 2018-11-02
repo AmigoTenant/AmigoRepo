@@ -97,14 +97,14 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         /*DETAIL*/
 
-        [HttpGet, Route("searchDetailCriteria")]
-        public async Task<ResponseDTO<PagedList<ExpenseDetailSearchDTO>>> SearchDetail([FromUri]ExpenseSearchRequest search)
+        [HttpGet, Route("getExpenseDetailByExpenseId")]
+        public async Task<ResponseDTO<PagedList<ExpenseDetailSearchDTO>>> getExpenseDetailByExpenseId(int? id)
         {
-            var resp = await _expenseApplicationService.GetDetailByExpenseIdAsync(search);
+            var resp = await _expenseApplicationService.GetDetailByExpenseIdAsync(id);
             return resp;
         }
 
-        [HttpGet, Route("getExpenseDetailByExpenseId")]
+        [HttpGet, Route("getExpenseDetailByExpenseDetailId")]
         public async Task<ResponseDTO<ExpenseDetailRegisterRequest>> GetDetailByExpenseDetailIdAsync(int? id)
         {
             var resp = await _expenseApplicationService.GetDetailByExpenseDetailIdAsync(id);

@@ -1,0 +1,53 @@
+<div class="grid-container">
+    <kendo-grid id="kgrid-ExpenseDetail" [data]="expenseDetailData" [selectable]="false">
+        <kendo-grid-column [width]="50">
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
+                    <!-- (change)="changeItemHeader()" -->
+                <div class="text-center">
+                    <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option"  />
+                </div>
+            </ng-template>
+            <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                <div class="text-center">
+                    <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)"
+                    />
+                    <label htmlFor="{{rowIndex}}"></label>
+
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
+        <!-- <kendo-grid-column field="creationDate" title="Creation">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    <span>{{dataItem.creationDate|date:"MM/dd/yyyy" }}</span>
+                    <br />
+                </div>
+            </ng-template>
+        </kendo-grid-column> -->
+        <kendo-grid-column field="remark" title="Remark"></kendo-grid-column>
+        <kendo-grid-column field="tenantFullName" title="Tenant"></kendo-grid-column>
+        <kendo-grid-column field="expenseDetailStatusName" title="Status"></kendo-grid-column>
+        <kendo-grid-column field="subTotalAmount" title="Sub Total"></kendo-grid-column>
+        <kendo-grid-column field="tax" title="Tax"></kendo-grid-column>
+        <kendo-grid-column field="totalAmount" title="Total"></kendo-grid-column>
+
+        <kendo-grid-column>
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div class="text-right">
+                    <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                        <i class="xico-action-edit"></i>
+                    </button>
+                    <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                        <i class="xico-action-remove"></i>
+                    </button>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+
+    </kendo-grid>
+</div>
+<!-- 
+<at-expense-maintenance-detail *ngIf="openDialog" [inputSelectedExpenseDetail]="selectedDetail">
+</at-expense-maintenance-detail> -->
+  

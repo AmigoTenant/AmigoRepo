@@ -3,6 +3,8 @@ import { SecurityService } from './shared/security/security.service';
 import { FrameworkConfigService, FrameworkConfigSettings } from '../fw/services/framework-config.service';
 import { MenuService } from '../fw/services/menu.service';
 import { initialMenuItems } from './app.menu';
+import { TranslateService } from '@ngx-translate/core';
+import { environment } from '../environments/environment';
 
 @Component({
     selector: 'app-root',
@@ -11,9 +13,10 @@ import { initialMenuItems } from './app.menu';
 })
 export class AppComponent implements OnInit {    
 
-    constructor(private securityService: SecurityService, 
-            private frameworkConfigService: FrameworkConfigService, 
-            menuService: MenuService) {
+    constructor(private securityService: SecurityService,
+            private frameworkConfigService: FrameworkConfigService,
+            menuService: MenuService,
+            private translate: TranslateService) {
         let config: FrameworkConfigSettings = {
             socialIcons: [
               // { imageFile: 'assets/social-fb-bw.png', alt: 'Facebook', link: 'http://www.facebook.com'},
@@ -27,6 +30,8 @@ export class AppComponent implements OnInit {
           };
         frameworkConfigService.configure(config);
         menuService.items = initialMenuItems;
+        this.translate.setDefaultLang(environment.defaultLang);
+        this.translate.use(environment.lang);
     }
 
     ngOnInit() {

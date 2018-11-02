@@ -27,7 +27,10 @@ export const environment = {
     }
   },
   
-      waUrlSvcEndPoint: "https://www.waboxapp.com/api/send/chat",
-      waUserId: "51920132774",
-      waApikey: "b176c6be32c235d185afd5f88bce02e359f6c18fbd73e"
+  waUrlSvcEndPoint: "https://www.waboxapp.com/api/send/chat",
+  waUserId: "51920132774",
+  waApikey: "b176c6be32c235d185afd5f88bce02e359f6c18fbd73e",
+  defaultLang: 'es-CL',
+  lang: 'es-CL',
+  langReport: 'en-US'
 };
