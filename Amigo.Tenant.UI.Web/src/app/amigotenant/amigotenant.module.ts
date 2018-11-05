@@ -46,7 +46,7 @@ import { DataTableModule, DropdownModule, DialogModule as PrimeDialogModule } fr
 
 import { PaymentMaintenanceDetailComponent } from './payment/payment-maintenance-detail.component';
 import { PaymentMaintenanceReportComponent } from './payment/payment-maintenance-report.component';
-import { PaymentService } from "../shared/api/payment.service";
+import { PaymentService } from '../shared/api/payment.service';
 import { UtilityBillMaintenanceComponent } from './utilitybill/utilitybill-maintenance.component';
 import { UtilityBillServiceClient } from '../shared/api/utilityBill.services.client';
 import { ExpenseComponent } from './expense/expense.component';
@@ -55,7 +55,7 @@ import { MultiselectDropdownModule } from 'angular-2-dropdown-multiselect';
 import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.component';
 import { PaymentServiceNew } from './payment/payment.service';
 import { ExpenseMaintenanceSearchGridComponent } from './expense/expense-maintenance-search-grid.component';
-//import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance-detail.component';
+import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance-detail.component';
 
 
 
@@ -94,8 +94,9 @@ import { ExpenseMaintenanceSearchGridComponent } from './expense/expense-mainten
     UtilityBillMaintenanceComponent,
     PaymentMaintenanceReportComponent,
     ExpenseComponent,
-    ExpenseMaintenanceComponent//,
-    //ExpenseMaintenanceDetailComponent
+    ExpenseMaintenanceComponent,
+    ExpenseMaintenanceSearchGridComponent,
+    ExpenseMaintenanceDetailComponent
   ],
   providers: [
       TenantClient,

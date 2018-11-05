@@ -76,4 +76,13 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.openDialog = true;
      }
 
+
+     close() {
+        this.openDialog = false;
+     }
+
+     eventoCloseParent() {
+        this.openDialog = false;
+     }
+
 }

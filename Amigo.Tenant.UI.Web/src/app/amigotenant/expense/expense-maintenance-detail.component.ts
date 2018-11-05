@@ -1,7 +1,7 @@
 import {TranslateService} from '@ngx-translate/core';
 import {ExpenseDataService} from './expense-data.service';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
-import { Component, AfterViewInit, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChildren, Input } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChildren, Input, Output } from '@angular/core';
 import { Http, Jsonp, URLSearchParams} from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule, Form, FormControlName } from '@angular/forms';
 import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
@@ -33,7 +33,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     public displayMessage: { [key: string]: string; } = {};
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
     @Input() inputSelectedExpenseDetail: any;
+    @Output() eventoClose = new EventEmitter();
 
+    _listConcepts: any[];
     isColumnHeaderSelected = true;
     message: string;
 
@@ -47,6 +49,8 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     expenseDetailForm: FormGroup;
 
     flgEdition: string;
+    sub: Subscription;
+    contractId: any;
 
     constructor(
             private route: ActivatedRoute,
@@ -59,37 +63,36 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         ) {
         super();
 
-        Observable.forkJoin([
-            this.translate.get('common.requiredField'),
-            this.translate.get('common.alphadashmax12'),
-            this.translate.get('common.maxLength', { value: 50 })
-          ]).subscribe((messages: string[]) => this.buildMessages(...messages));
-          this.genericValidator = new GenericValidator(this.validationMessages);
+        // Observable.forkJoin([
+        //     this.translate.get('common.requiredField'),
+        //     this.translate.get('common.alphadashmax12'),
+        //     this.translate.get('common.maxLength', { value: 50 })
+        //   ]).subscribe((messages: string[]) => this.buildMessages(...messages));
+        //   this.genericValidator = new GenericValidator(this.validationMessages);
     }
 
-    buildMessages(required?: string, notvalid?: string, maxlength?: string) {
-        this.validationMessages = {
-          conceptId: {
-            required: required
-          },
-          applyTo: {
-            required: required
-          },
-          subTotalAmount: {
-            required: required
-          }
-        };
-    }
+    // buildMessages(required?: string, notvalid?: string, maxlength?: string) {
+    //     this.validationMessages = {
+    //       conceptId: {
+    //         required: required
+    //       },
+    //       applyTo: {
+    //         required: required
+    //       },
+    //       subTotalAmount: {
+    //         required: required
+    //       }
+    //     };
+    // }
 
-    sub: Subscription;
-    contractId: any;
+    
 
     ngOnInit() {
-        // debugger
-        // this.model = new ExpenseDetailRegisterRequest();
+         debugger
+         this.model = new ExpenseDetailRegisterRequest();
 
-        // this.buildForm();
-        // this.initializeForm();
+        this.buildForm();
+        this.initializeForm();
         // this.sub = this.route.params.subscribe(params => {
 
         //     //TODO:
@@ -124,17 +127,17 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     getExpenseDetailByExpenseDetailId(id): void {
 
-        // this.expenseDataService.getExpenseDetailByExpenseDetailId(id).subscribe(
-        //     response => {
-        //         debugger;
-        //         let dataResult: any = new ResponseListDTO(response);
-        //         this.model = dataResult.dat;
-        //         this.expenseDetailForm.patchValue(this.model);
-        //     });
+        this.expenseDataService.getExpenseDetailByExpenseDetailId(id).subscribe(
+            response => {
+                debugger;
+                let dataResult: any = new ResponseListDTO(response);
+                this.model = dataResult.dat;
+                this.expenseDetailForm.patchValue(this.model);
+            });
     }
 
     initializeForm(): void {
-        // this.getConceptByTypes();
+        this.getConceptByTypes();
         // this.getApplyTo();
     }
 
@@ -216,25 +219,26 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //}
 
 
-    onCancel(): void {
-        this.router.navigate(['expense/edit/1']);
+    cancel(): void {
+
+        //this.router.navigate(['expense/edit/1']);
     }
 
-    // onExecuteEvent($event) {
-    //     switch ($event) {
-    //         case 's':
-    //             this.onSave();
-    //             break;
-    //         case 'c':
-    //             //this.onClear();
-    //             break;
-    //         case 'k':
-    //             this.onCancel();
-    //             break;
-    //         default:
-    //             confirm('Sorry, that Event is not exists yet!');
-    //     }
-    // }
+    onExecuteEvent($event) {
+        switch ($event) {
+            case 's':
+                this.onSave();
+                break;
+            case 'c':
+                //this.onClear();
+                break;
+            case 'k':
+                this.onCancel();
+                break;
+            default:
+                confirm('Sorry, that Event is not exists yet!');
+        }
+    }
 
 
     //GETDATA FROM MASTERTABLE
@@ -275,12 +279,12 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     ngAfterViewInit() {
         // Watch for the blur event from any input element on the form.
-        const controlBlurs: Observable<any>[] = this.formInputElements
-          .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
+        // const controlBlurs: Observable<any>[] = this.formInputElements
+        //   .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
     
-        // Merge the blur event observable with the valueChanges observable
-        this.validationSubscription = Observable.merge(this.expenseDetailForm.valueChanges, ...controlBlurs)
-        .debounceTime(800).subscribe(value => this.showErrors());
+        // // Merge the blur event observable with the valueChanges observable
+        // this.validationSubscription = Observable.merge(this.expenseDetailForm.valueChanges, ...controlBlurs)
+        // .debounceTime(800).subscribe(value => this.showErrors());
       }
     
       private showErrors(force = false) {
@@ -325,12 +329,15 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //           });
     //   }
 
-    //   _listConcepts: any[];
-    //   getConceptByTypes(): void {
-    //       this.masterDataService.getConceptsByTypeIdList([31, 29])
-    //           .subscribe(res => {
-    //               let dataResult = new ResponseListDTO(res);
-    //               this._listConcepts = dataResult.data;
-    //           });
-    //   }
+      getConceptByTypes(): void {
+          this.masterDataService.getConceptsByTypeIdList([31, 29])
+              .subscribe(res => {
+                  let dataResult = new ResponseListDTO(res);
+                  this._listConcepts = dataResult.data;
+              });
+      }
+
+    onCancel() {
+        this.eventoClose.emit();
+    }
 }
