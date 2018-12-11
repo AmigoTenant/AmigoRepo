@@ -273,8 +273,14 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     //GETTING DATA FOR DROPDOWNLIST
     accept() {
-        let variable = this.expenseDetailForm.value;
-        this.showErrors(true);
+        //let variable = this.expenseDetailForm.value;
+        Object.assign(this.model, this.expenseDetailForm.value);
+        this.expenseDataService.save(this.model)
+        .subscribe(r=>
+            {
+                let result = new ResponseListDTO(r);
+            }
+        )
     }
 
     ngAfterViewInit() {
