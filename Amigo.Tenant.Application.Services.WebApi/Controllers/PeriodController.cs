@@ -26,6 +26,13 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return resp;
         }
 
+        [HttpGet, Route("getPeriodLastestNumberPeriods")]
+        public async Task<ResponseDTO<List<PeriodDTO>>> GetPeriodLastPeriodsAsync(int periodNumbers)
+        {
+            var resp = await _periodApplicationService.GetPeriodLastPeriodsAsync(periodNumbers);
+            return resp;
+        }
+
         [HttpGet, Route("searchForTypeAhead")]
         public async Task<ResponseDTO<List<PeriodDTO>>> SearchForTypeAhead(string search)
         {

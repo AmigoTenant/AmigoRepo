@@ -9,101 +9,111 @@
             </div>
         </div> -->
         <div class="row">&nbsp;</div>
+        <div class="k-window-buttons">
+            <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="expenseDetailForm.form.valid" [formName]="'expenseDetailForm'"></st-boton-maintenance>
+        </div>
         <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
         <div class="row">
-            <form [formGroup]="expenseDetailForm">
+            <form [formGroup]="expenseDetailForm" #expenseDetailForm="ngForm" data-val-form="expenseDetailForm">
                
+                <div class="row col-sm-8">
+                                
 
-                <ngb-tabset>
+                    <div class="form-group col-sm-12">
+
+                        <div class="form-group col-sm-12">
+                            <label for="from" class="col-sm-5 control-label">Concept</label>
+                            <label class="col-sm-7">
+                                <select name="ConceptId" formControlName="conceptId"
+                                        class="form-control input-control">
+                                    <option value=""></option>
+                                    <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
+                                        {{concept.description}}
+                                    </option>
+                                </select>
+                            </label>
+                            <span class="help-block text-danger" *ngIf="displayMessage['conceptId']">
+                                {{ displayMessage['conceptId'] }}
+                            </span>
+
+                        </div>
+                        <div class="form-group col-sm-6">
+
+                            <label for="from" class="col-sm-3 control-label">Apply to...</label>
+                            <label class="col-sm-3">
+                                <select name="appliToId" class="form-control input-control" formControlName ="applyTo">
+                                    <option *ngFor="let apply of _listApplyTo" [ngValue]="apply.applyToId">
+                                        {{apply.name}}
+                                    </option>
+                                </select>
+                            </label>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group col-sm-12">
+
+                        <div class="form-group col-sm-6">
+                            <label for="from" class="col-sm-3 control-label">Sub Total Amount</label>
+                            <label class="col-sm-3">
+                                <input type="number" class="form-control" formControlName="subTotalAmount" />
+                            </label>
+                        </div>
+
+                        <div class="form-group col-sm-6">
+
+                                <label for="from" class="col-sm-3 control-label">Tenant</label>
+                                <label class="col-sm-3">
+                                    <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>
+                                </label>
+                         </div>
+
+
+                    </div>
+
+                        <div class="form-group col-sm-12">
+
+                            <label for="from" class="col-sm-3 control-label">Tax</label>
+                            <label class="col-sm-3">
+                                <input type="number" class="form-control" formControlName="tax" />
+                            </label>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+
+                            <label for="from" class="col-sm-3 control-label">Total Amount</label>
+                            <label class="col-sm-3">
+                                <input type="number" class="form-control" formControlName="totalAmount" />
+                            </label>
+                        </div>
+
+                        <div class="form-group col-sm-12">
+                            <label for="from" class="col-sm-3 control-label">Remark</label>
+                            <label class="col-sm-9">
+                                <textarea type="txtRemark" rows="4" style="height:150px" name="Remark" class="form-control" formControlName="remark">
+                            </textarea>
+                            </label>
+                        </div>
+                    </div>
+
+                <!-- <ngb-tabset>
                     <ngb-tab title="Expense Detail">
                         <ng-template ngbTabContent>
 
-                            <div class="row col-sm-8">
-                                
-
-                                <div class="form-group col-sm-12">
-
-                                    <div class="form-group col-sm-12">
-                                        <label for="from" class="col-sm-5 control-label">Concept</label>
-                                        <label class="col-sm-7">
-                                            <select name="ConceptId" formControlName="conceptId"
-                                                    class="form-control input-control">
-                                                <option value=""></option>
-                                                <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
-                                                    {{concept.description}}
-                                                </option>
-                                            </select>
-                                        </label>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['conceptId']">
-                                            {{ displayMessage['conceptId'] }}
-                                        </span>
-
-                                    </div>
-                                    <div class="form-group col-sm-6">
-
-                                        <label for="from" class="col-sm-3 control-label">Apply to...</label>
-                                        <label class="col-sm-3">
-                                            <select name="appliToId" class="form-control input-control" formControlName ="applyTo">
-                                                <option *ngFor="let apply of _listApplyTo" [ngValue]="apply.applyToId">
-                                                    {{apply.name}}
-                                                </option>
-                                            </select>
-                                        </label>
-                                    </div>
-
-                                </div>
-
-                                <div class="form-group col-sm-12">
-
-                                    <div class="form-group col-sm-6">
-                                        <label for="from" class="col-sm-3 control-label">Sub Total Amount</label>
-                                        <label class="col-sm-3">
-                                            <input type="number" class="form-control" formControlName="subTotalAmount" />
-                                        </label>
-                                    </div>
-
-                                    <div class="form-group col-sm-6">
-
-                                            <label for="from" class="col-sm-3 control-label">Tenant</label>
-                                            <label class="col-sm-3">
-                                                <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>
-                                            </label>
-                                     </div>
-
-
-                                </div>
-
-                                    <div class="form-group col-sm-12">
-
-                                        <label for="from" class="col-sm-3 control-label">Tax</label>
-                                        <label class="col-sm-3">
-                                            <input type="number" class="form-control" formControlName="tax" />
-                                        </label>
-                                    </div>
-
-                                    <div class="form-group col-sm-12">
-
-                                        <label for="from" class="col-sm-3 control-label">Total Amount</label>
-                                        <label class="col-sm-3">
-                                            <input type="number" class="form-control" formControlName="totalAmount" />
-                                        </label>
-                                    </div>
-
-                                    <div class="form-group col-sm-12">
-                                        <label for="from" class="col-sm-3 control-label">Remark</label>
-                                        <label class="col-sm-9">
-                                            <textarea type="txtRemark" rows="4" style="height:150px" name="Remark" class="form-control" formControlName="remark">
-                                        </textarea>
-                                        </label>
-                                    </div>
-                                </div>
+                            
                         </ng-template>
 
                     </ngb-tab>
                     
-                </ngb-tabset>
+                </ngb-tabset> -->
 
             </form>
         </div>
     </div>
 </div>
+<kendo-dialog *ngIf="openDialog" title="Expense Detail" 
+    (close)="close()" style="z-index:10003;" id="tenantMaintenancePanel">
+    <at-expense-maintenance-detail  [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent()">
+    </at-expense-maintenance-detail>
+</kendo-dialog>  
+

@@ -8,7 +8,7 @@ import { ConfirmationList, Confirmation } from '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
 import { HouseClient,    GeneralTableClient,    ResponseDTOOfListOfHouseTypeDTO} from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
 import { NotificationService } from '../../shared/service/notification.service';
 import { accessSync } from 'fs';
@@ -40,7 +40,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     public modelExpenseDateTo: any;
     public expenseSearchForm: FormGroup;
     _currentPeriod: any;
-
     //GRID SELECT
     isColumnHeaderSelected = true;
     message: string;
@@ -351,6 +350,10 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         //    this.selectedOptionsFeature,
         //    this.model.page,
         //    20000);
+    }
+
+    onAddExpense(): void {
+        this.router.navigate['expense/new'];
     }
 
 

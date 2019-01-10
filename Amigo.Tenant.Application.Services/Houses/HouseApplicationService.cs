@@ -98,7 +98,9 @@ namespace Amigo.Tenant.Application.Services.Houses
 
         public async Task<ResponseDTO<List<HouseBasicDTO>>> SearchForTypeAhead(string search)
         {
-            Expression<Func<HouseBasicDTO, bool>> queryFilter = c => c.Name.Contains(search);
+            Expression<Func<HouseBasicDTO, bool>> queryFilter = c => true;  
+            if (!string.IsNullOrEmpty(search))
+                queryFilter = c => c.Name.Contains(search);
 
             var list = (await _houseBasicDataAccess.ListAsync(queryFilter)).ToList();
 

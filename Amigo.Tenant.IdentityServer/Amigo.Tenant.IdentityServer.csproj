@@ -254,7 +254,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Infrastructure\Certificate\idsrv3test.pfx" />
+    <EmbeddedResource Include="Infrastructure\Certificate\idsrv3test.pfx">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <EmbeddedResource Include="Infrastructure\ViewService\HttpAssets\background.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>

@@ -37,6 +37,19 @@ namespace Amigo.Tenant.Application.Services.MasterData
             return ResponseBuilder.Correct(periods.ToList());
         }
 
+        public async Task<ResponseDTO<List<PeriodDTO>>> GetPeriodLastPeriodsAsync(int periodNumber)
+        {
+            var currentPeriod = await GetCurrentPeriodAsync();
+            Expression<Func<PeriodDTO, bool>> queryFilter = c => c.Code == currentPeriod.Data.Code;
+            //queryFilter = queryFilter.And(p => int.Parse(p.Code) <= int.Parse(currentPeriod.Data.Code));
+            var periods = (await _periodDataAccess.ListAsync(queryFilter)).ToList();
+
+            if (periodNumber != 0)
+            periods.OrderByDescending(q=> q.Code).Take(periodNumber);
+
+            return ResponseBuilder.Correct(periods.ToList());
+        }
+
         public async Task<ResponseDTO<PeriodDTO>> GetPeriodByCodeAsync(string code)
         {
             Expression<Func<PeriodDTO, bool>> queryFilter = c => true;

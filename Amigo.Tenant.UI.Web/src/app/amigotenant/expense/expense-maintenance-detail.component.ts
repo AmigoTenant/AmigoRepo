@@ -138,7 +138,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     initializeForm(): void {
         this.getConceptByTypes();
-        // this.getApplyTo();
+        this.getApplyTo();
     }
 
 
@@ -313,21 +313,21 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //       }
     //   };
 
-    //   _listApplyTo: any[];
-    //   getApplyTo(): void {
-    //       this.gnrlTableDataService.getGeneralTableByTableNameAsync("ApplyTo")
-    //           .subscribe(res => {
+      _listApplyTo: any[];
+      getApplyTo(): void {
+          this.gnrlTableDataService.getGeneralTableByTableNameAsync("ApplyTo")
+              .subscribe(res => {
 
-    //               var dataResult: any = res;
-    //               this._listApplyTo = [];
-    //               for (var i = 0; i < dataResult.value.data.length; i++) {
-    //                   this._listApplyTo.push({
-    //                       "applyToId": dataResult.value.data[i].generalTableId,
-    //                       "name": dataResult.value.data[i].value
-    //                   });
-    //               }
-    //           });
-    //   }
+                  var dataResult: any = res;
+                  this._listApplyTo = [];
+                  for (var i = 0; i < dataResult.value.data.length; i++) {
+                      this._listApplyTo.push({
+                          "applyToId": dataResult.value.data[i].generalTableId,
+                          "name": dataResult.value.data[i].value
+                      });
+                  }
+              });
+      }
 
       getConceptByTypes(): void {
           this.masterDataService.getConceptsByTypeIdList([31, 29])

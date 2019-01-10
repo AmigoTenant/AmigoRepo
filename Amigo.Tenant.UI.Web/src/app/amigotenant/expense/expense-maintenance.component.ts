@@ -9,7 +9,7 @@ import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { ConfirmationList, Confirmation } from  '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
-import { EntityStatusClient, GeneralTableClient } from '../../shared/api/services.client';
+import { EntityStatusClient, GeneralTableClient, HouseClient } from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
@@ -61,11 +61,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     expenseForm: FormGroup;
 
     //DROPDOWNS
-    //_listHouseTypes: any = [];
     _listPaymentTypes: any = [];
     _listStatus: any = [];
     _currentHouse: any;
     _currentPeriod: any;
+    _listHouses: any = [];
+    _listPeriods: any = [];
+
     flgEdition: string;
     _isDisabled: boolean;
 
@@ -78,7 +80,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             private expenseDataService: ExpenseDataService,
             private masterDataService: MasterDataService,
             private formBuilder: FormBuilder,
-            private translate: TranslateService
+            private translate: TranslateService,
+            private houseClient: HouseClient
         ) {
         super();
 
@@ -88,7 +91,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             this.translate.get('common.maxLength', { value: 50 })
           ]).subscribe((messages: string[]) => this.buildMessages(...messages));
           this.genericValidator = new GenericValidator(this.validationMessages);
-debugger;
     }
 
     buildMessages(required?: string, notvalid?: string, maxlength?: string) {
@@ -103,6 +105,9 @@ debugger;
             required: required
           },
           houseTypeId: {
+            required: required
+          },
+          paymentTypeId: {
             required: required
           }
         };
@@ -176,8 +181,8 @@ debugger;
 
     initializeForm(): void {
         this.getPaymentTypes();
-        //this.resetFormError();
-        // this.getHouseTypes();
+        this.getHouseAll();
+        this.getPeriodsNumberPeriod(5);
     }
 
 
@@ -259,7 +264,7 @@ debugger;
 
 
     onCancel(): void {
-        this.router.navigate(['leasing/rentalApp']);
+        this.router.navigate(['amigotenant/expense']);
     }
 
     onExecuteEvent($event) {
@@ -357,6 +362,36 @@ debugger;
             });
     }
 
+    getHouseAll(): void {
+        this.masterDataService.getHouseAll('')
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listHouses = dataResult.data;
+                // for (let i = 0; i < dataResult.data.length; i++) {
+                //     this._listHouses.push({
+                //         'houseId': dataResult.data[i].generalTableId,
+                //         'name': dataResult.data[i].value
+                //     });
+                // }
+            });
+    }
+
+    getPeriodsNumberPeriod(periodNumber: number): void {
+        debugger;
+        this.masterDataService.getPeriodLastestNumberPeriods(periodNumber)
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listPeriods = dataResult.data;
+            });
+    }
+
+    // var resp = this.houseClient.searchForTypeAhead(term)
+    //         .map(response => 
+    //             response.data
+    //         );
+    //     return resp;
+
+    
     accept() {
         let variable = this.expenseForm.value;
         this.showErrors(true);
@@ -384,4 +419,23 @@ debugger;
           this.validationSubscription.unsubscribe();
         }
     }
+
+
+    openDialog: boolean = false;
+    selectedDetail: any;
+
+    onAddDetail(): void {
+        //this.selectedDetail = data;
+        this.openDialog = true;
+     }
+
+
+     close() {
+        this.openDialog = false;
+     }
+
+     eventoCloseParent() {
+        this.openDialog = false;
+     }
+
 }

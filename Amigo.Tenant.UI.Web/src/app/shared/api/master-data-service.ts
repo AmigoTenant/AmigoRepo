@@ -38,6 +38,14 @@ export class MasterDataService extends BaseService {
             );
     }
 
+    getPeriodLastestNumberPeriods(periodNumber: number): Observable<PeriodDTO[] | any> {
+        const url = `${this.baseUrl}api/${Constants.PERIOD_URL_PATH.getPeriodLastestNumberPeriods}?periodNumbers=${periodNumber}`;
+        return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token) })
+            .pipe(
+            catchError(this.handleError)
+            );
+    }
+
     //HOUSE
     getHouseTypes(): Observable<any> {
         const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;
@@ -49,6 +57,15 @@ export class MasterDataService extends BaseService {
             // return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
             // .map(r => r as ResponseDTOOfListOfHouseTypeDTO)
             // .catch(this.handleError);
+    }
+
+    getHouseAll(houseName: string): Observable<any> {
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseAll}?search=${houseName}`;
+        return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            .pipe(
+                map(r => r),
+                catchError(this.handleError)
+            );
     }
 
     sendEmailNotification(): Observable<any> {
