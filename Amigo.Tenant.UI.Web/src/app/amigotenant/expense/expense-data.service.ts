@@ -8,6 +8,7 @@ import { BaseService } from '../../shared/api/base.service';
 import { ExpenseEditRequest } from './dto/expense-edit-request';
 import { ExpenseDetailDto } from './dto/expense-detail-dto';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
+import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
 
 @Injectable()
 export class ExpenseDataService extends BaseService {
@@ -50,6 +51,15 @@ export class ExpenseDataService extends BaseService {
         ).pipe(
             map(r => r),
             catchError(this.handleError)
+            );
+    }
+
+    save(expenseDetailRegisterRequest: ExpenseDetailRegisterRequest): Observable<any[]> {
+        const url = `${this.baseUrl}api/expense/registerDetail`;
+        return this.http.post<any>(url, JSON.stringify(expenseDetailRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
             );
     }
 
