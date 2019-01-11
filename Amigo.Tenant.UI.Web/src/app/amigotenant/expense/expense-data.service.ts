@@ -32,6 +32,15 @@ export class ExpenseDataService extends BaseService {
             );
     }
 
+    saveExpense(expenseRegisterRequest: ExpenseRegisterRequest): Observable<any> {
+        const url = `${this.baseUrl}api/expense/register`;
+        return this.http.post<any>(url, JSON.stringify(expenseRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
+
     //EXPENSE DETAIL
 
     getExpenseDetailByExpenseId(id: number): Observable<any[] | ExpenseDetailDto[]> {

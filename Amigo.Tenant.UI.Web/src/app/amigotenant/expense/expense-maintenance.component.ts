@@ -394,6 +394,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     
     accept() {
         let variable = this.expenseForm.value;
+        this.expenseDataService.saveExpense(variable).subscribe(r=> {
+            let data = r;
+        });
         this.showErrors(true);
     }
 
