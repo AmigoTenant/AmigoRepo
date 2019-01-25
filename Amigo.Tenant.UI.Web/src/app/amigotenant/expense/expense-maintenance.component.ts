@@ -338,13 +338,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
     };
 
-    onSelectModelExpenseDate(): void {
-        if (this.modelExpenseDate != null) {
-            this.model.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-        } else {
-            this.model.expenseDate = undefined; //new Date();
-        }
-    }
+    // onSelectModelExpenseDate(): void {
+    //     if (this.modelExpenseDate != null) {
+    //         this.model.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+    //     } else {
+    //         this.model.expenseDate = undefined; //new Date();
+    //     }
+    // }
 
     //GETTING DATA FOR DROPDOWNLIST
 
@@ -440,5 +440,16 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
      eventoCloseParent() {
         this.openDialog = false;
      }
+
+
+     onSelectModelExpenseDate(): void {
+        if (this.modelExpenseDate != null) {
+            let expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+            this.expenseForm.patchValue(expenseDate);
+            //this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+        } else {
+            this.modelExpenseDate = undefined;
+        }
+    }
 
 }

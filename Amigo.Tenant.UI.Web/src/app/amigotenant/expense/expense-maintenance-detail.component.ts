@@ -346,4 +346,13 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     onCancel() {
         this.eventoClose.emit();
     }
+
+    onSelectModelExpenseDate(): void {
+        if (this.modelExpenseDate != null) {
+            this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+        }
+        else {
+            this.modelExpenseDate = undefined;
+        }
+    }
 }
