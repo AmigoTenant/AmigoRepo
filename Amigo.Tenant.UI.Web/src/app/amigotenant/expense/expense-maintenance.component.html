@@ -17,8 +17,6 @@
         <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
         <div class="row">
             <form [formGroup]="expenseForm">
-                <!-- <form data-val-form="expenseForm" class="col-sm-12" [formGroup]="expenseForm"> -->
-
                 <ngb-tabset>
                     <ngb-tab title="Expense Header">
                         <ng-template ngbTabContent>
@@ -129,7 +127,7 @@
         <div class="row">
             <input type="button" class="button" value="Add Expense Detail" (click)="onAddDetail()" />
         </div>
-        <div class="row">
+        <div class="row" >
             <at-expense-detail-grid></at-expense-detail-grid>
         </div>
     </div>
