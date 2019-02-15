@@ -393,7 +393,10 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     
     accept() {
+        debugger
         let variable = this.expenseForm.value;
+        let expenseDate = new Date(variable.expenseDate.year, variable.expenseDate.month - 1, variable.expenseDate.day, 0, 0, 0, 0);
+        variable.expenseDate = expenseDate;
         this.expenseDataService.saveExpense(variable).subscribe(r=> {
             let data = r;
         });
@@ -446,6 +449,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         if (this.modelExpenseDate != null) {
             let expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
             this.expenseForm.patchValue(expenseDate);
+            this.expenseForm.get('expenseDate').setValue(expenseDate);
             //this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
         } else {
             this.modelExpenseDate = undefined;

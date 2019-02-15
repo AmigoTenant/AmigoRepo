@@ -7,7 +7,7 @@ namespace Amigo.Tenant.Commands.Expense
     public class ExpenseRegisterCommand : AuditBaseCommand, IAsyncRequest<CommandResult>
     {
         public int? ExpenseId { get; set; }
-        public DateTime? ExpenseDate { get; set; }
+        public DateTimeOffset? ExpenseDate { get; set; }
         public int? PaymentTypeId { get; set; }
         public int? HouseId { get; set; }
         public int? PeriodId { get; set; }

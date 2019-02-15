@@ -36,7 +36,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
         [HttpPost, Route("register") ]//, AmigoTenantClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.ExpenseCreate)]
-        public async Task<ResponseDTO> Register(ExpenseRegisterRequest expense)
+        public async Task<ResponseDTO> Register([FromBody]ExpenseRegisterRequest expense)
         {
             if (ModelState.IsValid)
             {

@@ -15,8 +15,7 @@ namespace Amigo.Tenant.CommandModel.Models
         }
 
         public int? ExpenseId { get; set; }
-        [Column(TypeName = "datetime2")]
-        public DateTime? ExpenseDate { get; set; }
+        public DateTimeOffset? ExpenseDate { get; set; }
         public int? PaymentTypeId { get; set; }
         public int? HouseId { get; set; }
         public int? PeriodId { get; set; }

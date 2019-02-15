@@ -26,11 +26,11 @@
 
                                 <div class="form-group col-sm-12">
 
-
+                                    <!-- (ngModelChange)="onSelectModelExpenseDate()"  -->
                                     <label for="from" class="col-sm-3 control-label">Expense Date</label>
                                     <label class="ro-calendar col-sm-3">
                                         <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDate" ngbDatepicker #d1="ngbDatepicker"
-                                            [outside-click]="d1" (ngModelChange)="onSelectModelExpenseDate()" 
+                                            [outside-click]="d1" 
                                             formControlName="expenseDate">
 
                                         <span class="ro-calendar-btn" (click)="d1.toggle()">

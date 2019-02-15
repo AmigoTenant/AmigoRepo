@@ -274,6 +274,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //GETTING DATA FOR DROPDOWNLIST
     accept() {
         //let variable = this.expenseDetailForm.value;
+        debugger;
         Object.assign(this.model, this.expenseDetailForm.value);
         this.expenseDataService.save(this.model)
         .subscribe(r=>
@@ -348,11 +349,12 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     onSelectModelExpenseDate(): void {
-        if (this.modelExpenseDate != null) {
-            this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-        }
-        else {
-            this.modelExpenseDate = undefined;
-        }
+        // if (this.modelExpenseDate != null) {
+
+        //     this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+        // }
+        // else {
+        //     this.modelExpenseDate = undefined;
+        // }
     }
 }
