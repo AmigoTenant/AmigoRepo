@@ -30,6 +30,7 @@ namespace Amigo.Tenant.Application.Services.Expense
         private readonly IQueryDataAccess<ExpenseSearchDTO> _expenseSearchDataAccess;
         private readonly IQueryDataAccess<ExpenseDetailSearchDTO> _expenseDetailSearchDataAccess;
         private readonly IQueryDataAccess<ExpenseRegisterRequest> _expenseDataAccess;
+        private readonly IQueryDataAccess<ExpenseDTO> _expenseDtoDataAccess;
         private readonly IQueryDataAccess<ExpenseDetailRegisterRequest> _expenseDetailDataAccess;
         private readonly IEntityStatusApplicationService _entityStatusApplicationService;
         private readonly IPeriodApplicationService _periodApplicationService;
@@ -41,7 +42,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             IQueryDataAccess<ExpenseDetailSearchDTO> expenseDetailSearchDataAccess,
             IEntityStatusApplicationService entityStatusApplicationService,
             IPeriodApplicationService periodApplicationService,
-            IMapper mapper
+            IMapper mapper,
+            IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess
             )
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
@@ -54,6 +56,7 @@ namespace Amigo.Tenant.Application.Services.Expense
             _periodApplicationService = periodApplicationService;
             _expenseDetailSearchDataAccess = expenseDetailSearchDataAccess;
             _expenseDetailDataAccess = expenseDetailDataAccess;
+            _expenseDtoDataAccess = expenseDtoDataAccess;
         }
 
         public async Task<ResponseDTO> RegisterExpenseAsync(ExpenseRegisterRequest request)
@@ -154,14 +157,14 @@ namespace Amigo.Tenant.Application.Services.Expense
             return ResponseBuilder.Correct(pagedResult);
         }
 
-        public async Task<ResponseDTO<ExpenseRegisterRequest>> GetByIdAsync(int? id)
+        public async Task<ResponseDTO<ExpenseDTO>> GetByIdAsync(int? id)
         {
-            Expression<Func<ExpenseRegisterRequest, bool>> queryFilter = c => true;
+            Expression<Func<ExpenseDTO, bool>> queryFilter = c => true;
 
             if (id.HasValue)
                 queryFilter = queryFilter.And(p => p.ExpenseId == id);
 
-            var expense = await _expenseDataAccess.FirstOrDefaultAsync(queryFilter);
+            var expense = await _expenseDtoDataAccess.FirstOrDefaultAsync(queryFilter);
 
             return ResponseBuilder.Correct(expense);
         }

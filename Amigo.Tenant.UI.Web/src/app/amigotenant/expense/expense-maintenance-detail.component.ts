@@ -32,7 +32,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     public validationMessages: { [key: string]: { [key: string]: string } } = {};
     public displayMessage: { [key: string]: string; } = {};
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-    @Input() inputSelectedExpenseDetail: any;
+    @Input() inputSelectedExpenseDetail: ExpenseDetailRegisterRequest;
     @Output() eventoClose = new EventEmitter();
 
     _listConcepts: any[];
@@ -85,19 +85,24 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //     };
     // }
 
-    
-
     ngOnInit() {
-         debugger
-         this.model = new ExpenseDetailRegisterRequest();
-
+        debugger;
+        //this.model = new ExpenseDetailRegisterRequest();
         this.buildForm();
         this.initializeForm();
+        //this.expenseDetailForm = Object.assign(this.expenseDetailForm.value, this.inputSelectedExpenseDetail);
+        this.expenseDetailForm.patchValue(this.inputSelectedExpenseDetail);
+        
+        if (this.inputSelectedExpenseDetail === undefined || this.inputSelectedExpenseDetail ===  null || this.inputSelectedExpenseDetail.expenseDetailId === undefined) {
+            this.flgEdition = 'N';
+            //this.expenseDetailForm.get('expenseId').setValue(this.input)
+        } else {
+            this.flgEdition = 'E';
+        }
         // this.sub = this.route.params.subscribe(params => {
 
         //     //TODO:
         //     let id = params['expenseDetailId'];
-        //     let idDetail = this.inputSelectedExpenseDetail;
         //     if (id != null && typeof (id) !== 'undefined') {
         //         this.getExpenseDetailByExpenseDetailId(id);
         //         this.flgEdition = 'E';
@@ -109,19 +114,22 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         //     }
 
         // });
-
-
     }
+
 
     buildForm() {
         this.expenseDetailForm = this.formBuilder.group({
+            expenseDetailId: [null],
             conceptId: [null, [Validators.required]],
+            quantity: [null, [Validators.required]],
             subTotalAmount: [null, [Validators.required]],
             applyTo: [null, [Validators.required]],
             tenantId: [null],
             remark: [null],
             tax: [null],
-            totalAmount: [null]
+            totalAmount: [null],
+            expenseId: [null],
+            expenseDetailStatusId: [null]
          });
     }
 
@@ -146,43 +154,26 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //INSERT
     //===========
 
-    onSave(): void {
+    acceptDetail(): void {
+        debugger;
         if (this.isValidData()) {
-            if (this.flgEdition === 'N') {
-                //NEW
-                //this.model.contractStatusId = 2; //DRAFT
-                // this.model.rowStatus = true;
-                // this.expenseClient.register(this.model).subscribe(res => {
-                //     var dataResult: any = res;
-                //     this.successFlag = dataResult.isValid;
-                //     this.errorMessages = dataResult.messages;
-                //     this.successMessage = 'Rental Expense was created';
-                //     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
-                //     if (this.successFlag) {
-                //         this.getExpenseById(dataResult.pk);
-                //         this.flgEdition = "E";
-                //         this._isDisabled = false;
-                //     }
-                    
-                // });
-            }
-            else {
-                //UPDATE
-                // this.expenseClient.update(this.model).subscribe(res => {
-                //     var dataResult: any = res;
-                //     this.successFlag = dataResult.isValid;
-                //     this.errorMessages = dataResult.messages;
-                //     this.successMessage = 'Rental Expense was Updated';
-                //     //TODO: Permite descargar nuevamente la lista de HouseFeatures Asignados al contrato, 
-                //     //debe hacerse la llamada en el servidor al grabar, para evitar grabar informacion Features 
-                //     //que ya han sido asignados concurrentemente (por otra persona)
-                //     //this.getHouseFeatureDetailContract();
-                //     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
 
-                // });
+            const model = new ExpenseDetailRegisterRequest();
+            Object.assign(model, this.expenseDetailForm.value);
+
+            if (this.flgEdition === 'N') {
+                this.expenseDataService.saveExpenseDetail(model)
+                    .subscribe(r => {
+                        let result = new ResponseListDTO(r);
+                    });
+
+            } else {
+                //UPDATE
+                this.expenseDataService.updateExpenseDetail(model)
+                    .subscribe(r => {
+                        let result = new ResponseListDTO(r);
+                    });
             }
-            
-            
         }
     }
 
@@ -227,13 +218,13 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     onExecuteEvent($event) {
         switch ($event) {
             case 's':
-                this.onSave();
+                this.acceptDetail();
                 break;
             case 'c':
                 //this.onClear();
                 break;
             case 'k':
-                this.onCancel();
+                this.onCancelDetail();
                 break;
             default:
                 confirm('Sorry, that Event is not exists yet!');
@@ -271,18 +262,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     //EXPENSE DETAIL METHODS
 
-    //GETTING DATA FOR DROPDOWNLIST
-    accept() {
-        //let variable = this.expenseDetailForm.value;
-        debugger;
-        Object.assign(this.model, this.expenseDetailForm.value);
-        this.expenseDataService.save(this.model)
-        .subscribe(r=>
-            {
-                let result = new ResponseListDTO(r);
-            }
-        )
-    }
+    
 
     ngAfterViewInit() {
         // Watch for the blur event from any input element on the form.
@@ -342,9 +322,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
                   let dataResult = new ResponseListDTO(res);
                   this._listConcepts = dataResult.data;
               });
-      }
+    }
 
-    onCancel() {
+    onCancelDetail() {
         this.eventoClose.emit();
     }
 

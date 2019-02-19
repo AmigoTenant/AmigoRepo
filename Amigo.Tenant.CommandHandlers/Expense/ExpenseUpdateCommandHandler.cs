@@ -52,7 +52,6 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 //=================================================
 
                 _repository.UpdatePartial(entity, new string[] {
-                    "ExpenseId",
                     "ExpenseDate",
                     "PaymentTypeId",
                     "HouseId",

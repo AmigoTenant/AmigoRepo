@@ -3,8 +3,8 @@
          <div class="row">
             <div class="col-sm-10">
                 <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
-                    <input type="button" (click)="accept()" value="Aceptar" class="btn-primary" />
-                    <input type="button" (click)="cancel()" value="Cancel" class="btn-primary default"/>
+                    <input type="button" (click)="acceptDetail()" value="Aceptar" class="btn-primary" />
+                    <input type="button" (click)="cancelDetail()" value="Cancel" class="btn-primary default"/>
                 </div>
             </div>
         </div> 
@@ -12,9 +12,9 @@
         <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
         <div class="row">
             <form [formGroup]="expenseDetailForm">
-                <ngb-tabset>
+                <!-- <ngb-tabset>
                     <ngb-tab title="Expense Detail">
-                        <ng-template ngbTabContent>
+                        <ng-template ngbTabContent> -->
 
                             <div class="row col-sm-8">
 
@@ -94,10 +94,10 @@
                                         </label>
                                     </div>
                                 </div>
-                        </ng-template>
+                        <!-- </ng-template>
 
                     </ngb-tab>
-                </ngb-tabset>
+                </ngb-tabset> -->
 
             </form>
         </div>

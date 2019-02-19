@@ -12,7 +12,7 @@ namespace Amigo.Tenant.CommandModel.Models
         public int? ConceptId { get; set; }
         [StringLength(250)]
         public string Remark { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal? SubTotalAmount { get; set; }
         public decimal? Tax { get; set; }
         public decimal? Quantity { get; set; }
         public decimal? TotalAmount { get; set; }

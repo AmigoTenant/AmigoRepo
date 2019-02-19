@@ -16,7 +16,7 @@ namespace Amigo.Tenant.Application.Services.Interfaces.Expense
         Task<ResponseDTO> UpdateExpenseAsync(ExpenseUpdateRequest expense);
         Task<ResponseDTO> DeleteExpenseAsync(ExpenseDeleteRequest expense);
         Task<ResponseDTO<PagedList<ExpenseSearchDTO>>> SearchExpenseAsync(ExpenseSearchRequest search);
-        Task<ResponseDTO<ExpenseRegisterRequest>> GetByIdAsync(int? id);
+        Task<ResponseDTO<ExpenseDTO>> GetByIdAsync(int? id);
         Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent,
             TransportContext transportContext, ExpenseSearchRequest search);
         Task<ResponseDTO> ChangeStatus(ExpenseChangeStatusRequest expense);

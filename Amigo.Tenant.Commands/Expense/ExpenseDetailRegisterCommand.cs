@@ -10,7 +10,7 @@ namespace Amigo.Tenant.Commands.ExpenseDetail
         public int? ExpenseId { get; set; }
         public int? ConceptId { get; set; }
         public string Remark { get; set; }
-        public decimal? Amount { get; set; }
+        public decimal? SubTotalAmount { get; set; }
         public decimal? Tax { get; set; }
         public decimal? TotalAmount { get; set; }
         public int? TenantId { get; set; }

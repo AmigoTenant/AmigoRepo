@@ -15,7 +15,7 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context.Mapping
             this.Property(t => t.ExpenseDetailId).HasColumnName("ExpenseDetailId");
             this.Property(t=> t.ConceptId).HasColumnName("ConceptId");
             this.Property(t => t.Remark).HasColumnName("Remark");
-            this.Property(t => t.Amount).HasColumnName("Amount");
+            this.Property(t => t.SubTotalAmount).HasColumnName("Amount");
             this.Property(t => t.Tax).HasColumnName("Tax");
             this.Property(t => t.TotalAmount).HasColumnName("TotalAmount");
             this.Property(t=> t.TenantId).HasColumnName("TenantId");

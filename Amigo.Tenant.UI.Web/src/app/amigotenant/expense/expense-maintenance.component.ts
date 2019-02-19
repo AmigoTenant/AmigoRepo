@@ -17,6 +17,7 @@ import { ValidationService } from '../../shared/validations/validation.service';
 import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { GenericValidator } from '../../shared/generic.validator';
+import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
 
 
 declare var $: any;
@@ -52,7 +53,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
 
     model: ExpenseRegisterRequest;
-    public modelExpenseDate: any;
+    //public modelExpenseDate: any;
     allowEditing = true;
     public successFlag: boolean;
     public errorMessages: string[];
@@ -118,7 +119,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     contractId: any;
 
     ngOnInit() {
-        debugger
         this.model = new ExpenseRegisterRequest();
         this.buildForm();
         this.initializeForm();
@@ -143,6 +143,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     buildForm() {
         this.expenseForm = this.formBuilder.group({
+            expenseId: [null],
             expenseDate: [null, [Validators.required]],
             houseId: [null, [Validators.required]],
             periodId: [null, [Validators.required]],
@@ -159,24 +160,24 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
         this.expenseDataService.getById(id).subscribe(
             response => {
-                debugger;
                 let dataResult: any = new ResponseListDTO(response);
                 this.model = dataResult.dat;
                 this.expenseForm.patchValue(this.model);
-                this.modelExpenseDate = this.getDateFromModel(this.model.expenseDate);
+                this.getDateFromModel(this.model.expenseDate);
             });
     }
 
-    public getDateFromModel(dateFromModel: Date): modelDate {
+    public getDateFromModel(dateFromModel: Date): void {
         let model = new modelDate();
         if (dateFromModel != null && dateFromModel !== undefined) {
-            model.day = dateFromModel.getDate();
-            model.month = dateFromModel.getMonth() + 1;
-            model.year = dateFromModel.getFullYear();
+            const expenseDate = new Date(dateFromModel);
+            model.day = expenseDate.getDate();
+            model.month = expenseDate.getMonth() + 1;
+            model.year = expenseDate.getFullYear();
         } else {
             model = null;
         }
-        return model;
+        this.expenseForm.get('expenseDate').setValue(model);
     }
 
     initializeForm(): void {
@@ -311,9 +312,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
 
-
-    //EXPENSE METHODS
-
     getPeriod = (item) => {
         if (item !== null && item !== undefined && item !== '') {
             this.model.periodId = item.periodId;
@@ -326,27 +324,15 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     getHouse = (item) => {
         if (item !== null && item !== undefined && item !== '') {
-            //this.model.houseId = item.houseId;
-            debugger;
             this._currentHouse = item;
             this.expenseForm.patchValue({'houseId': item.houseId })
         } else {
-            //this.model.periodId = undefined;
             this._currentHouse = undefined;
             this.expenseForm.patchValue({'houseId': null })
             this.showErrors(true);
         }
     };
 
-    // onSelectModelExpenseDate(): void {
-    //     if (this.modelExpenseDate != null) {
-    //         this.model.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-    //     } else {
-    //         this.model.expenseDate = undefined; //new Date();
-    //     }
-    // }
-
-    //GETTING DATA FOR DROPDOWNLIST
 
     getPaymentTypes(): void {
         this.masterDataService.getGeneralTableByTableName('PaymentType')
@@ -367,17 +353,10 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
                 this._listHouses = dataResult.data;
-                // for (let i = 0; i < dataResult.data.length; i++) {
-                //     this._listHouses.push({
-                //         'houseId': dataResult.data[i].generalTableId,
-                //         'name': dataResult.data[i].value
-                //     });
-                // }
             });
     }
 
     getPeriodsNumberPeriod(periodNumber: number): void {
-        debugger;
         this.masterDataService.getPeriodLastestNumberPeriods(periodNumber)
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
@@ -385,25 +364,27 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             });
     }
 
-    // var resp = this.houseClient.searchForTypeAhead(term)
-    //         .map(response => 
-    //             response.data
-    //         );
-    //     return resp;
 
-    
     accept() {
-        debugger
-        let variable = this.expenseForm.value;
-        let expenseDate = new Date(variable.expenseDate.year, variable.expenseDate.month - 1, variable.expenseDate.day, 0, 0, 0, 0);
-        variable.expenseDate = expenseDate;
-        this.expenseDataService.saveExpense(variable).subscribe(r=> {
-            let data = r;
-        });
-        this.showErrors(true);
+        let expense = this.expenseForm.value;
+        let expenseDate = new Date(expense.expenseDate.year, expense.expenseDate.month - 1, expense.expenseDate.day, 0, 0, 0, 0);
+        expense.expenseDate = expenseDate;
+        if (this.isValidData()) {
+            if (this.flgEdition === 'N') {
+                //NEW
+                this.expenseDataService.saveExpense(expense).subscribe(r=> {
+                    let data = r;
+                });
+                this.showErrors(true);
+            }
+            else {
+                //UPDATE
+                this.expenseDataService.updateExpense(expense).subscribe(r=> {
+                    let data = r;
+                });
+            }
+        }
     }
-
-
 
     ngAfterViewInit() {
         // Watch for the blur event from any input element on the form.
@@ -431,8 +412,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     selectedDetail: any;
 
     onAddDetail(): void {
-        //this.selectedDetail = data;
         this.openDialog = true;
+        this.selectedDetail = new ExpenseDetailRegisterRequest();
+        this.selectedDetail.expenseId = this.model.expenseId;
      }
 
 
@@ -445,15 +427,14 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
      }
 
 
-     onSelectModelExpenseDate(): void {
-        if (this.modelExpenseDate != null) {
-            let expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-            this.expenseForm.patchValue(expenseDate);
-            this.expenseForm.get('expenseDate').setValue(expenseDate);
-            //this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-        } else {
-            this.modelExpenseDate = undefined;
-        }
-    }
+    //  onSelectModelExpenseDate(): void {
+    //     if (this.modelExpenseDate != null) {
+    //         let expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
+    //         //this.expenseForm.patchValue(expenseDate);
+    //         this.expenseForm.get('expenseDate').setValue(expenseDate);
+    //     } else {
+    //         this.modelExpenseDate = undefined;
+    //     }
+    // }
 
 }

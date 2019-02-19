@@ -41,6 +41,15 @@ export class ExpenseDataService extends BaseService {
             );
     }
 
+    updateExpense(expenseRegisterRequest: ExpenseRegisterRequest): Observable<any> {
+        const url = `${this.baseUrl}api/expense/update`;
+        return this.http.post<any>(url, JSON.stringify(expenseRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
+
     //EXPENSE DETAIL
 
     getExpenseDetailByExpenseId(id: number): Observable<any[] | ExpenseDetailDto[]> {
@@ -63,7 +72,7 @@ export class ExpenseDataService extends BaseService {
             );
     }
 
-    save(expenseDetailRegisterRequest: ExpenseDetailRegisterRequest): Observable<any[]> {
+    saveExpenseDetail(expenseDetailRegisterRequest: ExpenseDetailRegisterRequest): Observable<any[]> {
         const url = `${this.baseUrl}api/expense/registerDetail`;
         return this.http.post<any>(url, JSON.stringify(expenseDetailRegisterRequest),
                 { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
@@ -72,5 +81,13 @@ export class ExpenseDataService extends BaseService {
             );
     }
 
+    updateExpenseDetail(expenseDetailRegisterRequest: ExpenseDetailRegisterRequest): Observable<any[]> {
+        const url = `${this.baseUrl}api/expense/updateDetail`;
+        return this.http.post<any>(url, JSON.stringify(expenseDetailRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
 
 }

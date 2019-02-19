@@ -61,6 +61,7 @@
     <Compile Include="Mapping\AppVersionMapping.cs" />
     <Compile Include="Mapping\ExpenseDetailRegisterMapping.cs" />
     <Compile Include="Mapping\ExpenseDetailSearchMapping.cs" />
+    <Compile Include="Mapping\ExpenseDtoMapping.cs" />
     <Compile Include="Mapping\ExpenseSearchMapping.cs" />
     <Compile Include="Mapping\ContractHouseDetailMapping.cs" />
     <Compile Include="Mapping\CountryMapping.cs" />

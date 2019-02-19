@@ -29,7 +29,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
         [HttpGet, Route("getById")]
-        public async Task<ResponseDTO<ExpenseRegisterRequest>> GetById(int? id)
+        public async Task<ResponseDTO<ExpenseDTO>> GetById(int? id)
         {
             var resp = await _expenseApplicationService.GetByIdAsync(id);
             return resp;
