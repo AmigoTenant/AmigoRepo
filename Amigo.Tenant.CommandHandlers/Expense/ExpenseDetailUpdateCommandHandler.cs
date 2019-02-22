@@ -7,6 +7,7 @@ using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using model = Amigo.Tenant.CommandModel.Models;
 
@@ -50,12 +51,12 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                     "ConceptId",
                     "TenantId",
                     "Remark",
-                    "Amount",
+                    "SubTotalAmount",
                     "Tax",
                     "TotalAmount",
                     "Quantity",
                     "UpdatedBy",
-                    "UpdatedDate",
+                    "UpdatedDate"
                 });
 
                 await _unitOfWork.CommitAsync();

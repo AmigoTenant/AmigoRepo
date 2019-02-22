@@ -53,7 +53,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
 
     model: ExpenseRegisterRequest;
-    //public modelExpenseDate: any;
     allowEditing = true;
     public successFlag: boolean;
     public errorMessages: string[];
@@ -61,7 +60,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     expenseForm: FormGroup;
 
-    //DROPDOWNS
     _listPaymentTypes: any = [];
     _listStatus: any = [];
     _currentHouse: any;
@@ -284,23 +282,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
     }
 
-
-    //GETDATA FROM MASTERTABLE
-    // getPriority(): void {
-    //     this.gnrlTableDataService.getGeneralTableByTableNameAsync("Priority")
-    //         .subscribe(res => {
-    //             var dataResult: any = res;
-    //             this._listPriority = [];
-    //             for (var i = 0; i < dataResult.value.data.length; i++) {
-    //                 this._listPriority.push({
-    //                     "typeId": dataResult.value.data[i].generalTableId,
-    //                     "name": dataResult.value.data[i].value
-    //                 });
-    //             }
-    //         });
-    // }
-    
-
     isValidData(): boolean {
         let isValid = true;
         //this.resetFormError();
@@ -387,7 +368,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
     ngAfterViewInit() {
-        // Watch for the blur event from any input element on the form.
         const controlBlurs: Observable<any>[] = this.formInputElements
           .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
     
@@ -408,23 +388,32 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
 
-    openDialog: boolean = false;
-    selectedDetail: any;
+    // openDialog: boolean = false;
+    // selectedDetail: any;
 
-    onAddDetail(): void {
-        this.openDialog = true;
-        this.selectedDetail = new ExpenseDetailRegisterRequest();
-        this.selectedDetail.expenseId = this.model.expenseId;
-     }
+    // onAddDetail(): void {
+    //     this.openDialog = true;
+    //     this.selectedDetail = new ExpenseDetailRegisterRequest();
+    //     this.selectedDetail.expenseId = this.model.expenseId;
+    //  }
 
 
-     close() {
-        this.openDialog = false;
-     }
+    //  close() {
+    //     this.openDialog = false;
+    //  }
 
-     eventoCloseParent() {
-        this.openDialog = false;
-     }
+
+    //  eventoCloseParent(expenseId: any) {
+    //      debugger;
+    //     this.openDialog = false;
+    //     this.getExpenseById(expenseId);
+    //  }
+
+    //  eventoCloseParent= (item) => {
+    //     debugger;
+    //     this.openDialog = false;
+    //     this.getExpenseById(item);
+    // };
 
 
     //  onSelectModelExpenseDate(): void {

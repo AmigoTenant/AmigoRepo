@@ -21,6 +21,7 @@ namespace Amigo.Tenant.Commands.ExpenseDetail
         public DateTime? UpdatedDate { get; set; }
         public int? ExpenseDetailStatusId { get; set; }
         public decimal? Quantity { get; set; }
+        public int? ApplyTo { get; set; }
 
     }
 }

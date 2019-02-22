@@ -17,6 +17,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
         public bool? RowStatus { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
+        public int? ApplyTo { get; set; }
 
     }
 }

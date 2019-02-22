@@ -21,5 +21,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public bool? RowStatus { get; set; }
         public virtual Concept Concept { get; set; }
         public virtual MainTenant Tenant { get; set; }
+        public int? ApplyTo { get; set; }
     }
 }

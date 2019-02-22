@@ -7,6 +7,7 @@ using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
 using System;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using model = Amigo.Tenant.CommandModel.Models;
 
@@ -48,7 +49,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 entity.Update(message.UserId);
 
                 //=================================================
-                //Contract
+                //Expense
                 //=================================================
 
                 _repository.UpdatePartial(entity, new string[] {

@@ -6,7 +6,6 @@
         <div class="row">
             <div class="col-sm-10">
                 <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
-
                     <!-- <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="expenseForm.form.valid" [formName]="'expenseForm'"></st-boton-maintenance> -->
                     <input type="button" (click)="accept()" value="Aceptar" />
                     <input type="button" (click)="onCancel()" value="Cancelar" />
@@ -124,25 +123,8 @@
 
             </form>
         </div>
-        <div class="row">
-            <input type="button" class="button" value="Add Expense Detail" (click)="onAddDetail()" />
-        </div>
         <div class="row" >
             <at-expense-detail-grid></at-expense-detail-grid>
         </div>
     </div>
 </div>
-
-<kendo-dialog *ngIf="openDialog" title="Expense Detail" 
-    (close)="close()" style="z-index:10003;" id="tenantMaintenancePanel">
-    <at-expense-maintenance-detail  [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent()">
-    </at-expense-maintenance-detail>
-</kendo-dialog>  
-
-<!-- <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
-    <div>{{deleteMessage}}</div>
-    <kendo-dialog-actions>
-        <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
-        <button type="button" class="k-button k-primary" (click)="yesDelete()">Yes</button>
-    </kendo-dialog-actions>
-</kendo-dialog> -->

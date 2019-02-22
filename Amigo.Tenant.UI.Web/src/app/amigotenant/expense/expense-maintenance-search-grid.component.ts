@@ -8,6 +8,7 @@ import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 import { GridDataResult } from '@progress/kendo-angular-grid';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
 import { Subscription } from 'rxjs/Subscription';
+import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
 
 declare var $: any;
 
@@ -22,6 +23,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     expenseDetailData: GridDataResult;
     totalResultCount: number
     sub: Subscription;
+    expenseId: number;
 
     constructor(
         private route: ActivatedRoute,
@@ -37,6 +39,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.sub = this.route.params.subscribe(params => {
             let expenseId = params['expenseId'];
             if (expenseId != null && typeof (expenseId) !== 'undefined') {
+                this.expenseId = expenseId;
                 this.getExpenseDetails(expenseId);
             }
         });
@@ -77,12 +80,20 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
      }
 
 
-     close() {
+     closePopup() {
         this.openDialog = false;
      }
 
-     eventoCloseParent() {
+     eventoCloseParent= (item) => {
         this.openDialog = false;
+        this.getExpenseDetails(item);
+    };
+
+
+    onAddDetail(): void {
+        this.openDialog = true;
+        this.selectedDetail = new ExpenseDetailRegisterRequest();
+        this.selectedDetail.expenseId = this.expenseId;
      }
 
 }

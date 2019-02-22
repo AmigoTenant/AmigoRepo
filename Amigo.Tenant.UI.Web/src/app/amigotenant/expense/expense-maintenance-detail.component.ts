@@ -26,14 +26,14 @@ declare var $: any;
   templateUrl: './expense-maintenance-detail.component.html'
 })
 
-export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent implements OnInit, OnDestroy, AfterViewInit {
+export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent implements OnInit, AfterViewInit {
     private genericValidator: GenericValidator;
     private validationSubscription: Subscription;
     public validationMessages: { [key: string]: { [key: string]: string } } = {};
     public displayMessage: { [key: string]: string; } = {};
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
     @Input() inputSelectedExpenseDetail: ExpenseDetailRegisterRequest;
-    @Output() eventoClose = new EventEmitter();
+    @Output() eventoClose = new EventEmitter<any>();
 
     _listConcepts: any[];
     isColumnHeaderSelected = true;
@@ -87,33 +87,16 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     ngOnInit() {
         debugger;
-        //this.model = new ExpenseDetailRegisterRequest();
         this.buildForm();
         this.initializeForm();
-        //this.expenseDetailForm = Object.assign(this.expenseDetailForm.value, this.inputSelectedExpenseDetail);
         this.expenseDetailForm.patchValue(this.inputSelectedExpenseDetail);
-        
-        if (this.inputSelectedExpenseDetail === undefined || this.inputSelectedExpenseDetail ===  null || this.inputSelectedExpenseDetail.expenseDetailId === undefined) {
+
+        if (this.inputSelectedExpenseDetail === undefined || this.inputSelectedExpenseDetail ===  null || 
+            this.inputSelectedExpenseDetail.expenseDetailId === undefined) {
             this.flgEdition = 'N';
-            //this.expenseDetailForm.get('expenseId').setValue(this.input)
         } else {
             this.flgEdition = 'E';
         }
-        // this.sub = this.route.params.subscribe(params => {
-
-        //     //TODO:
-        //     let id = params['expenseDetailId'];
-        //     if (id != null && typeof (id) !== 'undefined') {
-        //         this.getExpenseDetailByExpenseDetailId(id);
-        //         this.flgEdition = 'E';
-        //         //this._isDisabled = false;
-
-        //     } else {
-        //         this.flgEdition = 'N';
-        //         //this._isDisabled = false;
-        //     }
-
-        // });
     }
 
 
@@ -165,6 +148,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
                 this.expenseDataService.saveExpenseDetail(model)
                     .subscribe(r => {
                         let result = new ResponseListDTO(r);
+                    }).add(r => {
+                        debugger;
+                        this.onCancelDetail();
                     });
 
             } else {
@@ -172,6 +158,8 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
                 this.expenseDataService.updateExpenseDetail(model)
                     .subscribe(r => {
                         let result = new ResponseListDTO(r);
+                    }).add(r => {
+                        this.onCancelDetail();
                     });
             }
         }
@@ -278,13 +266,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         this.displayMessage = this.genericValidator.processMessages(this.expenseDetailForm, force);
       }
     
-      ngOnDestroy() {
-        this.sub.unsubscribe();
-        if (this.validationSubscription) {
-          this.validationSubscription.unsubscribe();
-        }
-      }
-
     //   _currentTenant: any;
 
     //   getTenant = (item) => {
@@ -325,16 +306,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     onCancelDetail() {
-        this.eventoClose.emit();
+        this.eventoClose.emit(this.expenseDetailForm.get('expenseId').value);
     }
 
-    onSelectModelExpenseDate(): void {
-        // if (this.modelExpenseDate != null) {
-
-        //     this.ExpenseRegisterRequest.expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-        // }
-        // else {
-        //     this.modelExpenseDate = undefined;
-        // }
-    }
 }
