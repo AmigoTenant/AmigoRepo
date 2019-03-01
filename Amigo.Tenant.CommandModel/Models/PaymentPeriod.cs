@@ -21,5 +21,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public string Comment { get; set; }
         public DateTime? PaymentDate { get; set; }
         public string ReferenceNo { get; set; }
+        public Contract Contract { get; set; }
     }
 }

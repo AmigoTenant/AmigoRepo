@@ -22,6 +22,9 @@ namespace Amigo.Tenant.Commands.ExpenseDetail
         public int? ExpenseDetailStatusId { get; set; }
         public decimal? Quantity { get; set; }
         public int? ApplyTo { get; set; }
+        //Campos para ingreso de varios detalles en funcion al apply To: Periodo y House en tabla PaymentPeriod
+        public int PeriodId { get; set; }
+        public int HouseId { get; set; }
 
     }
 }

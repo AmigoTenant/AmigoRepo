@@ -262,12 +262,20 @@ namespace Amigo.Tenant.Common
                 public const string OnAccount = "ONACCOUNT";
                 public const string Deposit = "DEPOSIT";
             }
+
+            public struct ApplyTo
+            {
+                public const string Period = "APPTOPERIO";
+                public const string Tenant = "APPTOTENAN";
+                public const string AllTenants = "APPTOALLTE";
+            }
         }
 
         public struct GeneralTableName
         {
             public const string PaymentType = "PaymentType";
-            
+            public const string ApplyTo = "ApplyTo";
+
         }
 
         public struct ConceptCode

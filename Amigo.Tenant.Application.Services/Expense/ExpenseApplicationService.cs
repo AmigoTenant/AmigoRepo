@@ -33,6 +33,7 @@ namespace Amigo.Tenant.Application.Services.Expense
         private readonly IQueryDataAccess<ExpenseDTO> _expenseDtoDataAccess;
         private readonly IQueryDataAccess<ExpenseDetailRegisterRequest> _expenseDetailDataAccess;
         private readonly IEntityStatusApplicationService _entityStatusApplicationService;
+        private readonly IGeneralTableApplicationService _generalTableApplicationService;
         private readonly IPeriodApplicationService _periodApplicationService;
 
         public ExpenseApplicationService(IBus bus,
@@ -43,7 +44,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             IEntityStatusApplicationService entityStatusApplicationService,
             IPeriodApplicationService periodApplicationService,
             IMapper mapper,
-            IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess
+            IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess,
+            IGeneralTableApplicationService generalTableApplicationService
             )
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
@@ -57,6 +59,7 @@ namespace Amigo.Tenant.Application.Services.Expense
             _expenseDetailSearchDataAccess = expenseDetailSearchDataAccess;
             _expenseDetailDataAccess = expenseDetailDataAccess;
             _expenseDtoDataAccess = expenseDtoDataAccess;
+            _generalTableApplicationService = generalTableApplicationService;
         }
 
         public async Task<ResponseDTO> RegisterExpenseAsync(ExpenseRegisterRequest request)
@@ -258,7 +261,28 @@ namespace Amigo.Tenant.Application.Services.Expense
 
         public async Task<ResponseDTO> RegisterExpenseDetailAsync(ExpenseDetailRegisterRequest request)
         {
+            var response = new ResponseDTO();
             var command = _mapper.Map<ExpenseDetailRegisterRequest, ExpenseDetailRegisterCommand>(request);
+            var applyTo = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.ApplyTo, Constants.GeneralTableCode.ApplyTo.AllTenants);
+            var expense = await _expenseDtoDataAccess.FirstOrDefaultAsync(q => q.ExpenseId.Value == request.ExpenseId);
+            if (request.ApplyTo.HasValue && request.ApplyTo.Value == applyTo.GeneralTableId && (expense ==null || !expense.HouseId.HasValue))
+            {
+                response.IsValid = false;
+                response.Messages = new List<ApplicationMessage>
+                {
+                    new ApplicationMessage()
+                    {
+                        Key = "Error",
+                        Message = "Imposible grabar los detalles para todos los tenants si no especifica la propiedad a la que se hara el ingreso"
+                    }
+                };
+
+                return response;
+            }
+
+            command.PeriodId = expense.PeriodId.Value;
+            command.HouseId = expense.HouseId.Value;
+
             var resp = await _bus.SendAsync(command);
             return ResponseBuilder.Correct(resp, command.ExpenseId, "");
         }
