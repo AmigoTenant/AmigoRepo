@@ -5,9 +5,9 @@
     <kendo-grid id="kgrid-ExpenseDetail" [data]="expenseDetailData" [selectable]="false">
         <kendo-grid-column [width]="50">
             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
-                    <!-- (change)="changeItemHeader()" -->
+                <!-- (change)="changeItemHeader()" -->
                 <div class="text-center">
-                    <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option"  />
+                    <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" />
                 </div>
             </ng-template>
             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
@@ -20,20 +20,33 @@
             </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
-        <!-- <kendo-grid-column field="creationDate" title="Creation">
-            <ng-template kendoGridCellTemplate let-dataItem>
-                <div>
-                    <span>{{dataItem.creationDate|date:"MM/dd/yyyy" }}</span>
-                    <br />
-                </div>
-            </ng-template>
-        </kendo-grid-column> -->
         <kendo-grid-column field="remark" title="Remark"></kendo-grid-column>
         <kendo-grid-column field="tenantFullName" title="Tenant"></kendo-grid-column>
         <kendo-grid-column field="expenseDetailStatusName" title="Status"></kendo-grid-column>
-        <kendo-grid-column field="subTotalAmount" title="Sub Total"></kendo-grid-column>
-        <kendo-grid-column field="tax" title="Tax"></kendo-grid-column>
-        <kendo-grid-column field="totalAmount" title="Total"></kendo-grid-column>
+        <kendo-grid-column field="subTotalAmount" title="Sub Total">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    <span>{{dataItem.subTotalAmount|number:"1.2-2" }}</span>
+                    <br />
+                </div>
+            </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="tax" title="Tax">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                        <div>
+                            <span>{{dataItem.tax|number:"1.2-2" }}</span>
+                            <br />
+                        </div>
+                    </ng-template>
+        </kendo-grid-column>
+        <kendo-grid-column field="totalAmount" title="Total">
+                <ng-template kendoGridCellTemplate let-dataItem>
+                        <div>
+                            <span>{{dataItem.totalAmount|number:"1.2-2" }}</span>
+                            <br />
+                        </div>
+                    </ng-template>
+        </kendo-grid-column>
 
         <kendo-grid-column>
             <ng-template kendoGridCellTemplate let-dataItem>
@@ -51,8 +64,7 @@
     </kendo-grid>
 </div>
 
-<kendo-dialog *ngIf="openDialog" title="Expense Detail" 
-    (close)="closePopup()" style="z-index:10003;" id="tenantMaintenancePanel">
-    <at-expense-maintenance-detail  [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)">
+<kendo-dialog *ngIf="openDialog" title="Expense Detail" (close)="closePopup()" style="z-index:10003;" id="tenantMaintenancePanel">
+    <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)">
     </at-expense-maintenance-detail>
-</kendo-dialog>  
+</kendo-dialog>
