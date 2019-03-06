@@ -20,6 +20,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
+using Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod;
+using Amigo.Tenant.Application.Services.Interfaces.Tracking;
+using Amigo.Tenant.Application.DTOs.Requests.Leasing;
+using Amigo.Tenant.Application.DTOs.Responses.Leasing;
+using Amigo.Tenant.Application.DTOs.Responses.MasterData;
 
 namespace Amigo.Tenant.Application.Services.Expense
 {
@@ -35,6 +40,7 @@ namespace Amigo.Tenant.Application.Services.Expense
         private readonly IEntityStatusApplicationService _entityStatusApplicationService;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
         private readonly IPeriodApplicationService _periodApplicationService;
+        private readonly IQueryDataAccess<ContractDTO> _contractDtoDataAccess;
 
         public ExpenseApplicationService(IBus bus,
             IQueryDataAccess<ExpenseSearchDTO> expenseSearchDataAccess,
@@ -45,7 +51,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             IPeriodApplicationService periodApplicationService,
             IMapper mapper,
             IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess,
-            IGeneralTableApplicationService generalTableApplicationService
+            IGeneralTableApplicationService generalTableApplicationService,
+            IQueryDataAccess<ContractDTO> contractDtoDataAccess
             )
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
@@ -60,6 +67,7 @@ namespace Amigo.Tenant.Application.Services.Expense
             _expenseDetailDataAccess = expenseDetailDataAccess;
             _expenseDtoDataAccess = expenseDtoDataAccess;
             _generalTableApplicationService = generalTableApplicationService;
+            _contractDtoDataAccess  = contractDtoDataAccess;
         }
 
         public async Task<ResponseDTO> RegisterExpenseAsync(ExpenseRegisterRequest request)
@@ -392,10 +400,113 @@ namespace Amigo.Tenant.Application.Services.Expense
         }
 
 
-        public Task<ResponseDTO> ChangeDetailStatus(ExpenseDetailChangeStatusRequest expense)
+        public async Task<ResponseDTO> ChangeDetailStatusAsync(ExpenseDetailChangeStatusRequest expenseDetailList)
         {
-            throw new NotImplementedException();
+            var expenseRequest = await GetByIdAsync(expenseDetailList.ExpenseId);
+
+            await CreateContractDetail(expenseDetailList, expenseRequest.Data);
+
+            var command = _mapper.Map<ContractRegisterRequest, ContractChangeStatusCommand>(expenseRequest.Data);
+
+            command.ContractStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.Contract, Constants.EntityStatus.Contract.Formalized);
+            command.UserId = request.UserId.Value;
+            var resp = await _bus.SendAsync(command);
+
+            return ResponseBuilder.Correct(resp, command.ContractId, command.ContractCode);
+
         }
+
+
+        private async Task CreateContractDetail(ExpenseDetailChangeStatusRequest expenseDetailList, ExpenseDTO request)
+        {
+            var isLastPeriod = false;
+            var period = (await _periodApplicationService.GetPeriodByIdAsync(request.PeriodId)).Data;
+            //var contractEndDate = request.EndDate;
+            var currentPeriodDueDate = period.DueDate.Value.AddMonths(1);
+            var id = -1;
+            var contractDetails = new List<ContractDetailRegisterRequest>();
+
+            var paymentsPeriod = new List<PaymentPeriodRegisterRequest>();
+            //var rentConceptId = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
+            //var depositConceptId = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Deposit);
+            //var entityStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
+            //var paymentTypeRentId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Rent);
+            //var paymentTypeDepositId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Deposit);
+
+            var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ChangeStatusList.Select(r => r.ExpenseDetailId).Contains(q.ExpenseDetailId.Value));
+
+            foreach (var item in expenseDetailList.ChangeStatusList)
+            {
+                
+
+                var expenseDetailRegisterRequest = detailList.FirstOrDefault(q => q.ExpenseDetailId.Value == item.ExpenseDetailId.Value);
+
+                if (expenseDetailRegisterRequest != null)
+                {
+                    var contract = await _contractDtoDataAccess.FirstOrDefaultAsync(q => q.TenantId == expenseDetailRegisterRequest.TenantId 
+                                        && q.PeriodId == request.PeriodId.Value.ToString()
+                                        && q.ContractStatusId == 10); //TODO: Corregir esto: tOsTRING Y cONTRACTiD
+
+                    SetPaymentsPeriod(paymentsPeriod, request, period, id, isLastPeriod, rentConceptId, entityStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId, expenseDetailRegisterRequest);
+
+                }
+                
+            }
+
+
+        }
+
+        private void SetPaymentsPeriod(List<PaymentPeriodRegisterRequest> paymentsPeriod, ContractRegisterRequest request, PeriodDTO period, int id, bool isLastPeriod, int? rentId, int? entityStatusId, int? paymentTypeId, int? depositConceptId, int? paymentTypeDepositId, ExpenseDetailRegisterRequest expenseDetailRegisterRequest)
+        {
+            ///////////////////
+            //SETTING FOR  DEPOSIT
+            ///////////////////
+
+            //if (Math.Abs(id) == 1)
+            //{
+            //    var paymentPeriodDeposit = new PaymentPeriodRegisterRequest();
+            //    paymentPeriodDeposit.PaymentPeriodId = id;
+            //    paymentPeriodDeposit.ConceptId = depositConceptId; //"CODE FOR CONCEPT"; //TODO:
+            //    paymentPeriodDeposit.ContractId = request.ContractId;
+            //    paymentPeriodDeposit.TenantId = request.TenantId;
+            //    paymentPeriodDeposit.PeriodId = period.PeriodId;
+            //    paymentPeriodDeposit.PaymentPeriodStatusId = entityStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
+            //    paymentPeriodDeposit.RowStatus = true;
+            //    paymentPeriodDeposit.CreatedBy = request.UserId;
+            //    paymentPeriodDeposit.CreationDate = DateTime.Now;
+            //    paymentPeriodDeposit.UpdatedBy = request.UserId;
+            //    paymentPeriodDeposit.UpdatedDate = DateTime.Now;
+            //    paymentPeriodDeposit.PaymentTypeId = paymentTypeDepositId;
+            //    paymentPeriodDeposit.PaymentAmount = request.RentDeposit;
+            //    paymentPeriodDeposit.DueDate = period.DueDate;
+            //    paymentsPeriod.Add(paymentPeriodDeposit);
+            //}
+
+            ///////////////////
+            //SETTING FOR  RENT
+            ///////////////////
+
+            var paymentPeriodRent = new PaymentPeriodRegisterRequest();
+            paymentPeriodRent.PaymentPeriodId = id;
+            paymentPeriodRent.ConceptId = rentId; //"CODE FOR CONCEPT"; //TODO:
+            paymentPeriodRent.ContractId = request.ContractId;
+            paymentPeriodRent.TenantId = request.TenantId;
+            paymentPeriodRent.PeriodId = period.PeriodId;
+            paymentPeriodRent.PaymentPeriodStatusId = entityStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
+            paymentPeriodRent.RowStatus = true;
+            paymentPeriodRent.CreatedBy = request.UserId;
+            paymentPeriodRent.CreationDate = DateTime.Now;
+            paymentPeriodRent.UpdatedBy = request.UserId;
+            paymentPeriodRent.UpdatedDate = DateTime.Now;
+            paymentPeriodRent.PaymentTypeId = paymentTypeId;
+            paymentPeriodRent.PaymentAmount = expenseDetailRegisterRequest.TotalAmount;
+            paymentPeriodRent.DueDate = period.DueDate;
+            paymentsPeriod.Add(paymentPeriodRent);
+
+
+        }
+
+
 
     }
 

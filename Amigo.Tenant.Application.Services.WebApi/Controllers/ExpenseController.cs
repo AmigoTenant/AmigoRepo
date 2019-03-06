@@ -162,7 +162,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             //TODO_: EL CHANGE STATUS SOLO DEBE PASAR EL CONTRACTID Y EL RESTO LLENARLO DESPUES
             if (ModelState.IsValid)
             {
-                return await _expenseApplicationService.ChangeDetailStatus(expense);
+                return await _expenseApplicationService.ChangeDetailStatusAsync(expense);
             }
             return ModelState.ToResponse();
         }

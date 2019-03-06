@@ -6,6 +6,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
 {
     public class ExpenseDetailChangeStatusRequest 
     {
+        public int ExpenseId { get; set; }
         public List<ChangeStatusDetail> ChangeStatusList;
     }
 
