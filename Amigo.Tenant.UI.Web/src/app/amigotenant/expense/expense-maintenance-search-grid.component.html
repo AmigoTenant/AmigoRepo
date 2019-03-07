@@ -68,3 +68,11 @@
     <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)">
     </at-expense-maintenance-detail>
 </kendo-dialog>
+
+<kendo-dialog *ngIf="openChangeStatusConfirmation" title="Expense Detail" (close)="closePopupConfirmation()" style="z-index:10003;" [minWidth]="250" [width]="450">
+    <p style="margin: 30px; text-align: center;">Do you accept to change Status?</p>
+        <kendo-dialog-actions>
+            <button kendoButton (click)="close('no')">No</button>
+            <button kendoButton (click)="close('yes')" primary="true">Yes</button>
+        </kendo-dialog-actions>
+</kendo-dialog>

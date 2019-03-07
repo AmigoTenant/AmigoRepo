@@ -4,9 +4,10 @@ using System.Collections.Generic;
 
 namespace Amigo.Tenant.Application.DTOs.Requests.Expense
 {
-    public class ExpenseDetailChangeStatusRequest 
+    public class ExpenseDetailChangeStatusRequest : AuditBaseRequest
     {
         public int ExpenseId { get; set; }
+        public int PeriodId { get; set; }
         public List<ChangeStatusDetail> ChangeStatusList;
     }
 

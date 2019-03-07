@@ -22,6 +22,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? ApplyTo { get; set; }
+        public ConceptDTO Concept { get; set; }
 
     }
 }

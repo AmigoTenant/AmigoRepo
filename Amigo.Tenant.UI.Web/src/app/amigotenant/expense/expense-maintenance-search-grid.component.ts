@@ -71,8 +71,9 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     //     this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
     // }
 
-    openDialog: boolean = false;
-    selectedDetail: any;
+    public openDialog: boolean = false;
+    public openChangeStatusConfirmation: boolean = false;
+    public selectedDetail: any;
 
     onEdit(data): void {
         this.selectedDetail = data;
@@ -95,5 +96,19 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.selectedDetail = new ExpenseDetailRegisterRequest();
         this.selectedDetail.expenseId = this.expenseId;
      }
+
+    onChangeStatus(): void {
+        this.openChangeStatusConfirmation = true;
+    }
+
+    public close(status) {
+        console.log(`Dialog result: ${status}`);
+        this.openChangeStatusConfirmation = false;
+      }
+
+    closePopupConfirmation(): void {
+        this.openChangeStatusConfirmation = false;
+        this.getExpenseDetails(6);
+    }
 
 }

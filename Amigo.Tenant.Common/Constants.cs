@@ -195,6 +195,7 @@ namespace Amigo.Tenant.Common
             public const string PaymentPeriod = "PP";
             public const string HouseServicePeriodStatus = "HP";
             public const string Invoice = "IN";
+            public const string Expense = "EX";
         }
 
 
@@ -233,6 +234,11 @@ namespace Amigo.Tenant.Common
             {
                 public const string Pending = "INPENDING";
                 public const string Payed = "INPAYED";
+            }
+            public struct Expense
+            {
+                public const string Pending = "EXPENDING";
+                public const string Paid = "EXPAID";
             }
         }
 

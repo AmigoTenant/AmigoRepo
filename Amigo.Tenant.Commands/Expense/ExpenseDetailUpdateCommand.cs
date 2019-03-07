@@ -1,4 +1,5 @@
 ﻿using Amigo.Tenant.Commands.Common;
+using Amigo.Tenant.Commands.PaymentPeriod;
 using MediatR;
 using System;
 
@@ -22,5 +23,6 @@ namespace Amigo.Tenant.Commands.Expense
         public int? ExpenseDetailStatusId { get; set; }
         public decimal? Quantity { get; set; }
         public int? ApplyTo { get; set; }
+        public PaymentPeriodRegisterCommand PaymentPeriodRegister { get; set; }
     }
 }

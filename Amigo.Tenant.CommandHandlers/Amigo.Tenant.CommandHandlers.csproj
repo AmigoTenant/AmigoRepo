@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="Abstract\IAsyncCommandHandler.cs" />
     <Compile Include="Common\CommandResultExtension.cs" />
+    <Compile Include="Expense\ExpenseChangeStatusCommandHandler.cs" />
     <Compile Include="Expense\ExpenseDetailDeleteCommandHandler.cs" />
     <Compile Include="Expense\ExpenseDeleteCommandHandler.cs" />
     <Compile Include="Expense\ExpenseDetailRegisterCommandHandler.cs" />

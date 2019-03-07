@@ -8,10 +8,6 @@ import { ConfirmationList, Confirmation } from  '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
 import { CountryClient, ContractClient, ContractRegisterRequest, EntityStatusClient, HouseClient, FeatureClient, GeneralTableClient } from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
-//import { NgbdTypeaheadTenant } from '../../shared/typeahead-tenant/typeahead-tenant';
-//import { NgbdTypeaheadHouse } from '../../shared/typeahead-house/typeahead-house';
-//import { RentalApplicationFeatureRequest } from '../../shared/api/services.client';
-//import { HouseFeatureAndDetailDTO } from '../../shared/api/services.client';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
 import { ValidationService } from '../../shared/validations/validation.service';
@@ -39,12 +35,6 @@ export class modelHouse {
 export class FormError {
     fullNameError: boolean;
     applicationDateError: boolean;
-    //endDateError: boolean;
-    //houseError: boolean;
-    //depositError: boolean;
-    //rentError: boolean;
-    //contractHouseDetailError: boolean;
-    //paymentModeError: boolean;
 }
 
 
@@ -60,21 +50,15 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     rentalApplicationFeatureRequest: RentalApplicationFeatureRequest;
     rentalApplicationCityRequestList: RentalApplicationCityRequest[] = [];
     rentalApplicationCityRequest: RentalApplicationCityRequest;
-
-    //houseFeatureRequest: ContractHouseDetailRegisterRequest;
-
-    //isVisibleHouseFeature: boolean = false;
     public modelApplicationDate: any;
     public modelCheckIn: any;
     public modelCheckOut: any;
     public modelAlertDate: any;
 
-    //hasFeatures: boolean = false;
     allowEditing: boolean= true;
     public successFlag: boolean;
     public errorMessages: string[];
     public successMessage: string;
-    //_listContractHouseDetail: any[]=[];
 
     _formError: FormError;
 
@@ -87,7 +71,6 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
     _listReferredBy: any = [];
     _listPriority: any = [];
 
-    //_listHouseAndDetails: HouseFeatureAndDetailDTO[]=[];
     _listPaymentMode: any[];
     _listProperties: any[];
     _currentTenant: any;
@@ -122,9 +105,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
         this.sub.unsubscribe();
     }
 
-    
     ngOnInit() {
-        
         this.model = new RentalApplicationRegisterRequest();
         this.initializeForm();
         this.sub = this.route.params.subscribe(params => {
@@ -164,39 +145,8 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
                 this.modelCheckIn = this.getDateFromModel(this.model.checkIn);
                 this.modelCheckOut = this.getDateFromModel(this.model.checkOut);
                 this.modelAlertDate = this.getDateFromModel(this.model.alertDate);
-                //this._currentTenant = this.getCurrentTenant(this.model.tenantId, this.model.fullName);
-                //this._currentHouse = this.getCurrentHouse(this.model.houseId, this.model.houseName);
-                //this.isVisibleHouseFeature = true;
-                //this.getHouseFeatureDetailContract();
-                //this.getHouseFeatureAndDetail();
-                //this.setRentalApplicationFeatures(this.model.features);
             });
     }
-
-    //public setRentalApplicationFeatures(features: any[])
-    //{
-    //    for (let i in features) {
-    //        var tenant = new modelTenant();
-    //        tenant.tenantId = features[i].tenantId;
-    //        tenant.fullName = features[i].fullName;
-    //        this.getRentalApplicationFeature(tenant);
-    //    }
-
-    //}
-
-    //public getCurrentTenant(id, name): modelTenant {
-    //    var currentTenant = new modelTenant();
-    //    currentTenant.tenantId = id;
-    //    currentTenant.fullName = name;
-    //    return currentTenant;
-    //}
-
-    //public getCurrentHouse(id, name): modelHouse {
-    //    var currentHouse = new modelHouse();
-    //    currentHouse.houseId = id;
-    //    currentHouse.name = name;
-    //    return currentHouse;
-    //}
 
     public getDateFromModel(dateFromModel: Date): modelDate {
         var model = new modelDate();
@@ -227,13 +177,11 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
   onSelectModelApplicationDate(): void {
       if (this.modelApplicationDate != null) {
           this.model.applicationDate = new Date(this.modelApplicationDate.year, this.modelApplicationDate.month - 1, this.modelApplicationDate.day, 0, 0, 0, 0);
-          //let monthsNumber = this.model.monthsNumber === undefined || this.model.monthsNumber == null ? 0 : this.model.monthsNumber;
-          //this.calculateEndDate(monthsNumber);
           this._formError.applicationDateError = false;
 
       }
       else {
-          this.model.applicationDate = undefined; //new Date();
+          this.model.applicationDate = undefined; 
           this._formError.applicationDateError = true;
       }
   }
@@ -241,12 +189,9 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
   onSelectModelCheckIn(): void {
       if (this.modelCheckIn != null) {
           this.model.checkIn = new Date(this.modelCheckIn.year, this.modelCheckIn.month - 1, this.modelCheckIn.day, 0, 0, 0, 0);
-          //this.getHouseFeatureAndDetail();
-          //this._formError.endDateError = false;
       }
       else {
-          this.model.checkIn = undefined; //new Date();
-          //this._formError.checkInError = true;
+          this.model.checkIn = undefined; 
       }
 
   }
@@ -254,12 +199,9 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
   onSelectModelCheckOut(): void {
       if (this.modelCheckOut != null) {
           this.model.checkOut = new Date(this.modelCheckOut.year, this.modelCheckOut.month - 1, this.modelCheckOut.day, 0, 0, 0, 0);
-          //this.getHouseFeatureAndDetail();
-          //this._formError.endDateError = false;
       }
       else {
-          this.model.checkOut = undefined; //new Date();
-          //this._formError.checkOutError = true;
+          this.model.checkOut = undefined; 
       }
 
   }
@@ -269,7 +211,7 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
             this.model.alertDate = new Date(this.modelAlertDate.year, this.modelAlertDate.month - 1, this.modelAlertDate.day, 0, 0, 0, 0);
         }
         else {
-            this.model.alertDate = undefined; //new Date();
+            this.model.alertDate = undefined; 
 
         }
 

@@ -53,6 +53,7 @@
     <Compile Include="Common\CommandResult.cs" />
     <Compile Include="Common\IMobileCommand.cs" />
     <Compile Include="Common\MobileCommandBase.cs" />
+    <Compile Include="Expense\ExpenseDetailChangeStatusCommand.cs" />
     <Compile Include="Expense\ExpenseDetailDeleteCommand.cs" />
     <Compile Include="Expense\ExpenseDeleteCommand.cs" />
     <Compile Include="Expense\ExpenseDetailRegisterCommand.cs" />
