@@ -9,6 +9,7 @@ import { GridDataResult } from '@progress/kendo-angular-grid';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
 import { Subscription } from 'rxjs/Subscription';
 import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
+import { ExpenseDetailChangeStatusRequest } from './dto/expense-detail-change-status-request';
 
 declare var $: any;
 
@@ -19,11 +20,11 @@ declare var $: any;
 
 export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent implements OnInit, OnDestroy {
 
-    //private variables
     expenseDetailData: GridDataResult;
     totalResultCount: number
     sub: Subscription;
     expenseId: number;
+    periodId: number;
 
     constructor(
         private route: ActivatedRoute,
@@ -31,15 +32,15 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         private masterDataService: MasterDataService,
         private expenseDataService: ExpenseDataService) {
             super();
-            debugger;
     }
 
     ngOnInit() {
-        debugger;
         this.sub = this.route.params.subscribe(params => {
             let expenseId = params['expenseId'];
+            //let periodId = params['periodId'];
             if (expenseId != null && typeof (expenseId) !== 'undefined') {
                 this.expenseId = expenseId;
+                this.periodId = 20; //periodId;
                 this.getExpenseDetails(expenseId);
             }
         });
@@ -60,16 +61,18 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.sub.unsubscribe();
     }
 
-    // public changeItemHeader() {
-    //     let c = this.expenseDetailData.data.length;
-    //     let index = 0 ; 
-    //     for (let item in this.expenseDetailData.data) {
-    //             $("#" + index)[0].checked = this.isColumnHeaderSelected;
-    //             this.expenseDetailData.data[item].isSelected = this.isColumnHeaderSelected;
-    //         index++;
-    //     }
-    //     this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
-    // }
+    isColumnHeaderSelected: boolean = false;
+
+    public changeItemHeader() {
+        let c = this.expenseDetailData.data.length;
+        let index = 0; 
+        for (let item in this.expenseDetailData.data) {
+                $("#" + index)[0].checked = this.isColumnHeaderSelected;
+                this.expenseDetailData.data[item].isSelected = this.isColumnHeaderSelected;
+            index++;
+        }
+        this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
+    }
 
     public openDialog: boolean = false;
     public openChangeStatusConfirmation: boolean = false;
@@ -108,7 +111,28 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
 
     closePopupConfirmation(): void {
         this.openChangeStatusConfirmation = false;
-        this.getExpenseDetails(6);
+        this.getExpenseDetails(6); //TODO: QUITAR ESTE HARDCODE
+    }
+
+    acceptChangeStatus(): void {
+        debugger;
+        let changeDetailStatusRequest = new ExpenseDetailChangeStatusRequest();
+        changeDetailStatusRequest.ExpenseId = this.expenseId;
+        changeDetailStatusRequest.PeriodId = this.periodId;
+        let expenseDetailListId: number[] = [];
+        this.expenseDetailData.data.filter(q => q.isSelected).forEach(element => {
+            expenseDetailListId.push(element.expenseDetailId);
+        });
+        changeDetailStatusRequest.ExpenseDetailListId = expenseDetailListId;
+        this.expenseDataService.changeStatusExpenseDetail(changeDetailStatusRequest).subscribe().add(
+            res => {
+                this.getExpenseDetails(this.expenseId);
+            }
+        );
+    }
+
+    changeItem(data: any): void {
+        data.isSelected = !data.isSelected;
     }
 
 }

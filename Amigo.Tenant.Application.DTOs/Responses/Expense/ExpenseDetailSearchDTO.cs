@@ -19,6 +19,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.Expense
         public decimal? Quantity { get; set; }
         public decimal? Tax { get; set; }
         public decimal? TotalAmount { get; set; }
-
+        public int IsSelected { get; set; }
     }
 }

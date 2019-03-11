@@ -9,6 +9,7 @@ import { ExpenseEditRequest } from './dto/expense-edit-request';
 import { ExpenseDetailDto } from './dto/expense-detail-dto';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
 import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
+import { ExpenseDetailChangeStatusRequest } from './dto/expense-detail-change-status-request';
 
 @Injectable()
 export class ExpenseDataService extends BaseService {
@@ -84,6 +85,15 @@ export class ExpenseDataService extends BaseService {
     updateExpenseDetail(expenseDetailRegisterRequest: ExpenseDetailRegisterRequest): Observable<any[]> {
         const url = `${this.baseUrl}api/expense/updateDetail`;
         return this.http.post<any>(url, JSON.stringify(expenseDetailRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
+
+    changeStatusExpenseDetail(expenseDetailChangeStatusRequest: ExpenseDetailChangeStatusRequest): Observable<any[]> {
+        const url = `${this.baseUrl}api/expense/changeStatusDetail`;
+        return this.http.post<any>(url, JSON.stringify(expenseDetailChangeStatusRequest),
                 { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
             ).pipe(
                 catchError(this.handleError)

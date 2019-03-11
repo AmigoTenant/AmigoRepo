@@ -43,52 +43,32 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         {
             try
             {
-                var entity = _mapper.Map<ExpenseDetailChangeStatusCommand, ExpenseDetail>(message);
-
-                //Insert
-                entity.Update(message.UserId);
-
-                //=================================================
-                //Contract
-                //=================================================
-
-                _repository.UpdatePartial(entity, new string[] {    "ExpenseDetailId",
+                foreach (var item in message.ExpenseDetail)
+                {
+                    //Update Expense DetailStatus
+                    var entity = _mapper.Map<ExpenseDetailUpdateCommand, ExpenseDetail>(item);
+                    entity.ExpenseDetailStatusId = 23; //Expense detail Status Migrated
+                    entity.Update(message.UserId);
+                    _repository.UpdatePartial(entity, new string[] {    "ExpenseDetailId",
                                                                     "ExpenseDetailStatusId",
                                                                     "UpdatedBy",
                                                                     "UpdatedDate"});
 
-                //=================================================
-                //Payment Period
-                //=================================================
-                var payment = message.PaymentsPeriod;
-                var entityPayment = _mapper.Map<PaymentPeriodRegisterCommand, PaymentPeriod>(payment);
-                entityPayment.RowStatus = true;
-                entityPayment.Creation(message.UserId);
-                _repositoryPayment.Add(entityPayment);
+
+                    var entityPaymentPeriod = _mapper.Map<PaymentPeriodRegisterCommand, PaymentPeriod>(item.PaymentPeriodRegister);
+                    entityPaymentPeriod.Creation(message.UserId);
+                    _repositoryPayment.Add(entityPaymentPeriod);
+
+                }
+
                 await _unitOfWork.CommitAsync();
 
-                //foreach (var paymentPeriod in payments)
-                //{
-                //    var entityPayment = _mapper.Map<PaymentPeriodRegisterCommand, PaymentPeriod>(paymentPeriod);
-                //    entityPayment.RowStatus = true;
-                //    entityPayment.Creation(message.UserId);
-                //    _repositoryPayment.Add(entityPayment);
-                //}
-                ////TODO: List no esta permitido agregar al model
-                ////_repository.Add(entity);
-                //await _unitOfWork.CommitAsync();
+                return (new ExpenseDetail() { ExpenseId = message.ExpenseId}).ToRegisterdResult().WithId(message.ExpenseId.Value);
 
-                //if (entity.ExpenseId != 0)
-                //{
-                //    message.ExpenseDetailId = entity.ContractId;
-                //}
-
-                return entity.ToRegisterdResult().WithId(entity.ExpenseId.Value);
             }
             catch (Exception ex)
             {
                 //await SendLogToAmigoTenantTEventLog(message, ex.Message);
-
                 throw;
             }
 

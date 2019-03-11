@@ -359,7 +359,6 @@ namespace Amigo.Tenant.Application.Services.Expense
         public async Task GenerateDataCsvToReportExcelDetail(Stream outputStream, HttpContent httpContent,
             TransportContext transportContext, ExpenseSearchRequest search)
         {
-
             //var list = await SearchExpenseAsync(search);
             //try
             //{
@@ -407,7 +406,7 @@ namespace Amigo.Tenant.Application.Services.Expense
         public async Task<ResponseDTO> ChangeDetailStatusAsync(ExpenseDetailChangeStatusRequest expenseDetailChangeStatusRequest)
         {
             var expense = await GetByIdAsync(expenseDetailChangeStatusRequest.ExpenseId);
-            await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
+            //await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
             var command = await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
             command.UserId = expenseDetailChangeStatusRequest.UserId.Value;
             var resp = await _bus.SendAsync(command);
@@ -432,9 +431,9 @@ namespace Amigo.Tenant.Application.Services.Expense
             //var paymentsPeriod = new List<PaymentPeriodRegisterRequest>();
             var paymentStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
 
-            var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ChangeStatusList.Select(r => r.ExpenseDetailId).Contains(q.ExpenseDetailId.Value));
+            var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ExpenseDetailListId.Select(r => r.ExpenseDetailId).Contains(q.ExpenseDetailId.Value));
 
-            foreach (var item in expenseDetailList.ChangeStatusList)
+            foreach (var item in expenseDetailList.ExpenseDetailListId)
             {
 
                 var expenseDetailRegisterRequest = detailList.FirstOrDefault(q => q.ExpenseDetailId.Value == item.ExpenseDetailId.Value);
@@ -489,12 +488,6 @@ namespace Amigo.Tenant.Application.Services.Expense
             return null;
         }
 
-        //private async Task<ConceptDTO> GetConceptByCode(string conceptCode)
-        //{
-        //    var entity = await _conceptApplicationService.GetConceptByCodeAsync(conceptCode);
-        //    return entity.Data;
-        //}
-
         private async Task<int?> GetConceptIdByCode(string conceptCode)
         {
             var entity = await GetConceptByCode(conceptCode);
@@ -508,34 +501,6 @@ namespace Amigo.Tenant.Application.Services.Expense
             var entity = await _conceptApplicationService.GetConceptByCodeAsync(conceptCode);
             return entity.Data;
         }
-
-        private void SetPaymentsPeriod(List<PaymentPeriodRegisterRequest> paymentsPeriod, ContractDTO contract, PeriodDTO period, int id, int? concept, int? paymentStatusId, ExpenseDetailRegisterRequest expenseDetailRegisterRequest, ExpenseDetailChangeStatusRequest expenseDetailChangeStatusRequest)
-        {
-            ///////////////////
-            //SETTING FOR  RENT
-            ///////////////////
-
-            var paymentPeriod = new PaymentPeriodRegisterRequest();
-            paymentPeriod.PaymentPeriodId = id;
-            paymentPeriod.ConceptId = expenseDetailRegisterRequest.ConceptId; //"CODE FOR CONCEPT"; //TODO:
-            paymentPeriod.ContractId = contract.ContractId;
-            paymentPeriod.TenantId = expenseDetailRegisterRequest.TenantId;
-            paymentPeriod.PeriodId = period.PeriodId;
-            paymentPeriod.PaymentPeriodStatusId = paymentStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
-            paymentPeriod.RowStatus = true;
-            paymentPeriod.CreatedBy = expenseDetailChangeStatusRequest.UserId;
-            paymentPeriod.CreationDate = DateTime.Now;
-            paymentPeriod.UpdatedBy = expenseDetailChangeStatusRequest.UserId;
-            paymentPeriod.UpdatedDate = DateTime.Now;
-            paymentPeriod.PaymentTypeId = expenseDetailRegisterRequest.Concept.PayTypeId; //revisar si no traer del concepto
-            paymentPeriod.PaymentAmount = expenseDetailRegisterRequest.TotalAmount;
-            paymentPeriod.DueDate = period.DueDate;
-            paymentsPeriod.Add(paymentPeriod);
-
-
-        }
-
-
 
     }
 

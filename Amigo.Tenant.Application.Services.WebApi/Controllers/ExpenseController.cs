@@ -156,8 +156,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return response;
         }
 
-        [HttpPost, Route("changeDetailStatus")] //, AmigoTenantClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.ExpenseDetailUpdate)]
-        public async Task<ResponseDTO> ChangeDetailStatus(ExpenseDetailChangeStatusRequest expense)
+        [HttpPost, Route("changeStatusDetail")] //, AmigoTenantClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.ExpenseDetailUpdate)]
+        public async Task<ResponseDTO> ChangeStatusDetail([FromBody]ExpenseDetailChangeStatusRequest expense)
         {
             //TODO_: EL CHANGE STATUS SOLO DEBE PASAR EL CONTRACTID Y EL RESTO LLENARLO DESPUES
             if (ModelState.IsValid)

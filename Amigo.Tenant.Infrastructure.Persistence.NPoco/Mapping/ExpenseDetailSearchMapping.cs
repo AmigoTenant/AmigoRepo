@@ -9,7 +9,8 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Mapping
         {
             TableName("vwExpenseDetailSearch");
             PrimaryKey(x => x.ExpenseDetailId);
-            
+            Columns(
+                x => x.Column(y=> y.IsSelected).Ignore());
         }
     }
 }
