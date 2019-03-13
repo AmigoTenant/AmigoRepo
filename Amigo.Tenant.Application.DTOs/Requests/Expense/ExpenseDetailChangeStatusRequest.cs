@@ -8,14 +8,14 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
     {
         public int ExpenseId { get; set; }
         public int PeriodId { get; set; }
-        public List<ChangeStatusDetail> ExpenseDetailListId;
+        public List<int> ExpenseDetailListId;
     }
 
-    public class ChangeStatusDetail
-    {
-        public int? ExpenseDetailId { get; set; }
-        //public int? CurrentStatusId { get; set; }
-        //public int? NewStatusId { get; set; }
+    //public class ChangeStatusDetail
+    //{
+    //    public int? ExpenseDetailId { get; set; }
+    //    //public int? CurrentStatusId { get; set; }
+    //    //public int? NewStatusId { get; set; }
 
-    }
+    //}
 }

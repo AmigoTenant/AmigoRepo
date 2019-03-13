@@ -26,6 +26,7 @@ using Amigo.Tenant.Application.DTOs.Requests.Leasing;
 using Amigo.Tenant.Application.DTOs.Responses.Leasing;
 using Amigo.Tenant.Application.DTOs.Responses.MasterData;
 using Amigo.Tenant.Commands.PaymentPeriod;
+using Amigo.Tenant.CommandModel.Models;
 
 namespace Amigo.Tenant.Application.Services.Expense
 {
@@ -43,6 +44,7 @@ namespace Amigo.Tenant.Application.Services.Expense
         private readonly IPeriodApplicationService _periodApplicationService;
         private readonly IQueryDataAccess<ContractDTO> _contractDtoDataAccess;
         private readonly IConceptApplicationService _conceptApplicationService;
+        private readonly IRepository<ExpenseDetail> _repositoryExpenseDetail;
 
         public ExpenseApplicationService(IBus bus,
             IQueryDataAccess<ExpenseSearchDTO> expenseSearchDataAccess,
@@ -55,7 +57,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess,
             IGeneralTableApplicationService generalTableApplicationService,
             IQueryDataAccess<ContractDTO> contractDtoDataAccess,
-            IConceptApplicationService conceptApplicationService
+            IConceptApplicationService conceptApplicationService,
+            IRepository<ExpenseDetail> repositoryExpenseDetail
             )
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
@@ -72,6 +75,7 @@ namespace Amigo.Tenant.Application.Services.Expense
             _generalTableApplicationService = generalTableApplicationService;
             _contractDtoDataAccess  = contractDtoDataAccess;
             _conceptApplicationService = conceptApplicationService;
+            _repositoryExpenseDetail = repositoryExpenseDetail;
         }
 
         public async Task<ResponseDTO> RegisterExpenseAsync(ExpenseRegisterRequest request)
@@ -417,8 +421,6 @@ namespace Amigo.Tenant.Application.Services.Expense
         private async Task<ExpenseDetailChangeStatusCommand> CreatePaymentInformation(ExpenseDetailChangeStatusRequest expenseDetailList, ExpenseDTO expenseDto)
         {
             var period = (await _periodApplicationService.GetPeriodByIdAsync(expenseDetailList.PeriodId)).Data;
-            var currentPeriodDueDate = period.DueDate.Value.AddMonths(1);
-            var id = -1;
 
             var expenseDetailStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.Expense, Constants.EntityStatus.Expense.Pending);
 
@@ -428,27 +430,31 @@ namespace Amigo.Tenant.Application.Services.Expense
             };
 
             var expenseDetailUpdateCommandList = new List<ExpenseDetailUpdateCommand>();
-            //var paymentsPeriod = new List<PaymentPeriodRegisterRequest>();
             var paymentStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
 
-            var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ExpenseDetailListId.Select(r => r.ExpenseDetailId).Contains(q.ExpenseDetailId.Value));
+            //var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ExpenseDetailListId.Contains(q.ExpenseDetailId.Value));
+
+            string[] includes = new string[] { "Concept" };
+            var detailList = await _repositoryExpenseDetail.ListAsync(q => expenseDetailList.ExpenseDetailListId.Contains(q.ExpenseDetailId.Value), includes: includes);
+            var id = -1;
 
             foreach (var item in expenseDetailList.ExpenseDetailListId)
             {
 
-                var expenseDetailRegisterRequest = detailList.FirstOrDefault(q => q.ExpenseDetailId.Value == item.ExpenseDetailId.Value);
+                var expenseDetailRegisterRequest = detailList.FirstOrDefault(q => q.ExpenseDetailId.Value == item);
 
                 if (expenseDetailRegisterRequest != null)
                 {
                     //var concept = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
 
+                    //TODO: SE ESTA CAYENDO EN ESTA CONSULTA
                     var contract = await _contractDtoDataAccess.FirstOrDefaultAsync(q => q.TenantId == expenseDetailRegisterRequest.TenantId
                                         && q.PeriodId == expenseDetailList.PeriodId.ToString()
                                         && q.ContractStatusId == 10); //TODO: Corregir esto: tOsTRING Y cONTRACTiD
 
                     var expenseDetailUpdateCommand = new ExpenseDetailUpdateCommand()
                     {
-                        ExpenseDetailId = item.ExpenseDetailId,
+                        ExpenseDetailId = item,
                         ExpenseDetailStatusId = expenseDetailStatusId
                     };
 

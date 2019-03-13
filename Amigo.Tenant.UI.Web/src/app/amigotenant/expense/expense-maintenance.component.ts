@@ -181,7 +181,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     initializeForm(): void {
         this.getPaymentTypes();
         this.getHouseAll();
-        this.getPeriodsNumberPeriod(5);
+        this.getPeriodsNumberPeriod(10);
     }
 
 
