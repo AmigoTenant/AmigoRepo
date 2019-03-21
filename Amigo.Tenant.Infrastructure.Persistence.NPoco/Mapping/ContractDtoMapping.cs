@@ -9,6 +9,11 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Mapping
         public ContractDtoMapping()
         {
             TableName("Contract");
+            Columns(q => q.Column(r => r.ContractStatusCode).Ignore());
+            Columns(q => q.Column(r => r.TenantFullName).Ignore());
+            Columns(q => q.Column(r => r.TenantCode).Ignore());
+            Columns(q => q.Column(r => r.PeriodCode).Ignore());
+            Columns(q => q.Column(r => r.OtherTenantsDTO).Ignore());
         }
     }
 }

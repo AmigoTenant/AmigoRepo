@@ -40,7 +40,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
             //let periodId = params['periodId'];
             if (expenseId != null && typeof (expenseId) !== 'undefined') {
                 this.expenseId = expenseId;
-                this.periodId = 48; //periodId;
+                this.periodId = 47; //periodId;
                 this.getExpenseDetails(expenseId);
             }
         });
