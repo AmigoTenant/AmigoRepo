@@ -26,7 +26,7 @@ using Amigo.Tenant.Application.DTOs.Requests.Leasing;
 using Amigo.Tenant.Application.DTOs.Responses.Leasing;
 using Amigo.Tenant.Application.DTOs.Responses.MasterData;
 using Amigo.Tenant.Commands.PaymentPeriod;
-using Amigo.Tenant.CommandModel.Models;
+using model = Amigo.Tenant.CommandModel.Models;
 
 namespace Amigo.Tenant.Application.Services.Expense
 {
@@ -42,9 +42,10 @@ namespace Amigo.Tenant.Application.Services.Expense
         private readonly IEntityStatusApplicationService _entityStatusApplicationService;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
         private readonly IPeriodApplicationService _periodApplicationService;
-        private readonly IQueryDataAccess<ContractDTO> _contractDtoDataAccess;
+        //private readonly IQueryDataAccess<ContractDTO> _contractDtoDataAccess;
         private readonly IConceptApplicationService _conceptApplicationService;
-        private readonly IRepository<ExpenseDetail> _repositoryExpenseDetail;
+        private readonly IRepository<model.ExpenseDetail> _repositoryExpenseDetail;
+        private readonly IRepository<model.PaymentPeriod> _repositoryPaymentPeriod;
 
         public ExpenseApplicationService(IBus bus,
             IQueryDataAccess<ExpenseSearchDTO> expenseSearchDataAccess,
@@ -56,9 +57,10 @@ namespace Amigo.Tenant.Application.Services.Expense
             IMapper mapper,
             IQueryDataAccess<ExpenseDTO> expenseDtoDataAccess,
             IGeneralTableApplicationService generalTableApplicationService,
-            IQueryDataAccess<ContractDTO> contractDtoDataAccess,
+            //IQueryDataAccess<ContractDTO> contractDtoDataAccess,
             IConceptApplicationService conceptApplicationService,
-            IRepository<ExpenseDetail> repositoryExpenseDetail
+            IRepository<model.ExpenseDetail> repositoryExpenseDetail,
+            IRepository<model.PaymentPeriod> repositoryPaymentPeriod
             )
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
@@ -73,9 +75,10 @@ namespace Amigo.Tenant.Application.Services.Expense
             _expenseDetailDataAccess = expenseDetailDataAccess;
             _expenseDtoDataAccess = expenseDtoDataAccess;
             _generalTableApplicationService = generalTableApplicationService;
-            _contractDtoDataAccess  = contractDtoDataAccess;
+            //_contractDtoDataAccess  = contractDtoDataAccess;
             _conceptApplicationService = conceptApplicationService;
             _repositoryExpenseDetail = repositoryExpenseDetail;
+            _repositoryPaymentPeriod = repositoryPaymentPeriod;
         }
 
         public async Task<ResponseDTO> RegisterExpenseAsync(ExpenseRegisterRequest request)
@@ -448,9 +451,11 @@ namespace Amigo.Tenant.Application.Services.Expense
                     //var concept = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
 
                     //TODO: SE ESTA CAYENDO EN ESTA CONSULTA
-                    var contract = await _contractDtoDataAccess.FirstOrDefaultAsync(q => q.TenantId == expenseDetailRegisterRequest.TenantId
-                                        && q.PeriodId == expenseDetailList.PeriodId.ToString()
-                                        && q.ContractStatusId == 10); //TODO: Corregir esto: tOsTRING Y cONTRACTiD
+
+                    var rentaPayment = await _repositoryPaymentPeriod.FirstOrDefaultAsync(q => q.TenantId == expenseDetailRegisterRequest.TenantId
+                                        && q.PeriodId == expenseDetailList.PeriodId
+                                        && q.ConceptId == 15  //Cambiar 15 por el codigo del concepto RENTA
+                                        ); 
 
                     var expenseDetailUpdateCommand = new ExpenseDetailUpdateCommand()
                     {
@@ -462,7 +467,7 @@ namespace Amigo.Tenant.Application.Services.Expense
                     {
                         PaymentPeriodId = id,
                         ConceptId = expenseDetailRegisterRequest.ConceptId, //"CODE FOR CONCEPT"; //TODO:
-                        ContractId = contract.ContractId,
+                        ContractId = rentaPayment.ContractId,
                         TenantId = expenseDetailRegisterRequest.TenantId,
                         PeriodId = period.PeriodId,
                         PaymentPeriodStatusId = paymentStatusId, //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
@@ -480,8 +485,8 @@ namespace Amigo.Tenant.Application.Services.Expense
                     expenseDetailUpdateCommandList.Add(expenseDetailUpdateCommand);
                     id--;
                 }
-                
             }
+            expenseDetailChangeStatusCommand.ExpenseDetailUpdateCommand = expenseDetailUpdateCommandList;
             return expenseDetailChangeStatusCommand;
         }
 

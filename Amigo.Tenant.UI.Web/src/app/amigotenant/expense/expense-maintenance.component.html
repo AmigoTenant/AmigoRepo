@@ -6,14 +6,14 @@
         <div class="row">
             <div class="col-sm-10">
                 <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
-                    <!-- <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="expenseForm.form.valid" [formName]="'expenseForm'"></st-boton-maintenance> -->
-                    <input type="button" (click)="accept()" value="Aceptar" />
-                    <input type="button" (click)="onCancel()" value="Cancelar" />
+                    <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancelar" />
+                    <input type="button" class="ro-button btn-submit" (click)="accept()" value="Aceptar" />
                 </div>
             </div>
         </div>
         <div class="row">&nbsp;</div>
-        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'>
+        </biz-val>
         <div class="row">
             <form [formGroup]="expenseForm">
                 <ngb-tabset>
@@ -28,8 +28,8 @@
                                     <!-- (ngModelChange)="onSelectModelExpenseDate()"  -->
                                     <label for="from" class="col-sm-3 control-label">Expense Date</label>
                                     <label class="ro-calendar col-sm-3">
-                                        <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDate" ngbDatepicker #d1="ngbDatepicker"
-                                            [outside-click]="d1" 
+                                        <input class="form-control" [placeholder]="localization.dateFormat"
+                                            name="expenseDate" ngbDatepicker #d1="ngbDatepicker" [outside-click]="d1"
                                             formControlName="expenseDate">
 
                                         <span class="ro-calendar-btn" (click)="d1.toggle()">
@@ -47,9 +47,9 @@
                                         <span class="required"></span>
                                     </label>
                                     <label class="col-sm-3">
-                                        <select formControlName = 'houseId' class='form-control input-control'>
+                                        <select formControlName='houseId' class='form-control input-control'>
                                             <option value=''></option>
-                                            <option *ngFor='let house of _listHouses' [ngValue]= 'house.houseId'>
+                                            <option *ngFor='let house of _listHouses' [ngValue]='house.houseId'>
                                                 {{ house.name }}
                                             </option>
                                         </select>
@@ -64,7 +64,7 @@
                                     <label class="col-sm-3">
                                         <select formControlName='periodId' class='form-control input-control'>
                                             <option value=""></option>
-                                            <option *ngFor = 'let period of _listPeriods' [ngValue]='period.periodId' >
+                                            <option *ngFor='let period of _listPeriods' [ngValue]='period.periodId'>
                                                 {{ period.code }}
                                             </option>
                                         </select>
@@ -72,8 +72,8 @@
 
                                     <label for="from" class="col-sm-3 control-label">Sub Total</label>
                                     <label class="col-sm-3">
-                                        <input type="number" name="subTotalAmount" class="form-control" formControlName="subTotalAmount"
-                                        />
+                                        <input type="number" name="subTotalAmount" class="form-control"
+                                            formControlName="subTotalAmount" />
                                     </label>
 
                                 </div>
@@ -81,9 +81,11 @@
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-3 control-label">Payment Type</label>
                                     <label class="col-sm-3">
-                                        <select name="ConceptId" formControlName="paymentTypeId" class="form-control input-control">
+                                        <select name="ConceptId" formControlName="paymentTypeId"
+                                            class="form-control input-control">
                                             <option value=""></option>
-                                            <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">
+                                            <option *ngFor="let paymentType of _listPaymentTypes"
+                                                [ngValue]="paymentType.typeId">
                                                 {{paymentType.name}}
                                             </option>
                                         </select>
@@ -100,31 +102,43 @@
 
                                     <label for="from" class="col-sm-3 control-label">Reference No</label>
                                     <label class="col-sm-3">
-                                        <input type="text" name="referenceNo" class="form-control"  formControlName="referenceNo" />
+                                        <input type="text" name="referenceNo" class="form-control"
+                                            formControlName="referenceNo" />
                                     </label>
 
                                     <label for="from" class="col-sm-3 control-label">Total Amount</label>
                                     <label class="col-sm-3">
-                                        <input type="number" name="totalAmount" class="form-control"  formControlName="totalAmount" />
+                                        <input type="number" name="totalAmount" class="form-control"
+                                            formControlName="totalAmount" />
                                     </label>
                                 </div>
 
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-3 control-label">Remark</label>
                                     <label class="col-sm-9">
-                                        <textarea type="txtRemark" rows="4" style="height:150px" name="Remark" class="form-control" formControlName="remark">
+                                        <textarea type="txtRemark" rows="4" style="height:150px" name="Remark"
+                                            class="form-control" formControlName="remark">
                                                 </textarea>
                                     </label>
                                 </div>
                             </div>
                         </ng-template>
                     </ngb-tab>
-                </ngb-tabset>
 
+                </ngb-tabset>
+                <ngb-tabset>
+                    <ngb-tab title="Expense Detail">
+
+                        <ng-template ngbTabContent>
+                            <div class="form-group col-sm-12"></div>
+                            <div class="row">
+                                <at-expense-detail-grid></at-expense-detail-grid>
+                            </div>
+                        </ng-template>
+                    </ngb-tab>
+
+                </ngb-tabset>
             </form>
-        </div>
-        <div class="row" >
-            <at-expense-detail-grid></at-expense-detail-grid>
         </div>
     </div>
 </div>

@@ -283,8 +283,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //===========
 
     onEdit(data): void {
-       
-       this.router.navigate(['/amigotenant/expense/edit', data.expenseId]); // + data.expenseId);
+       this.router.navigate(['/amigotenant/expense/edit', data.expenseId , data.periodId]); // + data.expenseId);
     }
 
     //=========== 

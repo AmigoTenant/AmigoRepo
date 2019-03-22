@@ -30,7 +30,7 @@ export const routes: Routes = [
   { path: 'utilitybill/edit/:houseId', component: UtilityBillMaintenanceComponent, data: { pageTitle: 'Register Utility Bills' }, canActivate: [LoginRouteGuard]},
   { path: 'expense', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] },
   { path: 'expense/new', component: ExpenseMaintenanceComponent, data: { pageTitle: 'Expense New' }, canActivate: [LoginRouteGuard] },
-  { path: 'expense/edit/:expenseId', component: ExpenseMaintenanceComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard]}
+  { path: 'expense/edit/:expenseId/:periodId', component: ExpenseMaintenanceComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard]}
 
 ];
 

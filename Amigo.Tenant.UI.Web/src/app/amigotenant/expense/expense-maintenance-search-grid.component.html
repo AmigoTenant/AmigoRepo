@@ -1,18 +1,18 @@
-<div class="row">
-    <input type="button" class="button" value="Add Expense Detail" (click)="onAddDetail()" />
-    <input type="button" class="button" value="Migrate Expense To Payment" (click)="onChangeStatus()" />
+<div class="grid-container" style="padding-left: 20px; padding-right: 20px">
+    <input type="button" class="ro-button btn-success" value="Add Expense Detail" (click)="onAddDetail()" />
+    <input type="button" class="ro-button btn-primary" value="Migrate Expense To Payment" (click)="onChangeStatus()" />
 </div>
-<div class="grid-container">
+<div class="row"></div>
+<div class="grid-container" style="padding-left: 20px; padding-right: 20px">
     <kendo-grid id="kgrid-ExpenseDetail" [data]="expenseDetailData" [selectable]="false">
         <kendo-grid-column [width]="50">
             <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" >
-                <!-- (change)="changeItemHeader()" -->
                 <div class="text-center">
                     <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" />
                 </div>
             </ng-template>
             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                <div class="text-center">
+                <div class="text-center" *ngIf="dataItem.expenseDetailStatusName!='MIGRATED'">
                     <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)"
                     />
                     <label htmlFor="{{rowIndex}}"></label>
@@ -72,7 +72,7 @@
 <kendo-dialog *ngIf="openChangeStatusConfirmation" title="Expense Detail" (close)="closePopupConfirmation()" style="z-index:10003;" [minWidth]="250" [width]="450">
     <p style="margin: 30px; text-align: center;">Do you accept to change Status?</p>
         <kendo-dialog-actions>
-            <button class="button" (click)="close('no')">No</button>
-            <button class="button" (click)="acceptChangeStatus()">Yes</button>
+            <button class="btn btn-secondary" (click)="close('no')">No</button>
+            <button class="btn btn-primary" (click)="acceptChangeStatus()">Yes</button>
         </kendo-dialog-actions>
 </kendo-dialog>

@@ -12,7 +12,7 @@ namespace Amigo.Tenant.Commands.Expense
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? ExpenseId { get; set; }
-        public List<ExpenseDetailUpdateCommand> ExpenseDetail { get; set; }
+        public List<ExpenseDetailUpdateCommand> ExpenseDetailUpdateCommand { get; set; }
         
     }
 }

@@ -43,16 +43,20 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         {
             try
             {
-                foreach (var item in message.ExpenseDetail)
+                foreach (var item in message.ExpenseDetailUpdateCommand)
                 {
                     //Update Expense DetailStatus
                     var entity = _mapper.Map<ExpenseDetailUpdateCommand, ExpenseDetail>(item);
-                    entity.ExpenseDetailStatusId = 23; //Expense detail Status Migrated
-                    entity.Update(message.UserId);
-                    _repository.UpdatePartial(entity, new string[] {    "ExpenseDetailId",
-                                                                    "ExpenseDetailStatusId",
-                                                                    "UpdatedBy",
-                                                                    "UpdatedDate"});
+                    var ent = await _repository.FirstOrDefaultAsync(q => q.ExpenseDetailId == item.ExpenseDetailId);
+                    if (ent != null)
+                    {
+                        ent.ExpenseDetailStatusId = 23;
+                        ent.Update(message.UserId);
+                    }
+
+                    //entity.ExpenseDetailStatusId = 23; //Expense detail Status Migrated
+                    //entity.Update(message.UserId);
+                    _repository.Update(ent);
 
 
                     var entityPaymentPeriod = _mapper.Map<PaymentPeriodRegisterCommand, PaymentPeriod>(item.PaymentPeriodRegister);

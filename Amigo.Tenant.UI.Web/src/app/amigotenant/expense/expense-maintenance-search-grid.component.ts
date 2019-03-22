@@ -37,10 +37,10 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     ngOnInit() {
         this.sub = this.route.params.subscribe(params => {
             let expenseId = params['expenseId'];
-            //let periodId = params['periodId'];
+            let periodId = params['periodId'];
             if (expenseId != null && typeof (expenseId) !== 'undefined') {
                 this.expenseId = expenseId;
-                this.periodId = 47; //periodId;
+                this.periodId = periodId;
                 this.getExpenseDetails(expenseId);
             }
         });
@@ -111,11 +111,9 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
 
     closePopupConfirmation(): void {
         this.openChangeStatusConfirmation = false;
-        this.getExpenseDetails(6); //TODO: QUITAR ESTE HARDCODE
     }
 
     acceptChangeStatus(): void {
-        debugger;
         let changeDetailStatusRequest = new ExpenseDetailChangeStatusRequest();
         changeDetailStatusRequest.ExpenseId = this.expenseId;
         changeDetailStatusRequest.PeriodId = this.periodId;
@@ -126,6 +124,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         changeDetailStatusRequest.ExpenseDetailListId = expenseDetailListId;
         this.expenseDataService.changeStatusExpenseDetail(changeDetailStatusRequest).subscribe().add(
             res => {
+                this.closePopupConfirmation();
                 this.getExpenseDetails(this.expenseId);
             }
         );

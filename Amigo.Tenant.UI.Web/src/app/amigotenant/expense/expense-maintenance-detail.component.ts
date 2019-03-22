@@ -222,7 +222,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
                 this.acceptDetail();
                 break;
             case 'c':
-                //this.onClear();
                 break;
             case 'k':
                 this.onCancelDetail();
