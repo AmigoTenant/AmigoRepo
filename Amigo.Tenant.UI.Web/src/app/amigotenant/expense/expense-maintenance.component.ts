@@ -1,13 +1,13 @@
-import {TranslateService} from '@ngx-translate/core';
-import {ExpenseDataService} from './expense-data.service';
+import { TranslateService } from '@ngx-translate/core';
+import { ExpenseDataService } from './expense-data.service';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
 import { Component, AfterViewInit, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChildren } from '@angular/core';
-import { Http, Jsonp, URLSearchParams} from '@angular/http';
+import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule, Form, FormControlName } from '@angular/forms';
 import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
-import { ConfirmationList, Confirmation } from  '../../model/confirmation.dto';
+import { ConfirmationList, Confirmation } from '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
 import { EntityStatusClient, GeneralTableClient, HouseClient } from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
@@ -39,8 +39,8 @@ export class modelHouse {
 }
 
 @Component({
-  selector: 'at-expense-maintenance',
-  templateUrl: './expense-maintenance.component.html'
+    selector: 'at-expense-maintenance',
+    templateUrl: './expense-maintenance.component.html'
 })
 
 export class ExpenseMaintenanceComponent extends EnvironmentComponent implements OnInit, OnDestroy, AfterViewInit {
@@ -71,44 +71,53 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     _isDisabled: boolean;
 
     constructor(
-            private route: ActivatedRoute,
-            private router: Router,
-            private listConfirmation: ConfirmationList,
-            private listsService: ListsService,
-            private gnrlTableDataService: GeneralTableClient,
-            private expenseDataService: ExpenseDataService,
-            private masterDataService: MasterDataService,
-            private formBuilder: FormBuilder,
-            private translate: TranslateService,
-            private houseClient: HouseClient
-        ) {
+        private route: ActivatedRoute,
+        private router: Router,
+        private listConfirmation: ConfirmationList,
+        private listsService: ListsService,
+        private gnrlTableDataService: GeneralTableClient,
+        private expenseDataService: ExpenseDataService,
+        private masterDataService: MasterDataService,
+        private formBuilder: FormBuilder,
+        private translate: TranslateService,
+        private houseClient: HouseClient
+    ) {
         super();
 
         Observable.forkJoin([
             this.translate.get('common.requiredField'),
             this.translate.get('common.alphadashmax12'),
             this.translate.get('common.maxLength', { value: 50 })
-          ]).subscribe((messages: string[]) => this.buildMessages(...messages));
-          this.genericValidator = new GenericValidator(this.validationMessages);
+        ]).subscribe((messages: string[]) => this.buildMessages(...messages));
+        this.genericValidator = new GenericValidator(this.validationMessages);
     }
 
     buildMessages(required?: string, notvalid?: string, maxlength?: string) {
         this.validationMessages = {
-          expenseDate: {
-            required: required
-          },
-          houseId: {
-            required: required
-          },
-          periodId: {
-            required: required
-          },
-          houseTypeId: {
-            required: required
-          },
-          paymentTypeId: {
-            required: required
-          }
+            expenseDate: {
+                required: required
+            },
+            houseId: {
+                required: required
+            },
+            periodId: {
+                required: required
+            },
+            houseTypeId: {
+                required: required
+            },
+            paymentTypeId: {
+                required: required
+            },
+            subTotalAmount: {
+                required: required
+            },
+            tax: {
+                required: required
+            },
+            totalAmount: {
+                required: required
+            }
         };
     }
 
@@ -147,11 +156,11 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             periodId: [null, [Validators.required]],
             paymentTypeId: [null],
             remark: [null],
-            subTotalAmount: [null],
-            tax: [null],
-            totalAmount: [null],
+            subTotalAmount: [null, [Validators.required]],
+            tax: [null, [Validators.required]],
+            totalAmount: [null, [Validators.required]],
             referenceNo: [null]
-         });
+        });
     }
 
     getExpenseById(id): void {
@@ -206,7 +215,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 //         this.flgEdition = "E";
                 //         this._isDisabled = false;
                 //     }
-                    
+
                 // });
             }
             else {
@@ -224,15 +233,15 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
                 // });
             }
-            
-            
+
+
         }
     }
 
     ////===========
     ////DELETE
     ////===========
-    
+
     //public deleteMessage: string = "Are you sure to delete this Lease?";
     //deviceToDelete: any; //DeleteDeviceRequest;
 
@@ -306,10 +315,10 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     getHouse = (item) => {
         if (item !== null && item !== undefined && item !== '') {
             this._currentHouse = item;
-            this.expenseForm.patchValue({'houseId': item.houseId })
+            this.expenseForm.patchValue({ 'houseId': item.houseId })
         } else {
             this._currentHouse = undefined;
-            this.expenseForm.patchValue({'houseId': null })
+            this.expenseForm.patchValue({ 'houseId': null })
             this.showErrors(true);
         }
     };
@@ -346,44 +355,53 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
 
-    accept() {
+    onAccept() {
         let expense = this.expenseForm.value;
+        
+        if (!this.expenseForm.valid) {
+            this.showErrors(true);
+            return;
+        }
         let expenseDate = new Date(expense.expenseDate.year, expense.expenseDate.month - 1, expense.expenseDate.day, 0, 0, 0, 0);
         expense.expenseDate = expenseDate;
-        if (this.isValidData()) {
-            if (this.flgEdition === 'N') {
-                //NEW
-                this.expenseDataService.saveExpense(expense).subscribe(r=> {
-                    let data = r;
-                });
-                this.showErrors(true);
-            }
-            else {
-                //UPDATE
-                this.expenseDataService.updateExpense(expense).subscribe(r=> {
-                    let data = r;
-                });
-            }
+        
+        if (this.flgEdition === 'N') {
+            //NEW
+            this.expenseDataService.saveExpense(expense).subscribe(r => {
+                let data = r;
+            })
+                .add(
+                    r => {
+                        this.flgEdition = 'E';
+                    }
+                );
+            this.showErrors(true);
+        }
+        else {
+            //UPDATE
+            this.expenseDataService.updateExpense(expense).subscribe(r => {
+                let data = r;
+            });
         }
     }
 
     ngAfterViewInit() {
         const controlBlurs: Observable<any>[] = this.formInputElements
-          .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
-    
+            .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
+
         // Merge the blur event observable with the valueChanges observable
         this.validationSubscription = Observable.merge(this.expenseForm.valueChanges, ...controlBlurs)
-        .debounceTime(800).subscribe(value => this.showErrors());
-      }
-    
-      private showErrors(force = false) {
+            .debounceTime(800).subscribe(value => this.showErrors());
+    }
+
+    private showErrors(force = false) {
         this.displayMessage = this.genericValidator.processMessages(this.expenseForm, force);
-      }
-    
-      ngOnDestroy() {
+    }
+
+    ngOnDestroy() {
         this.sub.unsubscribe();
         if (this.validationSubscription) {
-          this.validationSubscription.unsubscribe();
+            this.validationSubscription.unsubscribe();
         }
     }
 

@@ -20,7 +20,7 @@
       "styles": [
         "../node_modules/tether/dist/css/tether.css",
         "../node_modules/bootstrap/scss/bootstrap.scss",
-        "../node_modules/@telerik/kendo-theme-default/styles/grid/main.scss",
+        "../node_modules/@progress/kendo-theme-default/dist/all.css",
         "styles/kendo-custom.less",
         "styles/amigotenantx-styles.less",
         "../node_modules/ionicons/dist/css/ionicons.css",
