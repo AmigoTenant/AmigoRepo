@@ -71,7 +71,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     invoiceEntity.ContractId = firstDetail.ContractId;
                     invoiceEntity.InvoiceDate = DateTime.Now;
                     invoiceEntity.Comment = message.Comment;
-                    invoiceEntity.PaymentTypeId = firstDetail.PaymentTypeId;
+                    invoiceEntity.PaymentTypeId = null; // Deberia venir informacion desde la pantalla TAB Other information;
                     invoiceEntity.PaymentOperationNo = message.ReferenceNo;
                     invoiceEntity.CustomerName = message.TenantFullName;
                     invoiceEntity.InvoiceNo = maxInvoice != null ? (int.Parse(maxInvoice.InvoiceNo) + 1).ToString("D9") : "000000001";

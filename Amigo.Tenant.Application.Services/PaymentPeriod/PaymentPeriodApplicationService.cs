@@ -94,36 +94,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         commandDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Modified;
 
                     commandDetails.Add(commandDetail);
-
-                    ////if ((item.IsSelected.HasValue && item.IsSelected.Value) || item.TableStatus == DTOs.Requests.Common.ObjectStatus.Added)
-                    //if ((item.IsSelected.HasValue && item.IsSelected.Value) && item.PaymentPeriodId <= 0)
-                    //{
-                    //    //TODO: CAMBIAR LOGICA PARA MODIFICAR O ADD AGREGAR
-                    //    var commandDetail = _mapper.Map<PPDetailSearchByContractPeriodDTO, PaymentPeriodDetailCommand>(item);
-                    //    if (item.IsRequired.Value || item.IsSelected.Value)
-                    //        commandDetail.PaymentPeriodStatusId = entityStatusPayed.EntityStatusId;
-
-                    //    //commandDetail.TableStatus = commandDetail.TableStatus == DTOs.Requests.Common.ObjectStatus.Added ? DTOs.Requests.Common.ObjectStatus.Added : DTOs.Requests.Common.ObjectStatus.Modified;
-                    //    commandDetails.Add(commandDetail);
-                    //}
-                    //else
-                    //{
-                    //    //Puede entrar sin necesidad de estar Modificado
-                    //    if (item.TableStatus == DTOs.Requests.Common.ObjectStatus.Modified && item.PaymentPeriodId > 0)
-                    //    {
-                    //        var commandDetail = _mapper.Map<PPDetailSearchByContractPeriodDTO, PaymentPeriodDetailCommand>(item);
-
-                    //        //var paymentPeriodoDetail = new PaymentPeriodDetailCommand();
-                    //        //paymentPeriodoDetail.PaymentPeriodId = item.PaymentPeriodId;
-                    //        //paymentPeriodoDetail.PaymentAmount = item.PaymentAmount;
-                    //        //paymentPeriodoDetail.Comment = item.Comment;
-                    //        //paymentPeriodoDetail.ConceptId = item.ConceptId;
-                    //        //paymentPeriodoDetail.UpdatedBy = paymentsPeriod.UserId;
-                    //        //paymentPeriodoDetail.UpdatedDate = DateTime.Now;
-                    //        commandDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Modified;
-                    //        commandDetails.Add(commandDetail);
-                    //    }
-                    //}
+                    
                 }
                 command.PPDetail = commandDetails;
                 var resp = await _bus.SendAsync(command);

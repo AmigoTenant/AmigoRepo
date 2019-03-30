@@ -325,7 +325,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
 
     getPaymentTypes(): void {
-        this.masterDataService.getGeneralTableByTableName('PaymentType')
+        this.masterDataService.getGeneralTableByTableName('ConceptType')
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
                 this._listStatus = [];
@@ -364,7 +364,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
         let expenseDate = new Date(expense.expenseDate.year, expense.expenseDate.month - 1, expense.expenseDate.day, 0, 0, 0, 0);
         expense.expenseDate = expenseDate;
-        
+
         if (this.flgEdition === 'N') {
             //NEW
             this.expenseDataService.saveExpense(expense).subscribe(r => {
