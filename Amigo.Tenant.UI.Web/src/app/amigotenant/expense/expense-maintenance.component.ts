@@ -18,6 +18,7 @@ import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { GenericValidator } from '../../shared/generic.validator';
 import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
+import { DetailAmountsDto } from './dto/detail-amounts-dto';
 
 
 declare var $: any;
@@ -49,10 +50,14 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     public validationMessages: { [key: string]: { [key: string]: string } } = {};
     public displayMessage: { [key: string]: string; } = {};
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-
+    public difTotalAmount?: number= null;
+    public difSubTotalAmount?: number= null;
+    public difTax?: number= null;
 
 
     model: ExpenseRegisterRequest;
+    expenseDetailData: any[];
+
     allowEditing = true;
     public successFlag: boolean;
     public errorMessages: string[];
@@ -198,9 +203,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     //INSERT
     //===========
 
-    onSave(): void {
-        if (this.isValidData()) {
-            if (this.flgEdition === 'N') {
+    // onSave(): void {
+    //     if (this.isValidData()) {
+    //         if (this.flgEdition === 'N') {
                 //NEW
                 //this.model.contractStatusId = 2; //DRAFT
                 // this.model.rowStatus = true;
@@ -217,8 +222,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 //     }
 
                 // });
-            }
-            else {
+            // }
+            // else {
                 //UPDATE
                 // this.expenseClient.update(this.model).subscribe(res => {
                 //     var dataResult: any = res;
@@ -232,11 +237,11 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 //     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
 
                 // });
-            }
+    //         }
 
 
-        }
-    }
+    //     }
+    // }
 
     ////===========
     ////DELETE
@@ -275,31 +280,31 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.router.navigate(['amigotenant/expense']);
     }
 
-    onExecuteEvent($event) {
-        switch ($event) {
-            case 's':
-                this.onSave();
-                break;
-            case 'c':
-                //this.onClear();
-                break;
-            case 'k':
-                this.onCancel();
-                break;
-            default:
-                confirm('Sorry, that Event is not exists yet!');
-        }
-    }
+    // onExecuteEvent($event) {
+    //     switch ($event) {
+    //         case 's':
+    //             this.onSave();
+    //             break;
+    //         case 'c':
+    //             //this.onClear();
+    //             break;
+    //         case 'k':
+    //             this.onCancel();
+    //             break;
+    //         default:
+    //             confirm('Sorry, that Event is not exists yet!');
+    //     }
+    // }
 
-    isValidData(): boolean {
-        let isValid = true;
-        //this.resetFormError();
-        //if (this.model.tenantId == undefined || this.model.tenantId == 0 || this.model.tenantId == null) {
-        //    this._formError.tenantError = true;
-        //    isValid = false;
-        //}
-        return isValid;
-    }
+    // isValidData(): boolean {
+    //     let isValid = true;
+    //     //this.resetFormError();
+    //     //if (this.model.tenantId == undefined || this.model.tenantId == 0 || this.model.tenantId == null) {
+    //     //    this._formError.tenantError = true;
+    //     //    isValid = false;
+    //     //}
+    //     return isValid;
+    // }
 
 
     getPeriod = (item) => {
@@ -366,7 +371,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         expense.expenseDate = expenseDate;
 
         if (this.flgEdition === 'N') {
-            //NEW
+            //NEW EXPENSE
             this.expenseDataService.saveExpense(expense).subscribe(r => {
                 let data = r;
             })
@@ -378,11 +383,44 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             this.showErrors(true);
         }
         else {
-            //UPDATE
+            //UPDATE EXPENSE
             this.expenseDataService.updateExpense(expense).subscribe(r => {
                 let data = r;
-            });
+            })
+            .add(
+                r => {
+                    this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
+                    .subscribe(
+                        resp => {
+                            let datagrid = new ResponseListDTO(resp);
+                            this.expenseDetailData = datagrid.items;
+                        }
+                    )
+                    .add(
+                        q => {
+                            this.verifyDifferences(this.getDetailAmounts());
+                        }
+                    );
+
+                }
+            );
         }
+    }
+
+    getDetailAmounts() {
+        let totalAmount = 0;
+        let subTotalAmount = 0;
+        let tax = 0;
+        for (let i = 0; i < this.expenseDetailData.length; i++) {
+            totalAmount += this.expenseDetailData[i].totalAmount;
+            subTotalAmount += this.expenseDetailData[i].subTotalAmount;
+            tax += this.expenseDetailData[i].tax;
+        }
+        let detailAmounts = new DetailAmountsDto();
+        detailAmounts.totalAmount = totalAmount;
+        detailAmounts.subTotalAmount = subTotalAmount;
+        detailAmounts.tax = tax;
+        return detailAmounts;
     }
 
     ngAfterViewInit() {
@@ -405,43 +443,20 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
     }
 
+    verifyDifferences(detailAmounts: DetailAmountsDto) {
+        this.difTotalAmount = this.expenseForm.get('totalAmount').value - detailAmounts.totalAmount;
+        this.difSubTotalAmount = this.expenseForm.get('subTotalAmount').value - detailAmounts.subTotalAmount;
+        this.difTax = this.expenseForm.get('tax').value - detailAmounts.tax;
 
-    // openDialog: boolean = false;
-    // selectedDetail: any;
-
-    // onAddDetail(): void {
-    //     this.openDialog = true;
-    //     this.selectedDetail = new ExpenseDetailRegisterRequest();
-    //     this.selectedDetail.expenseId = this.model.expenseId;
-    //  }
-
-
-    //  close() {
-    //     this.openDialog = false;
-    //  }
-
-
-    //  eventoCloseParent(expenseId: any) {
-    //      debugger;
-    //     this.openDialog = false;
-    //     this.getExpenseById(expenseId);
-    //  }
-
-    //  eventoCloseParent= (item) => {
-    //     debugger;
-    //     this.openDialog = false;
-    //     this.getExpenseById(item);
-    // };
-
-
-    //  onSelectModelExpenseDate(): void {
-    //     if (this.modelExpenseDate != null) {
-    //         let expenseDate = new Date(this.modelExpenseDate.year, this.modelExpenseDate.month - 1, this.modelExpenseDate.day, 0, 0, 0, 0);
-    //         //this.expenseForm.patchValue(expenseDate);
-    //         this.expenseForm.get('expenseDate').setValue(expenseDate);
-    //     } else {
-    //         this.modelExpenseDate = undefined;
-    //     }
-    // }
+        if (this.difTotalAmount === 0) {
+            this.difTotalAmount = null;
+        }
+        if (this.difTax === 0) {
+            this.difTax = null;
+        }
+        if (this.difSubTotalAmount === 0) {
+            this.difSubTotalAmount = null;
+        }
+    }
 
 }

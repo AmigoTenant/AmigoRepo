@@ -122,7 +122,10 @@ namespace Amigo.Tenant.Application.Services.Expense
         public async Task<ResponseDTO<PagedList<ExpenseSearchDTO>>> SearchExpenseAsync(ExpenseSearchRequest search)
         {
             List<OrderExpression<ExpenseSearchDTO>> orderExpressionList = new List<OrderExpression<ExpenseSearchDTO>>();
+            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Desc, p => p.PeriodCode));
+            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.PaymentTypeName));
             orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.ExpenseDate));
+            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.TenantFullName));
             Expression<Func<ExpenseSearchDTO, bool>> queryFilter = c => true;
 
             //APPLICATIONDATE

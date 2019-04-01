@@ -34,7 +34,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         //    return resp;
         //}
 
-        [HttpGet, Route("getGeneralTableByTableNameAll"), CachingMasterData]
+        [HttpGet, Route("getGeneralTableByTableNameAll")] //, CachingMasterData]
         public Task<ResponseDTO<List<GeneralTableDTO>>> GetGeneralTableByTableNameAsync(string tableName)
         {
             var resp = _generalTableApplicationService.GetGeneralTableByTableNameAsync(tableName);

@@ -68,6 +68,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         this.buildForm();
         this.buildValidator();
         this.initializeForm();
+        debugger;
         this.expenseDetailForm.patchValue(this.inputSelectedExpenseDetail);
 
         if (this.inputSelectedExpenseDetail === undefined || this.inputSelectedExpenseDetail === null ||
@@ -130,8 +131,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     getExpenseDetailByExpenseDetailId(id): void {
         this.expenseDataService.getExpenseDetailByExpenseDetailId(id).subscribe(
             response => {
+                debugger;
                 let dataResult: any = new ResponseListDTO(response);
-                this.model = dataResult.dat;
+                this.model = dataResult.data;
                 this.expenseDetailForm.patchValue(this.model);
             });
     }
@@ -311,7 +313,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     getConceptByTypes(): void {
-        this.masterDataService.getConceptsByTypeIdList([31, 29])
+        this.masterDataService.getConceptsByTypeIdList([13])
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
                 this._listConcepts = dataResult.data;
@@ -319,6 +321,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     onCancelDetail() {
+        debugger;
         this.eventoClose.emit(this.expenseDetailForm.get('expenseId').value);
     }
 

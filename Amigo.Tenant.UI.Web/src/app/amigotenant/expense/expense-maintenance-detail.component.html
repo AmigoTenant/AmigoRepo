@@ -34,7 +34,7 @@
                         <div class="form-group col-sm-6">
                             <label for="from" class="col-sm-3 control-label">Apply to...</label>
                             <label class="col-sm-9">
-                                <select name="appliToId" class="form-control input-control" formControlName="applyTo" (change)="onApplyToChange()">
+                                <select name="applyTo" class="form-control input-control" formControlName="applyTo" (change)="onApplyToChange()">
                                     <option *ngFor="let apply of _listApplyTo" [ngValue]="apply.applyToId">
                                         {{apply.name}}
                                     </option>

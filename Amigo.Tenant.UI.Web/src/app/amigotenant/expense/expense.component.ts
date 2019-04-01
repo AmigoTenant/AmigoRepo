@@ -203,24 +203,26 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     getHouseTypes(): void {
         this.masterDataService.getHouseTypes()
             .subscribe(res => {
+                this._listHouseTypes = [];
                 let dataResult = new ResponseListDTO(res);
                 this._listHouseTypes = dataResult.data;
             });
     }
 
     getConceptByTypes(): void {
-        this.masterDataService.getConceptsByTypeIdList([31, 29])
+        this.masterDataService.getConceptsByTypeIdList([13]) //Cambiar para que se trate con Constantes
             .subscribe(res => {
+                this._listHouseTypes = [];
                 let dataResult = new ResponseListDTO(res);
                 this._listConcepts = dataResult.data;
             });
     }
 
     getPaymentTypes(): void {
-        this.masterDataService.getGeneralTableByTableName('PaymentType')
+        this.masterDataService.getGeneralTableByTableName('ConceptType')
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
-                this._listStatus = [];
+                this._listPaymentTypes = [];
                 for (let i = 0; i < dataResult.data.length; i++) {
                     this._listPaymentTypes.push({
                         'typeId': dataResult.data[i].generalTableId,

@@ -1342,5 +1342,8 @@
     "ENPU": "En Puerto",
     "RECE": "Recibido",
     "DESP": "Despachado"
+  },
+  "expense": {
+    "difference": "Difference"
   }
 }

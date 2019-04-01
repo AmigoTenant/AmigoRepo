@@ -56,8 +56,6 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Date From</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                        <!-- <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDateFrom" ngbDatepicker #d1="ngbDatepicker"
-                                                        [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" (ngModelChange)="onSelectModelExpenseDateFrom()"> -->
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDateFrom" ngbDatepicker #d1="ngbDatepicker"
                                                            [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" formControlName="expenseDateFrom" >
                                                     <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
@@ -68,8 +66,6 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Applicant Date To</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <!-- <input class="form-control" [placeholder]="localization.dateFormat" name="ExpenseDateTo" ngbDatepicker #d2="ngbDatepicker"
-                                                           [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" (ngModelChange)="onSelectModelExpenseDateTo()"> -->
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="ExpenseDateTo" ngbDatepicker #d2="ngbDatepicker"
                                                         [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" formControlName="expenseDateTo">
                                                     <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
@@ -221,7 +217,9 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="period" title="Period"></kendo-grid-column>
+                            <kendo-grid-column field="periodCode" title="Period"></kendo-grid-column>
+                            <kendo-grid-column field="paymentTypeName" title="Payment Type"></kendo-grid-column>
+                            <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
                             <kendo-grid-column field="expenseDate" title="Expense Date">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div>
@@ -229,13 +227,12 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="propertyTypeName" title="Property Type"></kendo-grid-column>
+                            <kendo-grid-column field="houseTypeName" title="Property Type"></kendo-grid-column>
                             <kendo-grid-column field="houseName" title="Property"></kendo-grid-column>
-                            <kendo-grid-column field="fullName" title="Name"></kendo-grid-column>
-                            <kendo-grid-column field="paymentTypeName" title="Payment Type"></kendo-grid-column>
+                            <kendo-grid-column field="tenantFullName" title="Tenant Name"></kendo-grid-column>
+                            
                             <kendo-grid-column field="referenceNo" title="reference No."></kendo-grid-column>
                             <kendo-grid-column field="statusName" title="Status"></kendo-grid-column>
-                            <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
 
                             <kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>

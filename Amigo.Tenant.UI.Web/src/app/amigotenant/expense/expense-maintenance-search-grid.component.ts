@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, EventEmitter, Output } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { ExpenseDataService } from './expense-data.service';
@@ -10,6 +10,7 @@ import { EnvironmentComponent } from '../../shared/common/environment.component'
 import { Subscription } from 'rxjs/Subscription';
 import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
 import { ExpenseDetailChangeStatusRequest } from './dto/expense-detail-change-status-request';
+import { DetailAmountsDto } from './dto/detail-amounts-dto';
 
 declare var $: any;
 
@@ -25,6 +26,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     sub: Subscription;
     expenseId: number;
     periodId: number;
+    @Output() onCloseDetail = new EventEmitter<any>();
 
     constructor(
         private route: ActivatedRoute,
@@ -54,6 +56,9 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
                 total: datagrid.total
             };
             this.totalResultCount = datagrid.total;
+        })
+        .add( r => {
+            this.onCloseDetail.emit(this.getDetailAmounts());
         });
     }
 
@@ -90,9 +95,39 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
 
      eventoCloseParent= (item) => {
         this.openDialog = false;
-        this.getExpenseDetails(item);
+        this.getExpenseDetails(item)
     };
 
+    // getExpenseDetailAndEmit(expenseId: number): void {
+    //     debugger;
+    //     this.expenseDataService.getExpenseDetailByExpenseId(expenseId).subscribe(resp => {
+    //         let datagrid = new ResponseListDTO(resp);
+    //         this.expenseDetailData = {
+    //             data: datagrid.items,
+    //             total: datagrid.total
+    //         };
+    //         this.totalResultCount = datagrid.total;
+    //     })
+    //     .add( r => {
+    //         this.onCloseDetail.emit(this.getDetailAmounts());
+    //     });
+    // }
+
+    getDetailAmounts() {
+        let totalAmount = 0;
+        let subTotalAmount = 0;
+        let tax = 0;
+        for (let i = 0; i < this.expenseDetailData.data.length; i++) {
+            totalAmount += this.expenseDetailData.data[i].totalAmount;
+            subTotalAmount += this.expenseDetailData.data[i].subTotalAmount;
+            tax += this.expenseDetailData.data[i].tax;
+        }
+        let detailAmounts = new DetailAmountsDto();
+        detailAmounts.totalAmount = totalAmount;
+        detailAmounts.subTotalAmount = subTotalAmount;
+        detailAmounts.tax = tax;
+        return detailAmounts;
+    }
 
     onAddDetail(): void {
         this.openDialog = true;
@@ -135,3 +170,5 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     }
 
 }
+
+
