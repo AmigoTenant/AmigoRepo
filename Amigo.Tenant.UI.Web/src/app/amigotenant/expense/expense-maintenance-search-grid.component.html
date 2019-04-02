@@ -70,9 +70,9 @@
 </kendo-dialog>
 
 <kendo-dialog *ngIf="openChangeStatusConfirmation" title="Expense Detail" (close)="closePopupConfirmation()" style="z-index:10003;" [minWidth]="250" [width]="450">
-    <p style="margin: 30px; text-align: center;">Do you accept to change Status?</p>
-        <kendo-dialog-actions>
-            <button class="btn btn-secondary" (click)="close('no')">No</button>
-            <button class="btn btn-primary" (click)="acceptChangeStatus()">Yes</button>
-        </kendo-dialog-actions>
+    <div>Do you accept to change Status?</div>
+    <kendo-dialog-actions>
+        <button class="k-button"  (click)="close('no')">No</button>
+        <button class="k-button k-primary" (click)="acceptChangeStatus()">Yes</button>
+    </kendo-dialog-actions>
 </kendo-dialog>

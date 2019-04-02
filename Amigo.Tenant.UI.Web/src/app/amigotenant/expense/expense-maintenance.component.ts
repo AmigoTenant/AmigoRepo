@@ -372,8 +372,20 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
         if (this.flgEdition === 'N') {
             //NEW EXPENSE
-            this.expenseDataService.saveExpense(expense).subscribe(r => {
-                let data = r;
+            this.expenseDataService.saveExpense(expense).subscribe(res => {
+                let dataResult: any = res;
+                this.successFlag = dataResult.IsValid;
+                this.errorMessages = dataResult.Messages;
+                this.successMessage = 'Expense was created';
+                
+                setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
+                //if (this.successFlag) {
+                    
+                    //this.getRentalApplicationById(dataResult.pk);
+                    //this.flgEdition = "E";
+                    //this._isDisabled = false;
+                //}
+
             })
                 .add(
                     r => {
@@ -384,8 +396,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
         else {
             //UPDATE EXPENSE
-            this.expenseDataService.updateExpense(expense).subscribe(r => {
-                let data = r;
+            this.expenseDataService.updateExpense(expense).subscribe(res => {
+                let dataResult: any = res;
+                this.successFlag = dataResult.IsValid;
+                this.errorMessages = dataResult.Messages;
+                this.successMessage = 'Expense was updated';
+                
+                setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
             })
             .add(
                 r => {
