@@ -34,10 +34,11 @@
                                         <span class="ro-calendar-btn" (click)="d1.toggle()">
                                             <i class="xico-ui-calendar" style="width:30px"></i>
                                         </span>
+                                        <span class="help-block text-danger" *ngIf="displayMessage['expenseDate']">
+                                            {{ displayMessage['expenseDate'] }}
+                                        </span>
                                     </label>
-                                    <span class="help-block text-danger" *ngIf="displayMessage['expenseDate']">
-                                        {{ displayMessage['expenseDate'] }}
-                                    </span>
+                                    
 
                                 </div>
                                 <div class="form-group col-sm-12">
@@ -72,6 +73,9 @@
                                                 {{ period.code }}
                                             </option>
                                         </select>
+                                        <span  class="help-block text-danger" *ngIf="displayMessage['periodId']">
+                                            {{ displayMessage['periodId'] }}
+                                        </span>
                                     </label>
 
                                     <label for="from" class="col-sm-3 control-label">Sub Total</label>
@@ -101,6 +105,9 @@
                                                 {{paymentType.name}}
                                             </option>
                                         </select>
+                                        <span class="help-block text-danger" *ngIf="displayMessage['paymentTypeId']">
+                                            {{ displayMessage['paymentTypeId'] }}
+                                        </span>
                                     </label>
 
                                     <label for="from" class="col-sm-3 control-label">Tax</label>
@@ -161,7 +168,9 @@
                         <ng-template ngbTabContent>
                             <div class="form-group col-sm-12"></div>
                             <div class="row" *ngIf="flgEdition=='E'">
-                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);"></at-expense-detail-grid>
+                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" 
+                                [expenseIdAfterNew]="expenseIdAfterNewOnHeader"
+                                [periodIdAfterNew]="periodIdAfterNewOnHeader"></at-expense-detail-grid>
                             </div>
                         </ng-template>
                     </ngb-tab>

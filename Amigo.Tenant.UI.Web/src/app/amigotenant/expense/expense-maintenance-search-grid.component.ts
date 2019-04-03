@@ -1,4 +1,4 @@
-import { Component, OnDestroy, EventEmitter, Output } from '@angular/core';
+import { Component, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { ExpenseDataService } from './expense-data.service';
@@ -27,6 +27,12 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     expenseId: number;
     periodId: number;
     @Output() onCloseDetail = new EventEmitter<any>();
+    @Input() expenseIdAfterNew: any;
+    @Input() periodIdAfterNew: any;
+
+    public successFlag: boolean;
+    public errorMessages: any[];
+    public successMessage: string;
 
     constructor(
         private route: ActivatedRoute,
@@ -37,14 +43,20 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     }
 
     ngOnInit() {
+        debugger; //Inicializacion de la Grilla
         this.sub = this.route.params.subscribe(params => {
             let expenseId = params['expenseId'];
             let periodId = params['periodId'];
             if (expenseId != null && typeof (expenseId) !== 'undefined') {
                 this.expenseId = expenseId;
                 this.periodId = periodId;
-                this.getExpenseDetails(expenseId);
             }
+            else{
+                //New
+                this.expenseId = this.expenseIdAfterNew;
+                this.periodId = this.periodIdAfterNew;
+            }
+            this.getExpenseDetails(this.expenseId);
         });
     }
 
@@ -70,10 +82,10 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
 
     public changeItemHeader() {
         let c = this.expenseDetailData.data.length;
-        let index = 0; 
+        let index = 0;
         for (let item in this.expenseDetailData.data) {
-                $("#" + index)[0].checked = this.isColumnHeaderSelected;
-                this.expenseDetailData.data[item].isSelected = this.isColumnHeaderSelected;
+                $("#" + index)[0].checked = !this.isColumnHeaderSelected;
+                this.expenseDetailData.data[item].isSelected = !this.isColumnHeaderSelected;
             index++;
         }
         this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
@@ -95,6 +107,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
 
      eventoCloseParent= (item) => {
         this.openDialog = false;
+        debugger;
         this.getExpenseDetails(item)
     };
 
@@ -130,13 +143,21 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     }
 
     onAddDetail(): void {
+        debugger;
         this.openDialog = true;
         this.selectedDetail = new ExpenseDetailRegisterRequest();
         this.selectedDetail.expenseId = this.expenseId;
      }
 
     onChangeStatus(): void {
-        this.openChangeStatusConfirmation = true;
+        let count = this.expenseDetailData.data.filter(q => q.isSelected);
+        if (count.length === 0) {
+            this.successFlag = false;
+            this.errorMessages = [{ message: 'Error please select the details' }];
+            setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
+        } else {
+            this.openChangeStatusConfirmation = true;
+        }
     }
 
     public close(status) {

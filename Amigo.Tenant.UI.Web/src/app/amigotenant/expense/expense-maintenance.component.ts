@@ -131,6 +131,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     contractId: any;
 
     ngOnInit() {
+        debugger; //Inicializacion del Maintenance header
         this.model = new ExpenseRegisterRequest();
         this.buildForm();
         this.initializeForm();
@@ -159,7 +160,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             expenseDate: [null, [Validators.required]],
             houseId: [null, [Validators.required]],
             periodId: [null, [Validators.required]],
-            paymentTypeId: [null],
+            paymentTypeId: [null, [Validators.required]],
             remark: [null],
             subTotalAmount: [null, [Validators.required]],
             tax: [null, [Validators.required]],
@@ -169,7 +170,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
     getExpenseById(id): void {
-
         this.expenseDataService.getById(id).subscribe(
             response => {
                 let dataResult: any = new ResponseListDTO(response);
@@ -198,50 +198,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.getPeriodsNumberPeriod(10);
     }
 
-
-    //=========== 
-    //INSERT
-    //===========
-
-    // onSave(): void {
-    //     if (this.isValidData()) {
-    //         if (this.flgEdition === 'N') {
-                //NEW
-                //this.model.contractStatusId = 2; //DRAFT
-                // this.model.rowStatus = true;
-                // this.expenseClient.register(this.model).subscribe(res => {
-                //     var dataResult: any = res;
-                //     this.successFlag = dataResult.isValid;
-                //     this.errorMessages = dataResult.messages;
-                //     this.successMessage = 'Rental Expense was created';
-                //     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
-                //     if (this.successFlag) {
-                //         this.getExpenseById(dataResult.pk);
-                //         this.flgEdition = "E";
-                //         this._isDisabled = false;
-                //     }
-
-                // });
-            // }
-            // else {
-                //UPDATE
-                // this.expenseClient.update(this.model).subscribe(res => {
-                //     var dataResult: any = res;
-                //     this.successFlag = dataResult.isValid;
-                //     this.errorMessages = dataResult.messages;
-                //     this.successMessage = 'Rental Expense was Updated';
-                //     //TODO: Permite descargar nuevamente la lista de HouseFeatures Asignados al contrato, 
-                //     //debe hacerse la llamada en el servidor al grabar, para evitar grabar informacion Features 
-                //     //que ya han sido asignados concurrentemente (por otra persona)
-                //     //this.getHouseFeatureDetailContract();
-                //     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
-
-                // });
-    //         }
-
-
-    //     }
-    // }
 
     ////===========
     ////DELETE
@@ -359,6 +315,11 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             });
     }
 
+    //=========== 
+    //INSERT
+    //===========
+    public expenseIdAfterNewOnHeader: number;
+    public periodIdAfterNewOnHeader: number;
 
     onAccept() {
         let expense = this.expenseForm.value;
@@ -377,21 +338,16 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 this.successFlag = dataResult.IsValid;
                 this.errorMessages = dataResult.Messages;
                 this.successMessage = 'Expense was created';
-                
+                this.expenseIdAfterNewOnHeader = dataResult.Pk;
                 setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
-                //if (this.successFlag) {
-                    
-                    //this.getRentalApplicationById(dataResult.pk);
-                    //this.flgEdition = "E";
-                    //this._isDisabled = false;
-                //}
-
             })
-                .add(
-                    r => {
-                        this.flgEdition = 'E';
-                    }
-                );
+            .add(
+                r => {
+                    debugger;
+                    this.flgEdition = 'E';
+                    this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
+                }
+            );
             this.showErrors(true);
         }
         else {
