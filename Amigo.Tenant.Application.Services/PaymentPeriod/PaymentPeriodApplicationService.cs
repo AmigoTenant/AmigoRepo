@@ -78,7 +78,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         {
             //Map to Command
             var response = await ValidateEntityUpdate(paymentsPeriod);
-            var entityStatusPayed = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Payed);
+            //var entityStatusPayed = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Payed);
 
             if (response.IsValid)
             {

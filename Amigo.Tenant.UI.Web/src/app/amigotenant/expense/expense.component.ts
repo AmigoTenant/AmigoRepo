@@ -54,6 +54,10 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //TOTALS
     totalResultCount = 0;
 
+    public deleteMessage = 'Are you sure to delete this Rental Application?';
+    expenseToDelete: any;
+
+
     //MULTISELECT
     //public featureListMultiSelect: IMultiSelectOption[] = [];
     //public selectedOptionsFeature: number[] = [];
@@ -285,23 +289,12 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //===========
 
     onEdit(data): void {
-       this.router.navigate(['/amigotenant/expense/edit', data.expenseId , data.periodId]); // + data.expenseId);
+       this.router.navigate(['/amigotenant/expense/edit', data.expenseId , data.periodId, data.paymentTypeId]); // + data.expenseId);
     }
-
-    //=========== 
-    //INSERT
-    //===========
-
-    //onInsert(): void {
-    //    this.router.navigateByUrl('leasing/rentalApp/new');
-    //}
 
     //===========
     //DELETE
     //===========
-
-    public deleteMessage: string = "Are you sure to delete this Rental Application?";
-    expenseToDelete: any;
 
     onDelete(entityToDelete) {
        this.expenseToDelete = new ExpenseDeleteRequest();

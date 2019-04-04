@@ -67,7 +67,7 @@
 </div>
 
 <kendo-dialog *ngIf="openDialog" title="Expense Detail" (close)="closePopup()" style="z-index:10003;" id="tenantMaintenancePanel">
-    <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)">
+    <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)" [inputPaymentTypeId]="paymentTypeId">
     </at-expense-maintenance-detail>
 </kendo-dialog>
 

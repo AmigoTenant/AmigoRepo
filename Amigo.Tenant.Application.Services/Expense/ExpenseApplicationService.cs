@@ -27,6 +27,7 @@ using Amigo.Tenant.Application.DTOs.Responses.Leasing;
 using Amigo.Tenant.Application.DTOs.Responses.MasterData;
 using Amigo.Tenant.Commands.PaymentPeriod;
 using model = Amigo.Tenant.CommandModel.Models;
+using System.Text;
 
 namespace Amigo.Tenant.Application.Services.Expense
 {
@@ -415,28 +416,66 @@ namespace Amigo.Tenant.Application.Services.Expense
 
         public async Task<ResponseDTO> ChangeDetailStatusAsync(ExpenseDetailChangeStatusRequest expenseDetailChangeStatusRequest)
         {
-            var expense = await GetByIdAsync(expenseDetailChangeStatusRequest.ExpenseId);
-            //await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
-            var command = await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
-            command.UserId = expenseDetailChangeStatusRequest.UserId.Value;
-            var resp = await _bus.SendAsync(command);
-            return ResponseBuilder.Correct(resp, command.ExpenseId, "NONE");
+            var response = new ResponseDTO()
+            {
+                IsValid = true,
+                Messages = new List<ApplicationMessage>()
+            };
+
+            try
+            {
+                var expense = await GetByIdAsync(expenseDetailChangeStatusRequest.ExpenseId);
+                var command = await CreatePaymentInformation(expenseDetailChangeStatusRequest, expense.Data);
+                command.UserId = expenseDetailChangeStatusRequest.UserId.Value;
+                var resp = await _bus.SendAsync(command);
+                //return ResponseBuilder.Correct(resp, command.ExpenseId, "NONE");
+
+                response.Messages.Add(new ApplicationMessage()
+                {
+                    Key = "Ok",
+                    Message = string.Empty
+                });
+
+            }
+            catch (Exception ex)
+            {
+                response.IsValid = string.IsNullOrEmpty(ex.ToString());
+                response.Messages = new List<ApplicationMessage>();
+                response.Messages.Add(new ApplicationMessage()
+                {
+                    Key = string.IsNullOrEmpty(ex.Message) ? "Ok" : "Error",
+                    Message = ex.Message
+                });
+
+            }
+            return response;
         }
 
 
         private async Task<ExpenseDetailChangeStatusCommand> CreatePaymentInformation(ExpenseDetailChangeStatusRequest expenseDetailList, ExpenseDTO expenseDto)
         {
-            var period = (await _periodApplicationService.GetPeriodByIdAsync(expenseDetailList.PeriodId)).Data;
+            StringBuilder errorMessage = new StringBuilder();
 
+            var period = (await _periodApplicationService.GetPeriodByIdAsync(expenseDetailList.PeriodId)).Data;
             var expenseDetailStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.Expense, Constants.EntityStatus.Expense.Pending);
+
+            if (expenseDetailStatusId == null)
+                errorMessage.AppendLine("No hay definido un Status 'PENDIENTE' para los Expenses");
+
+
 
             var expenseDetailChangeStatusCommand = new ExpenseDetailChangeStatusCommand() {
                 ExpenseId = expenseDto.ExpenseId,
                 ExpenseDetailStatusId = expenseDetailStatusId
             };
 
+
             var expenseDetailUpdateCommandList = new List<ExpenseDetailUpdateCommand>();
             var paymentStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
+
+
+            if (paymentStatusId == null)
+                errorMessage.AppendLine("No hay definido un Status 'PENDIENTE' para los Payments");
 
             //var detailList = await _expenseDetailDataAccess.ListAsync(q => expenseDetailList.ExpenseDetailListId.Contains(q.ExpenseDetailId.Value));
 
@@ -451,45 +490,65 @@ namespace Amigo.Tenant.Application.Services.Expense
 
                 if (expenseDetailRegisterRequest != null)
                 {
-                    //var concept = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
-
-                    //TODO: SE ESTA CAYENDO EN ESTA CONSULTA
-
                     var rentaPayment = await _repositoryPaymentPeriod.FirstOrDefaultAsync(q => q.TenantId == expenseDetailRegisterRequest.TenantId
                                         && q.PeriodId == expenseDetailList.PeriodId
                                         && q.ConceptId == 15  //Cambiar 15 por el codigo del concepto RENTA
-                                        ); 
+                                        );
 
-                    var expenseDetailUpdateCommand = new ExpenseDetailUpdateCommand()
+
+                    if (rentaPayment == null)
                     {
-                        ExpenseDetailId = item,
-                        ExpenseDetailStatusId = expenseDetailStatusId
-                    };
+                        errorMessage.AppendLine("No existe un concepto RENTA en Payment para asociar el Expense");
+                    } else {
+                        var expenseDetailUpdateCommand = new ExpenseDetailUpdateCommand()
+                        {
+                            ExpenseDetailId = item,
+                            ExpenseDetailStatusId = expenseDetailStatusId
+                        };
 
-                    var paymentPeriodRegisterCommand = new PaymentPeriodRegisterCommand()
-                    {
-                        PaymentPeriodId = id,
-                        ConceptId = expenseDetailRegisterRequest.ConceptId, //"CODE FOR CONCEPT"; //TODO:
-                        ContractId = rentaPayment.ContractId,
-                        TenantId = expenseDetailRegisterRequest.TenantId,
-                        PeriodId = period.PeriodId,
-                        PaymentPeriodStatusId = paymentStatusId, //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
-                        RowStatus = true,
-                        CreatedBy = expenseDetailList.UserId,
-                        CreationDate = DateTime.Now,
-                        UpdatedBy = expenseDetailList.UserId,
-                        UpdatedDate = DateTime.Now,
-                        PaymentTypeId = expenseDetailRegisterRequest.Concept.PayTypeId, //revisar si no traer del concepto
-                        PaymentAmount = expenseDetailRegisterRequest.TotalAmount,
-                        DueDate = period.DueDate,
-                    };
 
-                    expenseDetailUpdateCommand.PaymentPeriodRegister = paymentPeriodRegisterCommand;
-                    expenseDetailUpdateCommandList.Add(expenseDetailUpdateCommand);
-                    id--;
+                        var paymentPeriodRegisterCommand = new PaymentPeriodRegisterCommand()
+                        {
+                            PaymentPeriodId = id,
+                            ConceptId = expenseDetailRegisterRequest.ConceptId, //"CODE FOR CONCEPT"; //TODO:
+                            ContractId = rentaPayment.ContractId,
+                            TenantId = expenseDetailRegisterRequest.TenantId,
+                            PeriodId = period.PeriodId,
+                            PaymentPeriodStatusId = paymentStatusId, //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
+                            RowStatus = true,
+                            CreatedBy = expenseDetailList.UserId,
+                            CreationDate = DateTime.Now,
+                            UpdatedBy = expenseDetailList.UserId,
+                            UpdatedDate = DateTime.Now,
+                            PaymentTypeId = expenseDetailRegisterRequest.Concept.PayTypeId, //revisar si no traer del concepto
+                            PaymentAmount = expenseDetailRegisterRequest.TotalAmount,
+                            DueDate = period.DueDate,
+                        };
+
+                        expenseDetailUpdateCommand.PaymentPeriodRegister = paymentPeriodRegisterCommand;
+                        expenseDetailUpdateCommandList.Add(expenseDetailUpdateCommand);
+                        id--;
+                    }
+                }
+                else
+                {
+                    errorMessage.AppendLine("No existe un detail ID para procesar");
                 }
             }
-            expenseDetailChangeStatusCommand.ExpenseDetailUpdateCommand = expenseDetailUpdateCommandList;
+
+            if (errorMessage.ToString().Length == 0)
+            {
+                expenseDetailChangeStatusCommand.ExpenseDetailUpdateCommand = expenseDetailUpdateCommandList;
+            }
+            else
+            {
+                throw new Exception(errorMessage.ToString());
+            }
+
+            
+
+            //return response;
+
             return expenseDetailChangeStatusCommand;
         }
 

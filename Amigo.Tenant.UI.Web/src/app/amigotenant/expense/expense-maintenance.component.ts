@@ -50,9 +50,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     public validationMessages: { [key: string]: { [key: string]: string } } = {};
     public displayMessage: { [key: string]: string; } = {};
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
-    public difTotalAmount?: number= null;
-    public difSubTotalAmount?: number= null;
-    public difTax?: number= null;
+    public difTotalAmount?: number = null;
+    public difSubTotalAmount?: number = null;
+    public difTax?: number = null;
 
 
     model: ExpenseRegisterRequest;
@@ -320,10 +320,11 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     //===========
     public expenseIdAfterNewOnHeader: number;
     public periodIdAfterNewOnHeader: number;
+    public paymentTypeIdAfterNewOnHeader: number;
 
     onAccept() {
         let expense = this.expenseForm.value;
-        
+
         if (!this.expenseForm.valid) {
             this.showErrors(true);
             return;
@@ -332,7 +333,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         expense.expenseDate = expenseDate;
 
         if (this.flgEdition === 'N') {
-            //NEW EXPENSE
+            // NEW EXPENSE
             this.expenseDataService.saveExpense(expense).subscribe(res => {
                 let dataResult: any = res;
                 this.successFlag = dataResult.IsValid;
@@ -341,42 +342,43 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 this.expenseIdAfterNewOnHeader = dataResult.Pk;
                 setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
             })
-            .add(
-                r => {
-                    debugger;
-                    this.flgEdition = 'E';
-                    this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
-                }
-            );
+                .add(
+                    r => {
+                        this.flgEdition = 'E';
+                        this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
+                        this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
+                    }
+                );
             this.showErrors(true);
-        }
-        else {
-            //UPDATE EXPENSE
+        } else {
+            // UPDATE EXPENSE
             this.expenseDataService.updateExpense(expense).subscribe(res => {
                 let dataResult: any = res;
                 this.successFlag = dataResult.IsValid;
                 this.errorMessages = dataResult.Messages;
                 this.successMessage = 'Expense was updated';
-                
+
                 setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
             })
-            .add(
-                r => {
-                    this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
-                    .subscribe(
-                        resp => {
-                            let datagrid = new ResponseListDTO(resp);
-                            this.expenseDetailData = datagrid.items;
-                        }
-                    )
-                    .add(
-                        q => {
-                            this.verifyDifferences(this.getDetailAmounts());
-                        }
-                    );
+                .add(
+                    r => {
+                        this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
+                        this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
+                        this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
+                            .subscribe(
+                                resp => {
+                                    let datagrid = new ResponseListDTO(resp);
+                                    this.expenseDetailData = datagrid.items;
+                                }
+                            )
+                            .add(
+                                q => {
+                                    this.verifyDifferences(this.getDetailAmounts());
+                                }
+                            );
 
-                }
-            );
+                    }
+                );
         }
     }
 

@@ -38,7 +38,7 @@
                                             {{ displayMessage['expenseDate'] }}
                                         </span>
                                     </label>
-                                    
+
 
                                 </div>
                                 <div class="form-group col-sm-12">
@@ -58,8 +58,8 @@
                                         </span>
                                     </label>
                                     <label class="col-sm-6 control-label float-right">
-                                        <span class="help-block text-danger" >
-                                                Diferences
+                                        <span class="help-block text-danger">
+                                            Diferences
                                         </span>
                                     </label>
 
@@ -73,7 +73,7 @@
                                                 {{ period.code }}
                                             </option>
                                         </select>
-                                        <span  class="help-block text-danger" *ngIf="displayMessage['periodId']">
+                                        <span class="help-block text-danger" *ngIf="displayMessage['periodId']">
                                             {{ displayMessage['periodId'] }}
                                         </span>
                                     </label>
@@ -87,10 +87,10 @@
                                         </span>
                                     </label>
                                     <label class="col-sm-1 control-label">
-                                            <span class="help-block text-danger" *ngIf="difSubTotalAmount">
-                                                    {{ difSubTotalAmount | number:"1.2-2"  }}
-                                            </span>
-                                        </label>
+                                        <span class="help-block text-danger" *ngIf="difSubTotalAmount">
+                                            {{ difSubTotalAmount | number:"1.2-2"  }}
+                                        </span>
+                                    </label>
 
                                 </div>
 
@@ -118,10 +118,10 @@
                                         </span>
                                     </label>
                                     <label class="col-sm-1 control-label">
-                                            <span class="help-block text-danger" *ngIf="difTax">
-                                                    {{ difTax | number:"1.2-2"  }}
-                                            </span>
-                                        </label>
+                                        <span class="help-block text-danger" *ngIf="difTax">
+                                            {{ difTax | number:"1.2-2"  }}
+                                        </span>
+                                    </label>
 
                                 </div>
 
@@ -143,10 +143,10 @@
                                     </label>
                                     <label class="col-sm-1 control-label">
                                         <span class="help-block text-danger" *ngIf="difTotalAmount">
-                                                {{ difTotalAmount | number:"1.2-2"  }}
+                                            {{ difTotalAmount | number:"1.2-2"  }}
                                         </span>
                                     </label>
-                                   
+
                                 </div>
 
                                 <div class="form-group col-sm-12">
@@ -164,13 +164,15 @@
                 </ngb-tabset>
                 <ngb-tabset>
                     <ngb-tab title="Expense Detail">
-
                         <ng-template ngbTabContent>
                             <div class="form-group col-sm-12"></div>
                             <div class="row" *ngIf="flgEdition=='E'">
-                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" 
-                                [expenseIdAfterNew]="expenseIdAfterNewOnHeader"
-                                [periodIdAfterNew]="periodIdAfterNewOnHeader"></at-expense-detail-grid>
+
+                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);"
+                                    [expenseIdAfterNew]="expenseIdAfterNewOnHeader"
+                                    [periodIdAfterNew]="periodIdAfterNewOnHeader"
+                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader">
+                                </at-expense-detail-grid>
                             </div>
                         </ng-template>
                     </ngb-tab>

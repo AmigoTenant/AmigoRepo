@@ -34,6 +34,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     @ViewChildren(FormControlName, { read: ElementRef }) formInputElements: ElementRef[];
     @Input() inputSelectedExpenseDetail: ExpenseDetailRegisterRequest;
     @Output() eventoClose = new EventEmitter<any>();
+    @Input() inputPaymentTypeId: number;
 
     _listConcepts: any[];
     isColumnHeaderSelected = true;
@@ -52,6 +53,8 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     sub: Subscription;
     contractId: any;
 
+    public isForAllTenant = false;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -68,7 +71,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         this.buildForm();
         this.buildValidator();
         this.initializeForm();
-        debugger;
         this.expenseDetailForm.patchValue(this.inputSelectedExpenseDetail);
 
         if (this.inputSelectedExpenseDetail === undefined || this.inputSelectedExpenseDetail === null ||
@@ -313,7 +315,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     getConceptByTypes(): void {
-        this.masterDataService.getConceptsByTypeIdList([13])
+        this.masterDataService.getConceptsByTypeIdList([this.inputPaymentTypeId])
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
                 this._listConcepts = dataResult.data;
@@ -321,12 +323,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     onCancelDetail() {
-        debugger;
         this.eventoClose.emit(this.expenseDetailForm.get('expenseId').value);
     }
 
-
-    isForAllTenant: boolean = false;
     onApplyToChange() {
         if (this.expenseDetailForm.get('applyTo').value === 66) {
             this.isForAllTenant = true;
