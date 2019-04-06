@@ -55,6 +55,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
 
     public isForAllTenant = false;
 
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -78,6 +79,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
             this.flgEdition = 'N';
         } else {
             this.flgEdition = 'E';
+            this._currentTenant =   new CurrentTenant();
+            this._currentTenant.tenantId = this.inputSelectedExpenseDetail.tenantId;
+            this._currentTenant.fullName = this.inputSelectedExpenseDetail.tenantFullName;
         }
     }
 
@@ -327,7 +331,10 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     }
 
     onApplyToChange() {
-        if (this.expenseDetailForm.get('applyTo').value === 66) {
+        // Aplicar Validator solo para Tenant
+        // 66: All Tenant
+        // 64: Period
+        if (this.expenseDetailForm.get('applyTo').value === 66 || this.expenseDetailForm.get('applyTo').value === 64) {
             this.isForAllTenant = true;
             this.clearTenantIdValidator();
         } else {
@@ -348,4 +355,9 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         tenantId.updateValueAndValidity();
     }
 
+}
+
+export class CurrentTenant {
+    tenantId: number;
+    fullName: string;
 }

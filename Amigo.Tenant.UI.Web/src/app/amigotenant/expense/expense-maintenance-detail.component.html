@@ -31,7 +31,7 @@
                         </div>
                         
 
-                        <div class="form-group col-sm-6">
+                        <div class="form-group col-sm-6" *ngIf="flgEdition==='N'">
                             <label for="from" class="col-sm-3 control-label">Apply to...</label>
                             <label class="col-sm-9">
                                 <select name="applyTo" class="form-control input-control" formControlName="applyTo" (change)="onApplyToChange()">
@@ -59,7 +59,7 @@
                             </label>
                         </div>
 
-                        <div class="form-group col-sm-6" *ngIf="!this.isForAllTenant">
+                        <div class="form-group col-sm-6" *ngIf="!this.isForAllTenant || flgEdition==='E'">
                             <label for="from" class="col-sm-3 control-label">Tenant</label>
                             <label class="col-sm-9">
                                 <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>

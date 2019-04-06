@@ -75,6 +75,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     flgEdition: string;
     _isDisabled: boolean;
 
+    public isPeriodDisabled = false;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -176,7 +178,11 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 this.model = dataResult.dat;
                 this.expenseForm.patchValue(this.model);
                 this.getDateFromModel(this.model.expenseDate);
-            });
+            }).add(
+                r   => {
+                    this.getDetail()
+                }
+            );
     }
 
     public getDateFromModel(dateFromModel: Date): void {
@@ -364,19 +370,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                     r => {
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
-                        this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
-                            .subscribe(
-                                resp => {
-                                    let datagrid = new ResponseListDTO(resp);
-                                    this.expenseDetailData = datagrid.items;
-                                }
-                            )
-                            .add(
-                                q => {
-                                    this.verifyDifferences(this.getDetailAmounts());
-                                }
-                            );
-
+                        this.getDetail();
                     }
                 );
         }
@@ -432,6 +426,53 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         if (this.difSubTotalAmount === 0) {
             this.difSubTotalAmount = null;
         }
+
+        this.setDisablePayment(detailAmounts)
+        this.setDisablePeriodAndProperty();
+    }
+
+    setDisablePayment(detailAmounts: DetailAmountsDto) {
+        // Deshabilita PaymentType si ya hay detalles, para evitar inconsistencia de conceptos
+        this.isPeriodDisabled = detailAmounts.totalAmount > 0 ||
+                                detailAmounts.subTotalAmount > 0 ||
+                                detailAmounts.tax > 0;
+        if (this.isPeriodDisabled) {
+            this.expenseForm.get('periodId').disable();
+            this.expenseForm.get('paymentTypeId').disable();
+        } else {
+            this.expenseForm.get('periodId').enable();
+            this.expenseForm.get('paymentTypeId').enable();
+        }
+
+    }
+
+    setDisablePeriodAndProperty() {
+        // Deshabilita Period y Properties si ya han migrado al menos un detalle
+        let existsDetailMigrated =  this.expenseDetailData !== undefined &&
+                                    this.expenseDetailData.filter(q => q.expenseDetailStatusId === 23).length > 0; // 23 Migrated
+        if (existsDetailMigrated) {
+            this.expenseForm.get('periodId').disable();
+            this.expenseForm.get('houseId').disable();
+        } else {
+            this.expenseForm.get('periodId').enable();
+            this.expenseForm.get('houseId').enable();
+        }
+    }
+
+    getDetail() {
+        this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
+        .subscribe(
+            resp => {
+                let datagrid = new ResponseListDTO(resp);
+                this.expenseDetailData = datagrid.items;
+            }
+        )
+        .add(
+            q => {
+                this.verifyDifferences(this.getDetailAmounts());
+                this.setDisablePeriodAndProperty();
+            }
+        );
     }
 
 }
