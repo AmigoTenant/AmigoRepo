@@ -34,11 +34,6 @@ export class modelTenant {
     fullName: string;
 }
 
-export class modelHouse {
-    houseId: number;
-    name: string;
-}
-
 @Component({
     selector: 'at-expense-maintenance',
     templateUrl: './expense-maintenance.component.html'
@@ -104,9 +99,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             expenseDate: {
                 required: required
             },
-            houseId: {
-                required: required
-            },
+            // houseId: {
+            //     required: required
+            // },
             periodId: {
                 required: required
             },
@@ -160,7 +155,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.expenseForm = this.formBuilder.group({
             expenseId: [null],
             expenseDate: [null, [Validators.required]],
-            houseId: [null, [Validators.required]],
+            houseId: [null],
             periodId: [null, [Validators.required]],
             paymentTypeId: [null, [Validators.required]],
             remark: [null],
@@ -329,7 +324,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     public paymentTypeIdAfterNewOnHeader: number;
 
     onAccept() {
-        let expense = this.expenseForm.value;
+        let expense = this.expenseForm.getRawValue();
 
         if (!this.expenseForm.valid) {
             this.showErrors(true);
@@ -431,12 +426,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.setDisablePeriodAndProperty();
     }
 
+    public existsAnyDetail = false;
     setDisablePayment(detailAmounts: DetailAmountsDto) {
         // Deshabilita PaymentType si ya hay detalles, para evitar inconsistencia de conceptos
-        this.isPeriodDisabled = detailAmounts.totalAmount > 0 ||
+        this.existsAnyDetail = detailAmounts.totalAmount > 0 ||
                                 detailAmounts.subTotalAmount > 0 ||
                                 detailAmounts.tax > 0;
-        if (this.isPeriodDisabled) {
+        if (this.existsAnyDetail) {
             this.expenseForm.get('periodId').disable();
             this.expenseForm.get('paymentTypeId').disable();
         } else {
@@ -446,11 +442,12 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     }
 
+    public existsDetailMigratedOnDetail = false;
     setDisablePeriodAndProperty() {
         // Deshabilita Period y Properties si ya han migrado al menos un detalle
-        let existsDetailMigrated =  this.expenseDetailData !== undefined &&
+        this.existsDetailMigratedOnDetail =  this.expenseDetailData !== undefined &&
                                     this.expenseDetailData.filter(q => q.expenseDetailStatusId === 23).length > 0; // 23 Migrated
-        if (existsDetailMigrated) {
+        if (this.existsDetailMigratedOnDetail) {
             this.expenseForm.get('periodId').disable();
             this.expenseForm.get('houseId').disable();
         } else {

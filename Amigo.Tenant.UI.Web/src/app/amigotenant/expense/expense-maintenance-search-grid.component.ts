@@ -141,7 +141,9 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.selectedDetail.expenseId = this.expenseId;
     }
 
+    public messageToMigrate: string;
     onChangeStatus(): void {
+        this.messageToMigrate = 'Do you accept to MIGRATE the item to PAYMENT?';
         let count = this.expenseDetailData.data.filter(q => q.isSelected);
         if (count.length === 0) {
             this.successFlag = false;
@@ -149,6 +151,9 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
             setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
         } else {
             this.openChangeStatusConfirmation = true;
+            let rowsMigratedAndSelected = this.expenseDetailData.data.filter(q => q.isSelected && q.expenseDetailStatusName === 'MIGRATED' ).length;
+            if (rowsMigratedAndSelected > 0)
+                this.messageToMigrate = 'You have expenses that already has been MIGRATED to PAYMENTS, if you continue you will duplicate the concepts on PAYMENT. To avoid duplicated you must to eliminate the information on PAYMENT. Are you sure to Continue?';
         }
     }
 

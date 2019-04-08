@@ -6,6 +6,7 @@ using Amigo.Tenant.Commands.Common;
 using Amigo.Tenant.Commands.Expense;
 using Amigo.Tenant.Commands.Leasing.Contracts;
 using Amigo.Tenant.Commands.PaymentPeriod;
+using Amigo.Tenant.Common;
 using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
@@ -22,6 +23,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<ExpenseDetail> _repository;
         private readonly IRepository<PaymentPeriod> _repositoryPayment;
+        private readonly IRepository<EntityStatus> _repositoryEntityStatus;
 
 
         public ExpenseDetailChangeStatusCommandHandler(
@@ -29,13 +31,15 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
          IMapper mapper,
          IRepository<ExpenseDetail> repository,
          IUnitOfWork unitOfWork,
-         IRepository<PaymentPeriod> repositoryPayment)
+         IRepository<PaymentPeriod> repositoryPayment,
+         IRepository<EntityStatus> repositoryEntityStatus)
         {
             _bus = bus;
             _mapper = mapper;
             _repository = repository;
             _unitOfWork = unitOfWork;
             _repositoryPayment = repositoryPayment;
+            _repositoryEntityStatus = repositoryEntityStatus;
         }
 
 
@@ -43,6 +47,9 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         {
             try
             {
+                var expenseMigrated = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.Expense && q.Code == Constants.EntityStatus.Expense.Migrated);
+
+
                 foreach (var item in message.ExpenseDetailUpdateCommand)
                 {
                     //Update Expense DetailStatus
@@ -50,12 +57,9 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                     var ent = await _repository.FirstOrDefaultAsync(q => q.ExpenseDetailId == item.ExpenseDetailId);
                     if (ent != null)
                     {
-                        ent.ExpenseDetailStatusId = 23;
+                        ent.ExpenseDetailStatusId = (expenseMigrated != null ? expenseMigrated.EntityStatusId : (int?)null); //MIGRATED
                         ent.Update(message.UserId);
                     }
-
-                    //entity.ExpenseDetailStatusId = 23; //Expense detail Status Migrated
-                    //entity.Update(message.UserId);
                     _repository.Update(ent);
 
 

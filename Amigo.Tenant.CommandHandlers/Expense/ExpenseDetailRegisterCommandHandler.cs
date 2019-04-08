@@ -1,8 +1,10 @@
 ﻿
 using Amigo.Tenant.CommandHandlers.Abstract;
 using Amigo.Tenant.CommandHandlers.Common;
+using Amigo.Tenant.CommandModel.Models;
 using Amigo.Tenant.Commands.Common;
 using Amigo.Tenant.Commands.ExpenseDetail;
+using Amigo.Tenant.Common;
 using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
@@ -22,6 +24,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
         private readonly IRepository<model.ExpenseDetail> _repository;
         private readonly IRepository<model.PaymentPeriod> _repositoryPayment;
         private readonly IRepository<model.Contract> _repositoryContract;
+        private readonly IRepository<EntityStatus> _repositoryEntityStatus;
 
 
         public ExpenseDetailRegisterCommandHandler(
@@ -29,13 +32,15 @@ namespace Amigo.Tenant.CommandHandlers.Expense
          IMapper mapper,
          IRepository<model.ExpenseDetail> repository,
          IUnitOfWork unitOfWork,
-         IRepository<model.PaymentPeriod> repositoryPayment)
+         IRepository<model.PaymentPeriod> repositoryPayment,
+         IRepository<EntityStatus> repositoryEntityStatus)
         {
             _bus = bus;
             _mapper = mapper;
             _repository = repository;
             _unitOfWork = unitOfWork;
             _repositoryPayment = repositoryPayment;
+            _repositoryEntityStatus = repositoryEntityStatus;
         }
 
 
@@ -49,6 +54,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 entity.RowStatus = true;
                 message.RowStatus = true;
                 entity.Creation(message.UserId);
+                var expensePending = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.Expense && q.Code == Constants.EntityStatus.Expense.Pending);
 
                 model.ExpenseDetail obj = new model.ExpenseDetail();
                 if (message.ApplyTo.Value == 66) //Cambiar para que pregunte por el codigo NO  por el ID
@@ -61,6 +67,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                         obj = new model.ExpenseDetail();
                         obj = entity;
                         obj.TenantId = item.TenantId;
+                        obj.ExpenseDetailStatusId = (expensePending != null ? expensePending.EntityStatusId : (int?)null); //PENDING
                         _repository.Add(obj);
                         await _unitOfWork.CommitAsync();
                     }
@@ -68,6 +75,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 else
                 {
                     obj = entity;
+                    obj.ExpenseDetailStatusId = (expensePending != null ? expensePending.EntityStatusId : (int?)null); //PENDING
                     _repository.Add(obj);
                     await _unitOfWork.CommitAsync();
                 }

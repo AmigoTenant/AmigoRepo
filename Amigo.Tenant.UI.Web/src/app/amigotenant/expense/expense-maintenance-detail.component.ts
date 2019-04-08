@@ -1,7 +1,7 @@
 import { TranslateService } from '@ngx-translate/core';
 import { ExpenseDataService } from './expense-data.service';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
-import { Component, AfterViewInit, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChildren, Input, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, OnDestroy, ElementRef, ViewChildren, Input, Output } from '@angular/core';
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule, Form, FormControlName } from '@angular/forms';
 import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
@@ -26,7 +26,7 @@ declare var $: any;
     templateUrl: './expense-maintenance-detail.component.html'
 })
 
-export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent implements OnInit, AfterViewInit {
+export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent implements OnInit {
     private genericValidator: GenericValidator;
     private validationSubscription: Subscription;
     public validationMessages: { [key: string]: { [key: string]: string } } = {};
@@ -53,7 +53,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     sub: Subscription;
     contractId: any;
 
-    public isForAllTenant = false;
+    public showTenant = false;
 
 
     constructor(
@@ -82,6 +82,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
             this._currentTenant =   new CurrentTenant();
             this._currentTenant.tenantId = this.inputSelectedExpenseDetail.tenantId;
             this._currentTenant.fullName = this.inputSelectedExpenseDetail.tenantFullName;
+            this.onApplyValidator()
         }
     }
 
@@ -171,7 +172,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
                 .subscribe(r => {
                     let result = new ResponseListDTO(r);
                 }).add(r => {
-                    debugger;
+                    this.onApplyValidator();
                     this.onCancelDetail();
                 });
 
@@ -219,11 +220,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //    this.openedDeletionConfimation = false;
     //}
 
-
-    cancel(): void {
-        //this.router.navigate(['expense/edit/1']);
-    }
-
     onExecuteEvent($event) {
         switch ($event) {
             case 's':
@@ -237,48 +233,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
             default:
                 confirm('Sorry, that Event is not exists yet!');
         }
-    }
-
-
-    //GETDATA FROM MASTERTABLE
-    // getPriority(): void {
-    //     this.gnrlTableDataService.getGeneralTableByTableNameAsync("Priority")
-    //         .subscribe(res => {
-    //             var dataResult: any = res;
-    //             this._listPriority = [];
-    //             for (var i = 0; i < dataResult.value.data.length; i++) {
-    //                 this._listPriority.push({
-    //                     "typeId": dataResult.value.data[i].generalTableId,
-    //                     "name": dataResult.value.data[i].value
-    //                 });
-    //             }
-    //         });
-    // }
-
-    // isValidData(): boolean {
-    //     let isValid = true;
-    //     //this.resetFormError();
-    //     //if (this.model.tenantId == undefined || this.model.tenantId == 0 || this.model.tenantId == null) {
-    //     //    this._formError.tenantError = true;
-    //     //    isValid = false;
-    //     //}
-    //     return isValid;
-    // }
-
-
-
-    //EXPENSE DETAIL METHODS
-
-
-
-    ngAfterViewInit() {
-        // Watch for the blur event from any input element on the form.
-        // const controlBlurs: Observable<any>[] = this.formInputElements
-        //   .map((formControl: ElementRef) => Observable.fromEvent(formControl.nativeElement, 'blur'));
-
-        // // Merge the blur event observable with the valueChanges observable
-        // this.validationSubscription = Observable.merge(this.expenseDetailForm.valueChanges, ...controlBlurs)
-        // .debounceTime(800).subscribe(value => this.showErrors());
     }
 
     private showErrors(force = false) {
@@ -330,15 +284,15 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         this.eventoClose.emit(this.expenseDetailForm.get('expenseId').value);
     }
 
-    onApplyToChange() {
+    onApplyValidator() {
         // Aplicar Validator solo para Tenant
         // 66: All Tenant
         // 64: Period
         if (this.expenseDetailForm.get('applyTo').value === 66 || this.expenseDetailForm.get('applyTo').value === 64) {
-            this.isForAllTenant = true;
+            this.showTenant = false;
             this.clearTenantIdValidator();
         } else {
-            this.isForAllTenant = false;
+            this.showTenant = true;
             this.assignTenantIdValidator();
         }
     }

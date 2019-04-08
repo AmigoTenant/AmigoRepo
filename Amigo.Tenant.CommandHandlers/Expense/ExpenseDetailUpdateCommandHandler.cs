@@ -56,7 +56,8 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                     "TotalAmount",
                     "Quantity",
                     "UpdatedBy",
-                    "UpdatedDate"
+                    "UpdatedDate",
+                    "ExpenseDetailStatusId"
                 });
 
                 await _unitOfWork.CommitAsync();

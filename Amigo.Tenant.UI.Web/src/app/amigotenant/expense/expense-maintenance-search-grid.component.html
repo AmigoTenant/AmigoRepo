@@ -8,23 +8,33 @@
 <div class="grid-container" style="padding-left: 20px; padding-right: 20px">
     <kendo-grid id="kgrid-ExpenseDetail" [data]="expenseDetailData" [selectable]="false">
         <kendo-grid-column [width]="50">
-            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex" >
+            <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                 <div class="text-center">
-                    <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
+                    <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option"
+                        (change)="changeItemHeader()" />
                 </div>
             </ng-template>
             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                <div class="text-center" *ngIf="dataItem.expenseDetailStatusName!='MIGRATED'">
-                    <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)"
-                    />
-                    <label htmlFor="{{rowIndex}}"></label>
-                </div>
+                <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
+                    [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
+                <label htmlFor="{{rowIndex}}"></label>
             </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
         <kendo-grid-column field="remark" title="Remark"></kendo-grid-column>
         <kendo-grid-column field="tenantFullName" title="Tenant"></kendo-grid-column>
-        <kendo-grid-column field="expenseDetailStatusName" title="Status"></kendo-grid-column>
+        <kendo-grid-column title="Status">
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    <span class="row" *ngIf="dataItem.expenseDetailStatusName=='MIGRATED'">
+                        <label class="label-status approved">{{dataItem.expenseDetailStatusName}}</label>
+                    </span>
+                    <span class="row" *ngIf="dataItem.expenseDetailStatusName!='MIGRATED'">
+                        <label class="label-status pending">{{dataItem.expenseDetailStatusName}}</label>
+                    </span>
+                </div>
+            </ng-template>
+        </kendo-grid-column>
         <kendo-grid-column field="subTotalAmount" title="Sub Total">
             <ng-template kendoGridCellTemplate let-dataItem>
                 <div>
@@ -34,20 +44,20 @@
             </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="tax" title="Tax">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                        <div>
-                            <span class="float-right">{{dataItem.tax|number:"1.2-2" }}</span>
-                            <br />
-                        </div>
-                    </ng-template>
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    <span class="float-right">{{dataItem.tax|number:"1.2-2" }}</span>
+                    <br />
+                </div>
+            </ng-template>
         </kendo-grid-column>
         <kendo-grid-column field="totalAmount" title="Total">
-                <ng-template kendoGridCellTemplate let-dataItem>
-                        <div>
-                            <span class="float-right">{{dataItem.totalAmount|number:"1.2-2" }}</span>
-                            <br />
-                        </div>
-                    </ng-template>
+            <ng-template kendoGridCellTemplate let-dataItem>
+                <div>
+                    <span class="float-right">{{dataItem.totalAmount|number:"1.2-2" }}</span>
+                    <br />
+                </div>
+            </ng-template>
         </kendo-grid-column>
 
         <kendo-grid-column>
@@ -66,15 +76,18 @@
     </kendo-grid>
 </div>
 
-<kendo-dialog *ngIf="openDialog" title="Expense Detail" (close)="closePopup()" style="z-index:10003;" id="tenantMaintenancePanel">
-    <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail" (eventoClose)="eventoCloseParent($event)" [inputPaymentTypeId]="paymentTypeId">
+<kendo-dialog *ngIf="openDialog" title="Expense Detail" (close)="closePopup()" style="z-index:10003;"
+    id="tenantMaintenancePanel">
+    <at-expense-maintenance-detail [inputSelectedExpenseDetail]="selectedDetail"
+        (eventoClose)="eventoCloseParent($event)" [inputPaymentTypeId]="paymentTypeId">
     </at-expense-maintenance-detail>
 </kendo-dialog>
 
-<kendo-dialog *ngIf="openChangeStatusConfirmation" title="Expense Detail" (close)="closePopupConfirmation()" style="z-index:10003;" [minWidth]="250" [width]="450">
-    <div>Do you accept to MIGRATE the item to PAYMENT?</div>
+<kendo-dialog *ngIf="openChangeStatusConfirmation" title="Expense Detail" (close)="closePopupConfirmation()"
+    style="z-index:10003;" [minWidth]="250" [width]="450">
+    <div>{{ messageToMigrate }}</div>
     <kendo-dialog-actions>
-        <button class="k-button"  (click)="close('no')">No</button>
+        <button class="k-button" (click)="close('no')">No</button>
         <button class="k-button k-primary" (click)="acceptChangeStatus()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>

@@ -239,6 +239,7 @@ namespace Amigo.Tenant.Common
             {
                 public const string Pending = "EXPENDING";
                 public const string Paid = "EXPAID";
+                public const string Migrated = "EXMIGRATED";
             }
         }
 

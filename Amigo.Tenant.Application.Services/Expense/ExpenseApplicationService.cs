@@ -304,6 +304,8 @@ namespace Amigo.Tenant.Application.Services.Expense
             }
 
             command.PeriodId = expense.PeriodId.Value;
+
+            if (expense.HouseId.HasValue)
             command.HouseId = expense.HouseId.Value;
 
             var resp = await _bus.SendAsync(command);
