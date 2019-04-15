@@ -64,6 +64,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                     "TotalAmount",
                     "UpdatedBy",
                     "UpdatedDate",
+                    "ConceptId"
                 });
 
 

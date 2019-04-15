@@ -21,7 +21,7 @@ namespace Amigo.Tenant.Commands.Expense
         public DateTime? CreationDate { get; set; }
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
-        
+        public int? ConceptId { get; set; }
 
     }
 }

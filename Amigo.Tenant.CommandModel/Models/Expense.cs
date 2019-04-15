@@ -27,6 +27,7 @@ namespace Amigo.Tenant.CommandModel.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExpenseDetail> ExpenseDetails { get; set; }
         public bool? RowStatus { get; set; }
+        public int? ConceptId { get; set; }
 
     }
 }
