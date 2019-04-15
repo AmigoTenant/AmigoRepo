@@ -100,4 +100,14 @@ export class ExpenseDataService extends BaseService {
             );
     }
 
+    deleteExpenseDetailById(id: number): Observable<any> {
+        const url = `${this.baseUrl}api/expense/deleteExpenseDetailById?id=${id}`;
+        return this.http.get<any>(url,
+            { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+        ).pipe(
+            map(r => r),
+            catchError(this.handleError)
+            );
+    }
+
 }
