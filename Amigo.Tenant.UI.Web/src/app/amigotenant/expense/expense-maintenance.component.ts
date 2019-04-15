@@ -1,3 +1,4 @@
+import { ExpenseEditRequest } from './dto/expense-edit-request';
 import { TranslateService } from '@ngx-translate/core';
 import { ExpenseDataService } from './expense-data.service';
 import { ExpenseRegisterRequest } from './dto/expense-register-request';
@@ -66,6 +67,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     _currentPeriod: any;
     _listHouses: any = [];
     _listPeriods: any = [];
+    _listConcepts: any = [];
 
     flgEdition: string;
     _isDisabled: boolean;
@@ -99,9 +101,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             expenseDate: {
                 required: required
             },
-            // houseId: {
-            //     required: required
-            // },
             periodId: {
                 required: required
             },
@@ -109,6 +108,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 required: required
             },
             paymentTypeId: {
+                required: required
+            },
+            conceptId: {
                 required: required
             },
             subTotalAmount: {
@@ -158,6 +160,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             houseId: [null],
             periodId: [null, [Validators.required]],
             paymentTypeId: [null, [Validators.required]],
+            conceptId: [null],
             remark: [null],
             subTotalAmount: [null, [Validators.required]],
             tax: [null, [Validators.required]],
@@ -365,6 +368,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                     r => {
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
+                        
                         this.getDetail();
                     }
                 );
@@ -456,6 +460,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         }
     }
 
+    public expenseModel: ExpenseEditRequest;
+
     getDetail() {
         this.expenseDataService.getExpenseDetailByExpenseId(this.expenseForm.get('expenseId').value)
         .subscribe(
@@ -468,8 +474,21 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             q => {
                 this.verifyDifferences(this.getDetailAmounts());
                 this.setDisablePeriodAndProperty();
+                this.expenseModel = this.expenseForm.getRawValue();
             }
         );
+    }
+
+    getConceptByTypes(): void {
+        this.masterDataService.getConceptsByTypeIdList([this.expenseForm.get('parmentTypeId').value])
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listConcepts = dataResult.data;
+            });
+    }
+
+    fillConcepts(): void {
+        this.getConceptByTypes();
     }
 
 }

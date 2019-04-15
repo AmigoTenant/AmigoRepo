@@ -91,3 +91,12 @@
         <button class="k-button k-primary" (click)="acceptChangeStatus()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>
+
+<kendo-dialog *ngIf="openDeleteConfirmation" title="Delete" (close)="closeDelete()"
+    style="z-index:10003;" [minWidth]="250" [width]="450">
+    <div>{{ messageToDelete }}</div>
+    <kendo-dialog-actions>
+        <button class="k-button" (click)="closeDelete()">No</button>
+        <button class="k-button k-primary" (click)="acceptDelete()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

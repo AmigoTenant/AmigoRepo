@@ -1,13 +1,14 @@
 export class ExpenseEditRequest
 {
-        public ExpenseId : number;
-        public ExpenseDate : Date;
-        public PaymentTypeId : number;
-        public HouseId : number;
-        public PeriodId : number;
-        public ReferenceNo : string;
-        public Remark : string;
-        public SubTotalAmount : number;
-        public Tax : number;
-        public TotalAmount : number;
+        public expenseId : number;
+        public expenseDate : Date;
+        public paymentTypeId : number;
+        public conceptId: number;
+        public houseId : number;
+        public periodId : number;
+        public referenceNo : string;
+        public remark : string;
+        public subTotalAmount : number;
+        public tax : number;
+        public totalAmount : number;
 }

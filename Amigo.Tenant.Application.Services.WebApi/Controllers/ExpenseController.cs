@@ -132,12 +132,12 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return ModelState.ToResponse();
         }
 
-        [HttpPost, Route("deleteDetail")]
-        public async Task<ResponseDTO> DeleteDetail(ExpenseDetailDeleteRequest expense)
+        [HttpGet, Route("deleteDetail")]
+        public async Task<ResponseDTO> DeleteDetail(int? expensedetailId)
         {
             if (ModelState.IsValid)
             {
-                return await _expenseApplicationService.DeleteExpenseDetailAsync(expense);
+                return await _expenseApplicationService.DeleteExpenseDetailAsync(expensedetailId);
             }
             return ModelState.ToResponse();
         }

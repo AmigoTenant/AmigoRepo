@@ -324,10 +324,11 @@ namespace Amigo.Tenant.Application.Services.Expense
             return null;
         }
 
-        public async Task<ResponseDTO> DeleteExpenseDetailAsync(ExpenseDetailDeleteRequest expenseDetail)
+        public async Task<ResponseDTO> DeleteExpenseDetailAsync(int? expenseDetailId)
         {
             //Map to Command
-            var command = _mapper.Map<ExpenseDetailDeleteRequest, ExpenseDetailDeleteCommand>(expenseDetail);
+            var command = new ExpenseDetailDeleteCommand();
+            command.ExpenseDetailId = expenseDetailId;
 
             //Execute Command
             var resp = await _bus.SendAsync(command);

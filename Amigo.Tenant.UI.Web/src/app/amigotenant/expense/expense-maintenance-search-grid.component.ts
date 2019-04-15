@@ -1,3 +1,4 @@
+import { ExpenseEditRequest } from './dto/expense-edit-request';
 import { Component, OnDestroy, EventEmitter, Output, Input, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MasterDataService } from '../../shared/api/master-data-service';
@@ -20,17 +21,20 @@ declare var $: any;
 })
 
 export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent implements OnInit, OnDestroy, OnChanges {
-
+    expenseDetailIdToDelete: any;
     expenseDetailData: GridDataResult;
     totalResultCount: number
     sub: Subscription;
     expenseId: number;
     periodId: number;
     paymentTypeId: number;
+    expenseModel: ExpenseEditRequest;
+
     @Output() onCloseDetail = new EventEmitter<any>();
     @Input() expenseIdAfterNew: any;
     @Input() periodIdAfterNew: any;
     @Input() paymentTypeIdAfterNew: any;
+    @Input() expenseModelAfterNew: any;
 
     public successFlag: boolean;
     public errorMessages: any[];
@@ -41,6 +45,8 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     public selectedDetail: any;
 
     public isColumnHeaderSelected = false;
+
+    public openDeleteConfirmation: boolean;
 
     constructor(
         private route: ActivatedRoute,
@@ -54,6 +60,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.paymentTypeId = this.paymentTypeIdAfterNew !== undefined ? this.paymentTypeIdAfterNew : this.paymentTypeId;
         this.periodId = this.periodIdAfterNew !== undefined ? this.periodIdAfterNew : this.periodId;
         this.expenseId = this.expenseIdAfterNew !== undefined ? this.expenseIdAfterNew : this.expenseId;
+        this.expenseModel = this.expenseModelAfterNew != undefined ? this.expenseModelAfterNew : this.expenseModel;
     }
 
     ngOnInit() {
@@ -123,10 +130,12 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         let totalAmount = 0;
         let subTotalAmount = 0;
         let tax = 0;
-        for (let i = 0; i < this.expenseDetailData.data.length; i++) {
-            totalAmount += this.expenseDetailData.data[i].totalAmount;
-            subTotalAmount += this.expenseDetailData.data[i].subTotalAmount;
-            tax += this.expenseDetailData.data[i].tax;
+        if (this.expenseDetailData !== undefined && this.expenseDetailData.data !== undefined) {
+            for (let i = 0; i < this.expenseDetailData.data.length; i++) {
+                totalAmount += this.expenseDetailData.data[i].totalAmount;
+                subTotalAmount += this.expenseDetailData.data[i].subTotalAmount;
+                tax += this.expenseDetailData.data[i].tax;
+            }
         }
         let detailAmounts = new DetailAmountsDto();
         detailAmounts.totalAmount = totalAmount;
@@ -139,6 +148,13 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.openDialog = true;
         this.selectedDetail = new ExpenseDetailRegisterRequest();
         this.selectedDetail.expenseId = this.expenseId;
+        if (this.expenseDetailData.total > 0) {
+            debugger;
+            this.selectedDetail.totalAmount = this.expenseModel.totalAmount;
+            this.selectedDetail.subTotalAmount = this.expenseModel.subTotalAmount;
+            this.selectedDetail.tax = this.expenseModel.tax;
+        }
+
     }
 
     public messageToMigrate: string;
@@ -151,7 +167,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
             setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
         } else {
             this.openChangeStatusConfirmation = true;
-            let rowsMigratedAndSelected = this.expenseDetailData.data.filter(q => q.isSelected && q.expenseDetailStatusName === 'MIGRATED' ).length;
+            let rowsMigratedAndSelected = this.expenseDetailData.data.filter(q => q.isSelected && q.expenseDetailStatusName === 'MIGRATED').length;
             if (rowsMigratedAndSelected > 0)
                 this.messageToMigrate = 'You have expenses that already has been MIGRATED to PAYMENTS, if you continue you will duplicate the concepts on PAYMENT. To avoid duplicated you must to eliminate the information on PAYMENT. Are you sure to Continue?';
         }
@@ -179,18 +195,45 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
             res => {
                 let dataResult: any = res;
                 this.successFlag = dataResult.IsValid;
-                this.errorMessages = dataResult.Messages.length > 0 ?  [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+                this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
             }
         ).add(
             res => {
                 this.closePopupConfirmation();
                 this.getExpenseDetails(this.expenseId);
             }
-        );
+            );
     }
 
     changeItem(data: any): void {
         data.isSelected = !data.isSelected;
+    }
+
+
+    /*DELETE*/
+    messageToDelete: string;
+    onDelete(detail: any) {
+        this.openDeleteConfirmation = true;
+        this.expenseDetailIdToDelete = detail.expenseDetailId;
+
+        if (detail.expenseDetailStatusName === 'MIGRATED') {
+            this.messageToDelete = 'This detail was MIGRATED to PAYMENT view, are you sure to DELETE this item?';
+        } else {
+            this.messageToDelete = 'Are you sure to DELETE this item?';
+        }
+    }
+
+    public acceptDelete() {
+        this.expenseDataService.saveExpenseDetail(this.expenseDetailIdToDelete)
+            .subscribe().add(
+            r => {
+                this.getExpenseDetails(this.expenseId);
+            }
+            );
+    }
+
+    public closeDelete() {
+        this.openDeleteConfirmation = false;
     }
 
 }

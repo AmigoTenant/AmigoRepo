@@ -64,7 +64,7 @@
                                     </label>
 
                                 </div>
-                                
+
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-3 control-label">Period</label>
                                     <label class="col-sm-3">
@@ -96,10 +96,10 @@
                                 </div>
 
                                 <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Payment Type</label>
+                                    <label for="from" class="col-sm-3 control-label">Type</label>
                                     <label class="col-sm-3">
                                         <select name="ConceptId" formControlName="paymentTypeId"
-                                            class="form-control input-control">
+                                            class="form-control input-control" (change)="fillConcepts()">
                                             <option value=""></option>
                                             <option *ngFor="let paymentType of _listPaymentTypes"
                                                 [ngValue]="paymentType.typeId">
@@ -121,6 +121,25 @@
                                     <label class="col-sm-1 control-label">
                                         <span class="help-block text-danger" *ngIf="difTax">
                                             {{ difTax | number:"1.2-2"  }}
+                                        </span>
+                                    </label>
+
+                                </div>
+
+                                <div class="form-group col-sm-12">
+
+                                    <label for="from" class="col-sm-3 control-label">Concept
+                                        <span class="required"></span>
+                                    </label>
+                                    <label class="col-sm-3">
+                                        <select name="ConceptId" formControlName="conceptId" class="form-control input-control">
+                                            <option value=""></option>
+                                            <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
+                                                {{concept.description}}
+                                            </option>
+                                        </select>
+                                        <span class="help-block text-danger" *ngIf="displayMessage['conceptId']">
+                                            {{ displayMessage['conceptId'] }}
                                         </span>
                                     </label>
 
@@ -169,10 +188,8 @@
                             <div class="form-group col-sm-12"></div>
                             <div class="row" *ngIf="flgEdition=='E'">
 
-                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);"
-                                    [expenseIdAfterNew]="expenseIdAfterNewOnHeader"
-                                    [periodIdAfterNew]="periodIdAfterNewOnHeader"
-                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader">
+                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" [expenseIdAfterNew]="expenseIdAfterNewOnHeader" [periodIdAfterNew]="periodIdAfterNewOnHeader"
+                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader" [expenseModelAfterNew]="expenseModel">
                                 </at-expense-detail-grid>
                             </div>
                         </ng-template>

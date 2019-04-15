@@ -39,21 +39,18 @@ namespace Amigo.Tenant.CommandHandlers.Expense
         {
             try
             {
+
                 var entity = _mapper.Map<ExpenseDetailDeleteCommand, model.ExpenseDetail>(message);
-                entity.RowStatus = false;
-                entity.Update(message.UserId);
-                //=================================================
-                //Contract
-                //=================================================
+                entity = await _repository.FirstOrDefaultAsync(q => q.ExpenseDetailId == message.ExpenseDetailId);
 
-                _repository.UpdatePartial(entity, new string[] { "ExpenseDetailId",
-                    "RowStatus",
-                    "UpdatedDate",
-                    "UpdatedBy",
-                    });
+                if (entity != null)
+                {
+                    _repository.Delete(entity);
+                    await _unitOfWork.CommitAsync();
+                }
 
-                await _unitOfWork.CommitAsync();
                 return entity.ToResult();
+
             }
             catch (Exception ex)
             {
