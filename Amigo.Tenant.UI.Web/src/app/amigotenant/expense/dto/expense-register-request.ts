@@ -10,5 +10,4 @@ export class ExpenseRegisterRequest {
         public subTotalAmount: number;
         public tax: number;
         public totalAmount: number;
-        public conceptId: number;
 }

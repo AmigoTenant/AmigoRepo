@@ -165,7 +165,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             subTotalAmount: [null, [Validators.required]],
             tax: [null, [Validators.required]],
             totalAmount: [null, [Validators.required]],
-            referenceNo: [null]
+            referenceNo: [null],
+            addAutomaticDetail: [null]
         });
     }
 
@@ -176,6 +177,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 this.model = dataResult.dat;
                 this.expenseForm.patchValue(this.model);
                 this.getDateFromModel(this.model.expenseDate);
+                this.fillConcepts();
             }).add(
                 r   => {
                     this.getDetail()
@@ -297,7 +299,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 for (let i = 0; i < dataResult.data.length; i++) {
                     this._listPaymentTypes.push({
                         'typeId': dataResult.data[i].generalTableId,
-                        'name': dataResult.data[i].value
+                        'name': dataResult.data[i].value,
+                        'code': dataResult.data[i].code
                     });
                 }
             });
@@ -344,11 +347,13 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                 this.errorMessages = dataResult.Messages;
                 this.successMessage = 'Expense was created';
                 this.expenseIdAfterNewOnHeader = dataResult.Pk;
+                this.expenseForm.get('expenseId').setValue(this.expenseIdAfterNewOnHeader);
                 setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
             })
                 .add(
                     r => {
                         this.flgEdition = 'E';
+                        this.expenseForm.get('expenseId').setValue(this.expenseIdAfterNewOnHeader);
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
                     }
@@ -480,7 +485,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     }
 
     getConceptByTypes(): void {
-        this.masterDataService.getConceptsByTypeIdList([this.expenseForm.get('parmentTypeId').value])
+        this.masterDataService.getConceptsByTypeIdList([this.expenseForm.get('paymentTypeId').value])
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
                 this._listConcepts = dataResult.data;
@@ -489,6 +494,21 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
 
     fillConcepts(): void {
         this.getConceptByTypes();
+        //si son expenses o gastos se marca el ingreso de detalle automatico
+        const paymentType = this._listPaymentTypes.filter(q => q.typeId === this.expenseForm.get('paymentTypeId').value);
+
+        if (paymentType.length > 0 && paymentType[0].code === 'EXPENSE') {
+            this.expenseForm.get('addAutomaticDetail').setValue(true);
+        } else {
+            this.expenseForm.get('addAutomaticDetail').setValue(false);
+        }
+    }
+
+    calculateTotalAmount(): void {
+        let subTotalAmount  = this.expenseForm.get('subTotalAmount').value;
+        let tax  = this.expenseForm.get('tax').value;
+        let totalAmont = subTotalAmount + tax;
+        this.expenseForm.get('totalAmount').setValue(totalAmont);
     }
 
 }

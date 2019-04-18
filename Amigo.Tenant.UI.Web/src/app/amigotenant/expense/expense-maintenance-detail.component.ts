@@ -309,6 +309,14 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         tenantId.updateValueAndValidity();
     }
 
+    calculateTotalAmount(): void {
+        let subTotalAmount  = this.expenseDetailForm.get('subTotalAmount').value;
+        let tax  = this.expenseDetailForm.get('tax').value;
+        let totalAmont = subTotalAmount + tax;
+        this.expenseDetailForm.get('totalAmount').setValue(totalAmont);
+    }
+
+
 }
 
 export class CurrentTenant {

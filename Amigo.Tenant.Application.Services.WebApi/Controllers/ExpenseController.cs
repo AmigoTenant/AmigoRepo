@@ -4,6 +4,7 @@ using Amigo.Tenant.Application.DTOs.Responses.Common;
 using Amigo.Tenant.Application.DTOs.Responses.Expense;
 using Amigo.Tenant.Application.Services.Interfaces.Expense;
 using Amigo.Tenant.Application.Services.WebApi.Validation.Fluent;
+using Amigo.Tenant.Common;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;

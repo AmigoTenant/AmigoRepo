@@ -23,8 +23,10 @@ namespace Amigo.Tenant.CommandHandlers.Expense
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<model.ExpenseDetail> _repository;
         private readonly IRepository<model.PaymentPeriod> _repositoryPayment;
-        private readonly IRepository<model.Contract> _repositoryContract;
         private readonly IRepository<EntityStatus> _repositoryEntityStatus;
+        private readonly IRepository<GeneralTable> _repositoryGeneralTable;
+        private readonly IRepository<Concept> _repositoryConcept;
+
 
 
         public ExpenseDetailRegisterCommandHandler(
@@ -33,7 +35,9 @@ namespace Amigo.Tenant.CommandHandlers.Expense
          IRepository<model.ExpenseDetail> repository,
          IUnitOfWork unitOfWork,
          IRepository<model.PaymentPeriod> repositoryPayment,
-         IRepository<EntityStatus> repositoryEntityStatus)
+         IRepository<EntityStatus> repositoryEntityStatus,
+         IRepository<GeneralTable> repositoryGeneralTable,
+         IRepository<Concept> repositoryConcept)
         {
             _bus = bus;
             _mapper = mapper;
@@ -41,6 +45,8 @@ namespace Amigo.Tenant.CommandHandlers.Expense
             _unitOfWork = unitOfWork;
             _repositoryPayment = repositoryPayment;
             _repositoryEntityStatus = repositoryEntityStatus;
+            _repositoryGeneralTable = repositoryGeneralTable;
+            _repositoryConcept = repositoryConcept;
         }
 
 
@@ -54,14 +60,15 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 entity.RowStatus = true;
                 message.RowStatus = true;
                 entity.Creation(message.UserId);
-                var expensePending = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.Expense && q.Code == Constants.EntityStatus.Expense.Pending);
-
+                var expensePending = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.Expense && q.Code == Constants.EntityStatus.Expense.Pending );
+                var applyToAllTenant = await _repositoryGeneralTable.FirstOrDefaultAsync(q => q.TableName == Constants.GeneralTableName.ApplyTo && q.Code == Constants.GeneralTableCode.ApplyTo.AllTenants && q.RowStatus);
+                
                 model.ExpenseDetail obj = new model.ExpenseDetail();
-                if (message.ApplyTo.Value == 66) //Cambiar para que pregunte por el codigo NO  por el ID
+                if (message.ApplyTo.Value == applyToAllTenant.GeneralTableId) 
                 {
-
+                    var rentaConcept = await _repositoryConcept.FirstOrDefaultAsync(q => q.Code == Constants.ConceptCode.Rent && q.RowStatus.Value);
                     string[] includes = new string[] { "Contract" };
-                    var payments = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.Contract.HouseId == message.HouseId && q.ConceptId == 15, null, includes); //Cambiar 15 por el codigo del concepto RENTA
+                    var payments = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.Contract.HouseId == message.HouseId && q.ConceptId == rentaConcept.ConceptId, null, includes); 
                     foreach (var item in payments)
                     {
                         obj = new model.ExpenseDetail();

@@ -82,7 +82,7 @@
                                     <label for="from" class="col-sm-3 control-label">Sub Total</label>
                                     <label class="col-sm-2">
                                         <input type="number" name="subTotalAmount" class="form-control"
-                                            formControlName="subTotalAmount" />
+                                            formControlName="subTotalAmount" (blur)="calculateTotalAmount()" />
                                         <span class="help-block text-danger" *ngIf="displayMessage['subTotalAmount']">
                                             {{ displayMessage['subTotalAmount'] }}
                                         </span>
@@ -113,7 +113,7 @@
 
                                     <label for="from" class="col-sm-3 control-label">Tax</label>
                                     <label class="col-sm-2">
-                                        <input type="number" name="tax" class="form-control" formControlName="tax" />
+                                        <input type="number" name="tax" class="form-control" formControlName="tax" (blur)="calculateTotalAmount()" />
                                         <span class="help-block text-danger" *ngIf="displayMessage['tax']">
                                             {{ displayMessage['tax'] }}
                                         </span>
@@ -172,9 +172,15 @@
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-3 control-label">Remark</label>
                                     <label class="col-sm-9">
-                                        <textarea type="txtRemark" rows="4" style="height:150px" name="Remark"
+                                        <textarea type="txtRemark" rows="4" style="height:130px" name="Remark"
                                             class="form-control" formControlName="remark">
                                                 </textarea>
+                                    </label>
+                                </div>
+                                <div class="form-group col-sm-12">
+                                    <label for="from" class="col-sm-3 control-label">Agregar detalle automático</label>
+                                    <label class="col-sm-9">
+                                        <input type="checkbox" formControlName="addAutomaticDetail" class="checkbox" >
                                     </label>
                                 </div>
                             </div>
@@ -189,7 +195,7 @@
                             <div class="row" *ngIf="flgEdition=='E'">
 
                                 <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" [expenseIdAfterNew]="expenseIdAfterNewOnHeader" [periodIdAfterNew]="periodIdAfterNewOnHeader"
-                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader" [expenseModelAfterNew]="expenseModel">
+                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader">
                                 </at-expense-detail-grid>
                             </div>
                         </ng-template>

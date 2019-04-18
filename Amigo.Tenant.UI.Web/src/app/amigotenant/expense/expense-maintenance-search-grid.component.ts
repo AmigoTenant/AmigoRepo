@@ -28,13 +28,13 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     expenseId: number;
     periodId: number;
     paymentTypeId: number;
-    expenseModel: ExpenseEditRequest;
+    //expenseModel: ExpenseEditRequest;
 
     @Output() onCloseDetail = new EventEmitter<any>();
     @Input() expenseIdAfterNew: any;
     @Input() periodIdAfterNew: any;
     @Input() paymentTypeIdAfterNew: any;
-    @Input() expenseModelAfterNew: any;
+    //@Input() expenseModelAfterNew: any;
 
     public successFlag: boolean;
     public errorMessages: any[];
@@ -60,7 +60,7 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.paymentTypeId = this.paymentTypeIdAfterNew !== undefined ? this.paymentTypeIdAfterNew : this.paymentTypeId;
         this.periodId = this.periodIdAfterNew !== undefined ? this.periodIdAfterNew : this.periodId;
         this.expenseId = this.expenseIdAfterNew !== undefined ? this.expenseIdAfterNew : this.expenseId;
-        this.expenseModel = this.expenseModelAfterNew != undefined ? this.expenseModelAfterNew : this.expenseModel;
+        //this.expenseModel = this.expenseModelAfterNew != undefined ? this.expenseModelAfterNew : this.expenseModel;
     }
 
     ngOnInit() {
@@ -148,12 +148,12 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.openDialog = true;
         this.selectedDetail = new ExpenseDetailRegisterRequest();
         this.selectedDetail.expenseId = this.expenseId;
-        if (this.expenseDetailData.total > 0) {
-            debugger;
-            this.selectedDetail.totalAmount = this.expenseModel.totalAmount;
-            this.selectedDetail.subTotalAmount = this.expenseModel.subTotalAmount;
-            this.selectedDetail.tax = this.expenseModel.tax;
-        }
+        // if (this.expenseDetailData.total > 0) {
+        //     debugger;
+        //     this.selectedDetail.totalAmount = this.expenseModel.totalAmount;
+        //     this.selectedDetail.subTotalAmount = this.expenseModel.subTotalAmount;
+        //     this.selectedDetail.tax = this.expenseModel.tax;
+        // }
 
     }
 
