@@ -1,25 +1,33 @@
 IF NOT EXISTS (select  sc.name from syscolumns sc, sysobjects so WHERE sc.name = 'ConceptId' 
 			AND sc.id = so.id AND so.name = 'Expense') 
+BEGIN
 	ALTER TABLE [Expense]
 	ADD [ConceptId] INT NULL
 
 ALTER TABLE [dbo].[Expense]  WITH NOCHECK ADD  CONSTRAINT [fkExpense_ConceptId] FOREIGN KEY([ConceptId])
 REFERENCES [dbo].[Concept] ([ConceptId])
+
+END 
 GO
 
 
 IF NOT EXISTS (select  sc.name from syscolumns sc, sysobjects so WHERE sc.name = 'PrecedenceId' 
 			AND sc.id = so.id AND so.name = 'GeneralTable') 
+BEGIN
 	ALTER TABLE [GeneralTable]
 	ADD [PrecedenceId] INT NULL
 
 ALTER TABLE [dbo].[GeneralTable]  WITH NOCHECK ADD  CONSTRAINT [fkGeneralTable_PrecedenceId] FOREIGN KEY([PrecedenceId])
 REFERENCES [dbo].[GeneralTable] ([GeneralTableId])
+
+END
 GO
 
+IF not exists(Select * from GeneralTable Where Code='BALANCE' ) 
+BEGIN
 INSERT INTO generaltable VALUES('BALANCE', 'Balance', 'Balance', 1, 1, 1,1, getdate(), 1, getdate(), null)
 UPDATE generaltable set PrecedenceId = 68 where GeneralTableId in (1,13,67)
-
+END 
 go
 
 /*- AGREGAR LOS CONCEPTOS QUE EDGAR ENVIARA COMO TABLENAME 'CONCEPTYTYPE'
@@ -101,6 +109,7 @@ SET ANSI_PADDING ON
 GO
 CREATE TABLE [dbo].[BusinessPartner](
 	[BusinessPartnerId] [int] IDENTITY(1,1) NOT NULL,
+	[Code] [varchar](10) NULL,
 	[Name] [varchar](150) NULL,
 	[BPTypeId] [int] NOT NULL,
 	[SIN] [nvarchar](12) NULL,
@@ -345,5 +354,39 @@ if not exists(Select * from Concept Where Code         ='EXOTCOMISI' )  Insert I
 ) values ('EXOTCOMISI','Comisión', @Id, '1','', NULL, NULL, '1', GETDATE(), '1', GETDATE())
 
 
+/*GENRAL TABLE: BUSINESS PARTNER TYPE*/
+
+if not exists(Select * from GeneralTable Where Code='BPVENDOR01' ) Insert into GeneralTable ( Code           ,TableName, Value, Sequence, ByDefault,  RowStatus, CreatedBy      ,CreationDate   ,UpdatedBy      ,UpdatedDate  ) 
+values ('BPVENDOR01','BPType','Vendor','1','0','1','1', GETDATE() ,'1',GETDATE())
 
 
+if not exists(Select * from GeneralTable Where Code='BPCUSTOMER' ) Insert into GeneralTable ( Code           ,TableName, Value, Sequence, ByDefault,  RowStatus, CreatedBy      ,CreationDate   ,UpdatedBy      ,UpdatedDate  ) 
+values ('BPCUSTOMER','BPType','Customer','1','0','1','1', GETDATE() ,'1',GETDATE())
+
+GO
+
+/*BUSINESS PARTNER */
+
+declare @Id INT
+SET @Id = (Select GeneralTableId FROM GeneralTable Where Code = 'BPVENDOR01' and tableName = 'BPType') 
+if not exists(Select * from BusinessPartner Where Name         ='Proveedor Luz' )  Insert Into BusinessPartner(Name,  BPTypeId, SIN, RowStatus,  CreatedBy    ,  CreationDate ,  UpdatedBy    ,  UpdatedDate) 
+values ('Proveedor Luz', @Id , '123456789', 1, '1', GETDATE(), '1', GETDATE())
+
+GO
+
+declare @Id INT
+SET @Id = (Select GeneralTableId FROM GeneralTable Where Code = 'BPCUSTOMER' and tableName = 'BPType') 
+if not exists(Select * from BusinessPartner Where Name         ='ABC CUSTOMER' )  Insert Into BusinessPartner(Name,  BPTypeId, SIN, RowStatus,  CreatedBy    ,  CreationDate ,  UpdatedBy    ,  UpdatedDate) 
+values ('ABC CUSTOMER', @Id , '123456798', 1, '1', GETDATE(), '1', GETDATE())
+
+GO
+
+/*agregando fEATURE EN RENTAL APLICATION*/
+
+IF NOT EXISTS (select  sc.name from syscolumns sc, sysobjects so WHERE sc.name = 'Feature' 
+			AND sc.id = so.id AND so.name = 'RentalApplication') 
+BEGIN
+	ALTER TABLE [RentalAPplication]
+	ADD [Feature] NVARCHAR(80) NULL
+END 
+GO

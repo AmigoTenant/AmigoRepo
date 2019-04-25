@@ -15,9 +15,10 @@
                                                 <label for="driver" class="col-sm-5 control-label">Property Type</label>
                                                 <label class="col-sm-7">
                                                     <select class="form-control" [(ngModel)]="model.propertyTypeId"
-                                                            name="model.propertyTypeId">
+                                                        name="model.propertyTypeId">
                                                         <option value=""></option>
-                                                        <option *ngFor="let type of _listHouseTypes" [attr.value]='type.id'>
+                                                        <option *ngFor="let type of _listHouseTypes"
+                                                            [attr.value]='type.id'>
                                                             {{type.name}}
                                                         </option>
                                                     </select>
@@ -29,9 +30,10 @@
                                                 <label for="from" class="col-sm-5 control-label">Referred By</label>
                                                 <label class="col-sm-7">
                                                     <select name="referredById" [(ngModel)]="model.referredById"
-                                                            class="form-control input-control">
+                                                        class="form-control input-control">
                                                         <option value=""></option>
-                                                        <option *ngFor="let type of _listReferredBy" [ngValue]="type.typeId">
+                                                        <option *ngFor="let type of _listReferredBy"
+                                                            [ngValue]="type.typeId">
                                                             {{type.name}}
                                                         </option>
                                                     </select>
@@ -43,32 +45,41 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Applicant Date From</label>
+                                                <label for="from" class="col-sm-5 control-label">Applicant Date
+                                                    From</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="ApplicationDateFrom" ngbDatepicker #d1="ngbDatepicker"
-                                                           [outside-click]="d1" [(ngModel)]="modelApplicationDateFrom" (ngModelChange)="onSelectModelApplicationDateFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="ApplicationDateFrom" ngbDatepicker #d1="ngbDatepicker"
+                                                        [outside-click]="d1" [(ngModel)]="modelApplicationDateFrom"
+                                                        (ngModelChange)="onSelectModelApplicationDateFrom()">
+                                                    <span class="ro-calendar-btn" (click)="d1.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Applicant Date To</label>
+                                                <label for="from" class="col-sm-5 control-label">Applicant Date
+                                                    To</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="ApplicationDateTo" ngbDatepicker #d2="ngbDatepicker"
-                                                           [outside-click]="d2" [(ngModel)]="modelApplicationDateTo" (ngModelChange)="onSelectModelApplicationDateTo()">
-                                                    <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="ApplicationDateTo" ngbDatepicker #d2="ngbDatepicker"
+                                                        [outside-click]="d2" [(ngModel)]="modelApplicationDateTo"
+                                                        (ngModelChange)="onSelectModelApplicationDateTo()">
+                                                    <span class="ro-calendar-btn" (click)="d2.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Name</label>
                                                 <label class="col-sm-7">
-                                                    <input type="text" name="fullName" class="form-control" [(ngModel)]="model.fullName" />
+                                                    <input type="text" name="fullName" class="form-control"
+                                                        [(ngModel)]="model.fullName" />
                                                 </label>
                                             </div>
                                         </div>
@@ -76,7 +87,8 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">EMail</label>
                                                 <label class="col-sm-7">
-                                                    <input type="text" name="email" class="form-control" [(ngModel)]="model.email" />
+                                                    <input type="text" name="email" class="form-control"
+                                                        [(ngModel)]="model.email" />
                                                 </label>
                                             </div>
                                         </div>
@@ -84,9 +96,12 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Checkin From</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckInFrom" ngbDatepicker #d3="ngbDatepicker"
-                                                           [outside-click]="d3" [(ngModel)]="modelCheckInFrom" (ngModelChange)="onSelectModelCheckInFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d3.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="CheckInFrom" ngbDatepicker #d3="ngbDatepicker"
+                                                        [outside-click]="d3" [(ngModel)]="modelCheckInFrom"
+                                                        (ngModelChange)="onSelectModelCheckInFrom()">
+                                                    <span class="ro-calendar-btn" (click)="d3.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
@@ -94,22 +109,27 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Checkin To</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckInTo" ngbDatepicker #d4="ngbDatepicker"
-                                                           [outside-click]="d4" [(ngModel)]="modelCheckInTo" (ngModelChange)="onSelectModelCheckInTo()">
-                                                    <span class="ro-calendar-btn" (click)="d4.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="CheckInTo" ngbDatepicker #d4="ngbDatepicker"
+                                                        [outside-click]="d4" [(ngModel)]="modelCheckInTo"
+                                                        (ngModelChange)="onSelectModelCheckInTo()">
+                                                    <span class="ro-calendar-btn" (click)="d4.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Residence Country</label>
+                                                <label for="from" class="col-sm-5 control-label">Residence
+                                                    Country</label>
                                                 <label class="col-sm-7">
                                                     <select name="countryId" [(ngModel)]="model.residenseCountryId"
-                                                            class="form-control input-control">
-                                                        <option *ngFor="let country of _listCountries" [ngValue]="country.id">
+                                                        class="form-control input-control">
+                                                        <option *ngFor="let country of _listCountries"
+                                                            [ngValue]="country.id">
                                                             {{country.name}}
                                                         </option>
                                                     </select>
@@ -121,8 +141,9 @@
                                                 <label for="from" class="col-sm-5 control-label">Budget</label>
                                                 <label class="col-sm-7">
                                                     <select name="typeId" [(ngModel)]="model.budgetId"
-                                                            class="form-control input-control">
-                                                        <option *ngFor="let type of _listBudgets" [ngValue]="type.typeId">
+                                                        class="form-control input-control">
+                                                        <option *ngFor="let type of _listBudgets"
+                                                            [ngValue]="type.typeId">
                                                             {{type.name}}
                                                         </option>
                                                     </select>
@@ -133,9 +154,12 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Checkout From</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckOutFrom" ngbDatepicker #d5="ngbDatepicker"
-                                                           [outside-click]="d5" [(ngModel)]="modelCheckOutFrom" (ngModelChange)="onSelectModelCheckOutFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d5.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="CheckOutFrom" ngbDatepicker #d5="ngbDatepicker"
+                                                        [outside-click]="d5" [(ngModel)]="modelCheckOutFrom"
+                                                        (ngModelChange)="onSelectModelCheckOutFrom()">
+                                                    <span class="ro-calendar-btn" (click)="d5.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
@@ -143,35 +167,50 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Checkout To</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckOutTo" ngbDatepicker #d6="ngbDatepicker"
-                                                           [outside-click]="d6" [(ngModel)]="modelCheckOutTo" (ngModelChange)="onSelectModelCheckOutTo()">
-                                                    <span class="ro-calendar-btn" (click)="d6.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="CheckOutTo" ngbDatepicker #d6="ngbDatepicker"
+                                                        [outside-click]="d6" [(ngModel)]="modelCheckOutTo"
+                                                        (ngModelChange)="onSelectModelCheckOutTo()">
+                                                    <span class="ro-calendar-btn" (click)="d6.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
 
                                     </div>
-
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Property Feature</label>
+                                                <label class="col-sm-7">
+                                                    <input type="text" name="feature" class="form-control" [(ngModel)]="model.feature" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 text-right">
                                     <div class="button-container">
-                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary" >Search</button>
+                                        <button type="submit" id="btnSearch" (click)="onSelect()"
+                                            class="ro-button btn-primary">Search</button>
                                     </div>
                                     <div class="button-container">
-                                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                        <button type="button" class="ro-button btn-default"
+                                            (click)="onReset()">Clear</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="action-bar">
                             <div class="button-container">
-                                <button type="button" class="ro-button btn-success" (click)="onInsert()" >
+                                <button type="button" class="ro-button btn-success" (click)="onInsert()">
                                     <i class="xico-action-edit"></i>
                                     Add Application
                                 </button>
                             </div>
                             <div class="button-container">
-                                <button type="button" id="btnExport" (click)="onOpenWhatsAppMessage()" class="ro-button btn-default">
+                                <button type="button" id="btnExport" (click)="onOpenWhatsAppMessage()"
+                                    class="ro-button btn-default">
                                     <i class="xico-action-mail"></i>
                                     Send WhatsApp Message
                                 </button>
@@ -185,7 +224,8 @@
                         </div>
                     </form>
                     <div class="grid-container">
-                        <kendo-grid id="kgrid-Contract" [data]="rentalApplicationSearchDTOs" [pageSize]="model.pageSize" [skip]="currentPage" [pageable]="{
+                        <kendo-grid id="kgrid-Contract" [data]="rentalApplicationSearchDTOs" [pageSize]="model.pageSize"
+                            [skip]="currentPage" [pageable]="{
                                 buttonCount: buttonCount,
                                 info: info,
                                 type: type,
@@ -195,12 +235,14 @@
                             <kendo-grid-column [width]="50">
                                 <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                     <div class="text-center">
-                                        <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
+                                        <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option"
+                                            (change)="changeItemHeader()" />
                                     </div>
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                     <div class="text-center">
-                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
+                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
+                                            [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
                                         <label htmlFor="{{rowIndex}}"></label>
 
                                     </div>
@@ -245,7 +287,8 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="residenseCountryName" title="Residence Country"></kendo-grid-column>
+                            <kendo-grid-column field="residenseCountryName" title="Residence Country">
+                            </kendo-grid-column>
                             <kendo-grid-column field="budgetName" title="Budget"></kendo-grid-column>
                             <kendo-grid-column field="housePartName" title="Complete/Shared"></kendo-grid-column>
                             <kendo-grid-column field="outInDownName" title="In DownTown"></kendo-grid-column>
@@ -253,10 +296,12 @@
                             <kendo-grid-column field="personNo" title="Person No"></kendo-grid-column>
                             <kendo-grid-column field="referredByName" title="Referred By"></kendo-grid-column>
                             <kendo-grid-column field="referredByOther" title="Referred By Other"></kendo-grid-column>
+                            <kendo-grid-column field="feature" title="Interested in features"></kendo-grid-column>
                             <kendo-grid-column field="hasNotification" title="Notification">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div>
-                                        <span *ngIf="dataItem.hasNotification" class="label-status rejected">Alert</span><br />
+                                        <span *ngIf="dataItem.hasNotification"
+                                            class="label-status rejected">Alert</span><br />
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
@@ -277,7 +322,7 @@
                                 </ng-template>
                             </kendo-grid-column>
 
-                         </kendo-grid>
+                        </kendo-grid>
                     </div>
                 </div>
             </div>
@@ -292,7 +337,8 @@
     </kendo-dialog-actions>
 </kendo-dialog>
 
-<kendo-dialog title="Send Message" *ngIf="openedWhatsAppMessageConfimation" (close)="closeWhatsAppMessageConfirmation()">
+<kendo-dialog title="Send Message" *ngIf="openedWhatsAppMessageConfimation"
+    (close)="closeWhatsAppMessageConfirmation()">
     <div>
         <div class="row">
             <div class="col-sm-12">
@@ -303,8 +349,8 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label class="col-sm-12">
-                        <textarea type="text" name="txtMessage" style="height:100px" 
-                            [(ngModel)]="message" class="form-control" ></textarea>
+                        <textarea type="text" name="txtMessage" style="height:100px" [(ngModel)]="message"
+                            class="form-control"></textarea>
                     </label>
                 </div>
             </div>

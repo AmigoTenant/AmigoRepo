@@ -169,7 +169,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
         this.model.periodId = undefined;
         this.model.propertyTypeId = undefined;
         this.model.budgetId = undefined;
-
+        this.model.feature = undefined;
         this.model.pageSize = 200;
         this.totalResultCount = 0;
     }
@@ -228,6 +228,7 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     }
 
     getRentalApplication(): void {
+        debugger
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
         
@@ -249,7 +250,8 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
             this.model.referredById,
             this.model.hasNotification,
             this.model.page,
-            this.model.pageSize)
+            this.model.pageSize,
+            this.model.feature)
             .subscribe(response => {
                 var datagrid: any = response;
                 

@@ -100,7 +100,8 @@ export interface IRentalApplicationClient {
         search_referredById: number,
         search_hasNotification: boolean, 
         search_page: number,
-        search_pageSize: number): Observable<ResponseDTOOfPagedListOfRentalApplicationSearchDTO | null>;
+        search_pageSize: number,
+        search_feature: string): Observable<ResponseDTOOfPagedListOfRentalApplicationSearchDTO | null>;
 
      /**
      * @return OK
@@ -147,8 +148,9 @@ export class RentalApplicationClient extends AmigoTenantServiceBase implements I
         search_outInDownId: number,
         search_referredById: number,
         search_hasNotification: boolean, 
-        search_page: number, search_pageSize: number
-
+        search_page: number,
+        search_pageSize: number,
+        search_feature: string
     ): Observable<ResponseDTOOfPagedListOfRentalApplicationSearchDTO | null> {
         let url_ = this.baseUrl + "/api/rentalApplication/searchCriteria?";
         if (search_periodId !== undefined)
@@ -198,6 +200,10 @@ export class RentalApplicationClient extends AmigoTenantServiceBase implements I
             url_ += "search.page=" + encodeURIComponent("" + search_page) + "&";
         if (search_pageSize !== undefined)
             url_ += "search.pageSize=" + encodeURIComponent("" + search_pageSize) + "&";
+        
+        if (search_feature !== undefined)
+            url_ += "search.feature=" + encodeURIComponent("" + search_feature) + "&";
+
         url_ = url_.replace(/[?&]$/, "");
 
         const content_ = "";
@@ -459,6 +465,7 @@ export class RentalApplicationSearchRequest implements IRentalApplicationSearchR
     outInDownId: number | null; 
     referredById: number | null;
     hasNotification: boolean | null; 
+    feature: string | null; 
 
 
     constructor(data?: IRentalApplicationSearchRequest) {
@@ -503,7 +510,7 @@ export class RentalApplicationSearchRequest implements IRentalApplicationSearchR
             this.outInDownId = data["OutInDownId"] !== undefined ? data["OutInDownId"] : <any>null;
             this.referredById = data["ReferredById"] !== undefined ? data["ReferredById"] : <any>null;
             this.hasNotification = data["HasNotification"] !== undefined ? data["HasNotification"] : <any>null;
-
+            this.feature = data["Feature"] !== undefined ? data["Feature"] : <any>null;
         }
     }
 
@@ -546,7 +553,7 @@ export class RentalApplicationSearchRequest implements IRentalApplicationSearchR
         data["OutInDownId"] = this.outInDownId !== undefined ? this.outInDownId : <any>null;
         data["ReferredById"] = this.referredById !== undefined ? this.referredById : <any>null;
         data["HasNotification"] = this.hasNotification !== undefined ? this.hasNotification : <any>null;
-
+        data["Feature"] = this.feature !== undefined ? this.feature : <any>null;
         return data;
     }
 
@@ -582,7 +589,7 @@ export interface IRentalApplicationSearchRequest {
     outInDownId: number | null; 
     referredById: number | null;
     hasNotification: boolean | null; 
-
+    feature: string | null;
 }
 
 export class ResponseDTOOfPagedListOfRentalApplicationSearchDTO implements IResponseDTOOfPagedListOfRentalApplicationSearchDTO {

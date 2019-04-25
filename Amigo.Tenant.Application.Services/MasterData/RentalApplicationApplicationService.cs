@@ -217,10 +217,10 @@ namespace Amigo.Tenant.Application.Services.MasterData
             if (search.ReferredById.HasValue)
                 queryFilter = queryFilter.And(p => p.ReferredById == search.ReferredById);
 
-            
-
             //TODO: City of Interest
             //TODO: Feature
+            if (!string.IsNullOrEmpty(search.Feature))
+                queryFilter = queryFilter.And(p => p.Feature.Contains(search.Feature));
 
             var rentalApplication = await _rentalApplicationSearchDataAccess.ListPagedAsync(queryFilter, search.Page, search.PageSize, orderExpressionList.ToArray());
 

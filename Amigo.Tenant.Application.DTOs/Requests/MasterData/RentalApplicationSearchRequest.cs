@@ -26,7 +26,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.MasterData
         public int? PersonNo { get; set; }
         public int? OutInDownId { get; set; }
         public int? ReferredById { get; set; }
-
+        public string Feature { get; set; }
 
     }
 }

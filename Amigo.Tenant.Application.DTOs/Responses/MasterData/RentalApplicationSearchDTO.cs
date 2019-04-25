@@ -41,7 +41,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.MasterData
         public int? PriorityId { get; set; }
         public string PriorityName { get; set; }
         public string AlertMessage { get; set; }
-
+        public string Feature { get; set; }
 
     }
 }

@@ -282,7 +282,8 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                     //TODO: Permite descargar nuevamente la lista de HouseFeatures Asignados al contrato, 
                     //debe hacerse la llamada en el servidor al grabar, para evitar grabar informacion Features 
                     //que ya han sido asignados concurrentemente (por otra persona)
-                    this.getHouseFeatureDetailContract();
+                    this.getContractById(this.model.contractId);
+                    //this.getHouseFeatureDetailContract();
                     setTimeout(() => { this.successFlag = null; this.errorMessages = null; this.successMessage = null; }, 5000);
 
                 });
