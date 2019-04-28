@@ -185,7 +185,7 @@
                                 <kendo-grid-column field="contractCode" title="Contract" width="50"></kendo-grid-column>
                                 <kendo-grid-column field="tenantFullName" title="Tenant" width="120"></kendo-grid-column>
                                 <kendo-grid-column field="houseName" title="House" width="120"></kendo-grid-column>
-                                <kendo-grid-column title="Status" width="50">
+                                <kendo-grid-column title="Rent Status" width="50">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
                                             <label class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
@@ -227,6 +227,13 @@
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
                                             <span>{{dataItem.lateFeesAmountPending|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="totalAmountPending" title="Total Pending Amount" width="35">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.totalAmountPending|number:'2.2-2' }}</span><br />
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>

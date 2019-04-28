@@ -1,3 +1,5 @@
+import { PPSearchDTO } from './../../shared/api/payment.service';
+
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
@@ -67,8 +69,6 @@ export class PaymentComponent implements OnInit {
         public masterDataService: MasterDataService
     ) { }
 
-    //@ViewChild(PaymentMaintenanceComponent) viewPaymentComponent: PaymentMaintenanceComponent;
-
     public gridData: GridDataResult;
     public skip: number = 0;
     public listPaymentTypes = [];
@@ -125,6 +125,7 @@ export class PaymentComponent implements OnInit {
             .subscribe(res => {
                 let dataResult: any = res;
                 this.countItems = dataResult.data.total;
+                this.setTotalPendingAmount(dataResult.data.items);
                 this.gridData = {
                     data: dataResult.data.items,
                     total: dataResult.data.total,
@@ -350,29 +351,9 @@ export class PaymentComponent implements OnInit {
         $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
     }
 
+    setTotalPendingAmount(data: any[]){
+        data.forEach(q=> {
+            q.totalPendingAmount = q.paymentAmount+q.depositAmountPending+q.finesAmountPending+q.servicesAmountPending+q.lateFeesAmountPending;
+        });
+    }
 }
-
-
-
-//Select * from Tenant where FullName like '%Luis Gonzales%' 
-//Select * from Tenant where FullName like '%Medina Robles%' 
-//Select * from Tenant where FullName like '%David%' 
-
-
-//Update Tenant Set email = NULL
-//where tenantId = 166
-
-//Update Tenant Set email = 'james.romero@tss.com.pe'
-//where tenantId = 164
-
-//Update Tenant Set email = 'jamromguz@outlook.com'
-//where tenantId = 167
-
-//Update Tenant Set email = null
-//where tenantId = 166
-
-//Update Tenant Set email = null
-//where tenantId = 164
-
-//Update Tenant Set email = null
-//where tenantId = 167

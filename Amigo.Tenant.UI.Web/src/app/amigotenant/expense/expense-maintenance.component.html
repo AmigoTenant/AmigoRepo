@@ -143,16 +143,6 @@
                                         </span>
                                     </label>
 
-                                </div>
-
-                                <div class="form-group col-sm-12">
-
-                                    <label for="from" class="col-sm-3 control-label">Reference No</label>
-                                    <label class="col-sm-3">
-                                        <input type="text" name="referenceNo" class="form-control"
-                                            formControlName="referenceNo" />
-                                    </label>
-
                                     <label for="from" class="col-sm-3 control-label">Total Amount</label>
                                     <label class="col-sm-2">
                                         <input type="number" name="totalAmount" class="form-control"
@@ -166,6 +156,25 @@
                                             {{ difTotalAmount | number:"1.2-2"  }}
                                         </span>
                                     </label>
+                                </div>
+
+                                <div class="form-group col-sm-12">
+                                    <label for="from" class="col-sm-3 control-label">Vendor</label>
+                                    <label class="col-sm-1">
+                                        <select class="form-control" formControlName="vendorId">
+                                            <option value=""></option>
+                                            <option *ngFor="let bp of _listVendor" [ngValue]="bp.businessPartnerId">
+                                                {{concept.name}}
+                                            </option>
+                                        </select>
+                                    </label>
+                                    <label for="from" class="col-sm-3 control-label">Reference No</label>
+                                    <label class="col-sm-3">
+                                        <input type="text" name="referenceNo" class="form-control"
+                                            formControlName="referenceNo" />
+                                    </label>
+
+
 
                                 </div>
 
