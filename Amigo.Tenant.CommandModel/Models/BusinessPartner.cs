@@ -4,26 +4,20 @@ namespace Amigo.Tenant.CommandModel.Models
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    //using System.Data.Entity.Spatial;
 
     [Table("BusinessPartner")]
     public partial class BusinessPartner
     {
         public int BusinessPartnerId { get; set; }
-
-        public int? TypeId { get; set; }
-
-        [StringLength(20)]
+        [StringLength(10)]
         public string Code { get; set; }
 
-        [StringLength(100)]
+        [StringLength(150)]
         public string Name { get; set; }
+        public int? BPTypeId { get; set; }
 
-        [StringLength(20)]
-        public string RUC { get; set; }
-
-        [Column(TypeName = "datetime2")]
-        public DateTime? BirthDate { get; set; }
+        [StringLength(12)]
+        public string SIN { get; set; }
 
         public bool? RowStatus { get; set; }
 
@@ -36,21 +30,6 @@ namespace Amigo.Tenant.CommandModel.Models
 
         [Column(TypeName = "datetime2")]
         public DateTime? UpdatedDate { get; set; }
-
-        [StringLength(200)]
-        public string Remark { get; set; }
-
-        [StringLength(20)]
-        public string PhoneNumber { get; set; }
-
-        [StringLength(30)]
-        public string Email { get; set; }
-
-        public int CountryId { get; set; }
-
-        public int? EntityStatusId { get; set; }
-
-        public virtual EntityStatus EntityStatu { get; set; }
 
         public virtual GeneralTable GeneralTable { get; set; }
     }

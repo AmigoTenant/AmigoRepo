@@ -138,6 +138,7 @@
     <Compile Include="Responses\Leasing\ContractSearchDTO.cs" />
     <Compile Include="Responses\Leasing\ContractDTO.cs" />
     <Compile Include="Responses\MasterData\AppSettingDTO.cs" />
+    <Compile Include="Responses\MasterData\BusinessPartnerDTO.cs" />
     <Compile Include="Responses\MasterData\RentalApplicationSearchDTO.cs" />
     <Compile Include="Responses\MasterData\RentalApplicationDTO.cs" />
     <Compile Include="Responses\MasterData\CountryDTO.cs" />

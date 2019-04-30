@@ -11,4 +11,5 @@ export class ExpenseEditRequest
         public tax : number;
         public totalAmount : number;
         public conceptId: number;
+        public businessPartnerId: number;
 }

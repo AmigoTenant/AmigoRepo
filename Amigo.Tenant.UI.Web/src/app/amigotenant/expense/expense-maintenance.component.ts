@@ -68,7 +68,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     _listHouses: any = [];
     _listPeriods: any = [];
     _listConcepts: any = [];
-
+    _listBusinessPartner: any = [];
     flgEdition: string;
     _isDisabled: boolean;
 
@@ -166,7 +166,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             tax: [null, [Validators.required]],
             totalAmount: [null, [Validators.required]],
             referenceNo: [null],
-            addAutomaticDetail: [null]
+            addAutomaticDetail: [null],
+            businessPartnerId: [null]
         });
     }
 
@@ -202,6 +203,15 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.getPaymentTypes();
         this.getHouseAll();
         this.getPeriodsNumberPeriod(10);
+        this.getBusinessPartner();
+    }
+
+    getBusinessPartner(): any {
+        this.masterDataService.getBusinessPartnerByBPType('BPVENDOR01')
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listBusinessPartner = dataResult.data;
+            });
     }
 
 

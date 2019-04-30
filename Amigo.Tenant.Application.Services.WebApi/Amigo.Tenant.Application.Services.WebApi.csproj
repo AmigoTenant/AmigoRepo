@@ -239,6 +239,7 @@
     <Compile Include="Controllers\ActivityTypeController.cs" />
     <Compile Include="Controllers\ConceptController.cs" />
     <Compile Include="Controllers\CountryController.cs" />
+    <Compile Include="Controllers\BusinessPartnerController.cs" />
     <Compile Include="Controllers\GeneralTableController.cs" />
     <Compile Include="Controllers\EntityStatusController.cs" />
     <Compile Include="Controllers\CostCenterController.cs" />

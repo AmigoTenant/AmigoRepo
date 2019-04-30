@@ -85,5 +85,15 @@ export class MasterDataService extends BaseService {
             );
     }
 
+    //BUSINESS PARTNER
+    getBusinessPartnerByBPType(bpTypeCode: string): Observable<any | null> {
+        const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getBusinessPartnerByBPTypeCode}?bpTypeCode=${bpTypeCode}`;
+        return this.http.get<any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token)})
+            .pipe(
+                map(r => r),
+                catchError(this.handleError)
+            );
+    }
+
 
 }

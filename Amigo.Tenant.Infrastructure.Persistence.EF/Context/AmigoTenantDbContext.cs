@@ -106,22 +106,6 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context
                 .Property(e => e.Name)
                 .IsUnicode(false);
 
-            modelBuilder.Entity<BusinessPartner>()
-                .Property(e => e.RUC)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<BusinessPartner>()
-                .Property(e => e.Remark)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<BusinessPartner>()
-                .Property(e => e.PhoneNumber)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<BusinessPartner>()
-                .Property(e => e.Email)
-                .IsUnicode(false);
-
             modelBuilder.Entity<Concept>()
                 .Property(e => e.Code)
                 .IsUnicode(false);
@@ -281,7 +265,7 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context
             modelBuilder.Entity<GeneralTable>()
                 .HasMany(e => e.BusinessPartners)
                 .WithOptional(e => e.GeneralTable)
-                .HasForeignKey(e => e.TypeId);
+                .HasForeignKey(e => e.BPTypeId);
 
             modelBuilder.Entity<GeneralTable>()
                 .HasMany(e => e.Concepts)

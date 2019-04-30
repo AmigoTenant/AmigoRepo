@@ -23,6 +23,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
         public DateTime? UpdatedDate { get; set; }
         public int? ConceptId { get; set; }
         public bool? AddAutomaticDetail { get; set; }
+        public int? BusinessPartnerId { get; set; }
 
 
     }

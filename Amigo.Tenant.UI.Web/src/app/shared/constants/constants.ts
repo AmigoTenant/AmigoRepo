@@ -6,6 +6,7 @@
             'getHouseTypes': 'house/getHouseTypes',
             'getHouseAll': 'house/searchForTypeAhead',
             'getGeneralTableByTableNameAll': 'generalTable/getGeneralTableByTableNameAll',
+            'getBusinessPartnerByBPTypeCode': 'businessPartner/getBusinessPartnerByBPType'
             };
     }
 

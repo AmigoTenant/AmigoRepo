@@ -49,6 +49,7 @@
     <Compile Include="Leasing\IContractApplicationService.cs" />
     <Compile Include="MasterData\ICountryApplicationService.cs" />
     <Compile Include="MasterData\IAppSettingApplicationService.cs" />
+    <Compile Include="MasterData\IBusinessPartnerApplicationService.cs" />
     <Compile Include="MasterData\IGeneralTableApplicationService.cs" />
     <Compile Include="MasterData\IFeatureApplicationService.cs" />
     <Compile Include="MasterData\IMainTenantApplicationService.cs" />

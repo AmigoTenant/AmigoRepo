@@ -160,16 +160,16 @@
 
                                 <div class="form-group col-sm-12">
                                     <label for="from" class="col-sm-3 control-label">Vendor</label>
-                                    <label class="col-sm-1">
-                                        <select class="form-control" formControlName="vendorId">
+                                    <label class="col-sm-3">
+                                        <select class="form-control" formControlName="businessPartnerId">
                                             <option value=""></option>
-                                            <option *ngFor="let bp of _listVendor" [ngValue]="bp.businessPartnerId">
-                                                {{concept.name}}
+                                            <option *ngFor="let bp of _listBusinessPartner" [ngValue]="bp.businessPartnerId">
+                                                {{bp.name}}
                                             </option>
                                         </select>
                                     </label>
                                     <label for="from" class="col-sm-3 control-label">Reference No</label>
-                                    <label class="col-sm-3">
+                                    <label class="col-sm-1">
                                         <input type="text" name="referenceNo" class="form-control"
                                             formControlName="referenceNo" />
                                     </label>

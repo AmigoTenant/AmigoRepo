@@ -28,6 +28,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public virtual ICollection<ExpenseDetail> ExpenseDetails { get; set; }
         public bool? RowStatus { get; set; }
         public int? ConceptId { get; set; }
-
+        public int? BusinessPartnerId { get; set; }
     }
 }
