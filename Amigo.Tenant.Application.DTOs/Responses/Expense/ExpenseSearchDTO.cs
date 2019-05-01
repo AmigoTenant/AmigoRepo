@@ -27,7 +27,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.Expense
         public decimal? SubTotalAmount { get; set; }
         public decimal? TotalAmount { get; set; }
         public string PeriodCode { get; set; }
-        public int? BusinessPartnerName { get; set; }
+        public string BusinessPartnerName { get; set; }
 
     }
 }

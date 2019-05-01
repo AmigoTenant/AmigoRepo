@@ -728,7 +728,7 @@ export class RentalApplicationSearchDTO implements IRentalApplicationSearchDTO {
     propertyTypeId: number | null;
     propertyTypeName: string | null;
     applicationDate: Date | null;
-    featuresCode: string | null;
+    feature: string | null;
     fullName: string | null;
     email: string | null;
     cellPhone: string | null;
@@ -773,7 +773,7 @@ export class RentalApplicationSearchDTO implements IRentalApplicationSearchDTO {
             this.propertyTypeId = data["PropertyTypeId"] !== undefined ? data["PropertyTypeId"] : <any>null;
             this.propertyTypeName = data["PropertyTypeName"] !== undefined ? data["PropertyTypeName"] : <any>null;
             this.applicationDate = data["ApplicationDate"] ? new Date(data["ApplicationDate"].toString()) : <any>null;
-            this.featuresCode = data["FeaturesCode"] !== undefined ? data["FeaturesCode"] : <any>null;
+            this.feature = data["Feature"] !== undefined ? data["Feature"] : <any>null;
             this.fullName = data["FullName"] !== undefined ? data["FullName"] : <any>null;
             this.email = data["Email"] !== undefined ? data["Email"] : <any>null;
             this.cellPhone = data["CellPhone"] !== undefined ? data["CellPhone"] : <any>null;
@@ -815,7 +815,7 @@ export class RentalApplicationSearchDTO implements IRentalApplicationSearchDTO {
         data["PropertyTypeId"] = this.propertyTypeId !== undefined ? this.propertyTypeId : <any>null;
         data["PropertyTypeName"] = this.propertyTypeName !== undefined ? this.propertyTypeName : <any>null;
         data["ApplicationDate"] = this.applicationDate ? this.applicationDate.toISOString() : <any>null;
-        data["FeaturesCode"] = this.featuresCode !== undefined ? this.featuresCode : <any>null;
+        data["Feature"] = this.feature !== undefined ? this.feature : <any>null;
         data["FullName"] = this.fullName !== undefined ? this.fullName : <any>null;
         data["Email"] = this.email !== undefined ? this.email : <any>null;
         data["CellPhone"] = this.cellPhone !== undefined ? this.cellPhone : <any>null;
@@ -857,7 +857,7 @@ export interface IRentalApplicationSearchDTO {
     propertyTypeId: number | null;
     propertyTypeName: string | null;
     applicationDate: Date | null;
-    featuresCode: string | null;
+    feature: string | null;
     fullName: string | null;
     email: string | null;
     cellPhone: string | null;
@@ -899,14 +899,13 @@ export class RentalApplicationRegisterRequest implements IRentalApplicationRegis
     updatedBy: string | null;
     cityOfInterestId: number | null;
     housePartId: number | null;
-    personNo: number | null; 
-    outInDownId: number | null; 
+    personNo: number | null;
+    outInDownId: number | null;
     referredById: number | null;
     referredByOther: string | null;
-    //alertBeforeThat: number | null;
     priorityId: number | null;
     alertDate: Date | null;
-    alertMessage: string | null; 
+    alertMessage: string | null;
 
 
     //features: RentalApplicationFeatureRequest[] | null;
