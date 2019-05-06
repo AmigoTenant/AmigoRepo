@@ -21,5 +21,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.Expense
         public decimal? TotalAmount { get; set; }
         public int IsSelected { get; set; }
         public int? applyTo { get; set; }
+        public int? BusinessPartnerId { get; set; }
     }
 }
