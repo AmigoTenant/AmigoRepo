@@ -2,7 +2,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import { MaintenanceModule } from './maintenance/maintenance.module';
 import { AnalyticsModule } from './dashboard/analytics/analytics.module';
 import { maintenanceRouting } from './maintenance/maintenance.routing';
-//import { LeasingRouting } from './leasing/leasing.routing';
 
 import { NgModule, ErrorHandler } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';

@@ -19,6 +19,7 @@ export const routes: Routes = [
             { path: 'settlement', loadChildren: './settlement/settlement.module#SettlementModule', data: { pageTitle: 'Settlement' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             { path: 'amigotenant', loadChildren: './amigotenant/amigotenant.module#AmigotenantModule', data: { pageTitle: 'AmigoTenant' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             { path: 'leasing', loadChildren: './leasing/leasing.module#LeasingModule', data: { pageTitle: 'Leasing' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
+            //{ path: 'dasboard', loadChildren: './dashboard/dashboard.module#DashboardModule', data: { pageTitle: 'Dashboard' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             { path: 'notfound', component: NotFoundComponent, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             { path: 'unauthorized', component: UnauthorizedComponent },
             { path: '**', redirectTo: 'notfound', pathMatch: 'full' },

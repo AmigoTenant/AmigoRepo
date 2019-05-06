@@ -88,5 +88,18 @@ export let initialMenuItems: Array<MenuItem> = [
                 submenu: null
             }
         ]
+    },
+    {
+        text: 'Dashboard',
+        icon: 'fa fa-wrench',
+        route: null,
+        submenu: [
+            {
+                text: 'Dashboard',
+                icon: 'fa fa-th-list',
+                route: '/dashboard/dashboard',
+                submenu: null
+            }
+        ]
     }
 ];
