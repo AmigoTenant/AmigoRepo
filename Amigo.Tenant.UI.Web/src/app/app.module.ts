@@ -21,12 +21,12 @@ import { environment } from '../environments/environment';
 import { SimpleNotificationsModule } from 'angular2-notifications';
 //import { AgmCoreModule, MapsAPILoader, NoOpMapsAPILoader } from 'angular2-google-maps/core';
 import { AgmCoreModule } from '@agm/core';
-import { DashboardRoutingModule } from './dashboard/dashboard.routing';
 import { TooltipModule } from "ngx-tooltip";
 import { FwModule } from '../fw/fw.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
+import { ChartsModule } from '@progress/kendo-angular-charts';
 
 @NgModule({
     declarations: [
@@ -35,6 +35,7 @@ import { HttpClient } from '@angular/common/http';
     imports: [
         BrowserModule,
         BrowserAnimationsModule,
+        ChartsModule,
         NgbModule.forRoot(),
         SharedModule.forRoot(),
         AnalyticsModule,

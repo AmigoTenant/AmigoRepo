@@ -59,6 +59,7 @@
     <Compile Include="Abstract\NPocoDatabaseFactory.cs" />
     <Compile Include="Mapping\ActivityEventLogMapping.cs" />
     <Compile Include="Mapping\AppVersionMapping.cs" />
+    <Compile Include="Mapping\DashboardBalanceDTOMapping.cs" />
     <Compile Include="Mapping\ExpenseDetailRegisterMapping.cs" />
     <Compile Include="Mapping\ExpenseDetailSearchMapping.cs" />
     <Compile Include="Mapping\ContractDtoMapping.cs" />

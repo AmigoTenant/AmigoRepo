@@ -77,6 +77,7 @@
     <Compile Include="Mapping\MainTenantProfile.cs" />
     <Compile Include="MasterData\AppSettingApplicationService.cs" />
     <Compile Include="MasterData\BusinessPartnerApplicationService.cs" />
+    <Compile Include="Dashboard\DashboardApplicationService.cs" />
     <Compile Include="MasterData\IRentalApplicationApplicationService.cs" />
     <Compile Include="MasterData\RentalApplicationApplicationService.cs" />
     <Compile Include="MasterData\CountryApplicationService.cs" />

@@ -276,13 +276,19 @@ namespace Amigo.Tenant.Common
                 public const string Tenant = "APPTOTENAN";
                 public const string AllTenants = "APPTOALLTE";
             }
+
+            public struct Frecuency
+            {
+                public const string Anual = "FREANUAL01";
+                public const string Period = "FREPERIODO";
+            }
         }
 
         public struct GeneralTableName
         {
             public const string PaymentType = "PaymentType";
             public const string ApplyTo = "ApplyTo";
-
+            public const string Frecuency = "Frecuencia";
         }
 
         public struct ConceptCode

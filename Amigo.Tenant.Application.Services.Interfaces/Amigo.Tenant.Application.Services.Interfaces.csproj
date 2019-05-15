@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Dashboard\IDashboardApplicationService.cs" />
     <Compile Include="Expense\IExpenseApplicationService.cs" />
     <Compile Include="MasterData\IConceptApplicationService.cs" />
     <Compile Include="Leasing\IContractApplicationService.cs" />

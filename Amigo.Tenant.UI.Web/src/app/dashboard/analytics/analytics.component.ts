@@ -1,32 +1,98 @@
 import { Component, OnInit } from '@angular/core';
+import { ChartsModule } from '@progress/kendo-angular-charts';
+import { EnvironmentComponent } from '../../shared/common/environment.component';
+import { basename } from 'path';
+import { DashboardDataService } from '../dasboard-data.service';
+import { dataDetailClass } from '../../amigotenant/payment/payment-maintenance.component';
+import { DashboardBalanceDto } from '../dto/dashboard-balance-dto';
+import { DashboardBalanceRequest } from '../dto/dashboard-balance-request';
+import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 
 console.log('analytics');
 
 @Component({
   selector: 'st-analytics',
   templateUrl: './analytics.component.html',
+  styleUrls: ['./analytics.component.css']
 })
 
-export class AnalyticsComponent implements OnInit {
-    
-  constructor() {}
+export class AnalyticsComponent extends EnvironmentComponent implements OnInit {
+  public series: any[];
+  public categories: number[];
+  public dashboardBalanceDto: DashboardBalanceDto[];
+  public dashboardBalanceRequest: DashboardBalanceRequest;
 
-  ngOnInit() {
+  constructor(
+    private dashboardDataService : DashboardDataService
+  ) {
+    super();
   }
 
-  public series: any[] = [{
-    name: "India",
-    data: [3.907, 7.943, 7.848, 9.284, 9.263, 9.801, 3.890, 8.238, 9.552, 6.855]
-  }, {
-    name: "Russian Federation",
-    data: [4.743, 7.295, 7.175, 6.376, 8.153, 8.535, 5.247, -7.832, 4.3, 4.3]
-  }, {
-    name: "Germany",
-    data: [0.010, -0.375, 1.161, 0.684, 3.7, 3.269, 1.083, -5.127, 3.690, 2.995]
-  },{
-    name: "World",
-    data: [1.988, 2.733, 3.994, 3.464, 4.001, 3.939, 1.333, -2.245, 4.339, 2.727]
-  }];
-  public categories: number[] = [2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011];
+  ngOnInit() {
+    debugger;
+    this.fill();
+  }
+
+  fill(){
+    this.dashboardBalanceRequest = new DashboardBalanceRequest();
+    this.dashboardBalanceRequest.frecuency = 79;
+    this.dashboardBalanceRequest.periodId = 2018;
+
+    debugger;
+    this.dashboardDataService.getDashboardBalance(this.dashboardBalanceRequest).subscribe(
+      response => {
+        let datagrid: any = new ResponseListDTO(response);
+        this.dashboardBalanceDto = datagrid.data;
+        this.series = [{
+          name: "Ingresos",
+          data: this.dashboardBalanceDto.map(function(x) {
+            return x.totalIncomeAmount;
+          })
+        }, {
+          name: "Gastos",
+          data: this.dashboardBalanceDto.map(function(x) {
+            return x.totalExpenseAmount;
+          })
+        }];
+        
+        this.categories = this.dashboardBalanceDto.map(function(x) {
+          return x.periodCode;
+        });
+
+      }
+    ).add(
+      r =>{
+        this.series = [{
+          name: "Ingresos",
+          data: this.dashboardBalanceDto.map(function(x) {
+            return x.totalIncomeAmount;
+          })
+        }, {
+          name: "Gastos",
+          data: this.dashboardBalanceDto.map(function(x) {
+            return x.totalExpenseAmount;
+          })
+        }];
+        
+        this.categories = this.dashboardBalanceDto.map(function(x) {
+          return x.periodCode;
+        });
+
+      }
+    );
+
+    // this.series = [{
+    //   name: "Ingresos",
+    //   data: [103907, 70000, 712848, 999284, 911263]
+    // }, {
+    //   name: "Gastos",
+    //   data: [404743, 70295, 99175, 69376, 80153]
+    // }];
+
+    // this.categories = [201901, 201902, 201903, 201904, 201905];
+
+  }
+  
+  
 
 }

@@ -90,7 +90,8 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Abstract
                 new PaymentPeriodGroupedStatusAndConceptDTOMapping(),
                 new ExpenseDtoMapping(),
                 new ContractDtoMapping(),
-                new BusinessPartnerDtoMapping()
+                new BusinessPartnerDtoMapping(),
+                new DashboardBalanceDTOMapping()
             });            
 
             DbFactory = DatabaseFactory.Config(x =>

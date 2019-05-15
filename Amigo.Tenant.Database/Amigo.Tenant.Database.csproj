@@ -50,6 +50,15 @@
     <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.40.00-FD.0002.ServicePeriodStatus.sql" />
     <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.50.00-FD.0001.AppSetting.sql" />
     <Content Include="AmigoTenantTrackingDb\runAfterOtherAnyTimeScripts\R.01.40.00-FD.0004.AppSetting.sql" />
+    <Content Include="AmigoTenantTrackingDb\up\R.01.60.00-FD.0001.Module.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.70.00-VW.0001.Views.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.01.70.00-MT.0001.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AmigoTenantTrackingDb\up\R.01.60.00-VW.0001.Views.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

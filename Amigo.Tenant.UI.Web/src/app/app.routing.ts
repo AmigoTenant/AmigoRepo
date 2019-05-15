@@ -11,8 +11,9 @@ export const routes: Routes = [
     { path: 'login', component: InitialScreenComponent, data: { pageTitle: 'Initial Screen' } },    
     {
         path: '', component: MainLayoutComponent, data: { pageTitle: 'Home' }, children: [
-            { path: '', redirectTo: 'dashboard', pathMatch: "full"},
+            //{ path: '', redirectTo: 'dashboard', pathMatch: "full"},
             { path: 'dashboard', loadChildren: './dashboard/analytics/analytics.module#AnalyticsModule', data: { pageTitle: 'Dashboard' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
+            { path: 'leasing', loadChildren: './leasing/leasing.module#LeasingModule', data: { pageTitle: 'Leasing' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             { path: 'maintenance', loadChildren: './maintenance/maintenance.module#MaintenanceModule', data: { pageTitle: 'Maintenances', canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] } },
             { path: 'report', loadChildren: './report/report.module#ReportModule', data: { pageTitle: 'Report' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },
             //{ path: 'shipment-tracking', loadChildren: './shipment-tracking/shipment-tracking.module#ShipmentTrackingModule', data: { pageTitle: 'Shipment Tracking' }, canActivate: [LoginRouteGuard], canActivateChild: [LoginRouteGuard] },

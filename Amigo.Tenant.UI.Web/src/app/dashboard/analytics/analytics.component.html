@@ -1,21 +1,57 @@
-<div id="content">
+<div class="anyClass">
   <div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+      <kendo-chart [categoryAxis]="{ categories: categories }">
+        <kendo-chart-title text="Ingresos por Rentas, Depositos versus Gastos"></kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+        <kendo-chart-tooltip ></kendo-chart-tooltip>
+        <kendo-chart-series>
+            <kendo-chart-series-item *ngFor="let item of series"
+                type="line" style="normal" [data]="item.data" [name]="item.name">
+            </kendo-chart-series-item> 
+        </kendo-chart-series>
+      </kendo-chart>
+    </div> 
 
-    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
-
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+      <!-- <kendo-chart [categoryAxis]="{ categories: categories }">
+        <kendo-chart-title text="Ingresos por Rentas, Depositos versus Gastos"></kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+        <kendo-chart-tooltip ></kendo-chart-tooltip>
+        <kendo-chart-series>
+            <kendo-chart-series-item *ngFor="let item of series"
+                type="line" style="normal" [data]="item.data" [name]="item.name">
+            </kendo-chart-series-item> 
+        </kendo-chart-series>
+      </kendo-chart> -->
     </div>
-
-    <!-- <kendo-chart [categoryAxis]="{ categories: categories }">
-      <kendo-chart-title text="Gross domestic product growth /GDP annual %/"></kendo-chart-title>
-      <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
-      <kendo-chart-tooltip format="{0}%"></kendo-chart-tooltip>
-      <kendo-chart-series>
-          <kendo-chart-series-item *ngFor="let item of series"
-              type="line" style="smooth" [data]="item.data" [name]="item.name">
-          </kendo-chart-series-item>
-      </kendo-chart-series>
-    </kendo-chart> -->
-
   </div>
-  <!-- end row -->
+
+  <div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+      <!-- <kendo-chart [categoryAxis]="{ categories: categories }">
+        <kendo-chart-title text="Ingresos por Rentas, Depositos versus Gastos"></kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+        <kendo-chart-tooltip ></kendo-chart-tooltip>
+        <kendo-chart-series>
+            <kendo-chart-series-item *ngFor="let item of series"
+                type="line" style="normal" [data]="item.data" [name]="item.name">
+            </kendo-chart-series-item> 
+        </kendo-chart-series>
+      </kendo-chart> -->
+    </div> 
+
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-6">
+      <!-- <kendo-chart [categoryAxis]="{ categories: categories }">
+        <kendo-chart-title text="Ingresos por Rentas, Depositos versus Gastos"></kendo-chart-title>
+        <kendo-chart-legend position="bottom" orientation="horizontal"></kendo-chart-legend>
+        <kendo-chart-tooltip ></kendo-chart-tooltip>
+        <kendo-chart-series>
+            <kendo-chart-series-item *ngFor="let item of series"
+                type="line" style="normal" [data]="item.data" [name]="item.name">
+            </kendo-chart-series-item> 
+        </kendo-chart-series>
+      </kendo-chart> -->
+    </div>
+  </div>
 </div>
