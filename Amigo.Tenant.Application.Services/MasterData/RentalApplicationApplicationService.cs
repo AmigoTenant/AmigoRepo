@@ -143,7 +143,7 @@ namespace Amigo.Tenant.Application.Services.MasterData
         public async Task<ResponseDTO<PagedList<RentalApplicationSearchDTO>>> SearchRentalApplicationAsync(RentalApplicationSearchRequest search)
         {
             List<OrderExpression<RentalApplicationSearchDTO>> orderExpressionList = new List<OrderExpression<RentalApplicationSearchDTO>>();
-            orderExpressionList.Add(new OrderExpression<RentalApplicationSearchDTO>(OrderType.Asc, p => p.ApplicationDate));
+            orderExpressionList.Add(new OrderExpression<RentalApplicationSearchDTO>(OrderType.Desc, p => p.ApplicationDate));
             Expression<Func<RentalApplicationSearchDTO, bool>> queryFilter = c => true;
 
             //APPLICATIONDATE

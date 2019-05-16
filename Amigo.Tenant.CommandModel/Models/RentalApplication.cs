@@ -47,6 +47,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public DateTime? AlertDate { get; set; }
         public string AlertMessage { get; set; }
 
-
+        public string Feature { get; set; }
     }
 }

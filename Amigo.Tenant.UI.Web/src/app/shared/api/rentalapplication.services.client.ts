@@ -906,7 +906,7 @@ export class RentalApplicationRegisterRequest implements IRentalApplicationRegis
     priorityId: number | null;
     alertDate: Date | null;
     alertMessage: string | null;
-
+    feature: string | null;
 
     //features: RentalApplicationFeatureRequest[] | null;
     //cities: RentalApplicationCityRequest[] | null;
@@ -949,6 +949,7 @@ export class RentalApplicationRegisterRequest implements IRentalApplicationRegis
             this.priorityId = data["PriorityId"] !== undefined ? data["PriorityId"] : <any>null;
             this.alertDate = data["AlertDate"] ? new Date(data["AlertDate"].toString()) : <any>null;
             this.alertMessage = data["AlertMessage"] !== undefined ? data["AlertMessage"] : <any>null;
+            this.feature = data["Feature"] !== undefined ? data["Feature"] : <any>null;
 
 
             //if (data["Features"] && data["Features"].constructor === Array) {
@@ -999,6 +1000,7 @@ export class RentalApplicationRegisterRequest implements IRentalApplicationRegis
         data["PriorityId"] = this.priorityId !== undefined ? this.priorityId : <any>null;
         data["AlertDate"] = this.alertDate ? this.alertDate.toISOString() : <any>null;
         data["AlertMessage"] = this.alertMessage !== undefined ? this.alertMessage : <any>null;
+        data["Feature"] = this.feature !== undefined ? this.feature : <any>null;
 
         //if (this.features && this.features.constructor === Array) {
         //    data["Features"] = [];
@@ -1049,6 +1051,7 @@ export interface IRentalApplicationRegisterRequest {
     priorityId: number | null;
     alertDate: Date | null;
     alertMessage: string | null; 
+    feature: string | null;
 
     //features: RentalApplicationFeatureRequest[] | null;
     //cities: RentalApplicationCityRequest[] | null;
@@ -1082,6 +1085,7 @@ export class RentalApplicationUpdateRequest implements IRentalApplicationUpdateR
     priorityId: number | null;
     alertDate: Date | null;
     alertMessage: string | null; 
+    feature: string | null;
 
     constructor(data?: IRentalApplicationUpdateRequest) {
         if (data) {
@@ -1121,7 +1125,7 @@ export class RentalApplicationUpdateRequest implements IRentalApplicationUpdateR
             this.priorityId = data["PriorityId"] !== undefined ? data["PriorityId"] : <any>null;
             this.alertDate = data["AlertDate"] ? new Date(data["AlertDate"].toString()) : <any>null;
             this.alertMessage = data["AlertMessage"] !== undefined ? data["AlertMessage"] : <any>null;
-
+            this.feature = data["Feature"] !== undefined ? data["Feature"] : <any>null;
         }
     }
 
@@ -1160,6 +1164,7 @@ export class RentalApplicationUpdateRequest implements IRentalApplicationUpdateR
         data["PriorityId"] = this.priorityId !== undefined ? this.priorityId : <any>null;
         data["AlertDate"] = this.alertDate? this.alertDate.toISOString() : <any>null;
         data["AlertMessage"] = this.alertMessage !== undefined ? this.alertMessage : <any>null;
+        data["Feature"] = this.feature !== undefined ? this.feature : <any>null;
 
         return data;
     }
@@ -1200,6 +1205,7 @@ export interface IRentalApplicationUpdateRequest {
     priorityId: number | null;
     alertDate: Date | null;
     alertMessage: string | null; 
+    feature: string | null;
 
 }
 

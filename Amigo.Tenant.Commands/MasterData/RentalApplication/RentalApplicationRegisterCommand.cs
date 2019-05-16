@@ -37,6 +37,7 @@ namespace Amigo.Tenant.Commands.MasterData.RentalApplication
         public int? PriorityId { get; set; }
         public DateTime? AlertDate { get; set; }
         public string AlertMessage { get; set; }
+        public string Feature { get; set; }
 
     }
 }

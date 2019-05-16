@@ -78,7 +78,8 @@ namespace Amigo.Tenant.CommandHandlers.MasterData.RentalApplications
                     "ReferredByOther",
                     "PriorityId",
                     "AlertDate",
-                    "AlertMessage"
+                    "AlertMessage",
+                    "Feature"
                 });
 
 

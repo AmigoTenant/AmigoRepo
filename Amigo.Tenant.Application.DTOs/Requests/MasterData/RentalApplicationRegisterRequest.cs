@@ -35,7 +35,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.MasterData
         public DateTime? AlertDate { get; set; }
         public string AlertMessage { get; set; }
 
-        
+        public string Feature { get; set; }
 
 
 
