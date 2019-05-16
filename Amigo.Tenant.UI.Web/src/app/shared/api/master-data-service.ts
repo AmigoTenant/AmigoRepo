@@ -46,6 +46,22 @@ export class MasterDataService extends BaseService {
             );
     }
 
+    getYearsFromPeriods(): Observable<any> {
+        const url = `${this.baseUrl}api/${Constants.PERIOD_URL_PATH.getYearsFromPeriods}`;
+        return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token) })
+            .pipe(
+            catchError(this.handleError)
+            );
+    }
+
+    getPeriodsByYear(year: number): Observable<PeriodDTO[] | any> {
+        const url = `${this.baseUrl}api/${Constants.PERIOD_URL_PATH.getPeriodsByYear}?year=${year}`;
+        return this.http.get<PeriodDTO | any>(url, { headers: this.headers.set("Authorization", "Bearer " + this.token) })
+            .pipe(
+            catchError(this.handleError)
+            );
+    }
+
     //HOUSE
     getHouseTypes(): Observable<any> {
         const url = `${this.baseUrl}api/${Constants.MASTER_DATA_URL_PATH.getHouseTypes}`;

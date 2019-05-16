@@ -13,7 +13,9 @@
     public static get PERIOD_URL_PATH(): any {
         return {
             'getCurrentPeriod': 'Period/getCurrentPeriod',
-            'getPeriodLastestNumberPeriods': 'Period/getPeriodLastestNumberPeriods'
+            'getPeriodLastestNumberPeriods': 'Period/getPeriodLastestNumberPeriods',
+            'getYearsFromPeriods': 'Period/getYearsFromPeriods',
+            'getPeriodsByYear': 'Period/getPeriodsByYear'
         };
     }
 

@@ -53,6 +53,38 @@ namespace Amigo.Tenant.Application.Services.MasterData
             return ResponseBuilder.Correct(periods.ToList());
         }
 
+
+        public async Task<ResponseDTO<List<PeriodDTO>>> GetPeriodsByYearAsync(int? year)
+        {
+            Expression<Func<PeriodDTO, bool>> queryFilter = c => true;
+            if (year.HasValue)
+            {
+                var dateBegin = new DateTime(year.Value, 1, 1);
+                var dateEnd = new DateTime(year.Value,12, 31);
+                queryFilter = queryFilter.And(c => c.BeginDate.Value >= dateBegin && c.BeginDate.Value <= dateEnd);
+            }
+            var periods = (await _periodDataAccess.ListAsync(queryFilter)).ToList();
+            return ResponseBuilder.Correct(periods.ToList());
+        }
+
+        public async Task<ResponseDTO<List<YearDTO>>> GetYearsFromPeriodsAsync()
+        {
+            List<OrderExpression<PeriodDTO>> orderExpressionList = new List<OrderExpression<PeriodDTO>>();
+            orderExpressionList.Add(new OrderExpression<PeriodDTO>(OrderType.Asc, p => p.Code));
+
+            Expression<Func<PeriodDTO, bool>> queryFilter = c => true;
+            var periods = (await _periodDataAccess.ListAsync(queryFilter, orderExpressionList.ToArray())).ToList();
+            var query = periods.ToList().GroupBy(
+                q => q.Code.Substring(0, 4),
+                (baseYear, years) => new YearDTO()
+                {
+                    Anio = int.Parse(baseYear)
+                }
+                );
+            var resultado = query.ToList();
+            return ResponseBuilder.Correct(resultado);
+        }
+
         public async Task<ResponseDTO<PeriodDTO>> GetPeriodByCodeAsync(string code)
         {
             Expression<Func<PeriodDTO, bool>> queryFilter = c => true;

@@ -33,6 +33,20 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return resp;
         }
 
+        [HttpGet, Route("getPeriodsByYear")]
+        public async Task<ResponseDTO<List<PeriodDTO>>> GetPeriodsByYearAsync(int? year)
+        {
+            var resp = await _periodApplicationService.GetPeriodsByYearAsync(year);
+            return resp;
+        }
+
+        [HttpGet, Route("getYearsFromPeriods")]
+        public async Task<ResponseDTO<List<YearDTO>>> GetYearsFromPeriodsAsync()
+        {
+            var resp = await _periodApplicationService.GetYearsFromPeriodsAsync();
+            return resp;
+        }
+
         [HttpGet, Route("searchForTypeAhead")]
         public async Task<ResponseDTO<List<PeriodDTO>>> SearchForTypeAhead(string search)
         {

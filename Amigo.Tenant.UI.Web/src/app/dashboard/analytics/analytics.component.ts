@@ -7,8 +7,7 @@ import { dataDetailClass } from '../../amigotenant/payment/payment-maintenance.c
 import { DashboardBalanceDto } from '../dto/dashboard-balance-dto';
 import { DashboardBalanceRequest } from '../dto/dashboard-balance-request';
 import { ResponseListDTO } from '../../shared/dto/response-list-dto';
-
-console.log('analytics');
+import { MasterDataService } from '../../shared/api/master-data-service';
 
 @Component({
   selector: 'st-analytics',
@@ -21,78 +20,86 @@ export class AnalyticsComponent extends EnvironmentComponent implements OnInit {
   public categories: number[];
   public dashboardBalanceDto: DashboardBalanceDto[];
   public dashboardBalanceRequest: DashboardBalanceRequest;
+  public modelDashboardBalanceRequest: DashboardBalanceRequest;
+  public _listFrecuencies: any[];
+  public _listPeriods: any[];
 
   constructor(
-    private dashboardDataService : DashboardDataService
+    private dashboardDataService: DashboardDataService,
+    private masterDataService: MasterDataService
   ) {
     super();
   }
 
   ngOnInit() {
     debugger;
+    this.initializeForm();
     this.fill();
+    
   }
 
-  fill(){
-    this.dashboardBalanceRequest = new DashboardBalanceRequest();
-    this.dashboardBalanceRequest.frecuency = 79;
-    this.dashboardBalanceRequest.periodId = 2018;
+  initializeForm(): void {
+    this.modelDashboardBalanceRequest = new DashboardBalanceRequest();
+    this.getFrecuencies();
+  }
 
-    debugger;
+  fill() {
+    this.dashboardBalanceRequest = new DashboardBalanceRequest();
+    this.dashboardBalanceRequest.frecuency = this.modelDashboardBalanceRequest.frecuency;
+    this.dashboardBalanceRequest.periodId = this.modelDashboardBalanceRequest.periodId;
     this.dashboardDataService.getDashboardBalance(this.dashboardBalanceRequest).subscribe(
       response => {
         let datagrid: any = new ResponseListDTO(response);
         this.dashboardBalanceDto = datagrid.data;
         this.series = [{
           name: "Ingresos",
-          data: this.dashboardBalanceDto.map(function(x) {
+          data: this.dashboardBalanceDto.map(function (x) {
             return x.totalIncomeAmount;
           })
         }, {
           name: "Gastos",
-          data: this.dashboardBalanceDto.map(function(x) {
+          data: this.dashboardBalanceDto.map(function (x) {
             return x.totalExpenseAmount;
           })
         }];
-        
-        this.categories = this.dashboardBalanceDto.map(function(x) {
-          return x.periodCode;
-        });
 
-      }
-    ).add(
-      r =>{
-        this.series = [{
-          name: "Ingresos",
-          data: this.dashboardBalanceDto.map(function(x) {
-            return x.totalIncomeAmount;
-          })
-        }, {
-          name: "Gastos",
-          data: this.dashboardBalanceDto.map(function(x) {
-            return x.totalExpenseAmount;
-          })
-        }];
-        
-        this.categories = this.dashboardBalanceDto.map(function(x) {
+        this.categories = this.dashboardBalanceDto.map(function (x) {
           return x.periodCode;
         });
 
       }
     );
-
-    // this.series = [{
-    //   name: "Ingresos",
-    //   data: [103907, 70000, 712848, 999284, 911263]
-    // }, {
-    //   name: "Gastos",
-    //   data: [404743, 70295, 99175, 69376, 80153]
-    // }];
-
-    // this.categories = [201901, 201902, 201903, 201904, 201905];
-
   }
-  
-  
+
+
+  changePeriod(data){
+    this.getPeriodsByYear(data);
+    this.executeDashboardBalance();
+  }
+
+  executeDashboardBalance(){
+    this.fill();
+  }
+  getFrecuencies(): void {
+    this.masterDataService.getYearsFromPeriods()
+      .subscribe(res => {
+        debugger;
+        let dataResult = new ResponseListDTO(res);
+        this._listFrecuencies = [];
+        for (let i = 0; i < dataResult.data.length; i++) {
+          this._listFrecuencies.push({
+            'anio' : dataResult.data[i].anio,
+          });
+        }
+      });
+  }
+
+  getPeriodsByYear(year: number): void {
+    this.masterDataService.getPeriodsByYear(year)
+        .subscribe(res => {
+            let dataResult = new ResponseListDTO(res);
+            this._listPeriods = dataResult.data;
+        });
+}
 
 }
