@@ -740,6 +740,9 @@ export class PPSearchDTO implements IPPSearchDTO {
     lateFeesAmountPending: number | null;
     dueDate: Date | null;
     totalAmountPending: number | null;
+    totalIncomeAmountByPeriod: number | null;
+    totalIncomePaidAmount: number | null;
+    totalIncomePendingAmount: number | null;
 
     constructor(data?: IPPSearchDTO) {
         if (data) {
@@ -774,7 +777,10 @@ export class PPSearchDTO implements IPPSearchDTO {
             this.lateFeesAmountPending = data["LateFeesAmountPending"] !== undefined ? data["LateFeesAmountPending"] : <any>null;
             this.contractId = data["ContractId"] !== undefined ? data["ContractId"] : <any>null;
             this.dueDate = data["DueDate"] ? new Date(data["DueDate"].toString()) : <any>null;
-            this.totalAmountPending = data["TotalAmountPending"] !== undefined ? data["TotalAmuntPending"] : <any>null;
+            this.totalAmountPending = data["TotalAmountPending"] !== undefined ? data["TotalAmountPending"] : <any>null;
+            this.totalIncomeAmountByPeriod = data["TotalIncomeAmountByPeriod"] !== undefined ? data["TotalIncomeAmountByPeriod"] : <any>null;
+            this.totalIncomePaidAmount = data["TotalIncomePaidAmount"] !== undefined ? data["TotalIncomePaidAmount"] : <any>null;
+            this.totalIncomePendingAmount = data["TotalIncomePendingAmount"] !== undefined ? data["TotalIncomePendingAmount"] : <any>null;
         }
     }
 
@@ -809,6 +815,9 @@ export class PPSearchDTO implements IPPSearchDTO {
         data["ContractId"] = this.contractId !== undefined ? this.contractId : <any>null;
         data["DueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>null;
         data["TotalAmountPending"] = this.totalAmountPending !== undefined ? this.totalAmountPending : <any>null;
+        data["TotalIncomeAmountByPeriod"] = this.totalIncomeAmountByPeriod !== undefined ? this.totalIncomeAmountByPeriod : <any>null;
+        data["TotalIncomePaidAmount"] = this.totalIncomePaidAmount !== undefined ? this.totalIncomePaidAmount : <any>null;
+        data["TotalIncomePendingAmount"] = this.totalIncomePendingAmount !== undefined ? this.totalIncomePendingAmount : <any>null;
         return data;
     }
 
@@ -842,6 +851,9 @@ export interface IPPSearchDTO {
     servicesAmountPending: number | null;
     lateFeesAmountPending: number | null; 
     totalAmountPending: number | null;
+    totalIncomeAmountByPeriod: number | null;
+    totalIncomePaidAmount: number | null;
+    totalIncomePendingAmount: number | null;
 }
 
 export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPeriodSearchByContractPeriodRequest {

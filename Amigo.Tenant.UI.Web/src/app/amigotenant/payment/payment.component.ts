@@ -85,6 +85,10 @@ export class PaymentComponent implements OnInit {
     @Output() open: EventEmitter<any> = new EventEmitter();
     @Output() close: EventEmitter<any> = new EventEmitter();
 
+    public TotalIncomeAmountByPeriod:number=0;
+    public TotalIncomePaidAmount:number=0;
+    public TotalIncomePendingAmount:number=0;
+
     searchCriteria = new PaymentPeriodSearchRequest();
     ngOnInit() {
         this.initializeForm(true);
@@ -127,6 +131,7 @@ export class PaymentComponent implements OnInit {
                 this.countItems = dataResult.data.total;
                 debugger;
                 this.setTotalPendingAmount(dataResult.data.items);
+                this.setTotalDetailByPeriod(dataResult.data.items);
                 this.gridData = {
                     data: dataResult.data.items,
                     total: dataResult.data.total,
@@ -356,5 +361,14 @@ export class PaymentComponent implements OnInit {
         data.forEach(q=> {
             q.totalPendingAmount = q.paymentAmount+q.depositAmountPending+q.finesAmountPending+q.servicesAmountPending+q.lateFeesAmountPending;
         });
+    }
+
+    setTotalDetailByPeriod(data: any[]){
+        if (data.length>0) 
+        {
+            this.TotalIncomeAmountByPeriod = data[0].totalIncomeAmountByPeriod;
+            this.TotalIncomePaidAmount = data[0].totalIncomePaidAmount;
+            this.TotalIncomePendingAmount = data[0].totalIncomePendingAmount;
+        }
     }
 }

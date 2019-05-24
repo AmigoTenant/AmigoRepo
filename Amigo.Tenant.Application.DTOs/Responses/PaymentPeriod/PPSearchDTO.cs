@@ -25,12 +25,15 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public string PaymentPeriodStatusCode { get; set; }
         public string PaymentPeriodStatusName { get; set; }
         public decimal? PaymentAmount { get; set; }
-
         public decimal? DepositAmountPending { get; set; }
         public decimal? FinesAmountPending { get; set; }
         public decimal? ServicesAmountPending { get; set; }
         public decimal? LateFeesAmountPending { get; set; }
         public DateTime? DueDate { get; set; }
+        public decimal? TotalExpenseAmount { get; set; }
+        public decimal? TotalIncomePaidAmount { get; set; }
+        public decimal? TotalIncomePendingAmount { get; set; }
+        public decimal? TotalIncomeAmountByPeriod { get; set; }
 
     }
 }

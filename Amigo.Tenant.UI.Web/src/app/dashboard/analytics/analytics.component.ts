@@ -54,7 +54,7 @@ export class AnalyticsComponent extends EnvironmentComponent implements OnInit {
         this.series = [{
           name: "Ingresos",
           data: this.dashboardBalanceDto.map(function (x) {
-            return x.totalIncomeAmount;
+            return x.totalIncomePaidAmount;
           })
         }, {
           name: "Gastos",

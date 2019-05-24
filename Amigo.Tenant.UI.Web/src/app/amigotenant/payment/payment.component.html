@@ -20,19 +20,23 @@
                                                 <div class="form-group">
                                                     <label for="name" class="control-label col-sm-4">Period</label>
                                                     <div class="col-sm-8">
-                                                        <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
+                                                        <ngbd-typeahead-period (modelOutput)="getPeriod($event)"
+                                                            [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
                                                     </div>
                                                 </div>
                                             </div>
 
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="status" class="control-label col-sm-4">Rent Status</label>
+                                                    <label for="status" class="control-label col-sm-4">Rent
+                                                        Status</label>
                                                     <div class="col-sm-8">
-                                                        <select class="form-control" [(ngModel)]="searchCriteria.paymentPeriodStatusId"
-                                                                name="searchCriteria.paymentPeriodStatusId">
+                                                        <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.paymentPeriodStatusId"
+                                                            name="searchCriteria.paymentPeriodStatusId">
                                                             <option value=""></option>
-                                                            <option *ngFor="let status of _listEntityStatus" [attr.value]='status.entityStatusId'>
+                                                            <option *ngFor="let status of _listEntityStatus"
+                                                                [attr.value]='status.entityStatusId'>
                                                                 {{status.name}}
                                                             </option>
                                                         </select>
@@ -42,10 +46,14 @@
 
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="name" class="control-label col-sm-4">Pending Fines</label>
+                                                    <label for="name" class="control-label col-sm-4">Pending
+                                                        Fines</label>
                                                     <div class="col-sm-8">
-                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingFines" name="hasPendingFines">
-                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                        <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.hasPendingFines"
+                                                            name="hasPendingFines">
+                                                            <option *ngFor="let item of _listYesNoBool"
+                                                                [ngValue]='item.code'>
                                                                 {{item.name}}
                                                             </option>
                                                         </select>
@@ -60,7 +68,8 @@
                                                 <div class="form-group">
                                                     <label for="name" class="control-label col-sm-4">Property</label>
                                                     <div class="col-sm-8">
-                                                        <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                                        <ngbd-typeahead-house (modelOutput)="getHouse($event)"
+                                                            [currentHouse]="_currentHouse"></ngbd-typeahead-house>
                                                     </div>
                                                 </div>
                                             </div>
@@ -69,16 +78,21 @@
                                                     <label for="name" class="control-label col-sm-4">Lease No</label>
                                                     <div class="col-sm-8">
                                                         <input st-autofocus type="text" class="form-control"
-                                                               [(ngModel)]="searchCriteria.contractCode" name="contractCode" autofocus maxlength="20" />
+                                                            [(ngModel)]="searchCriteria.contractCode"
+                                                            name="contractCode" autofocus maxlength="20" />
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="name" class="control-label col-sm-4">Pending Services</label>
+                                                    <label for="name" class="control-label col-sm-4">Pending
+                                                        Services</label>
                                                     <div class="col-sm-8">
-                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingServices" name="hasPendingServices">
-                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                        <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.hasPendingServices"
+                                                            name="hasPendingServices">
+                                                            <option *ngFor="let item of _listYesNoBool"
+                                                                [ngValue]='item.code'>
                                                                 {{item.name}}
                                                             </option>
                                                         </select>
@@ -93,16 +107,21 @@
                                                 <div class="form-group">
                                                     <label for="name" class="control-label col-sm-4">Tenant</label>
                                                     <div class="col-sm-8">
-                                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant"></ngbd-typeahead-tenant>
+                                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)"
+                                                            [currentTenant]="_currentTenant"></ngbd-typeahead-tenant>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="name" class="control-label col-sm-4">Pending Deposit</label>
+                                                    <label for="name" class="control-label col-sm-4">Pending
+                                                        Deposit</label>
                                                     <div class="col-sm-8">
-                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingDeposit" name="hasPendingDeposit">
-                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                        <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.hasPendingDeposit"
+                                                            name="hasPendingDeposit">
+                                                            <option *ngFor="let item of _listYesNoBool"
+                                                                [ngValue]='item.code'>
                                                                 {{item.name}}
                                                             </option>
                                                         </select>
@@ -112,10 +131,14 @@
 
                                             <div class="col-sm-4">
                                                 <div class="form-group">
-                                                    <label for="name" class="control-label col-sm-4">Pending Late Fee</label>
+                                                    <label for="name" class="control-label col-sm-4">Pending Late
+                                                        Fee</label>
                                                     <div class="col-sm-8">
-                                                        <select class="form-control" [(ngModel)]="searchCriteria.hasPendingLateFee" name="hasPendingLateFee">
-                                                            <option *ngFor="let item of _listYesNoBool" [ngValue]='item.code'>
+                                                        <select class="form-control"
+                                                            [(ngModel)]="searchCriteria.hasPendingLateFee"
+                                                            name="hasPendingLateFee">
+                                                            <option *ngFor="let item of _listYesNoBool"
+                                                                [ngValue]='item.code'>
                                                                 {{item.name}}
                                                             </option>
                                                         </select>
@@ -129,31 +152,44 @@
                                     </div>
                                     <div class="col-sm-2 text-right">
                                         <div class="button-container">
-                                            <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default" st-authCheck>Search</button><!--[actionCode]="'House.Search'"-->
+                                            <button type="submit" id="btnSearch" (click)="onSearch()"
+                                                class="ro-button btn-default" st-authCheck>Search</button>
+                                            <!--[actionCode]="'House.Search'"-->
                                         </div>
                                         <div class="button-container">
-                                            <button type="button" data-am-button="secondary" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                            <button type="button" data-am-button="secondary"
+                                                class="ro-button btn-default" (click)="onReset()">Clear</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
-                        <div class="action-bar">
-                            <div class="button-container">
-                                <button type="submit" id="btnSendPayNotification" (click)="confirmSendPayNotification()" class="ro-button btn-success">
-                                    <i class="xico-file-download"></i>
-                                    Send Email Notification
-                                </button>
+
+                        
+                        <div class="row">
+                                <div class="col-sm-8">
+                                    <div class="col-sm-6 text-left">
+                                        <button type="submit" id="btnSendPayNotification"
+                                            (click)="confirmSendPayNotification()" class="ro-button btn-success">
+                                            <i class="xico-file-download"></i>
+                                            Send Email Notification
+                                        </button>
+                                        <button type="button" id="btnExport" (click)="exportToExcel()"
+                                            class="ro-button btn-default">
+                                            <i class="xico-file-download"></i>
+                                            Export to Excel
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4 text-right">
+                                    <span class="col-sm-3 badge badge-success"><h6>Pagado<br> {{ TotalIncomePaidAmount | number:'2.2-2'}}</h6></span>
+                                    <span class="col-sm-3 badge badge-danger"><h6>Pendiente<br>{{ TotalIncomePendingAmount| number:'2.2-2'}}</h6></span>
+                                    <span class="col-sm-3 badge badge-warning"><h6>Total<br>{{ TotalIncomeAmountByPeriod| number:'2.2-2'}}</h6></span>
+                                </div>
                             </div>
-                            <div class="button-container">
-                                <button type="button" id="btnExport" (click)="exportToExcel()" class="ro-button btn-default">
-                                    <i class="xico-file-download"></i>
-                                    Export to Excel
-                                </button>
-                            </div>
-                        </div>
                         <div class="grid-container">
-                            <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage" [pageable]="{
+                            <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage"
+                                [pageable]="{
                                 buttonCount: buttonCount,
                                 info: info,
                                 type: type,
@@ -163,12 +199,14 @@
                                 <kendo-grid-column [width]="30">
                                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                         <div class="text-center">
-                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option" (change)="changeItemHeader()" />
+                                            <input type="checkbox" id="HeaderTemplate" style="zoom:1.3" value="option"
+                                                (change)="changeItemHeader()" />
                                         </div>
                                     </ng-template>
                                     <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                         <div class="text-center">
-                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
+                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
+                                                [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
                                             <label htmlFor="{{rowIndex}}"></label>
 
                                         </div>
@@ -182,16 +220,20 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="contractCode" title="Contract" width="50"></kendo-grid-column>
-                                <kendo-grid-column field="tenantFullName" title="Tenant" width="120"></kendo-grid-column>
+                                <kendo-grid-column field="contractCode" title="Contract" width="50">
+                                </kendo-grid-column>
+                                <kendo-grid-column field="tenantFullName" title="Tenant" width="120">
+                                </kendo-grid-column>
                                 <kendo-grid-column field="houseName" title="House" width="120"></kendo-grid-column>
                                 <kendo-grid-column title="Rent Status" width="50">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
-                                            <label class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
+                                            <label
+                                                class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
                                         </div>
                                         <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'">
-                                            <label class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
+                                            <label
+                                                class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
@@ -264,7 +306,7 @@
     <div>
         <at-payment-maintenance></at-payment-maintenance>
     </div>
-</div> 
+</div>
 <kendo-dialog title="Confirmation" *ngIf="openedConfimationPopup" (close)="closeConfirmation()">
     <div>{{confirmMessage}}</div>
     <kendo-dialog-actions>
