@@ -224,10 +224,11 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
     }
 
     public acceptDelete() {
-        this.expenseDataService.saveExpenseDetail(this.expenseDetailIdToDelete)
+        this.expenseDataService.deleteExpenseDetailById(this.expenseDetailIdToDelete)
             .subscribe().add(
             r => {
                 this.getExpenseDetails(this.expenseId);
+                this.closeDelete();
             }
             );
     }
