@@ -95,6 +95,7 @@
     <Compile Include="BussinesEvents\Tracking\LocationUpdated.cs" />
     <Compile Include="BussinesEvents\Tracking\MoveRegistered.cs" />
     <Compile Include="Models\Concept.cs" />
+    <Compile Include="Models\FileRepository.cs" />
     <Compile Include="Models\InvoiceDetail.cs" />
     <Compile Include="Models\Invoice.cs" />
     <Compile Include="Models\Expense.cs" />

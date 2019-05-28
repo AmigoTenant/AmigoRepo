@@ -63,6 +63,8 @@
     <Compile Include="Mapping\ExpenseDetailRegisterMapping.cs" />
     <Compile Include="Mapping\ExpenseDetailSearchMapping.cs" />
     <Compile Include="Mapping\ContractDtoMapping.cs" />
+    <Compile Include="Mapping\FileRepositoryEntityDtoMapping.cs" />
+    <Compile Include="Mapping\FileRepositoryDtoMapping.cs" />
     <Compile Include="Mapping\ExpenseDtoMapping.cs" />
     <Compile Include="Mapping\ExpenseSearchMapping.cs" />
     <Compile Include="Mapping\ContractHouseDetailMapping.cs" />

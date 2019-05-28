@@ -88,6 +88,8 @@
     <Compile Include="Extensions\AmigoTenantTRoleExtensions.cs" />
     <Compile Include="Extensions\AmigoTenantTUserExtensions.cs" />
     <Compile Include="Extensions\MoveExtensions.cs" />
+    <Compile Include="FileRepository\ExpenseDetailDeleteCommandHandler.cs" />
+    <Compile Include="FileRepository\FileRepositoryRegisterCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractDeleteCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractChangeStatusCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractUpdateCommandHandler.cs" />

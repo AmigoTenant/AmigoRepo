@@ -61,6 +61,7 @@
     <Compile Include="Requests\Expense\ExpenseSearchRequest.cs" />
     <Compile Include="Requests\Expense\ExpenseDetailUpdateRequest.cs" />
     <Compile Include="Requests\Expense\ExpenseUpdateRequest.cs" />
+    <Compile Include="Requests\FileRepository\FileRepositoryRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailObligationRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractHouseDetailRegisterRequest.cs" />
@@ -126,6 +127,9 @@
     <Compile Include="Responses\Expense\ExpenseDTO.cs" />
     <Compile Include="Responses\Expense\ExpenseDetailSearchDTO.cs" />
     <Compile Include="Responses\Expense\ExpenseSearchDTO.cs" />
+    <Compile Include="Responses\FileRepository\FileRepositoryBase.cs" />
+    <Compile Include="Responses\FileRepository\FileRepositoryEntityDTO.cs" />
+    <Compile Include="Responses\FileRepository\FileRepositoryDTO.cs" />
     <Compile Include="Responses\Houses\HouseBasicDTO.cs" />
     <Compile Include="Responses\Houses\HouseFeatureAndDetailDTO.cs" />
     <Compile Include="Responses\Houses\HouseDTO.cs" />

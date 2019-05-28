@@ -73,6 +73,7 @@
   <ItemGroup>
     <Compile Include="Common\DateTimeUTCCommon.cs" />
     <Compile Include="Expense\ExpenseApplicationService.cs" />
+    <Compile Include="FileRepository\FileRepositoryApplicationService.cs" />
     <Compile Include="Mapping\HouseProfile.cs" />
     <Compile Include="Mapping\MainTenantProfile.cs" />
     <Compile Include="MasterData\AppSettingApplicationService.cs" />

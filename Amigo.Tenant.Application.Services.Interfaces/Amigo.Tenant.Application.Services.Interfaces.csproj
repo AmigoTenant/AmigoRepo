@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="Dashboard\IDashboardApplicationService.cs" />
     <Compile Include="Expense\IExpenseApplicationService.cs" />
+    <Compile Include="FileRepository\IFileRepository.cs" />
     <Compile Include="MasterData\IConceptApplicationService.cs" />
     <Compile Include="Leasing\IContractApplicationService.cs" />
     <Compile Include="MasterData\ICountryApplicationService.cs" />
