@@ -128,7 +128,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
             applyTo: [null, [Validators.required]],
             tenantId: [null, [Validators.required]],
             remark: [null],
-            tax: [null, [Validators.required]],
+            tax: [0, [Validators.required]],
             totalAmount: [null, [Validators.required]],
             expenseId: [null],
             expenseDetailStatusId: [null]
@@ -314,6 +314,7 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
         let tax  = this.expenseDetailForm.get('tax').value;
         let totalAmont = subTotalAmount + tax;
         this.expenseDetailForm.get('totalAmount').setValue(totalAmont);
+        this.expenseDetailForm.get('tax').setValue(tax);
     }
 
 

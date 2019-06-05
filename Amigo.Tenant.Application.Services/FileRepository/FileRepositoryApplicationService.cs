@@ -66,7 +66,7 @@ namespace Amigo.Tenant.Application.Services.FileRepository
             return false;
         }
 
-        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesAsync(string entityCode, int parentId)
+        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesAsync(string entityCode, int? parentId)
         {
             List<OrderExpression<FileRepositoryDTO>> orderExpressionList = new List<OrderExpression<FileRepositoryDTO>>();
             orderExpressionList.Add(new OrderExpression<FileRepositoryDTO>(OrderType.Desc, p => p.CreationDate));

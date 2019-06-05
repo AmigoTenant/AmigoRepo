@@ -1,3 +1,4 @@
+import { UploadFileService } from './upload-file/upload-file-service';
 import {NgModule, ModuleWithProviders, ErrorHandler} from "@angular/core";
 import {CommonModule} from '@angular/common';
 import {FormsModule,ReactiveFormsModule} from '@angular/forms';
@@ -65,7 +66,7 @@ import { BusinessAppSettingService } from "./constants/business-app-setting.serv
         HttpModule,
         RouterModule,
         NgbModule,
-        SimpleNotificationsModule,        
+        SimpleNotificationsModule,
         GridModule,
         DialogModule,
         TooltipModule,
@@ -135,7 +136,8 @@ import { BusinessAppSettingService } from "./constants/business-app-setting.serv
         RentalApplicationClient,
         PaymentService,
         { provide: API_BASE_URL, useValue: environment.serviceUrl },
-        BusinessAppSettingService
+        BusinessAppSettingService,
+        UploadFileService
     ]
 })
 export class SharedModule {

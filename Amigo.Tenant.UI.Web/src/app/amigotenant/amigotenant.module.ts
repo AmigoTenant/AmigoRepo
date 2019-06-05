@@ -56,6 +56,7 @@ import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.compo
 import { PaymentServiceNew } from './payment/payment.service';
 import { ExpenseMaintenanceSearchGridComponent } from './expense/expense-maintenance-search-grid.component';
 import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance-detail.component';
+import { UploadFileComponent } from "../shared/upload-file/upload-file.component";
 
 @NgModule({
   imports: [
@@ -93,7 +94,8 @@ import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance
     ExpenseComponent,
     ExpenseMaintenanceComponent,
     ExpenseMaintenanceSearchGridComponent,
-    ExpenseMaintenanceDetailComponent
+    ExpenseMaintenanceDetailComponent,
+    UploadFileComponent
   ],
   providers: [
       TenantClient,

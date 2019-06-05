@@ -16,6 +16,7 @@ using System.Web.Http;
 
 namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 {
+    [RoutePrefix("api/filerepository")]
     public class FileRepositoryController : ApiController
     {
         private readonly IFileRepositoryApplicationService _fileRepositoryAppService;
@@ -28,7 +29,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         [HttpGet]
         [Route("getFileRepositories/{entityCode}/{parentId}")]
-        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositories(string entityCode, int parentId)
+        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositories(string entityCode, int? parentId)
         {
             var list = await _fileRepositoryAppService.GetFileRepositoriesAsync(entityCode, parentId);
             return list;
@@ -36,10 +37,16 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         [HttpPost]
         [Route("upload")]
-        public async Task<ResponseDTO> Upload(FileRepositoryRequest request)
+        public async Task<ResponseDTO> Upload()
         {
             var httpRequest = HttpContext.Current.Request;
-            var postedImage = httpRequest.Files["Image"];
+            var postedImage = httpRequest.Files["File"];
+            FileRepositoryRequest request = new FileRepositoryRequest()
+            {
+                EntityCode = httpRequest.Form["EntityCode"],
+                ParentId = int.Parse(httpRequest.Form["ParentId"]),
+                AdditionalInfo = httpRequest.Form["Additional"],
+            };
 
             using (var mem = new MemoryStream())
             {
@@ -58,7 +65,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                     UtMediaFile = bytes,
                     EntityCode = request.EntityCode,
                     ContentType = contentType,
-                    FileExtension = fileExtension
+                    FileExtension = fileExtension,
+                    AdditionalInfo = request.AdditionalInfo
                 };
                 return await _fileRepositoryAppService.RegisterAsync(entityDtoRequest);
             }

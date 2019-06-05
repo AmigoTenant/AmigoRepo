@@ -1,3 +1,4 @@
+//import { Constants } from './../../shared/constants/constants';
 import { ExpenseEditRequest } from './dto/expense-edit-request';
 import { TranslateService } from '@ngx-translate/core';
 import { ExpenseDataService } from './expense-data.service';
@@ -20,6 +21,7 @@ import { MasterDataService } from '../../shared/api/master-data-service';
 import { GenericValidator } from '../../shared/generic.validator';
 import { ExpenseDetailRegisterRequest } from './dto/expense-detail-register-request';
 import { DetailAmountsDto } from './dto/detail-amounts-dto';
+import { EntityCode } from "../../shared/constants/enum";
 
 
 declare var $: any;
@@ -73,6 +75,9 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     _isDisabled: boolean;
 
     public isPeriodDisabled = false;
+
+    public entityCode = EntityCode.Expense;
+    public parentId: number = null;
 
     constructor(
         private route: ActivatedRoute,
@@ -136,12 +141,12 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         this.initializeForm();
         this.sub = this.route.params.subscribe(params => {
 
-            //TODO:
             let id = params['expenseId'];
             if (id != null && typeof (id) !== 'undefined') {
                 this.getExpenseById(id);
                 this.flgEdition = 'E';
                 this._isDisabled = false;
+                this.parentId = id;
 
             } else {
                 this.flgEdition = 'N';
@@ -163,7 +168,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             conceptId: [null],
             remark: [null],
             subTotalAmount: [null, [Validators.required]],
-            tax: [null, [Validators.required]],
+            tax: [0, [Validators.required]],
             totalAmount: [null, [Validators.required]],
             referenceNo: [null],
             addAutomaticDetail: [null],
@@ -366,6 +371,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                         this.expenseForm.get('expenseId').setValue(this.expenseIdAfterNewOnHeader);
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
+                        this.parentId= this.expenseIdAfterNewOnHeader;
                     }
                 );
             this.showErrors(true);
@@ -383,7 +389,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                     r => {
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
-                        
                         this.getDetail();
                     }
                 );
@@ -519,6 +524,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         let tax  = this.expenseForm.get('tax').value;
         let totalAmont = subTotalAmount + tax;
         this.expenseForm.get('totalAmount').setValue(totalAmont);
+        this.expenseForm.get('tax').setValue(tax);
     }
 
 }

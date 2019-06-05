@@ -1,217 +1,192 @@
 <div class="form-horizontal">
-    <div class="page-header">
-        Expense
-    </div>
-    <div class=".container-fluid">
-        <div class="row">
-            <div class="col-sm-10">
-                <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
-                    <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancelar" />
-                    <input type="button" class="ro-button btn-submit" (click)="onAccept()" value="Aceptar" />
-                </div>
+<div class="page-header">
+    Expense
+</div>
+<div class=".container-fluid">
+    <div class="row">
+        <div class="col-sm-10">
+            <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
+                <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancelar" />
+                <input type="button" class="ro-button btn-submit" (click)="onAccept()" value="Aceptar" />
             </div>
         </div>
-        <div class="row">&nbsp;</div>
-        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'>
-        </biz-val>
-        <div class="row">
-            <form [formGroup]="expenseForm">
-                <ngb-tabset>
-                    <ngb-tab title="Expense Header">
-                        <ng-template ngbTabContent>
-
-                            <div class="row col-sm-8">
-                                <div class="form-group col-sm-12"></div>
-
-                                <div class="form-group col-sm-12">
-
-                                    <label for="from" class="col-sm-3 control-label">Expense Date</label>
-                                    <label class="ro-calendar col-sm-3">
-                                        <input class="form-control" [placeholder]="localization.dateFormat"
-                                            name="expenseDate" ngbDatepicker #d1="ngbDatepicker" [outside-click]="d1"
-                                            formControlName="expenseDate">
-
-                                        <span class="ro-calendar-btn" (click)="d1.toggle()">
-                                            <i class="xico-ui-calendar" style="width:30px"></i>
-                                        </span>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['expenseDate']">
-                                            {{ displayMessage['expenseDate'] }}
-                                        </span>
-                                    </label>
-
-
-                                </div>
-                                <div class="form-group col-sm-12">
-
-                                    <label for="from" class="col-sm-3 control-label">Property
-                                        <span class="required"></span>
-                                    </label>
-                                    <label class="col-sm-3">
-                                        <select formControlName='houseId' class='form-control input-control'>
-                                            <option value=''></option>
-                                            <option *ngFor='let house of _listHouses' [ngValue]='house.houseId'>
-                                                {{ house.name }}
-                                            </option>
-                                        </select>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['houseId']">
-                                            {{ displayMessage['houseId'] }}
-                                        </span>
-                                    </label>
-                                    <label class="col-sm-6 control-label float-right">
-                                        <span class="help-block text-danger">
-                                            Diferences
-                                        </span>
-                                    </label>
-
-                                </div>
-
-                                <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Period</label>
-                                    <label class="col-sm-3">
-                                        <select formControlName='periodId' class='form-control input-control'>
-                                            <option value=""></option>
-                                            <option *ngFor='let period of _listPeriods' [ngValue]='period.periodId'>
-                                                {{ period.code }}
-                                            </option>
-                                        </select>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['periodId']">
-                                            {{ displayMessage['periodId'] }}
-                                        </span>
-                                    </label>
-
-                                    <label for="from" class="col-sm-3 control-label">Sub Total</label>
-                                    <label class="col-sm-2">
-                                        <input type="number" name="subTotalAmount" class="form-control"
-                                            formControlName="subTotalAmount" (blur)="calculateTotalAmount()" />
-                                        <span class="help-block text-danger" *ngIf="displayMessage['subTotalAmount']">
-                                            {{ displayMessage['subTotalAmount'] }}
-                                        </span>
-                                    </label>
-                                    <label class="col-sm-1 control-label">
-                                        <span class="help-block text-danger" *ngIf="difSubTotalAmount">
-                                            {{ difSubTotalAmount | number:"1.2-2"  }}
-                                        </span>
-                                    </label>
-
-                                </div>
-
-                                <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Type</label>
-                                    <label class="col-sm-3">
-                                        <select name="ConceptId" formControlName="paymentTypeId"
-                                            class="form-control input-control" (change)="fillConcepts()">
-                                            <option value=""></option>
-                                            <option *ngFor="let paymentType of _listPaymentTypes"
-                                                [ngValue]="paymentType.typeId">
-                                                {{paymentType.name}}
-                                            </option>
-                                        </select>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['paymentTypeId']">
-                                            {{ displayMessage['paymentTypeId'] }}
-                                        </span>
-                                    </label>
-
-                                    <label for="from" class="col-sm-3 control-label">Tax</label>
-                                    <label class="col-sm-2">
-                                        <input type="number" name="tax" class="form-control" formControlName="tax" (blur)="calculateTotalAmount()" />
-                                        <span class="help-block text-danger" *ngIf="displayMessage['tax']">
-                                            {{ displayMessage['tax'] }}
-                                        </span>
-                                    </label>
-                                    <label class="col-sm-1 control-label">
-                                        <span class="help-block text-danger" *ngIf="difTax">
-                                            {{ difTax | number:"1.2-2"  }}
-                                        </span>
-                                    </label>
-
-                                </div>
-
-                                <div class="form-group col-sm-12">
-
-                                    <label for="from" class="col-sm-3 control-label">Concept
-                                        <span class="required"></span>
-                                    </label>
-                                    <label class="col-sm-3">
-                                        <select name="ConceptId" formControlName="conceptId" class="form-control input-control">
-                                            <option value=""></option>
-                                            <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
-                                                {{concept.description}}
-                                            </option>
-                                        </select>
-                                        <span class="help-block text-danger" *ngIf="displayMessage['conceptId']">
-                                            {{ displayMessage['conceptId'] }}
-                                        </span>
-                                    </label>
-
-                                    <label for="from" class="col-sm-3 control-label">Total Amount</label>
-                                    <label class="col-sm-2">
-                                        <input type="number" name="totalAmount" class="form-control"
-                                            formControlName="totalAmount" />
-                                        <span class="help-block text-danger" *ngIf="displayMessage['totalAmount']">
-                                            {{ displayMessage['totalAmount'] }}
-                                        </span>
-                                    </label>
-                                    <label class="col-sm-1 control-label">
-                                        <span class="help-block text-danger" *ngIf="difTotalAmount">
-                                            {{ difTotalAmount | number:"1.2-2"  }}
-                                        </span>
-                                    </label>
-                                </div>
-
-                                <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Vendor</label>
-                                    <label class="col-sm-3">
-                                        <select class="form-control" formControlName="businessPartnerId">
-                                            <option value=""></option>
-                                            <option *ngFor="let bp of _listBusinessPartner" [ngValue]="bp.businessPartnerId">
-                                                {{bp.name}}
-                                            </option>
-                                        </select>
-                                    </label>
-                                    <label for="from" class="col-sm-3 control-label">Reference No</label>
-                                    <label class="col-sm-2">
-                                        <input type="text" name="referenceNo" class="form-control"
-                                            formControlName="referenceNo" />
-                                    </label>
-
-
-
-                                </div>
-
-                                <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Remark</label>
-                                    <label class="col-sm-9">
-                                        <textarea type="txtRemark" rows="4" style="height:130px" name="Remark"
-                                            class="form-control" formControlName="remark">
-                                                </textarea>
-                                    </label>
-                                </div>
-                                <div class="form-group col-sm-12">
-                                    <label for="from" class="col-sm-3 control-label">Agregar detalle automático</label>
-                                    <label class="col-sm-9">
-                                        <input type="checkbox" formControlName="addAutomaticDetail" class="checkbox" >
-                                    </label>
-                                </div>
-                            </div>
-                        </ng-template>
-                    </ngb-tab>
-
-                </ngb-tabset>
-                <ngb-tabset>
-                    <ngb-tab title="Expense Detail">
-                        <ng-template ngbTabContent>
-                            <div class="form-group col-sm-12"></div>
-                            <div class="row" *ngIf="flgEdition=='E'">
-
-                                <at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" [expenseIdAfterNew]="expenseIdAfterNewOnHeader" [periodIdAfterNew]="periodIdAfterNewOnHeader"
-                                    [paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader">
-                                </at-expense-detail-grid>
-                            </div>
-                        </ng-template>
-                    </ngb-tab>
-
-                </ngb-tabset>
-            </form>
+    </div>
+    <div class="row">&nbsp;</div>
+    <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'>
+    </biz-val>
+    <div class="row">
+        <form [formGroup]="expenseForm" class="col-sm-12">
+            <div class="card">
+                <div class="card-body">Asignaciones</div>
+            </div>
+			<div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group col-sm-12"></div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Expense Date</label>
+                        <label class="ro-calendar col-sm-3">
+                        <input class="form-control" [placeholder]="localization.dateFormat"
+                        name="expenseDate" ngbDatepicker #d1="ngbDatepicker" [outside-click]="d1"
+                        formControlName="expenseDate">
+                        <span class="ro-calendar-btn" (click)="d1.toggle()">
+                        <i class="xico-ui-calendar" style="width:30px"></i>
+                        </span>
+                        <span class="help-block text-danger" *ngIf="displayMessage['expenseDate']">
+                        {{ displayMessage['expenseDate'] }}
+                        </span>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Property
+                        <span class="required"></span>
+                        </label>
+                        <label class="col-sm-3">
+                            <select formControlName='houseId' class='form-control input-control'>
+                                <option value=''></option>
+                                <option *ngFor='let house of _listHouses' [ngValue]='house.houseId'>
+                                {{ house.name }}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="displayMessage['houseId']">
+                            {{ displayMessage['houseId'] }}
+                            </span>
+                        </label>
+                        <label class="col-sm-6 control-label float-right">
+                        <span class="help-block text-danger">
+                        Diferences
+                        </span>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Period</label>
+                        <label class="col-sm-3">
+                            <select formControlName='periodId' class='form-control input-control'>
+                                <option value=""></option>
+                                <option *ngFor='let period of _listPeriods' [ngValue]='period.periodId'>
+                                {{ period.code }}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="displayMessage['periodId']">
+                            {{ displayMessage['periodId'] }}
+                            </span>
+                        </label>
+                        <label for="from" class="col-sm-3 control-label">Sub Total</label>
+                        <label class="col-sm-2">
+                        <input type="number" name="subTotalAmount" class="form-control text-right"
+                            formControlName="subTotalAmount" (blur)="calculateTotalAmount()" />
+                        <span class="help-block text-danger" *ngIf="displayMessage['subTotalAmount']">
+                        {{ displayMessage['subTotalAmount'] }}
+                        </span>
+                        </label>
+                        <label class="col-sm-1 control-label">
+                        <span class="help-block text-danger" *ngIf="difSubTotalAmount">
+                        {{ difSubTotalAmount | number:"1.2-2"  }}
+                        </span>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Type</label>
+                        <label class="col-sm-3">
+                            <select name="ConceptId" formControlName="paymentTypeId"
+                                class="form-control input-control" (change)="fillConcepts()">
+                                <option value=""></option>
+                                <option *ngFor="let paymentType of _listPaymentTypes"
+                                [ngValue]="paymentType.typeId">
+                                {{paymentType.name}}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="displayMessage['paymentTypeId']">
+                            {{ displayMessage['paymentTypeId'] }}
+                            </span>
+                        </label>
+                        <label for="from" class="col-sm-3 control-label">Tax</label>
+                        <label class="col-sm-2">
+                        <input type="number" name="tax" class="form-control text-right" formControlName="tax" (blur)="calculateTotalAmount()" />
+                        <span class="help-block text-danger" *ngIf="displayMessage['tax']">
+                        {{ displayMessage['tax'] }}
+                        </span>
+                        </label>
+                        <label class="col-sm-1 control-label">
+                        <span class="help-block text-danger" *ngIf="difTax">
+                        {{ difTax | number:"1.2-2"  }}
+                        </span>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Concept
+                        <span class="required"></span>
+                        </label>
+                        <label class="col-sm-3">
+                            <select name="ConceptId" formControlName="conceptId" class="form-control input-control">
+                                <option value=""></option>
+                                <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
+                                {{concept.description}}
+                                </option>
+                            </select>
+                            <span class="help-block text-danger" *ngIf="displayMessage['conceptId']">
+                            {{ displayMessage['conceptId'] }}
+                            </span>
+                        </label>
+                        <label for="from" class="col-sm-3 control-label">Total Amount</label>
+                        <label class="col-sm-2">
+                        <input type="number" name="totalAmount" class="form-control text-right"
+                            formControlName="totalAmount" />
+                        <span class="help-block text-danger" *ngIf="displayMessage['totalAmount']">
+                        {{ displayMessage['totalAmount'] }}
+                        </span>
+                        </label>
+                        <label class="col-sm-1 control-label">
+                        <span class="help-block text-danger" *ngIf="difTotalAmount">
+                        {{ difTotalAmount | number:"1.2-2"  }}
+                        </span>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Vendor</label>
+                        <label class="col-sm-3">
+                            <select class="form-control" formControlName="businessPartnerId">
+                                <option value=""></option>
+                                <option *ngFor="let bp of _listBusinessPartner" [ngValue]="bp.businessPartnerId">
+                                {{bp.name}}
+                                </option>
+                            </select>
+                        </label>
+                        <label for="from" class="col-sm-3 control-label">Reference No</label>
+                        <label class="col-sm-2">
+                        <input type="text" name="referenceNo" class="form-control"
+                            formControlName="referenceNo" />
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Remark</label>
+                        <label class="col-sm-9">
+                        <textarea type="txtRemark" rows="4" style="height:130px" name="Remark"
+                            class="form-control" formControlName="remark">
+                        </textarea>
+                        </label>
+                    </div>
+                    <div class="form-group col-sm-12">
+                        <label for="from" class="col-sm-3 control-label">Agregar detalle automático</label>
+                        <label class="col-sm-9">
+                        <input type="checkbox" formControlName="addAutomaticDetail" class="checkbox" >
+                        </label>
+                    </div>
+                </div>
+                <div class="col-sm-5">
+                    <div class="row">&nbsp;</div>
+                    <at-upload-file [entityCode]="entityCode" [parentId]="parentId"></at-upload-file>
+                </div>
+			</div>
+			<div class="card">
+				<div class="card-body">Detalle</div>
+			</div>
+			<div class="form-group col-sm-12"></div>
+			<div class="row" *ngIf="flgEdition=='E'">
+				<at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" [expenseIdAfterNew]="expenseIdAfterNewOnHeader" [periodIdAfterNew]="periodIdAfterNewOnHeader"
+				[paymentTypeIdAfterNew]="paymentTypeIdAfterNewOnHeader">
+				</at-expense-detail-grid>
+			</div>
+        </form>
         </div>
     </div>
 </div>

@@ -39,7 +39,7 @@ namespace Amigo.Tenant.CommandHandlers.Expense
             try
             {
                 //var entity = _mapper.Map<FileRepositoryDeleteCommand, model.FileRepository>(message);
-                var entity = await _repository.FirstOrDefaultAsync(q => q.FileRepositoryId == message.FileRepositoryId);
+                var entity = await _repository.FirstOrDefaultAsync(q => q.FileRepositoryId.Value == message.FileRepositoryId);
 
                 if (entity != null)
                 {
