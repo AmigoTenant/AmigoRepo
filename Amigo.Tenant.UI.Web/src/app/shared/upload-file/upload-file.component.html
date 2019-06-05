@@ -1,10 +1,12 @@
-<div class="row border border-secondary" *ngIf="parentId !== null">
+<div class="row border border-default" style="height: 97%" *ngIf="parentId !== null">
+  <ngx-loading [show]="isSaving"></ngx-loading>
   <div class="col-sm-12 text-right">
+    <div class="row">&nbsp;</div>
     <div class="row">
-      <h5>Gestion de Adjuntos</h5>
+      <h5 style="padding-left: 15px">Gestion de Adjuntos</h5>
     </div>
     <div class="row">
-      <form #imageForm=ngForm (ngSubmit)="onSubmit(Additional, Image)">
+      <form #imageForm=ngForm class="col-sm-12" (ngSubmit)="onSubmit(Additional, Image)">
 
         <div class="form-group col-sm-12">
           <input type="file" #Image (change)="handleFileInput($event.target.files)" class="col-sm-12 btn btn-default btn-sm">

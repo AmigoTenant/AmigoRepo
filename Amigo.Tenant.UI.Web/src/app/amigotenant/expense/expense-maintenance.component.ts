@@ -79,6 +79,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     public entityCode = EntityCode.Expense;
     public parentId: number = null;
 
+    public isSaving = false;
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -351,6 +352,8 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
             this.showErrors(true);
             return;
         }
+
+        this.isSaving = true;
         let expenseDate = new Date(expense.expenseDate.year, expense.expenseDate.month - 1, expense.expenseDate.day, 0, 0, 0, 0);
         expense.expenseDate = expenseDate;
 
@@ -372,6 +375,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
                         this.parentId= this.expenseIdAfterNewOnHeader;
+                        this.isSaving = false;
                     }
                 );
             this.showErrors(true);
@@ -390,6 +394,7 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
                         this.periodIdAfterNewOnHeader = this.expenseForm.get('periodId').value;
                         this.paymentTypeIdAfterNewOnHeader = this.expenseForm.get('paymentTypeId').value;
                         this.getDetail();
+                        this.isSaving = false;
                     }
                 );
         }

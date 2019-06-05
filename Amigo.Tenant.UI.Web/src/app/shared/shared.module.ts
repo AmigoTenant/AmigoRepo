@@ -71,6 +71,7 @@ import { BusinessAppSettingService } from "./constants/business-app-setting.serv
         DialogModule,
         TooltipModule,
         HttpClientModule
+
     ],
     declarations: [
         BusinessValidationComponent,

@@ -1,8 +1,9 @@
 <div class="form-horizontal">
 <div class="page-header">
-    Expense
+    Asignaciones
 </div>
 <div class=".container-fluid">
+    <ngx-loading [show]="isSaving"></ngx-loading>
     <div class="row">
         <div class="col-sm-10">
             <div class="col-sm-12" style="padding-left:10px;padding-top:10px;color:aqua">
@@ -16,14 +17,16 @@
     </biz-val>
     <div class="row">
         <form [formGroup]="expenseForm" class="col-sm-12">
-            <div class="card">
+            <!--<div class="card">
                 <div class="card-body">Asignaciones</div>
-            </div>
+            </div>-->
+            <!--<div class="control-label">Asignaciones</div>-->
+            <hr style="color: gray" />
 			<div class="row">
                 <div class="col-sm-6">
                     <div class="form-group col-sm-12"></div>
                     <div class="form-group col-sm-12">
-                        <label for="from" class="col-sm-3 control-label">Expense Date</label>
+                        <label for="from" class="col-sm-3 control-label">Date</label>
                         <label class="ro-calendar col-sm-3">
                         <input class="form-control" [placeholder]="localization.dateFormat"
                         name="expenseDate" ngbDatepicker #d1="ngbDatepicker" [outside-click]="d1"
@@ -172,14 +175,15 @@
                         </label>
                     </div>
                 </div>
+
                 <div class="col-sm-5">
                     <div class="row">&nbsp;</div>
                     <at-upload-file [entityCode]="entityCode" [parentId]="parentId"></at-upload-file>
                 </div>
 			</div>
-			<div class="card">
+			<!--<div class="card">
 				<div class="card-body">Detalle</div>
-			</div>
+			</div>-->
 			<div class="form-group col-sm-12"></div>
 			<div class="row" *ngIf="flgEdition=='E'">
 				<at-expense-detail-grid (onCloseDetail)="verifyDifferences($event);" [expenseIdAfterNew]="expenseIdAfterNewOnHeader" [periodIdAfterNew]="periodIdAfterNewOnHeader"

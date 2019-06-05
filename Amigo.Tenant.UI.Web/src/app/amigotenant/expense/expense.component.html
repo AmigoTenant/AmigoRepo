@@ -2,7 +2,7 @@
     <ul class="nav-tabs">
         <li>
             <input type="radio" name="tabsHeader" id="tab1Main" class="tab-check" checked />
-            <label for="tab1Main">Expense<span class="tab-counter">{{totalResultCount}}</span></label>
+            <label for="tab1Main">Asignacion<span class="tab-counter">{{totalResultCount}}</span></label>
             <div class="tab-content">
                 <div class="tab-pane">
                     <form [formGroup] ="expenseSearchForm">
@@ -56,7 +56,7 @@
                                     <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Expense Date From</label>
+                                                <label for="from" class="col-sm-5 control-label">Date From</label>
                                                 <label class="ro-calendar col-sm-7">
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="expenseDateFrom" ngbDatepicker #d1="ngbDatepicker"
                                                            [outside-click]="d1" [(ngModel)]="modelExpenseDateFrom" formControlName="expenseDateFrom" >
@@ -66,7 +66,7 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Expense Date To</label>
+                                                <label for="from" class="col-sm-5 control-label">Date To</label>
                                                 <label class="ro-calendar col-sm-7">
                                                     <input class="form-control" [placeholder]="localization.dateFormat" name="ExpenseDateTo" ngbDatepicker #d2="ngbDatepicker"
                                                         [outside-click]="d2" [(ngModel)]="modelExpenseDateTo" formControlName="expenseDateTo">
@@ -180,7 +180,7 @@
                             <div class="button-container">
                                 <button type="button" (click)="onAddExpense()" class="ro-button btn-success" >
                                         <i class="xico-action-edit"></i>
-                                        Add Expense
+                                        Agregar Asignacion
                                     </button>
                             </div>
                             <!-- <div class="button-container">
@@ -222,7 +222,7 @@
                             <kendo-grid-column field="periodCode" title="Period"></kendo-grid-column>
                             <kendo-grid-column field="paymentTypeName" title="Payment Type"></kendo-grid-column>
                             <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
-                            <kendo-grid-column field="expenseDate" title="Expense Date">
+                            <kendo-grid-column field="expenseDate" title="Date">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div>
                                         <span>{{dataItem.expenseDate|date:"MM/dd/yyyy" }}</span><br />

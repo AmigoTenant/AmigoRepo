@@ -1,3 +1,4 @@
+import { NgxLoadingModule } from 'ngx-loading';
 import { ExpenseDataService } from './expense/expense-data.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -70,7 +71,8 @@ import { UploadFileComponent } from "../shared/upload-file/upload-file.component
     GridModule,
     DropdownModule,
     DataTableModule,
-    PrimeDialogModule
+    PrimeDialogModule,
+    NgxLoadingModule
   ],
   declarations: [
     ContractComponent,

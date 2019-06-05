@@ -2,7 +2,6 @@ import { ResponseListDTO } from './../dto/response-list-dto';
 import { Component, OnInit, Input } from '@angular/core';
 import { UploadFileService } from './upload-file-service';
 
-
 @Component({
   selector: 'at-upload-file',
   templateUrl: './upload-file.component.html',
@@ -16,6 +15,7 @@ export class UploadFileComponent implements OnInit {
   @Input() entityCode: string;
   @Input() parentId: string;
   fileRepositoryData: any[];
+  public isSaving = false;
 
   constructor(private imageService: UploadFileService) { }
 
@@ -45,7 +45,8 @@ export class UploadFileComponent implements OnInit {
   }
 
   onSubmit(Additional, Image){
-    debugger;
+
+    this.isSaving = true;
     this.imageService.postFile(this.entityCode, this.parentId, Additional.value, this.fileToUpload).subscribe(
       data=> {
         console.log('done');
@@ -57,6 +58,7 @@ export class UploadFileComponent implements OnInit {
     .add(
       r=> {
         this.getFileRepositories();
+        this.isSaving = false;
       }
     )
     
@@ -110,11 +112,13 @@ export class UploadFileComponent implements OnInit {
 
   public onDelete(data: any)
   {
+    this.isSaving = true;
     this.imageService.deleteFile(data.fileRepositoryId)
     .subscribe()
     .add(
       r=>{
         this.getFileRepositories();
+        this.isSaving = false;
       }
     );
 

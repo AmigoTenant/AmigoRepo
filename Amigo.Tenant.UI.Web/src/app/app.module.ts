@@ -27,6 +27,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { HttpClient } from '@angular/common/http';
 import { ChartsModule } from '@progress/kendo-angular-charts';
+import { NgxLoadingModule, ngxLoadingAnimationTypes, } from 'ngx-loading';
 
 @NgModule({
     declarations: [
@@ -54,6 +55,14 @@ import { ChartsModule } from '@progress/kendo-angular-charts';
               deps: [HttpClient]
             }
           }),
+        NgxLoadingModule.forRoot({
+            animationType: ngxLoadingAnimationTypes.threeBounce,
+            backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+            backdropBorderRadius: '4px',
+            primaryColour: '#ffffff', 
+            secondaryColour: '#ffffff', 
+            tertiaryColour: '#ffffff'
+        }),
     ],
     providers: [
         { provide: API_BASE_URL, useValue: environment.serviceUrl },
