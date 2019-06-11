@@ -32,7 +32,6 @@ export class AnalyticsComponent extends EnvironmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    debugger;
     this.initializeForm();
     this.fill();
     
@@ -83,7 +82,6 @@ export class AnalyticsComponent extends EnvironmentComponent implements OnInit {
   getFrecuencies(): void {
     this.masterDataService.getYearsFromPeriods()
       .subscribe(res => {
-        debugger;
         let dataResult = new ResponseListDTO(res);
         this._listFrecuencies = [];
         for (let i = 0; i < dataResult.data.length; i++) {

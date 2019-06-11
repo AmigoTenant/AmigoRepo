@@ -36,7 +36,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
         [HttpPost]
-        [Route("upload")]
+        [Route("upload"), AllowAnonymous]
         public async Task<ResponseDTO> Upload()
         {
             var httpRequest = HttpContext.Current.Request;
@@ -74,7 +74,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("download/{fileRepositoryId}")]
+        [Route("download/{fileRepositoryId}"), AllowAnonymous]
         public async Task<HttpResponseMessage> Download(int fileRepositoryId)
         {
             //Create HTTP Response.

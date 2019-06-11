@@ -12,7 +12,6 @@ export class BusinessValidationComponent implements OnChanges {
     messages: any[];
 
     ngOnChanges(changes: SimpleChanges) {
-        // debugger
         if (this.successFlag) {
             this.messages = [{ message: this.successMessage }];
         }

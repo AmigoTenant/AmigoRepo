@@ -149,7 +149,6 @@ export class ExpenseMaintenanceSearchGridComponent extends EnvironmentComponent 
         this.selectedDetail = new ExpenseDetailRegisterRequest();
         this.selectedDetail.expenseId = this.expenseId;
         // if (this.expenseDetailData.total > 0) {
-        //     debugger;
         //     this.selectedDetail.totalAmount = this.expenseModel.totalAmount;
         //     this.selectedDetail.subTotalAmount = this.expenseModel.subTotalAmount;
         //     this.selectedDetail.tax = this.expenseModel.tax;

@@ -136,7 +136,6 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
     contractId: any;
 
     ngOnInit() {
-        debugger; //Inicializacion del Maintenance header
         this.model = new ExpenseRegisterRequest();
         this.buildForm();
         this.initializeForm();

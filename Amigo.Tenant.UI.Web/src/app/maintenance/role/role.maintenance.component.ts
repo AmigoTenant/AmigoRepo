@@ -38,7 +38,6 @@ isOn:boolean = true;
 
 // Verify the Changes Events of @Input
 //  ngOnChanges(changes: { [propKey: string]: SimpleChange }) {
-//         debugger
 //         if (this.inputSelectedCode) {
 //         this.onClearValidation();
 //         this.onGetRolTree(this.inputSelectedCode.code );
@@ -169,7 +168,7 @@ onEdit=(inputSelectedCode)=>{
 
 
     //This Event came from BotonComponent
-    onExecuteEvent($event) {debugger
+    onExecuteEvent($event) {
         switch ($event) {
             case "s":
                 this.onSave();

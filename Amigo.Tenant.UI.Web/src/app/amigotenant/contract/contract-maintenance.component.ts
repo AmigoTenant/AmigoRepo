@@ -20,6 +20,7 @@ import { Observable, Subscription } from 'rxjs'
 import { ContractHouseDetailRegisterRequest } from '../../shared/api/services.client';
 import { ValidationService } from '../../shared/validations/validation.service';
 import { BusinessAppSettingService } from "../../shared/constants/business-app-setting.service";
+import { EntityCode } from "../../shared/constants/enum";
 
 
 declare var $: any;
@@ -90,6 +91,10 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     //To manage the status if it is Editing or Adding
     _isDisabled: boolean;
     _isView: boolean;
+
+    public entityCode = EntityCode.Contract;
+    public parentId: number = null;
+    
     constructor(
             private route: ActivatedRoute, 
             private router: Router,
@@ -118,13 +123,14 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         this.initializeForm();
         this._isView = true;
         this.sub = this.route.params.subscribe(params => {
-            let code = params['code'];
+            let id = params['code'];
             this._isView = (params['isView']==='true');
-            if (code != null && typeof (code) != 'undefined') {
-                this.getContractById(code);
+            if (id != null && typeof (id) != 'undefined') {
+                this.getContractById(id);
                 this.flgEdition = "E";
                 this.allowEditing = this.model.contractStatusCode == "DRAFT" ? true : false;
                 this._isDisabled = true;
+                this.parentId =  id;
 
             } else {
                 this.flgEdition = "N";
@@ -154,6 +160,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 this.getHouseFeatureDetailContract();
                 this.getHouseFeatureAndDetail();
                 this.setOtherTenants(this.model.otherTenants);
+                this.parentId = this.model.contractStatusCode == "FORMAL" ? id : null;
             });
     }
 

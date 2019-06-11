@@ -241,7 +241,6 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
         //this.setHouseFeatureToDB();
         if (this.isValidData()) {
             if (this.flgEdition == "N") {
-                // debugger
                 //NEW
                 //this.model.contractStatusId = 2; //DRAFT
                 this.model.rowStatus = true;

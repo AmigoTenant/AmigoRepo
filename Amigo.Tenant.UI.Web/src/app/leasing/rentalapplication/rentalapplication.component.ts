@@ -228,7 +228,6 @@ export class RentalApplicationComponent extends EnvironmentComponent implements 
     }
 
     getRentalApplication(): void {
-        debugger
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
         

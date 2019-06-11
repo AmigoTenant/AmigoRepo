@@ -347,7 +347,6 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     }
 
     onAddExpense(): void {
-        debugger
         //this.router.navigate['/amigotenant/expense/new'];
         this.router.navigateByUrl('amigotenant/expense/new');
     }

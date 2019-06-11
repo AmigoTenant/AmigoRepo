@@ -60,7 +60,6 @@ export class PagedListOfResponseDTO {
     items: any[];
 
     constructor(data?: any) {
-        debugger;
         if (data !== undefined) {
             this.page = data['Page'] !== undefined ? data['Page'] : null;
             this.total = data['Total'] !== undefined ? data['Total'] : null;

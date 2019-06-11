@@ -1,6 +1,7 @@
 export enum EntityCode{
 
 Expense = "EX",
-Payment = "PP"
+Payment = "PP",
+Contract = "CO"
 
 }

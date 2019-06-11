@@ -138,7 +138,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     getExpenseDetailByExpenseDetailId(id): void {
         this.expenseDataService.getExpenseDetailByExpenseDetailId(id).subscribe(
             response => {
-                debugger;
                 let dataResult: any = new ResponseListDTO(response);
                 this.model = dataResult.data;
                 this.expenseDetailForm.patchValue(this.model);
@@ -156,7 +155,6 @@ export class ExpenseMaintenanceDetailComponent extends EnvironmentComponent impl
     //===========
 
     acceptDetail(): void {
-        debugger;
         //this.setRutValidators();
         if (!this.expenseDetailForm.valid) {
             this.showErrors(true);

@@ -66,11 +66,9 @@ export class UploadFileComponent implements OnInit {
   }
 
   onDownload(id: any){
-    debugger;
     this.imageService.downloadFile(id)
       .subscribe(response => {
         const contentDisp = response.headers.get('Content-Disposition');
-        debugger;
         const fileName = this.GetFileNameFromContentDisp(contentDisp);
         this.downloadFile([response.body], fileName);
       });

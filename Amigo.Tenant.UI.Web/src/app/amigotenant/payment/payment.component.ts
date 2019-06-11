@@ -129,7 +129,6 @@ export class PaymentComponent implements OnInit {
             .subscribe(res => {
                 let dataResult: any = res;
                 this.countItems = dataResult.data.total;
-                debugger;
                 this.setTotalPendingAmount(dataResult.data.items);
                 this.setTotalDetailByPeriod(dataResult.data.items);
                 this.gridData = {
