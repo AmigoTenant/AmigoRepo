@@ -516,7 +516,10 @@ export class ExpenseMaintenanceComponent extends EnvironmentComponent implements
         //si son expenses o gastos se marca el ingreso de detalle automatico
         const paymentType = this._listPaymentTypes.filter(q => q.typeId === this.expenseForm.get('paymentTypeId').value);
 
-        if (paymentType.length > 0 && paymentType[0].code === 'EXPENSE') {
+        if (paymentType.length > 0 && (paymentType[0].code === 'EXPENSE'
+            || paymentType[0].code === 'EXPOFICINA' || paymentType[0].code === 'EXPVEHICUL'
+            || paymentType[0].code === 'EXPSALARIO' || paymentType[0].code === 'EXPLIMPIEZ'
+            || paymentType[0].code === 'EXPOTROS01')) {
             this.expenseForm.get('addAutomaticDetail').setValue(true);
         } else {
             this.expenseForm.get('addAutomaticDetail').setValue(false);
