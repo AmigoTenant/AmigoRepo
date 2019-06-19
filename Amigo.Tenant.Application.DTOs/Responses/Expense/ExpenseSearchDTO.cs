@@ -15,19 +15,22 @@ namespace Amigo.Tenant.Application.DTOs.Responses.Expense
         public int? HouseTypeId { get; set; }
         public int? PeriodId { get; set; }
         public string ReferenceNo { get; set; }
-        public int? ExpenseDetailStatusId { get; set; }
-        public string ExpenseDetailStatusName { get; set; }
+        //public int? ExpenseDetailStatusId { get; set; }
+        //public string ExpenseDetailStatusName { get; set; }
         public string Remark { get; set; }
-        public int? ConceptId { get; set; }
-        public string ConceptName { get; set; }
+        //public int? ConceptId { get; set; }
+        //public string ConceptName { get; set; }
         public string HouseTypeName { get; set; }
-        public string TenantFullName { get; set; }
-        public int? TenantId { get; set; }
+        //public string TenantFullName { get; set; }
+        //public int? TenantId { get; set; }
         public decimal? Tax { get; set; }
         public decimal? SubTotalAmount { get; set; }
         public decimal? TotalAmount { get; set; }
         public string PeriodCode { get; set; }
         public string BusinessPartnerName { get; set; }
-
+        public string Concepts { get; set; }
+        public string Tenants { get; set; }
+        public string FileNames { get; set; }
+        public int? BusinessPartnerId { get; set; }
     }
 }

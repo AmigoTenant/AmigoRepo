@@ -5,7 +5,7 @@
             <label for="tab1Main">Asignacion<span class="tab-counter">{{totalResultCount}}</span></label>
             <div class="tab-content">
                 <div class="tab-pane">
-                    <form [formGroup] ="expenseSearchForm">
+                    <form [formGroup]="expenseSearchForm">
                         <div class="filter-bar form-horizontal">
                             <div class="row">
                                 <div class="col-lg-10 col-md-10 col-sm-10">
@@ -17,7 +17,7 @@
                                                     <select class="form-control" formControlName="houseTypeId"
                                                             name="houseTypeId">
                                                         <option value=""></option>
-                                                        <option *ngFor="let houseType of _listHouseTypes" [attr.value]='houseType.id'>
+                                                        <option *ngFor="let houseType of _listHouseTypes" [ngValue]='houseType.id'>
                                                             {{houseType.name}}
                                                         </option>
                                                     </select>
@@ -26,34 +26,12 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Payment Type</label>
+                                                <label for="from" class="col-sm-5 control-label">Property Name</label>
                                                 <label class="col-sm-7">
-                                                    <select name="ConceptId" formControlName ="paymentTypeId"
-                                                            class="form-control input-control">
-                                                        <option value=""></option>
-                                                        <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">
-                                                            {{paymentType.name}}
-                                                        </option>
-                                                    </select>
+                                                    <input type="text" name="propertyName" class="form-control" formControlName="propertyName" />
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Concepts</label>
-                                                <label class="col-sm-7">
-                                                    <select name="ConceptId" formControlName ="conceptId"
-                                                            class="form-control input-control">
-                                                        <option value=""></option>
-                                                        <option *ngFor="let concept of _listConcepts" [ngValue]="concept.conceptId">
-                                                            {{concept.description}}
-                                                        </option>
-                                                    </select>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Date From</label>
@@ -74,56 +52,51 @@
                                                 </label>
                                             </div>
                                         </div>
-                                        
                                     </div>
-                                    <!--<div class="row">
+                                    <div class="row">
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Name</label>
+                                                <label for="from" class="col-sm-5 control-label">Periodo</label>
                                                 <label class="col-sm-7">
-                                                    <input type="text" name="fullName" class="form-control" [(ngModel)]="model.fullName" />
+                                                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">EMail</label>
+                                                <label for="from" class="col-sm-5 control-label">Reference No</label>
                                                 <label class="col-sm-7">
-                                                    <input type="text" name="email" class="form-control" [(ngModel)]="model.email" />
+                                                    <input type="text" name="referenceNo" class="form-control" formControlName="referenceNo" />
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Checkin From</label>
-                                                <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckInFrom" ngbDatepicker #d3="ngbDatepicker"
-                                                           [outside-click]="d3" [(ngModel)]="modelCheckInFrom" (ngModelChange)="onSelectModelCheckInFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d3.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Checkin To</label>
-                                                <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckInTo" ngbDatepicker #d4="ngbDatepicker"
-                                                           [outside-click]="d4" [(ngModel)]="modelCheckInTo" (ngModelChange)="onSelectModelCheckInTo()">
-                                                    <span class="ro-calendar-btn" (click)="d4.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        
-                                    </div>-->
-                                    <!--<div class="row">
-                                        <div class="col-sm-3">
-                                            <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Residence Country</label>
+                                                <label for="from" class="col-sm-5 control-label">Total Amount From</label>
                                                 <label class="col-sm-7">
-                                                    <select name="countryId" [(ngModel)]="model.residenseCountryId"
+                                                    <input type="number" name="totalAmountFrom" class="form-control" formControlName="totalAmountFrom" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Total Amount To</label>
+                                                <label class="col-sm-7">
+                                                    <input type="number" name="totalAmountTo" class="form-control" formControlName="totalAmountTo" />
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <div class="form-group">
+                                                <label for="from" class="col-sm-5 control-label">Payment Type</label>
+                                                <label class="col-sm-7">
+                                                    <select name="ConceptId" formControlName ="paymentTypeId"
                                                             class="form-control input-control">
-                                                        <option *ngFor="let country of _listCountries" [ngValue]="country.id">
-                                                            {{country.name}}
+                                                        <option value=""></option>
+                                                        <option *ngFor="let paymentType of _listPaymentTypes" [ngValue]="paymentType.typeId">
+                                                            {{paymentType.name}}
                                                         </option>
                                                     </select>
                                                 </label>
@@ -131,44 +104,40 @@
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Budget</label>
+                                                <label for="from" class="col-sm-5 control-label">Concept</label>
                                                 <label class="col-sm-7">
-                                                    <select name="typeId" [(ngModel)]="model.budgetId"
-                                                            class="form-control input-control">
-                                                        <option *ngFor="let type of _listBudgets" [ngValue]="type.typeId">
-                                                            {{type.name}}
-                                                        </option>
-                                                    </select>
+                                                    <input type="text" name="conceptName" class="form-control" formControlName="conceptName" />
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Checkout From</label>
-                                                <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckOutFrom" ngbDatepicker #d5="ngbDatepicker"
-                                                           [outside-click]="d5" [(ngModel)]="modelCheckOutFrom" (ngModelChange)="onSelectModelCheckOutFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d5.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
-                                                </label>
+                                                <label for="from" class="col-sm-5 control-label">Vendor</label>
+                                                <label class="col-sm-7">
+                                                <select class="form-control" formControlName="businessPartnerId">
+                                                    <option value=""></option>
+                                                    <option *ngFor="let bp of _listBusinessPartner" [ngValue]="bp.businessPartnerId">
+                                                    {{bp.name}}
+                                                    </option>
+                                                </select>
+                                            </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-3">
                                             <div class="form-group">
-                                                <label for="from" class="col-sm-5 control-label">Checkout To</label>
-                                                <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="CheckOutTo" ngbDatepicker #d6="ngbDatepicker"
-                                                           [outside-click]="d6" [(ngModel)]="modelCheckOutTo" (ngModelChange)="onSelectModelCheckOutTo()">
-                                                    <span class="ro-calendar-btn" (click)="d6.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                <label for="from" class="col-sm-5 control-label">File Name</label>
+                                                <label class="col-sm-7">
+                                                    <input type="text" name="fileName" class="form-control" formControlName="fileName" />
                                                 </label>
                                             </div>
                                         </div>
+                                    </div>
 
-                                    </div>-->
 
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 text-right">
                                     <div class="button-container">
-                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary" >Search</button>
+                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary">Search</button>
                                     </div>
                                     <div class="button-container">
                                         <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
@@ -178,7 +147,7 @@
                         </div>
                         <div class="action-bar">
                             <div class="button-container">
-                                <button type="button" (click)="onAddExpense()" class="ro-button btn-success" >
+                                <button type="button" (click)="onAddExpense()" class="ro-button btn-success">
                                         <i class="xico-action-edit"></i>
                                         Agregar Asignacion
                                     </button>
@@ -213,7 +182,8 @@
                                 </ng-template>
                                 <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                     <div class="text-center">
-                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)" />
+                                        <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option" [checked]="dataItem.isSelected" (change)="changeItem(dataItem)"
+                                        />
                                         <label htmlFor="{{rowIndex}}"></label>
 
                                     </div>
@@ -221,7 +191,7 @@
                             </kendo-grid-column>
                             <kendo-grid-column field="periodCode" title="Period"></kendo-grid-column>
                             <kendo-grid-column field="paymentTypeName" title="Payment Type"></kendo-grid-column>
-                            <kendo-grid-column field="conceptName" title="Concept"></kendo-grid-column>
+                            <kendo-grid-column field="concepts" title="Concept"></kendo-grid-column>
                             <kendo-grid-column field="expenseDate" title="Date">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div>
@@ -231,10 +201,12 @@
                             </kendo-grid-column>
                             <kendo-grid-column field="houseTypeName" title="Property Type"></kendo-grid-column>
                             <kendo-grid-column field="houseName" title="Property"></kendo-grid-column>
-                            <kendo-grid-column field="tenantFullName" title="Tenant Name"></kendo-grid-column>
-                            
+                            <kendo-grid-column field="tenants" title="Tenant Name"></kendo-grid-column>
+
                             <kendo-grid-column field="referenceNo" title="reference No."></kendo-grid-column>
-                            <kendo-grid-column field="statusName" title="Status"></kendo-grid-column>
+                            <kendo-grid-column field="totalAmount" title="Total Amount"></kendo-grid-column>
+                            <kendo-grid-column field="fileNames" title="Files"></kendo-grid-column>
+                            
 
                             <kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>
@@ -249,20 +221,20 @@
                                 </ng-template>
                             </kendo-grid-column>
 
-                         </kendo-grid>
+                        </kendo-grid>
                     </div>
                 </div>
             </div>
         </li>
     </ul>
 </div>
- <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
+<kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
     <div>{{deleteMessage}}</div>
     <kendo-dialog-actions>
         <button type="button" class="k-button" (click)="closeDeletionConfirmation()">No</button>
         <button type="button" class="k-button k-primary" (click)="yesDelete()">Yes</button>
     </kendo-dialog-actions>
-</kendo-dialog> 
+</kendo-dialog>
 <div>
     <div>
         <at-expense-maintenance></at-expense-maintenance>

@@ -123,10 +123,9 @@ namespace Amigo.Tenant.Application.Services.Expense
         public async Task<ResponseDTO<PagedList<ExpenseSearchDTO>>> SearchExpenseAsync(ExpenseSearchRequest search)
         {
             List<OrderExpression<ExpenseSearchDTO>> orderExpressionList = new List<OrderExpression<ExpenseSearchDTO>>();
-            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Desc, p => p.PeriodCode));
-            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.PaymentTypeName));
-            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.ExpenseDate));
-            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.TenantFullName));
+            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Desc, p => p.ExpenseDate));
+            orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.HouseName));
+            //orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.TenantFullName));
             Expression<Func<ExpenseSearchDTO, bool>> queryFilter = c => true;
 
             //APPLICATIONDATE
@@ -146,29 +145,49 @@ namespace Amigo.Tenant.Application.Services.Expense
                 queryFilter = queryFilter.And(p => p.ExpenseDate.Value < toPlusADay);
             }
 
+            if (search.TotalAmountFrom.HasValue && search.TotalAmountTo.HasValue)
+            {
+                queryFilter = queryFilter.And(p => p.TotalAmount.Value >= search.TotalAmountFrom);
+                queryFilter = queryFilter.And(p => p.TotalAmount.Value <= search.TotalAmountTo);
+            }
+            else if (search.TotalAmountFrom.HasValue && !search.TotalAmountTo.HasValue)
+            {
+                queryFilter = queryFilter.And(p => p.TotalAmount.Value >= search.TotalAmountFrom);
+            }
+            else if (!search.TotalAmountFrom.HasValue && search.TotalAmountTo.HasValue)
+            {
+                queryFilter = queryFilter.And(p => p.TotalAmount.Value <= search.TotalAmountTo);
+            }
+
             if (search.HouseTypeId.HasValue)
                 queryFilter = queryFilter.And(p => p.HouseTypeId == search.HouseTypeId);
 
             if (search.PeriodId.HasValue)
                 queryFilter = queryFilter.And(p => p.PeriodId == search.PeriodId);
 
-            if (search.HouseId.HasValue)
-                queryFilter = queryFilter.And(p => p.HouseId == search.HouseId);
+            if (!string.IsNullOrEmpty(search.PropertyName))
+                queryFilter = queryFilter.And(p => p.HouseName.Contains(search.PropertyName));
 
             if (search.PaymentTypeId.HasValue)
                 queryFilter = queryFilter.And(p => p.PaymentTypeId == search.PaymentTypeId);
 
             if (!string.IsNullOrEmpty(search.ReferenceNo))
-                queryFilter = queryFilter.And(p => p.ReferenceNo == search.ReferenceNo);
+                queryFilter = queryFilter.And(p => p.ReferenceNo.Contains(search.ReferenceNo));
 
-            if (search.ExpenseDetailStatusId.HasValue)
-                queryFilter = queryFilter.And(p => p.ExpenseDetailStatusId == search.ExpenseDetailStatusId);
-
-            if (search.ConceptId.HasValue)
-                queryFilter = queryFilter.And(p => p.ConceptId == search.ConceptId);
+            //if (search.ExpenseDetailStatusId.HasValue)
+            //    queryFilter = queryFilter.And(p => p.ExpenseDetailStatusId == search.ExpenseDetailStatusId);
+            //TODO: 
+            if (!string.IsNullOrEmpty(search.ConceptName))
+                queryFilter = queryFilter.And(p => p.Concepts.Contains(search.ConceptName.ToString()));
 
             if (!string.IsNullOrEmpty(search.Remark))
-                queryFilter = queryFilter.And(p => p.Remark == search.Remark);
+                queryFilter = queryFilter.And(p => p.Remark.Contains(search.Remark));
+
+            if (!string.IsNullOrEmpty(search.FileName))
+                queryFilter = queryFilter.And(p => p.FileNames.Contains(search.FileName));
+
+            if (search.BusinessPartnerId.HasValue)
+                queryFilter = queryFilter.And(p => p.BusinessPartnerId == search.BusinessPartnerId);
 
             var expense = await _expenseSearchDataAccess.ListPagedAsync(queryFilter, search.Page, search.PageSize, orderExpressionList.ToArray());
 

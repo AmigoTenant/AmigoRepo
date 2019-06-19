@@ -1,4 +1,4 @@
-import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
+import { EntityStatusDTO, HouseDTO, PeriodDTO } from './../../shared/api/services.client';
 import { Component, Input, Injectable, OnChanges, SimpleChange, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
@@ -6,7 +6,7 @@ import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
 import { ConfirmationList, Confirmation } from '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
-import { HouseClient,    GeneralTableClient,    ResponseDTOOfListOfHouseTypeDTO} from '../../shared/api/services.client';
+import { HouseClient, GeneralTableClient, ResponseDTOOfListOfHouseTypeDTO } from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
 import { Router, ActivatedRoute, RouterModule } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
@@ -50,6 +50,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     _listPaymentTypes: any = [];
     _listConcepts: any = [];
     _listStatus: any = [];
+    _listBusinessPartner: any = [];
 
     //TOTALS
     totalResultCount = 0;
@@ -139,22 +140,30 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         this.getHouseTypes();
         this.getPaymentTypes();
         this.getConceptByTypes();
+        this.getBusinessPartner();
         this.model.pageSize = 20;
         this.totalResultCount = 0;
+        this._currentPeriod = new PeriodDTO();
+        this._currentPeriod.periodId = null;
+        this._currentPeriod.code = null;
+        this.expenseSearchForm.reset();
     }
 
     buildForm() {
         this.expenseSearchForm = this.formBuilder.group({
-            paymentTypeId: null,
             houseTypeId: null,
-            tenantId: null,
-            statusId: null,
-            conceptId: null,
-            houseId: null,
-            periodoId: null,
+            propertyName: null,
             expenseDateFrom: null,
-            expenseDateTo: null
-         });
+            expenseDateTo: null,
+            periodoId: null,
+            referenceNo: null,
+            totalAmountFrom: null,
+            totalAmountTo: null,
+            paymentTypeId: null,
+            conceptName: null,
+            businessPartnerId: null,
+            fileName: null
+        });
     }
 
     public setDatesFromTo() {
@@ -194,14 +203,14 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         this.model.pageSize = +this.model.pageSize;
         this.model.page = (this.currentPage + this.model.pageSize) / this.model.pageSize;
         this.expenseDataService.search(this.model)
-           .subscribe(response => {
-               let datagrid: any = new ResponseListDTO(response);
-               this.expenseSearchDTOs = {
-                   data: datagrid.items,
-                   total: datagrid.total
-               };
-               this.totalResultCount = datagrid.total;
-           });
+            .subscribe(response => {
+                let datagrid: any = new ResponseListDTO(response);
+                this.expenseSearchDTOs = {
+                    data: datagrid.items,
+                    total: datagrid.total
+                };
+                this.totalResultCount = datagrid.total;
+            });
     }
 
     getHouseTypes(): void {
@@ -209,6 +218,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
             .subscribe(res => {
                 this._listHouseTypes = [];
                 let dataResult = new ResponseListDTO(res);
+                debugger;
                 this._listHouseTypes = dataResult.data;
             });
     }
@@ -240,8 +250,8 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
         let c = this.expenseSearchDTOs.data.length;
         let index = this.model.page * this.model.pageSize - this.model.pageSize;
         for (let item in this.expenseSearchDTOs.data) {
-                $("#" + index)[0].checked = this.isColumnHeaderSelected;
-                this.expenseSearchDTOs.data[item].isSelected = this.isColumnHeaderSelected;
+            $("#" + index)[0].checked = this.isColumnHeaderSelected;
+            this.expenseSearchDTOs.data[item].isSelected = this.isColumnHeaderSelected;
             index++;
         }
         this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
@@ -289,7 +299,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //===========
 
     onEdit(data): void {
-       this.router.navigate(['/amigotenant/expense/edit', data.expenseId , data.periodId, data.paymentTypeId]); // + data.expenseId);
+        this.router.navigate(['/amigotenant/expense/edit', data.expenseId, data.periodId, data.paymentTypeId]);
     }
 
     //===========
@@ -297,23 +307,23 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     //===========
 
     onDelete(entityToDelete) {
-       this.expenseToDelete = new ExpenseDeleteRequest();
-       this.expenseToDelete.expenseId = entityToDelete.expenseId;
-       this.openedDeletionConfimation = true;
+        this.expenseToDelete = new ExpenseDeleteRequest();
+        this.expenseToDelete.expenseId = entityToDelete.expenseId;
+        this.openedDeletionConfimation = true;
     }
 
     yesDelete() {
-    //    this.expenseDataService.delete(this.expenseToDelete)
-    //        .subscribe(response => {
-    //            this.onSelect();
-    //            this.openedDeletionConfimation = false;
-    //        });
+        //    this.expenseDataService.delete(this.expenseToDelete)
+        //        .subscribe(response => {
+        //            this.onSelect();
+        //            this.openedDeletionConfimation = false;
+        //        });
     }
 
     public openedDeletionConfimation: boolean = false;
 
     public closeDeletionConfirmation() {
-       this.openedDeletionConfimation = false;
+        this.openedDeletionConfimation = false;
     }
 
     //===========
@@ -347,8 +357,15 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
     }
 
     onAddExpense(): void {
-        //this.router.navigate['/amigotenant/expense/new'];
         this.router.navigateByUrl('amigotenant/expense/new');
+    }
+
+    getBusinessPartner(): any {
+        this.masterDataService.getBusinessPartnerByBPType('BPVENDOR01')
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listBusinessPartner = dataResult.data;
+            });
     }
 
 
