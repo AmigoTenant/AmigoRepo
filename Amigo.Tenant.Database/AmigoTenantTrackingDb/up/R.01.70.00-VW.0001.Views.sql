@@ -274,3 +274,139 @@ SELECT	P.Code as PeriodCode,
    go
 
 
+   
+/* VISTA EXPENSE SEARCH */
+
+IF not EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[vwExpenseSearch]'))
+    exec sp_executesql N'CREATE VIEW [dbo].[vwExpenseSearch]  AS SELECT 1 AS X'
+GO
+
+ALTER VIEW [dbo].[vwExpenseSearch]
+
+AS
+                                                                                    
+SELECT   
+                                                                             
+   E.ExpenseId  
+  ,E.ExpenseDate  
+  ,E.PaymentTypeId  
+  ,PaymentType.Value as PaymentTypeName
+  ,E.HouseId  
+  ,H.Name as HouseName  
+  ,H.HouseTypeId
+  ,HouseType.Value as HouseTypeName
+  ,E.PeriodId  
+  ,Period.Code as PeriodCode
+  ,E.ReferenceNo  
+  ,E.Remark  
+                                                                         
+  ,E.SubTotalAmount  
+  ,E.Tax  
+  ,E.TotalAmount  
+  ,E.BusinessPartnerId
+  ,BP.Name as BusinessPartnerName
+  ,Concepts.ConceptName AS Concepts
+  ,Tenants.TenantFullName AS Tenants
+  ,FileNames.FileName AS FileNames
+                                                     
+                                                    
+FROM Expense E      
+
+OUTER APPLY
+(
+	SELECT 	STRING_AGG (C.Description, ', ') as ConceptName
+	FROM 	ExpenseDetail ed
+			INNER JOIN Concept C ON C.ConceptId = ed.ConceptId
+	WHERE	ed.ExpenseId = e.Expenseid
+) AS Concepts
+
+OUTER APPLY
+(
+	SELECT 	STRING_AGG (T.FullName, ', ') as TenantFullName
+	FROM 	ExpenseDetail ed
+			INNER JOIN Tenant T ON T.TenantId = ed.TenantId
+	WHERE	ed.ExpenseId = e.Expenseid
+) AS Tenants
+
+
+OUTER APPLY
+(
+	SELECT 	STRING_AGG (FR.Name, ', ') as FileName
+	FROM 	FileRepository fr
+	WHERE	FR.ParentId = e.Expenseid AND fr.EntityCode = 'EX'
+) AS FileNames
+                                
+  LEFT JOIN House H ON H.HouseId = E.HouseId      
+     
+  LEFT JOIN GeneralTable PaymentType ON PaymentType.GeneralTableId = E.PaymentTypeId  
+
+  LEFT JOIN GeneralTable HouseType ON HouseType.GeneralTableId = H.HouseTypeId
+        
+  LEFT JOIN Period ON Period.PeriodId = E.PeriodId
+                                    
+  LEFT JOIN BusinessPartner BP ON BP.BusinessPartnerId = E.BusinessPartnerId            
+  
+  GO
+
+  /*UPDATE GENERALTABLE INCOME PARAQUE NO APAREZCA EN LA RELACION DE CONCEPTOS A INGRESAR EN EXPENSES*/
+
+  UPDATE GENERALTABLE SET TableName = 'ConceptTODO'
+WHERE cODE = 'INCOME'
+
+
+GO
+
+/*ACTUALIZACION DE PROVEEDORES DE RENTAS*/
+/*
+
+=+CONCATENATE("INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)", "
+VALUES (NULL,", "'", A4, " - ", D4, "', 76, NULL, 1, 1, GETDATE()) ")
+
+*/
+
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'353806 BC LTD - 3683 East Hastings Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Treaty Development LTD - 2132 Dundas Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Boundary Management  - 40 Powell Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Gramercy Enterprises LTD - 1270 Granville Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Zoro Holdings - 1075 Jervis Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Shelvyn Kiran - 1002 1082 Seymour Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Shelvyn Kiran - 1701 1082 Seymour St Parking', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Shelvyn Kiran - 909 1082 Seymour Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Pacific Coast Placement & Development - 2563 Renfrew Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Moe  - 1270 Robson Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Karen Ho - 788 Hamilton Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Karen Ho - 38 Smithe Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'Dezta Azale - 44th Avenue ', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INSTANT OFFICE LTD - 510 West Hastings Street', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 601 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 606 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 506 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 404 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 203 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 905 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 1606 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+INSERT INTO dbo.BusinessPartner (Code, Name, BPTypeId, SIN, RowStatus, CreatedBy, CreationDate)
+VALUES (NULL,'INVESMENT LPD - 803 1450 West Georgia St', 76, NULL, 1, 1, GETDATE()) 
+
+GO
