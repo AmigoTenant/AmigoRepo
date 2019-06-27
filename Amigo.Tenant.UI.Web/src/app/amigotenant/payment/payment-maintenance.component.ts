@@ -8,6 +8,11 @@ import { Observable, Subscription } from 'rxjs'
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { PaymentPeriodClient, PPHeaderSearchByContractPeriodDTO, PPDetailSearchByContractPeriodDTO, ApplicationMessage } from '../../shared/api/payment.services.client';
+import { MasterDataService } from '../../shared/api/master-data-service';
+import { ResponseListDTO } from '../../shared/dto/response-list-dto';
+import { GenericValidator } from '../../shared/generic.validator';
+
+//import { TranslateService } from '@ngx-translate/core';
 
 declare var $: any;
 
@@ -51,10 +56,32 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     public openDialogMap: boolean = false;
     public openDialogHouseService: boolean = false;
 
+    private genericValidator: GenericValidator;
+
     constructor(private route: ActivatedRoute,
         private paymentDataService: PaymentPeriodClient,
-        private router: Router) {
+        private router: Router,
+        private formBuilder: FormBuilder,
+        private masterDataService: MasterDataService//,
+        //private translate: TranslateService
+        ) {
         this.paymentMaintenance = new PPHeaderSearchByContractPeriodDTO();
+
+
+        // Observable.forkJoin([
+        //     this.translate.get('common.requiredField')
+            
+        // ]).subscribe((messages: string[]) => this.buildMessages(...messages));
+        // this.genericValidator = new GenericValidator(this.validationMessages);
+    }
+
+    public validationMessages: { [key: string]: { [key: string]: string } } = {};
+    buildMessages(required?: string, notvalid?: string, maxlength?: string) {
+        this.validationMessages = {
+            paymentTypeId: {
+                required: required
+            }
+        };
     }
 
     ngOnDestroy() {
@@ -65,7 +92,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     ngOnInit() {
         this.dataDetail = new dataDetailClass();
-
+        this.buildForm();
+        this.initialize();
         this.sub = this.route.params.subscribe(params => {
             let periodId= params['periodId'];
             let contractId = params['contractId'];
@@ -80,6 +108,36 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
         });
 
+    }
+
+    paymentForm: FormGroup;
+    _listPaymentTypes: any[];
+
+    buildForm()
+    {
+        this.paymentForm = this.formBuilder.group({
+            paymentTypeId: [null, [Validators.required]],
+            expenseDate: [null, [Validators.required]],
+        });
+    }
+
+    initialize(){
+        this.getPaymentTypes();
+    }
+
+    getPaymentTypes(): void {
+        this.masterDataService.getGeneralTableByTableName('PaymentType')
+            .subscribe(res => {
+                let dataResult = new ResponseListDTO(res);
+                this._listPaymentTypes = [];
+                for (let i = 0; i < dataResult.data.length; i++) {
+                    this._listPaymentTypes.push({
+                        'typeId': dataResult.data[i].generalTableId,
+                        'name': dataResult.data[i].value,
+                        'code': dataResult.data[i].code
+                    });
+                }
+            });
     }
 
     private getPaymentDetailByContract(contractId, periodId): void {
