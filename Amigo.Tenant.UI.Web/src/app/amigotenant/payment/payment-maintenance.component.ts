@@ -100,88 +100,51 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.displayMessage = this.genericValidator.processMessages(this.paymentForm, force);
     }
 
+    public showDetailMaintenance= false;
     public addDetail() {
+        this.showDetailMaintenance= true;
+    }
+
+    public saveDetail() {
+        if (!this.paymentForm.valid) {
+            this.showErrors(true);
+            return;
+        }
+
+        let paymentType = this._listPaymentTypes.filter(q=> q.typeId == this.paymentForm.get('paymentTypeId').value);
         let payment = this.paymentForm.getRawValue();
         let paymentDetail = new PPDetailSearchByContractPeriodDTO();
         paymentDetail.paymentPeriodId = -2;
         paymentDetail.contractId = this.paymentMaintenance.contractId;
         paymentDetail.periodId = this.paymentMaintenance.periodId;
         paymentDetail.paymentAmount = payment.paymentAmount;
-        paymentDetail.paymentTypeId = payment.paymentId;
-        // paymentDetail.paymentTypeValue = onAccountPaymenType.Value;
-        // paymentDetail.paymentTypeCode = onAccountPaymenType.Code;
-        // paymentDetail.paymentTypeName = onAccountPaymenType.Code;
-        paymentDetail.paymentPeriodStatusCode = 'PPPENDING';
-        //paymentDetail.paymentPeriodStatusId = entityStatusPayment.EntityStatusId;
+        paymentDetail.paymentTypeId = payment.paymentTypeId;
+        paymentDetail.paymentTypeValue = paymentType.length>0? paymentType[0].name: "";
+        paymentDetail.paymentTypeCode = paymentType.length>0? paymentType[0].code: "";
+        paymentDetail.paymentTypeName = paymentType.length>0? paymentType[0].name: "";
+        paymentDetail.paymentPeriodStatusCode = 'PPPENDING'; //TODO: Cambiar
+        paymentDetail.paymentPeriodStatusId = 1; //TODO: Cambiar
         paymentDetail.isRequired = false;
         paymentDetail.isSelected = false;
         paymentDetail.tableStatus = PPDetailSearchByContractPeriodDTOTableStatus._0; //aDDING
         paymentDetail.paymentDescription = payment.comment;
         //paymentDetail.conceptId = concept.Data.ConceptId;
-        paymentDetail.tenantId = header.TenantId;
-        //paymentDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+        paymentDetail.tenantId = this.paymentMaintenance.tenantId;
+        paymentDetail.paymentPeriodStatusName = 'PENDING'; //TODO: Cambiar
 
-    //     isSelected: boolean | null;
-    // paymentPeriodId: number | null;
-    // periodId: number | null;
-    // periodCode: string | null;
-    // houseName: string | null;
-    // tenantFullName: string | null;
-    // pPDetail: PPDetailSearchByContractPeriodDTO[] | null;
-    // comment: string | null;
-    // referenceNo: string | null;
-    // paymentDate: Date | null;
-    // userId: number | null;
-    // username: string | null;
-    // paymentType: number | null;
-    // pendingDeposit: number | null;
-    // pendingRent: number | null;
-    // pendingFine: number | null;
-    // pendingLateFee: number | null;
-    // pendingService: number | null;
-    // pendingOnAccount: number | null;
-    // pendingTotal: number | null;
-    // contractId: number | null;
-    // dueDate: Date | null;
+        var id = this.paymentMaintenance.pPDetail.length * -1;
+        paymentDetail.paymentPeriodId = id;
+        this.paymentMaintenance.pPDetail.push(paymentDetail);
 
-    // totalAmount: number | null;
-    // totalRent: number | null;
-    // totalDeposit: number | null;
-    // totalLateFee: number | null;
-    // totalService: number | null;
-    // totalFine: number | null;
-    // totalOnAcount: number | null;
-
-    // latestInvoiceId: number | null;
-    // tenantId: number | null;
-    // paymentTypeId: number | null;
-    // isPayInFull: boolean;
-    // totalInvoice: number | null;
-    // totalIncome: number | null;
-    // balance: number | null;
-
-
-        // Object.assign(this.paymentPeriodRegisterRequest, payment);
-        // this.paymentPeriodRegisterRequest.contractId = this.paymentMaintenance.contractId;
-        // this.paymentPeriodRegisterRequest.periodId = this.paymentMaintenance.periodId;
-        // this.paymentPeriodRegisterRequest.tenantId = this.paymentMaintenance.tenantId;
-
-        // if (!this.paymentForm.valid) {
-        //     this.showErrors(true);
-        //     return;
-        // }
-
-        // this.paymentPeriodService.registerPaymentDetail(this.paymentPeriodRegisterRequest)
-        //     .subscribe(res => {
-        //         var dataResult: any = res;
-        //         if (dataResult.data != undefined) {
-        //             var id = this.paymentMaintenance.pPDetail.length * -1;
-        //             dataResult.data.paymentPeriodId = id;
-        //             this.paymentMaintenance.pPDetail.push(dataResult.data);
-        //         }
-        //     });
-
+        //if (!this.paymentForm.get('continueRegistration').value)
+        this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
     }
+
+    closeDetail()
+    {
+        this.showDetailMaintenance = false;
+    }
+
 
     addAccount(): void {
         this.paymentDataService.calculateOnAccountByContractAndPeriod(this.paymentMaintenance.periodId, this.paymentMaintenance.contractId, 1, 20)
@@ -226,6 +189,9 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.paymentForm = this.formBuilder.group({
             paymentTypeId: [null, [Validators.required]],
             paymentAmount: [null, [Validators.required]],
+            referenceNo: [null],
+            comment: [null],
+            continueRegistration: [true]
         });
     }
 
