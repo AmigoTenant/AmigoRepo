@@ -85,6 +85,14 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return resp;
         }
 
+
+        [HttpPost, Route("registerPaymentDetail")]
+        public async Task<ResponseDTO<PPDetailSearchByContractPeriodDTO>> CalculateOnAccountByContractAndPeriod([FromUri]PaymentPeriodSearchByContractPeriodRequest search)
+        {
+            var resp = await _paymentPeriodApplicationService.CalculateOnAccountByContractAndPeriodAsync(search);
+            return resp;
+        }
+
         [HttpGet]
         [Route("exportToExcel/{periodId}/{houseId}/{contractCode}/{paymentPeriodStatusId}/{tenantId}/{hasPendingServices}/{hasPendingFines}/{hasPendingLateFee}/{page}/{pageSize}"), AllowAnonymous]//ShuttleClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.WeeklyReportSearch)
         public async Task<HttpResponseMessage> ExportToExcel([FromUri]PaymentPeriodSearchRequest search)

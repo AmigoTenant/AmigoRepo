@@ -58,6 +58,7 @@ import { PaymentServiceNew } from './payment/payment.service';
 import { ExpenseMaintenanceSearchGridComponent } from './expense/expense-maintenance-search-grid.component';
 import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance-detail.component';
 import { UploadFileComponent } from "../shared/upload-file/upload-file.component";
+import { PaymentPeriodService } from "./payment/payment-period.service";
 
 @NgModule({
   imports: [
@@ -122,7 +123,8 @@ import { UploadFileComponent } from "../shared/upload-file/upload-file.component
       UtilityBillServiceClient,
       MasterDataService,
       PaymentServiceNew,
-      ExpenseDataService
+      ExpenseDataService,
+      PaymentPeriodService
     ],
 })
 export class AmigotenantModule { }

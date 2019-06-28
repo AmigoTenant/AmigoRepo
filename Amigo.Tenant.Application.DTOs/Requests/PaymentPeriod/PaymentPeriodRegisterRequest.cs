@@ -20,5 +20,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? PaymentTypeId { get; set; }
+        public string Comment { get; set; }
+        public string ReferenceNo { get; set; }
     }
 }

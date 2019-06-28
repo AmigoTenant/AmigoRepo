@@ -11,8 +11,10 @@ import { PaymentPeriodClient, PPHeaderSearchByContractPeriodDTO, PPDetailSearchB
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { ResponseListDTO } from '../../shared/dto/response-list-dto';
 import { GenericValidator } from '../../shared/generic.validator';
-
-//import { TranslateService } from '@ngx-translate/core';
+import { TranslateService } from "@ngx-translate/core";
+import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-request";
+import { PaymentPeriodService } from "./payment-period.service";
+import { PPDetailSearchByContractPeriodDTOTableStatus } from "../../shared/api/rentalapplication.services.client";
 
 declare var $: any;
 
@@ -29,7 +31,7 @@ export class dataDetailClass {
 })
 
 export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
-    public dataDetail: dataDetailClass; 
+    public dataDetail: dataDetailClass;
     public gridDataDet: GridDataResult;
     public skipDet: number = 0;
     public buttonCount: number = 20;
@@ -57,31 +59,140 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     public openDialogHouseService: boolean = false;
 
     private genericValidator: GenericValidator;
+    public displayMessage: { [key: string]: string; } = {};
+    public validationMessages: { [key: string]: { [key: string]: string } } = {};
+
+    paymentForm: FormGroup;
+    _listPaymentTypes: any[];
+
+    public paymentPeriodRegisterRequest: PaymentPeriodRegisterRequest;
 
     constructor(private route: ActivatedRoute,
         private paymentDataService: PaymentPeriodClient,
         private router: Router,
         private formBuilder: FormBuilder,
-        private masterDataService: MasterDataService//,
-        //private translate: TranslateService
+        private masterDataService: MasterDataService,
+        private translate: TranslateService,
+        private paymentPeriodService: PaymentPeriodService
         ) {
         this.paymentMaintenance = new PPHeaderSearchByContractPeriodDTO();
 
 
-        // Observable.forkJoin([
-        //     this.translate.get('common.requiredField')
+        Observable.forkJoin([
+            this.translate.get('common.requiredField')
             
-        // ]).subscribe((messages: string[]) => this.buildMessages(...messages));
-        // this.genericValidator = new GenericValidator(this.validationMessages);
+        ]).subscribe((messages: string[]) => this.buildMessages(...messages));
+        this.genericValidator = new GenericValidator(this.validationMessages);
     }
 
-    public validationMessages: { [key: string]: { [key: string]: string } } = {};
-    buildMessages(required?: string, notvalid?: string, maxlength?: string) {
+    
+
+    buildMessages(required?: string) {
         this.validationMessages = {
             paymentTypeId: {
                 required: required
-            }
+            },
+            paymentAmount: { required: required}
         };
+    }
+
+    private showErrors(force = false) {
+        this.displayMessage = this.genericValidator.processMessages(this.paymentForm, force);
+    }
+
+    public addDetail() {
+        let payment = this.paymentForm.getRawValue();
+        let paymentDetail = new PPDetailSearchByContractPeriodDTO();
+        paymentDetail.paymentPeriodId = -2;
+        paymentDetail.contractId = this.paymentMaintenance.contractId;
+        paymentDetail.periodId = this.paymentMaintenance.periodId;
+        paymentDetail.paymentAmount = payment.paymentAmount;
+        paymentDetail.paymentTypeId = payment.paymentId;
+        // paymentDetail.paymentTypeValue = onAccountPaymenType.Value;
+        // paymentDetail.paymentTypeCode = onAccountPaymenType.Code;
+        // paymentDetail.paymentTypeName = onAccountPaymenType.Code;
+        paymentDetail.paymentPeriodStatusCode = 'PPPENDING';
+        //paymentDetail.paymentPeriodStatusId = entityStatusPayment.EntityStatusId;
+        paymentDetail.isRequired = false;
+        paymentDetail.isSelected = false;
+        paymentDetail.tableStatus = PPDetailSearchByContractPeriodDTOTableStatus._0; //aDDING
+        paymentDetail.paymentDescription = payment.comment;
+        //paymentDetail.conceptId = concept.Data.ConceptId;
+        paymentDetail.tenantId = header.TenantId;
+        //paymentDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+
+    //     isSelected: boolean | null;
+    // paymentPeriodId: number | null;
+    // periodId: number | null;
+    // periodCode: string | null;
+    // houseName: string | null;
+    // tenantFullName: string | null;
+    // pPDetail: PPDetailSearchByContractPeriodDTO[] | null;
+    // comment: string | null;
+    // referenceNo: string | null;
+    // paymentDate: Date | null;
+    // userId: number | null;
+    // username: string | null;
+    // paymentType: number | null;
+    // pendingDeposit: number | null;
+    // pendingRent: number | null;
+    // pendingFine: number | null;
+    // pendingLateFee: number | null;
+    // pendingService: number | null;
+    // pendingOnAccount: number | null;
+    // pendingTotal: number | null;
+    // contractId: number | null;
+    // dueDate: Date | null;
+
+    // totalAmount: number | null;
+    // totalRent: number | null;
+    // totalDeposit: number | null;
+    // totalLateFee: number | null;
+    // totalService: number | null;
+    // totalFine: number | null;
+    // totalOnAcount: number | null;
+
+    // latestInvoiceId: number | null;
+    // tenantId: number | null;
+    // paymentTypeId: number | null;
+    // isPayInFull: boolean;
+    // totalInvoice: number | null;
+    // totalIncome: number | null;
+    // balance: number | null;
+
+
+        // Object.assign(this.paymentPeriodRegisterRequest, payment);
+        // this.paymentPeriodRegisterRequest.contractId = this.paymentMaintenance.contractId;
+        // this.paymentPeriodRegisterRequest.periodId = this.paymentMaintenance.periodId;
+        // this.paymentPeriodRegisterRequest.tenantId = this.paymentMaintenance.tenantId;
+
+        // if (!this.paymentForm.valid) {
+        //     this.showErrors(true);
+        //     return;
+        // }
+
+        // this.paymentPeriodService.registerPaymentDetail(this.paymentPeriodRegisterRequest)
+        //     .subscribe(res => {
+        //         var dataResult: any = res;
+        //         if (dataResult.data != undefined) {
+        //             var id = this.paymentMaintenance.pPDetail.length * -1;
+        //             dataResult.data.paymentPeriodId = id;
+        //             this.paymentMaintenance.pPDetail.push(dataResult.data);
+        //         }
+        //     });
+
+    }
+
+    addAccount(): void {
+        this.paymentDataService.calculateOnAccountByContractAndPeriod(this.paymentMaintenance.periodId, this.paymentMaintenance.contractId, 1, 20)
+            .subscribe(res => {
+                var dataResult: any = res;
+                if (dataResult.data != undefined) {
+                    var id = this.paymentMaintenance.pPDetail.length * -1;
+                    dataResult.data.paymentPeriodId = id;
+                    this.paymentMaintenance.pPDetail.push(dataResult.data);
+                }
+            });
     }
 
     ngOnDestroy() {
@@ -110,14 +221,11 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     }
 
-    paymentForm: FormGroup;
-    _listPaymentTypes: any[];
-
-    buildForm()
+    public buildForm()
     {
         this.paymentForm = this.formBuilder.group({
             paymentTypeId: [null, [Validators.required]],
-            expenseDate: [null, [Validators.required]],
+            paymentAmount: [null, [Validators.required]],
         });
     }
 
@@ -402,17 +510,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         }
     }
 
-    addAccount(): void {
-        this.paymentDataService.calculateOnAccountByContractAndPeriod(this.paymentMaintenance.periodId, this.paymentMaintenance.contractId, 1, 20)
-            .subscribe(res => {
-                var dataResult: any = res;
-                if (dataResult.data != undefined) {
-                    var id = this.paymentMaintenance.pPDetail.length * -1;
-                    dataResult.data.paymentPeriodId = id;
-                    this.paymentMaintenance.pPDetail.push(dataResult.data);
-                }
-            });
-    }
+    
 
 
     writeMessage(isValid, message): void {
