@@ -113,30 +113,36 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
         let paymentType = this._listPaymentTypes.filter(q=> q.typeId == this.paymentForm.get('paymentTypeId').value);
         let payment = this.paymentForm.getRawValue();
-        let paymentDetail = new PPDetailSearchByContractPeriodDTO();
-        paymentDetail.paymentPeriodId = -2;
+        let paymentDetail = new PaymentPeriodRegisterRequest();
+        //paymentDetail.paymentPeriodId = -2;
         paymentDetail.contractId = this.paymentMaintenance.contractId;
         paymentDetail.periodId = this.paymentMaintenance.periodId;
         paymentDetail.paymentAmount = payment.paymentAmount;
         paymentDetail.paymentTypeId = payment.paymentTypeId;
-        paymentDetail.paymentTypeValue = paymentType.length>0? paymentType[0].name: "";
-        paymentDetail.paymentTypeCode = paymentType.length>0? paymentType[0].code: "";
-        paymentDetail.paymentTypeName = paymentType.length>0? paymentType[0].name: "";
-        paymentDetail.paymentPeriodStatusCode = 'PPPENDING'; //TODO: Cambiar
-        paymentDetail.paymentPeriodStatusId = 1; //TODO: Cambiar
-        paymentDetail.isRequired = false;
-        paymentDetail.isSelected = false;
-        paymentDetail.tableStatus = PPDetailSearchByContractPeriodDTOTableStatus._0; //aDDING
-        paymentDetail.paymentDescription = payment.comment;
+        // paymentDetail.paymentTypeValue = paymentType.length>0? paymentType[0].name: "";
+        // paymentDetail.paymentTypeCode = paymentType.length>0? paymentType[0].code: "";
+        // paymentDetail.paymentTypeName = paymentType.length>0? paymentType[0].name: "";
+        // paymentDetail.paymentPeriodStatusCode = 'PPPENDING'; //TODO: Cambiar
+        // paymentDetail.paymentPeriodStatusId = 1; //TODO: Cambiar
+        // paymentDetail.isRequired = false;
+        // paymentDetail.isSelected = false;
+        // paymentDetail.tableStatus = PPDetailSearchByContractPeriodDTOTableStatus._0; //aDDING
+        // paymentDetail.paymentDescription = payment.comment;
         //paymentDetail.conceptId = concept.Data.ConceptId;
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
-        paymentDetail.paymentPeriodStatusName = 'PENDING'; //TODO: Cambiar
+        // paymentDetail.paymentPeriodStatusName = 'PENDING'; //TODO: Cambiar
 
-        var id = this.paymentMaintenance.pPDetail.length * -1;
-        paymentDetail.paymentPeriodId = id;
-        this.paymentMaintenance.pPDetail.push(paymentDetail);
+        //var id = this.paymentMaintenance.pPDetail.length * -1;
+        //paymentDetail.paymentPeriodId = id;
 
-        //if (!this.paymentForm.get('continueRegistration').value)
+        this.paymentPeriodService.registerPaymentDetail(paymentDetail)
+        .subscribe()
+        .add(
+            r => {
+                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
+            }
+        );
+        //this.paymentMaintenance.pPDetail.push(paymentDetail);
         this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
     }
 

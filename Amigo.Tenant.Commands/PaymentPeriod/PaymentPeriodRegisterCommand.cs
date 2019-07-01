@@ -1,10 +1,12 @@
 ﻿using Amigo.Tenant.Application.DTOs.Requests.Common;
+using Amigo.Tenant.Commands.Common;
+using MediatR;
 using System;
 using System.Collections.Generic;
 
 namespace Amigo.Tenant.Commands.PaymentPeriod
 {
-    public class PaymentPeriodRegisterCommand : AuditBaseRequest
+    public class PaymentPeriodRegisterCommand : AuditBaseCommand, IAsyncRequest<CommandResult>
     {
 
         public int PaymentPeriodId { get; set; }
@@ -21,5 +23,8 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
         public int? UpdatedBy { get; set; }
         public DateTime? UpdatedDate { get; set; }
         public int? PaymentTypeId { get; set; }
+        public string Comment { get; set; }
+        public string ReferenceNo { get; set; }
+        public ObjectStatus TableStatus { get; set; }
     }
 }

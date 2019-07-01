@@ -74,6 +74,15 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return null;
         }
 
+        public async Task<ResponseDTO> RegisterPaymentPeriodAsync(PaymentPeriodRegisterRequest paymentPeriod)
+        {
+            //Execute Command
+            var command = _mapper.Map<PaymentPeriodRegisterRequest, PaymentPeriodRegisterCommand>(paymentPeriod);
+            var resp = await _bus.SendAsync(command);
+            return ResponseBuilder.Correct(resp);
+            return null;
+        }
+
         public async Task<ResponseDTO> UpdatePaymentPeriodAsync(PPHeaderSearchByContractPeriodDTO paymentsPeriod)
         {
             //Map to Command
