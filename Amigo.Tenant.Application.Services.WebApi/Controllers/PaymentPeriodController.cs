@@ -88,7 +88,14 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         [HttpPost, Route("registerPaymentDetail")]
         public async Task<ResponseDTO> RegisterPaymentDetail([FromBody]PaymentPeriodRegisterRequest search)
         {
-            var resp = await _paymentPeriodApplicationService.RegisterPaymentPeriodAsync(search);
+            var resp = await _paymentPeriodApplicationService.RegisterPaymentPeriodDetailAsync(search);
+            return resp;
+        }
+
+        [HttpPost, Route("updatePaymentDetail")]
+        public async Task<ResponseDTO> UpdatePaymentDetail([FromBody]PaymentPeriodUpdateRequest search)
+        {
+            var resp = await _paymentPeriodApplicationService.UpdatePaymentPeriodDetailAsync(search);
             return resp;
         }
 

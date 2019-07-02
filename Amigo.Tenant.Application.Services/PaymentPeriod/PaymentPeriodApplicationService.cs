@@ -74,20 +74,23 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return null;
         }
 
-        public async Task<ResponseDTO> RegisterPaymentPeriodAsync(PaymentPeriodRegisterRequest paymentPeriod)
+        public async Task<ResponseDTO> RegisterPaymentPeriodDetailAsync(PaymentPeriodRegisterRequest paymentPeriod)
         {
-            //Execute Command
             var command = _mapper.Map<PaymentPeriodRegisterRequest, PaymentPeriodRegisterCommand>(paymentPeriod);
             var resp = await _bus.SendAsync(command);
             return ResponseBuilder.Correct(resp);
-            return null;
+        }
+
+        public async Task<ResponseDTO> UpdatePaymentPeriodDetailAsync(PaymentPeriodUpdateRequest paymentPeriod)
+        {
+            var command = _mapper.Map<PaymentPeriodUpdateRequest, PaymentPeriodUpdateCommand>(paymentPeriod);
+            var resp = await _bus.SendAsync(command);
+            return ResponseBuilder.Correct(resp);
         }
 
         public async Task<ResponseDTO> UpdatePaymentPeriodAsync(PPHeaderSearchByContractPeriodDTO paymentsPeriod)
         {
-            //Map to Command
             var response = await ValidateEntityUpdate(paymentsPeriod);
-            //var entityStatusPayed = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Payed);
 
             if (response.IsValid)
             {

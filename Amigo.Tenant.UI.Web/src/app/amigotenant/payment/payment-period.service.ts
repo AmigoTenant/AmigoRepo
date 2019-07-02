@@ -5,6 +5,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BaseService } from '../../shared/api/base.service';
 import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-request";
+import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
 
 
 @Injectable()
@@ -18,6 +19,13 @@ export class PaymentPeriodService extends BaseService {
                 catchError(this.handleError)
             );
     }
-
+    updatePaymentDetail(paymentPeriodUpdateRequest: PaymentPeriodUpdateRequest): Observable<any> {
+        const url = `${this.baseUrl}api/payment/updatePaymentDetail`;
+        return this.http.post<any>(url, JSON.stringify(paymentPeriodUpdateRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
 
 }

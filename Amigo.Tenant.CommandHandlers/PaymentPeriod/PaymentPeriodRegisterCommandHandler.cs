@@ -24,6 +24,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         private readonly IUnitOfWork _unitOfWork;
         private readonly IRepository<PaymentPeriod> _repositoryPayment;
         private readonly IRepository<EntityStatus> _repositoryEntityStatus;
+        private readonly IRepository<Concept> _repositoryConcept;
+        private readonly IRepository<GeneralTable> _repositoryGeneralTable;
 
 
         public PaymentPeriodRegisterCommandHandler(
@@ -31,13 +33,17 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
          IMapper mapper,
          IUnitOfWork unitOfWork,
          IRepository<PaymentPeriod> repositoryPayment,
-         IRepository<EntityStatus> repositoryEntityStatus)
+         IRepository<EntityStatus> repositoryEntityStatus,
+         IRepository<Concept> repositoryConcept,
+         IRepository<GeneralTable> repositoryGeneralTable)
         {
             _bus = bus;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _repositoryPayment = repositoryPayment;
             _repositoryEntityStatus = repositoryEntityStatus;
+            _repositoryConcept = repositoryConcept;
+            _repositoryGeneralTable = repositoryGeneralTable;
         }
 
 
@@ -70,55 +76,33 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         {
             var entityToSave = new PaymentPeriod();
             var paymentPeriodPending = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.PaymentPeriod && q.Code == Constants.EntityStatus.PaymentPeriod.Pending);
+            var paymentType = command.PaymentTypeId.HasValue? await _repositoryGeneralTable.FirstOrDefaultAsync(q=> q.GeneralTableId == command.PaymentTypeId): null;
+            var concept = paymentType!=null ? await _repositoryConcept.FirstOrDefaultAsync(q => q.Code == paymentType.Code): null;
 
-            if (command.TableStatus == Application.DTOs.Requests.Common.ObjectStatus.Added)
+            entityToSave = new PaymentPeriod();
+            entityToSave.PaymentPeriodId = -1;
+            entityToSave.ConceptId = concept.ConceptId;
+            entityToSave.ContractId = command.ContractId;
+            entityToSave.TenantId = command.TenantId;
+            entityToSave.PeriodId = command.PeriodId;
+            entityToSave.PaymentAmount = command.PaymentAmount;
+            entityToSave.DueDate = command.DueDate;
+            entityToSave.Comment = command.Comment;
+            entityToSave.ReferenceNo = command.ReferenceNo;
+            entityToSave.RowStatus = true;
+            entityToSave.Creation(command.UserId);
+            if (paymentPeriodPending != null)
             {
-                entityToSave = new PaymentPeriod();
-                entityToSave.PaymentPeriodId = -1;
-                entityToSave.ConceptId = command.ConceptId;
-                entityToSave.ContractId = command.ContractId;
-                entityToSave.TenantId = command.TenantId;
-                entityToSave.PeriodId = command.PeriodId;
-                entityToSave.PaymentAmount = command.PaymentAmount;
-                entityToSave.DueDate = command.DueDate;
-                entityToSave.Comment = command.Comment;
-                entityToSave.ReferenceNo = command.ReferenceNo;
-                entityToSave.RowStatus = true;
-                entityToSave.Creation(command.UserId);
-                if (paymentPeriodPending != null)
-                {
-                    entityToSave.PaymentPeriodStatusId = paymentPeriodPending.EntityStatusId;
-                    entityToSave.PaymentDate = DateTime.Now;
-                }
-                entityToSave.PaymentTypeId = command.PaymentTypeId;
+                entityToSave.PaymentPeriodStatusId = paymentPeriodPending.EntityStatusId;
                 entityToSave.PaymentDate = DateTime.Now;
-                entityToSave.Update(command.UserId);
-                _repositoryPayment.Add(entityToSave);
-                return entityToSave.PaymentPeriodId.Value;//TODO
             }
-            else 
-            {
-                entityToSave = new PaymentPeriod();
-                entityToSave = await _repositoryPayment.FirstOrDefaultAsync(q => q.PaymentPeriodId == command.PaymentPeriodId);
-                if (entityToSave != null)
-                {
-                    entityToSave.PaymentAmount = command.PaymentAmount;
-                    if (paymentPeriodPending != null)
-                    {
-                        entityToSave.PaymentPeriodStatusId =paymentPeriodPending.EntityStatusId;
-                        entityToSave.PaymentDate = DateTime.Now;
-                    }
-                    entityToSave.ReferenceNo = command.ReferenceNo;
-                    entityToSave.Comment = command.Comment;
-                    entityToSave.Update(command.UserId);
-                    _repositoryPayment.UpdatePartial(entityToSave, new string[] {
-                            "PaymentPeriodId", "PaymentAmount", "PaymentPeriodStatusId",
-                            "PaymentDate", "ReferenceNo", "Comment", "UpdatedBy", "UpdatedDate"});
-
-                }
-                return entityToSave.PaymentPeriodId.Value;
-            }
+            entityToSave.PaymentTypeId = command.PaymentTypeId;
+            entityToSave.PaymentDate = DateTime.Now;
+            entityToSave.Update(command.UserId);
+            _repositoryPayment.Add(entityToSave);
+            return entityToSave.PaymentPeriodId.Value;//TODO
         }
+            
     }
 }
 

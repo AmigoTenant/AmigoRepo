@@ -122,6 +122,7 @@
     <Compile Include="MasterData\RentalAplications\RentalApplicationDeleteCommandHandler.cs" />
     <Compile Include="MasterData\RentalAplications\RentalApplicationRegisterCommandHandler.cs" />
     <Compile Include="MasterData\RentalAplications\RentalApplicationUpdateCommandHandler.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodUpdateCommandHandler.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodRegisterCommandHandler.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodHeaderCommandHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -15,6 +15,7 @@ import { TranslateService } from "@ngx-translate/core";
 import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-request";
 import { PaymentPeriodService } from "./payment-period.service";
 import { PPDetailSearchByContractPeriodDTOTableStatus } from "../../shared/api/rentalapplication.services.client";
+import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
 
 declare var $: any;
 
@@ -114,27 +115,13 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         let paymentType = this._listPaymentTypes.filter(q=> q.typeId == this.paymentForm.get('paymentTypeId').value);
         let payment = this.paymentForm.getRawValue();
         let paymentDetail = new PaymentPeriodRegisterRequest();
-        //paymentDetail.paymentPeriodId = -2;
         paymentDetail.contractId = this.paymentMaintenance.contractId;
         paymentDetail.periodId = this.paymentMaintenance.periodId;
         paymentDetail.paymentAmount = payment.paymentAmount;
         paymentDetail.paymentTypeId = payment.paymentTypeId;
-        // paymentDetail.paymentTypeValue = paymentType.length>0? paymentType[0].name: "";
-        // paymentDetail.paymentTypeCode = paymentType.length>0? paymentType[0].code: "";
-        // paymentDetail.paymentTypeName = paymentType.length>0? paymentType[0].name: "";
-        // paymentDetail.paymentPeriodStatusCode = 'PPPENDING'; //TODO: Cambiar
-        // paymentDetail.paymentPeriodStatusId = 1; //TODO: Cambiar
-        // paymentDetail.isRequired = false;
-        // paymentDetail.isSelected = false;
-        // paymentDetail.tableStatus = PPDetailSearchByContractPeriodDTOTableStatus._0; //aDDING
-        // paymentDetail.paymentDescription = payment.comment;
-        //paymentDetail.conceptId = concept.Data.ConceptId;
+        paymentDetail.referenceNo = payment.referenceNo;
+        paymentDetail.comment = payment.comment;
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
-        // paymentDetail.paymentPeriodStatusName = 'PENDING'; //TODO: Cambiar
-
-        //var id = this.paymentMaintenance.pPDetail.length * -1;
-        //paymentDetail.paymentPeriodId = id;
-
         this.paymentPeriodService.registerPaymentDetail(paymentDetail)
         .subscribe()
         .add(
@@ -142,7 +129,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                     this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
             }
         );
-        //this.paymentMaintenance.pPDetail.push(paymentDetail);
         this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
     }
 
@@ -442,21 +428,34 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     }
 
     saveDetailPopup(data): void {
-        let paymentperiod: PPDetailSearchByContractPeriodDTO[];
-        paymentperiod = this.gridDataDet.data.filter(q => q.paymentPeriodId === data.paymentPeriodId);
-        if (paymentperiod.length > 0) {
-            if (paymentperiod[0].paymentAmount != Number(data.paymentAmount)
-                || paymentperiod[0].comment != data.comment) {
-                paymentperiod[0].paymentAmount = Number(data.paymentAmount);
-                paymentperiod[0].comment = data.comment;
-                if (paymentperiod[0].paymentPeriodId > 0) {
-                    paymentperiod[0].tableStatus = 2; //Modified
-                }
+        // let paymentperiod: PPDetailSearchByContractPeriodDTO[];
+        // paymentperiod = this.gridDataDet.data.filter(q => q.paymentPeriodId === data.paymentPeriodId);
+        // if (paymentperiod.length > 0) {
+        //     if (paymentperiod[0].paymentAmount != Number(data.paymentAmount)
+        //         || paymentperiod[0].comment != data.comment) {
+        //         paymentperiod[0].paymentAmount = Number(data.paymentAmount);
+        //         paymentperiod[0].comment = data.comment;
+        //         if (paymentperiod[0].paymentPeriodId > 0) {
+        //             paymentperiod[0].tableStatus = 2; //Modified
+        //         }
+        //     }
+        // }
+
+        let paymentDetail = new PaymentPeriodUpdateRequest();
+        paymentDetail.paymentPeriodId = data.paymentPeriodId;
+        paymentDetail.paymentAmount = data.paymentAmount;
+        paymentDetail.referenceNo = data.reference;
+        paymentDetail.comment = data.comment;
+        this.paymentPeriodService.updatePaymentDetail(paymentDetail)
+        .subscribe()
+        .add(
+            r => {
+                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
             }
-        }
+        );
+        this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
         this.closeDetailPopup();
         this.calculatePendingToPay();
-
     }
 
     addLatefee(): void {

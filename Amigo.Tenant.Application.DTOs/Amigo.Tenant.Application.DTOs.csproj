@@ -94,6 +94,7 @@
     <Compile Include="Requests\Notification\SendNotificationRequest.cs" />
     <Compile Include="Requests\PaymentPeriod\EmailProcessRequest.cs" />
     <Compile Include="Requests\PaymentPeriod\PaymentPeriodUpdateRequest.cs" />
+    <Compile Include="Requests\PaymentPeriod\PaymentPeriodPayRequest.cs" />
     <Compile Include="Requests\PaymentPeriod\PaymentPeriodSearchByContractPeriodRequest.cs" />
     <Compile Include="Requests\PaymentPeriod\PaymentPeriodSearchRequest.cs" />
     <Compile Include="Requests\PaymentPeriod\PaymentPeriodRegisterRequest.cs" />
