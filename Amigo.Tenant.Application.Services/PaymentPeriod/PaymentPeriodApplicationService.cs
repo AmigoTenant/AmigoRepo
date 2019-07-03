@@ -273,10 +273,11 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
                         if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
                         {
+                            ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
                             //Inserting at Final
-                            detailList.Add(lateFeeDetail);
+                            //detailList.Add(lateFeeDetail);
                             isLateFeeIncluded = true;
-                            ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                            //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                         }
                     }
 
@@ -285,8 +286,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 //Inserting at Final
                 if (!isLateFeeIncluded && lateFeeDetail.PaymentPeriodId.HasValue)
                 {
-                    ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
-                    detailList.Add(lateFeeDetail);
+                    ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
+                    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                    //detailList.Add(lateFeeDetail);
                 }
 
 

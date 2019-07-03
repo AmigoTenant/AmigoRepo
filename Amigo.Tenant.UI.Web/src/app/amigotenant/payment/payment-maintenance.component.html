@@ -345,3 +345,10 @@
         <button type="button" class="k-button k-primary" (click)="yesConfirm()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>
+<kendo-dialog title="Confirmation" *ngIf="openedLateFeeConfimationPopup" (close)="closeConfirmationLateFee()">
+    <div>{{confirmLateFeeMessage}}</div>
+    <kendo-dialog-actions>  
+        <button type="button" class="k-button" (click)="closeConfirmationLateFee()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesConfirmLateFee()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

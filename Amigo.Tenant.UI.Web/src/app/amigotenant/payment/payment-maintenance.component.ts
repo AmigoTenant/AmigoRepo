@@ -217,9 +217,18 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                     total: dataResult.data.pPDetail.length
                 }
                 this.calculatePendingToPay();
+            })
+            .add(r=> {
+                this.verifyLateFeeMissing();
             });
     }
 
+
+    public verifyLateFeeMissing()
+    {
+        //let lateFeeMissing = this.paymentMaintenance.lateFeeMissing;
+        this.openedLateFeeConfimationPopup = true;
+    }
 
     public dataToPrint: any;
 
@@ -537,6 +546,37 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     public closeConfirmation() {
         this.openedConfimationPopup = false;
+    }
+
+    //===========
+    //ADDING LATEFEE
+    //===========
+
+    public confirmLateFeeMessage: string = "Se ha identificado pago de renta tardía, deseas agregarlo al periodo?";
+    public openedLateFeeConfimationPopup = false;
+
+    public yesConfirmLateFee() {
+        let payment = this.paymentMaintenance.lateFeeMissing;
+        let paymentDetail = new PaymentPeriodRegisterRequest();
+        paymentDetail.contractId = this.paymentMaintenance.contractId;
+        paymentDetail.periodId = this.paymentMaintenance.periodId;
+        paymentDetail.paymentAmount = payment.paymentAmount;
+        paymentDetail.paymentTypeId = parseInt(payment.paymentTypeId);
+        paymentDetail.referenceNo = payment.reference;
+        paymentDetail.comment = payment.comment;
+        paymentDetail.tenantId = this.paymentMaintenance.tenantId;
+        this.paymentPeriodService.registerPaymentDetail(paymentDetail)
+        .subscribe()
+        .add(
+            r => {
+                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
+            }
+        );
+        this.openedLateFeeConfimationPopup = false;
+    }
+
+    public closeConfirmationLateFee() {
+        this.openedLateFeeConfimationPopup = false;
     }
 
 }

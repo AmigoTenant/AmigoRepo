@@ -33,5 +33,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public decimal? TotalInvoice { get; set; }
         public decimal? TotalIncome { get; set; }
         public decimal? Balance { get; set; }
+        public PPDetailSearchByContractPeriodDTO LateFeeMissing { get; set; }
     }
 }
