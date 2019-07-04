@@ -1073,7 +1073,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.totalInvoice = data["TotalInvoice"] !== undefined ? data["TotalInvoice"] : <any>null;
             this.balance = data["Balance"] !== undefined ? data["Balance"] : <any>null;
 
-            this.lateFeeMissing = data["LateFeeMissing"] !== undefined ? data["LateFeeMissing"] : <any>null;
+            this.lateFeeMissing = data["LateFeeMissing"] !== undefined && data["LateFeeMissing"] !== null? PPDetailSearchByContractPeriodDTO.fromJS(data["LateFeeMissing"]) : <any>null;
         }
     }
 

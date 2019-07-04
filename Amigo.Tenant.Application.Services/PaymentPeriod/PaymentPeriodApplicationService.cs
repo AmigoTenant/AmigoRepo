@@ -16,6 +16,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -35,7 +36,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
         private readonly IAppSettingApplicationService _appSettingApplicationService;
         private readonly IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> _paymentPeriodGroupedStatusAndConceptDTOApplication;
+        private readonly IQueryDataAccess<PaymentPeriodDTO> _paymentPeriodRepo;
         
+
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
             IQueryDataAccess<PaymentPeriodRegisterRequest> paymentPeriodDataAccess,
@@ -47,7 +50,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             IGeneralTableApplicationService generalTableApplicationService,
             IQueryDataAccess<PPHeaderSearchByInvoiceDTO> paymentPeriodSearchByInvoiceDataAccess,
             IAppSettingApplicationService appSettingApplicationService,
-            IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> paymentPeriodGroupedStatusAndConceptDTOApplication)
+            IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> paymentPeriodGroupedStatusAndConceptDTOApplication,
+            IQueryDataAccess<PaymentPeriodDTO> paymentPeriodRepo)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -63,6 +67,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             _paymentPeriodSearchByInvoiceDataAccess = paymentPeriodSearchByInvoiceDataAccess;
             _appSettingApplicationService = appSettingApplicationService;
             _paymentPeriodGroupedStatusAndConceptDTOApplication = paymentPeriodGroupedStatusAndConceptDTOApplication;
+            _paymentPeriodRepo = paymentPeriodRepo;
         }
 
         private async Task<int?> GetStatusbyCodeAsync(string entityCode, string statusCode)
@@ -76,9 +81,62 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
         public async Task<ResponseDTO> RegisterPaymentPeriodDetailAsync(PaymentPeriodRegisterRequest paymentPeriod)
         {
-            var command = _mapper.Map<PaymentPeriodRegisterRequest, PaymentPeriodRegisterCommand>(paymentPeriod);
-            var resp = await _bus.SendAsync(command);
-            return ResponseBuilder.Correct(resp);
+            StringBuilder errorMessage = new StringBuilder();
+            //bool isValid = true;
+
+            var paymentPeriodEntity = await _paymentPeriodRepo.ListAsync(q => 
+                                         q.ContractId == paymentPeriod.ContractId
+                                        && q.PeriodId == paymentPeriod.PeriodId);
+
+            var paymentType = await _generalTableApplicationService.GetGeneralTableByTableNameAsync(Constants.GeneralTableName.PaymentType);
+            if (paymentType == null)
+            {
+                //isValid = false;
+                errorMessage.AppendLine("No existen Tipos de Pago definidos en la Data Maestra");
+            }
+
+            if (paymentType != null)
+            {
+                var renta = paymentType.Data.FirstOrDefault(q => q.Code == Constants.GeneralTableCode.PaymentType.Rent);
+                var deposit = paymentType.Data.FirstOrDefault(q => q.Code == Constants.GeneralTableCode.PaymentType.Deposit);
+                var lateFee = paymentType.Data.FirstOrDefault(q => q.Code == Constants.GeneralTableCode.PaymentType.LateFee);
+
+                if (paymentPeriod.PaymentTypeId == renta.GeneralTableId 
+                    || paymentPeriod.PaymentTypeId == renta.GeneralTableId 
+                    || paymentPeriod.PaymentTypeId == renta.GeneralTableId  
+                    &&
+                    (paymentPeriodEntity.Any(q => q.PaymentTypeId == renta.GeneralTableId 
+                                                || q.PaymentTypeId == deposit.GeneralTableId
+                                                || q.PaymentTypeId == lateFee.GeneralTableId))
+                   )
+                {
+                    //isValid = false;
+                    errorMessage.AppendLine("Tipo de pago ya esta definido. Renta, Deposito y LateFee deben existir solo una vez en este detalle.");
+                }
+            }
+
+            var response = new ResponseDTO()
+            {
+                IsValid = string.IsNullOrEmpty(errorMessage.ToString()),
+                Messages = new List<ApplicationMessage>()
+            };
+
+            if (response.IsValid)
+            {
+                var command = _mapper.Map<PaymentPeriodRegisterRequest, PaymentPeriodRegisterCommand>(paymentPeriod);
+                var resp = await _bus.SendAsync(command);
+                return ResponseBuilder.Correct(resp);
+            }
+            else {
+                response.Messages.Add(new ApplicationMessage()
+                {
+                    Key = string.IsNullOrEmpty(errorMessage.ToString()) ? "Ok" : "Error",
+                    Message = errorMessage.ToString()
+                });
+
+                return response;
+            }
+           
         }
 
         public async Task<ResponseDTO> UpdatePaymentPeriodDetailAsync(PaymentPeriodUpdateRequest paymentPeriod)

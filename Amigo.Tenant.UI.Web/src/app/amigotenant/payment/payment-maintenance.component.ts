@@ -16,6 +16,7 @@ import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-requ
 import { PaymentPeriodService } from "./payment-period.service";
 import { PPDetailSearchByContractPeriodDTOTableStatus } from "../../shared/api/rentalapplication.services.client";
 import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 declare var $: any;
 
@@ -123,7 +124,13 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         paymentDetail.comment = payment.comment;
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
         this.paymentPeriodService.registerPaymentDetail(paymentDetail)
-        .subscribe()
+        .subscribe(
+            r=> {
+                var dataResult: any = r;
+                this.successFlag = dataResult.IsValid;
+                this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+            }
+        )
         .add(
             r => {
                     this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
@@ -210,6 +217,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
             .subscribe(res => {
                 let dataResult: any = res;
+                debugger;
                 this.paymentMaintenance = dataResult.data;
                 this.countItemsDet = dataResult.data.pPDetail.length;
                 this.gridDataDet = {
@@ -226,8 +234,14 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     public verifyLateFeeMissing()
     {
-        //let lateFeeMissing = this.paymentMaintenance.lateFeeMissing;
-        this.openedLateFeeConfimationPopup = true;
+        if (this.paymentMaintenance.lateFeeMissing!==null)
+        {
+            this.openedLateFeeConfimationPopup = true;
+            this.confirmLateFeeMessage = "Se ha identificado pago de renta tardía por " + this.paymentMaintenance.lateFeeMissing.paymentAmount + ", deseas agregarlo al periodo?";
+        }
+        else {
+            this.openedLateFeeConfimationPopup = false;
+        }
     }
 
     public dataToPrint: any;
@@ -552,10 +566,11 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     //ADDING LATEFEE
     //===========
 
-    public confirmLateFeeMessage: string = "Se ha identificado pago de renta tardía, deseas agregarlo al periodo?";
+    public confirmLateFeeMessage: string;
     public openedLateFeeConfimationPopup = false;
 
     public yesConfirmLateFee() {
+        debugger;
         let payment = this.paymentMaintenance.lateFeeMissing;
         let paymentDetail = new PaymentPeriodRegisterRequest();
         paymentDetail.contractId = this.paymentMaintenance.contractId;

@@ -84,6 +84,7 @@
     <Compile Include="Mapping\ContractMapping.cs" />
     <Compile Include="Mapping\PaymentPeriodByContractMapping.cs" />
     <Compile Include="Mapping\PaymentPeriodDtoMapping.cs" />
+    <Compile Include="Mapping\PaymentPeriod_DTOMapping.cs" />
     <Compile Include="Mapping\PaymentPeriodPrintMapping.cs" />
     <Compile Include="Mapping\PaymentPeriodMapping.cs" />
     <Compile Include="Mapping\ExpenseRegisterMapping.cs" />

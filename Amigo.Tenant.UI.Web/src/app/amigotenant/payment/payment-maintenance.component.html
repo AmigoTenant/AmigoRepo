@@ -49,13 +49,13 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <div class="button-container">
-                                    <button type="button" class="ro-button btn-success" (click)="addDetail()">Add Detail</button>
+                                    <button type="button" class="ro-button btn-success" (click)="addDetail()" *ngIf="!showDetailMaintenance">Add Detail</button>
                                 </div>
                             </div>
                         </div>
                         <div class="row" *ngIf="showDetailMaintenance">
 
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 pl-5">
                                 <div class="form-group row">
                                     <label for="paymentTypeId" class="col-sm-2 col-form-label">Payment Type</label>
                                     <div class="col-sm-4">
@@ -94,24 +94,22 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
-                                    <label for="continueRegistration" class="col-sm-2 col-form-label">Continue Registering...</label>
-                                    <div class="col-sm-4">
-                                        <input type="checkbox" class="form-control checkbox" formControlName= "continueRegistration">
-                                    </div>
-                                </div>
+                                
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" *ngIf="showDetailMaintenance">
                             <div class="col-sm-12 text-right" style="padding-top:6px">
-                                <div class="button-container">
-                                        <button type="button" class="ro-button btn-success" (click)="saveDetail()">Save Detail</button>
-                                    <button type="button" class="ro-button btn-success" (click)="addAccount()">Add a
-                                        cuenta</button>
+                                <div class="button-container col-sm-10">
+                                    
+                                    <label for="continueRegistration" class="col-sm-6">Continue Registering...</label>
+                                    <input type="checkbox" class="checkbox col-sm-1" formControlName= "continueRegistration">
+                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="saveDetail()">Save Detail</button>
+                                    <!-- <button type="button" class="ro-button btn-success" (click)="addAccount()">Add a
+                                        cuenta</button> -->
                                     <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
-                                    <button type="button" class="ro-button btn-success" (click)="addLatefee()">Add Late
-                                        fee</button>
-                                    <button type="button" class="ro-button btn-success" (click)="closeDetail()">Close Detail</button>
+                                    <!-- <button type="button" class="ro-button btn-success" (click)="addLatefee()">Add Late
+                                        fee</button> -->
+                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="closeDetail()" >Close Detail</button>
                                     <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
                                 </div>
                             </div>
@@ -151,7 +149,9 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-
+                                <kendo-grid-column field="referenceNo" title="Reference"></kendo-grid-column>
+                                <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
+                                
                                 <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div class="text-right">
