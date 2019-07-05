@@ -14,9 +14,7 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Mapping
             Columns(x =>
             {
                 x.Column(y => y.IsSelected).Ignore();
-                x.Column(y => y.Comment).Ignore();
                 x.Column(y => y.PaymentDate).Ignore();
-                x.Column(y => y.ReferenceNo).Ignore();
             });
         }
     }

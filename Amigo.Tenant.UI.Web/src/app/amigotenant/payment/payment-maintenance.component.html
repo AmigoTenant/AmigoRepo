@@ -149,7 +149,7 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="referenceNo" title="Reference"></kendo-grid-column>
+                                <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
                                 <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
                                 
                                 <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
@@ -165,7 +165,15 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-
+                                <!-- <kendo-grid-column field="invoiceDate" title="InvoiceDate">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{ dataItem.paymentTypeCode!=='RENT' 
+                                                && dataItem.paymentTypeCode!=='DEPOSIT' 
+                                                && dataItem.paymentPeriodStatusCode==='PPPENDING'  }} / </span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column> -->
                                 <kendo-grid-column>
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
@@ -175,7 +183,10 @@
                                                 <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
                                                     <i class="xico-action-edit"></i>
                                                 </button>
-                                                <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                                <button type="button" class="btn-icon" (click)="onDelete(dataItem);"
+                                                    *ngIf="dataItem.paymentTypeCode!=='RENT' 
+                                                            && dataItem.paymentTypeCode!=='DEPOSIT' 
+                                                            && dataItem.paymentPeriodStatusCode==='PPPENDING' ">
                                                     <i class="xico-action-remove"></i>
                                                 </button>
                                             </div>

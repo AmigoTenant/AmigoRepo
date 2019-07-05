@@ -17,15 +17,10 @@ import { PaymentPeriodService } from "./payment-period.service";
 import { PPDetailSearchByContractPeriodDTOTableStatus } from "../../shared/api/rentalapplication.services.client";
 import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { PaymentPeriodPopup } from './dto/payment-period-popup';
 
 declare var $: any;
 
-export class dataDetailClass {
-    public paymentPeriodId: string;
-    public paymentTypeCode: string;
-    public comment: string;
-    public paymentAmount: number;
-}
 
 @Component({
     selector: 'at-payment-maintenance',
@@ -33,7 +28,7 @@ export class dataDetailClass {
 })
 
 export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
-    public dataDetail: dataDetailClass;
+    public paymentPeriodPopup: PaymentPeriodPopup;
     public gridDataDet: GridDataResult;
     public skipDet: number = 0;
     public buttonCount: number = 20;
@@ -128,7 +123,15 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
             r=> {
                 var dataResult: any = r;
                 this.successFlag = dataResult.IsValid;
-                this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+                if (!dataResult.IsValid)
+                {
+                    this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+                }
+                else
+                {
+                    this.successMessage = 'Payment detail was inserted successfully!';;
+                    this.errorMessages = null;
+                }
             }
         )
         .add(
@@ -164,7 +167,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     sub: Subscription;
 
     ngOnInit() {
-        this.dataDetail = new dataDetailClass();
+        this.paymentPeriodPopup = new PaymentPeriodPopup();
         this.buildForm();
         this.initialize();
         this.sub = this.route.params.subscribe(params => {
@@ -202,12 +205,13 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.masterDataService.getGeneralTableByTableName('PaymentType')
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
+                let paymentTypeFiltered = dataResult.data.filter(q=> q.code !== 'RENT' && q.code !== 'DEPOSIT');
                 this._listPaymentTypes = [];
-                for (let i = 0; i < dataResult.data.length; i++) {
+                for (let i = 0; i < paymentTypeFiltered.length; i++) {
                     this._listPaymentTypes.push({
-                        'typeId': dataResult.data[i].generalTableId,
-                        'name': dataResult.data[i].value,
-                        'code': dataResult.data[i].code
+                        'typeId': paymentTypeFiltered[i].generalTableId,
+                        'name': paymentTypeFiltered[i].value,
+                        'code': paymentTypeFiltered[i].code
                     });
                 }
             });
@@ -437,11 +441,11 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     }
 
     getCostCenterToUpdate(costCenterDTO: any): void {
-        this.dataDetail = new dataDetailClass();
-        this.dataDetail.paymentPeriodId = costCenterDTO.paymentPeriodId;
-        this.dataDetail.paymentAmount = costCenterDTO.paymentAmount;
-        this.dataDetail.comment = costCenterDTO.comment;
-        this.dataDetail.paymentTypeCode = costCenterDTO.paymentTypeCode;
+        this.paymentPeriodPopup = new PaymentPeriodPopup();
+        this.paymentPeriodPopup.paymentPeriodId = costCenterDTO.paymentPeriodId;
+        this.paymentPeriodPopup.paymentAmount = costCenterDTO.paymentAmount;
+        this.paymentPeriodPopup.comment = costCenterDTO.comment;
+        this.paymentPeriodPopup.paymentTypeCode = costCenterDTO.paymentTypeCode;
         this.isDetailVisible = true;
 
     };

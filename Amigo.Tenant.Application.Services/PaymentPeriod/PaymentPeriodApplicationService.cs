@@ -302,6 +302,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.ConceptId = item.ConceptId;
                     detail.ConceptCode = item.ConceptCode;
                     detail.IsTenantFavorable = item.IsTenantFavorable;
+                    detail.Comment = item.Comment;
+                    detail.Reference = item.ReferenceNo;
+
                     detailList.Add(detail);
 
                     if (!existLateFeeInDB

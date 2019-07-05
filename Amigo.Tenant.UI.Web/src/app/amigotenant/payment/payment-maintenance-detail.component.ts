@@ -37,20 +37,6 @@ export class PaymentMaintenanceDetailComponent implements OnInit{
         }
     }
 
-    public savePaymentDetail() {
-        //this.paymentDataService.update(this.paymentMaintenance)
-        //        .subscribe(res => {
-        //            var dataResult: any = res;
-        //            this.successFlag = dataResult.isValid;
-        //            this.errorMessages = dataResult.messages;
-        //            this.successMessage = 'Payment Detail was Updated';
-        //            if (this.successFlag) {
-        //                this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-        //            }
-        //        });
-    }
-
-    //This Event came from BotonComponent
     onExecuteEvent($event) {
         switch ($event) {
             case "s":
