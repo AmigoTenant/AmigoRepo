@@ -315,7 +315,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     public onEdit(data): void {
         this.isDetailVisible = true;
-        this.getCostCenterToUpdate(data);
+        this.setPaymentPeriodPopup(data);
         
     }
 
@@ -440,12 +440,13 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     }
 
-    getCostCenterToUpdate(costCenterDTO: any): void {
+    setPaymentPeriodPopup(dataItem: any): void {
         this.paymentPeriodPopup = new PaymentPeriodPopup();
-        this.paymentPeriodPopup.paymentPeriodId = costCenterDTO.paymentPeriodId;
-        this.paymentPeriodPopup.paymentAmount = costCenterDTO.paymentAmount;
-        this.paymentPeriodPopup.comment = costCenterDTO.comment;
-        this.paymentPeriodPopup.paymentTypeCode = costCenterDTO.paymentTypeCode;
+        this.paymentPeriodPopup.paymentPeriodId = dataItem.paymentPeriodId;
+        this.paymentPeriodPopup.paymentAmount = dataItem.paymentAmount;
+        this.paymentPeriodPopup.comment = dataItem.comment;
+        this.paymentPeriodPopup.paymentTypeCode = dataItem.paymentTypeCode;
+        this.paymentPeriodPopup.referenceNo = dataItem.reference;
         this.isDetailVisible = true;
 
     };

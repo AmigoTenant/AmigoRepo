@@ -1,3 +1,4 @@
+import { PaymentPeriodPopup } from './dto/payment-period-popup';
 import { Component, Input, Output, state, SimpleChange, EventEmitter, OnInit} from '@angular/core';
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
@@ -26,7 +27,7 @@ export class PaymentMaintenanceDetailComponent implements OnInit{
         this.paymentMaintenanceDetail = new PPDetailSearchByContractPeriodDTO();
     }
 
-    @Input() inputDataDetail: any;
+    @Input() inputDataDetail: PaymentPeriodPopup;
 
     ngOnInit() {
         if (this.inputDataDetail != null && this.inputDataDetail.paymentTypeCode != undefined) {
@@ -34,6 +35,7 @@ export class PaymentMaintenanceDetailComponent implements OnInit{
             this.paymentMaintenanceDetail.comment = this.inputDataDetail.comment;
             this.paymentMaintenanceDetail.paymentTypeCode = this.inputDataDetail.paymentTypeCode;
             this.paymentMaintenanceDetail.paymentAmount = this.inputDataDetail.paymentAmount;
+            this.paymentMaintenanceDetail.reference = this.inputDataDetail.referenceNo;
         }
     }
 

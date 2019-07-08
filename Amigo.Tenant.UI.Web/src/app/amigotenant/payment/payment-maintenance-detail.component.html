@@ -2,20 +2,15 @@
     <div class="page-header">
         Payment Maintenance Detail
     </div>
-
-    <!--<div class="action-bar-container">
-            <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="validationForm.form.valid" [formName]="'validationForm'"></st-boton-maintenance>
-        </div>
-        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>-->
-    <div class="row col-sm-8">
-        <form #headerForm="ngForm" data-val-form="headerForm" class="col-sm-12">
-            <div>
-                <div class="col-sm-10">
+    <div class="row">
+        <form>
+            <div class="container col-sm-6">
+                <div class="col-sm-6 align-center">
                     <div class="row form-group">
                         <label class="col-sm-3 control-label">Reference no</label>
                         <div class="col-sm-9">
                             <input type="text" class="form-control" [(ngModel)]="paymentMaintenanceDetail.reference"
-                                name="comment" />
+                                name="referenceNo" />
                         </div>
                     </div>
                     <div class="row form-group">
@@ -40,9 +35,11 @@
     </div>
 
     <div class="row">
-        <div class="button-container">
-            <button type="button" class="ro-button btn-default" (click)="onSave()">Accept</button>
-            <button type="button" class="ro-button btn-success" (click)="onCancel()">Cancel</button>
+        <div class="col-sm-12">     
+            <div class="button-container text-right">
+                <button type="button" class="ro-button btn-default" (click)="onSave()">Accept</button>
+                <button type="button" class="ro-button btn-success" (click)="onCancel()">Cancel</button>
+            </div>
         </div>
     </div>
 

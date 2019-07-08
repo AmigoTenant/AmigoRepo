@@ -94,13 +94,11 @@
                                     </div>
                                 </div>
 
-                                
                             </div>
                         </div>
                         <div class="row" *ngIf="showDetailMaintenance">
                             <div class="col-sm-12 text-right" style="padding-top:6px">
                                 <div class="button-container col-sm-10">
-                                    
                                     <label for="continueRegistration" class="col-sm-6">Continue Registering...</label>
                                     <input type="checkbox" class="checkbox col-sm-1" formControlName= "continueRegistration">
                                     <button type="button" class="ro-button btn-success col-sm-2" (click)="saveDetail()">Save Detail</button>
@@ -151,7 +149,6 @@
                                 </kendo-grid-column>
                                 <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
                                 <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
-                                
                                 <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div class="text-right">
@@ -332,7 +329,7 @@
 </div>
 
 <kendo-dialog title="Detail" *ngIf="isDetailVisible" (close)="closeDetailPopup()" style="z-index: 7888">
-    <at-payment-maintenance-detail #dialogDetail [inputDataDetail]="dataDetail" (cancelEvent)="closeDetailPopup($event)"
+    <at-payment-maintenance-detail #dialogDetail [inputDataDetail]="paymentPeriodPopup" (cancelEvent)="closeDetailPopup($event)"
         (saveEvent)="saveDetailPopup($event)">
     </at-payment-maintenance-detail>
 </kendo-dialog>

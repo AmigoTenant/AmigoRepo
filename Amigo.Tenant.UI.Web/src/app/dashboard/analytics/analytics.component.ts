@@ -3,7 +3,6 @@ import { ChartsModule } from '@progress/kendo-angular-charts';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
 import { basename } from 'path';
 import { DashboardDataService } from '../dasboard-data.service';
-import { dataDetailClass } from '../../amigotenant/payment/payment-maintenance.component';
 import { DashboardBalanceDto } from '../dto/dashboard-balance-dto';
 import { DashboardBalanceRequest } from '../dto/dashboard-balance-request';
 import { ResponseListDTO } from '../../shared/dto/response-list-dto';
