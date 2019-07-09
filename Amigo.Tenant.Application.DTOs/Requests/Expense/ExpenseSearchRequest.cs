@@ -19,7 +19,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Expense
         public string FileName { get; set; }
         public string PropertyName { get; set; }
         public string ConceptName { get; set; }
-
+        public string TenantFullName { get; set; }
 
     }
 }

@@ -1,7 +1,7 @@
-export class PaymentPeriodPopup{
+export class PaymentPeriodPopup {
     public paymentPeriodId: number;
-    public paymentAmount: number;
-    public comment: string;
-    public referenceNo: string;
     public paymentTypeCode: string;
+    public comment: string;
+    public paymentAmount: number;
+    public referenceNo: string;
 }

@@ -11,4 +11,5 @@ export class ExpenseRegisterRequest {
         public tax: number;
         public totalAmount: number;
         public businessPartnerId: number;
+        public tenantFullName: string;
 }

@@ -125,7 +125,6 @@ namespace Amigo.Tenant.Application.Services.Expense
             List<OrderExpression<ExpenseSearchDTO>> orderExpressionList = new List<OrderExpression<ExpenseSearchDTO>>();
             orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Desc, p => p.ExpenseDate));
             orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.HouseName));
-            //orderExpressionList.Add(new OrderExpression<ExpenseSearchDTO>(OrderType.Asc, p => p.TenantFullName));
             Expression<Func<ExpenseSearchDTO, bool>> queryFilter = c => true;
 
             //APPLICATIONDATE
@@ -188,6 +187,9 @@ namespace Amigo.Tenant.Application.Services.Expense
 
             if (search.BusinessPartnerId.HasValue)
                 queryFilter = queryFilter.And(p => p.BusinessPartnerId == search.BusinessPartnerId);
+
+            if (!string.IsNullOrEmpty(search.TenantFullName))
+                queryFilter = queryFilter.And(p => p.Tenants.Contains(search.TenantFullName));
 
             var expense = await _expenseSearchDataAccess.ListPagedAsync(queryFilter, search.Page, search.PageSize, orderExpressionList.ToArray());
 

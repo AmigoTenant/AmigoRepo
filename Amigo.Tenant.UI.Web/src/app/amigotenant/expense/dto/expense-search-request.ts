@@ -17,5 +17,6 @@ export class ExpenseSearchRequest extends SearchBase
         public conceptName : string | null;
         public businessPartnerId : number | null;
         public fileName : string | null;
+        public tenantFullName: string | null;
 }
 

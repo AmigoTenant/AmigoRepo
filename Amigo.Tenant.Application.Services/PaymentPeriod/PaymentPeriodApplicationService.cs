@@ -38,7 +38,6 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> _paymentPeriodGroupedStatusAndConceptDTOApplication;
         private readonly IQueryDataAccess<PaymentPeriodDTO> _paymentPeriodRepo;
         
-
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
             IQueryDataAccess<PaymentPeriodRegisterRequest> paymentPeriodDataAccess,
@@ -112,6 +111,13 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 {
                     //isValid = false;
                     errorMessage.AppendLine("Tipo de pago ya esta definido. Renta, Deposito y LateFee deben existir solo una vez en este detalle.");
+                }
+                var paymentTypeFound = paymentType.Data.FirstOrDefault(q => q.GeneralTableId == paymentPeriod.PaymentTypeId);
+                var concept = await _conceptApplicationService.GetConceptByCodeAsync(paymentTypeFound.Code);
+
+                if (concept.Data == null)
+                {
+                    errorMessage.AppendLine(string.Format("No existe el concepto {0} definido en el sistema, es necesario para asociarlo al concepto.", paymentTypeFound.Value));
                 }
             }
 
@@ -546,14 +552,14 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 errorMessage = "No existe ningun pendiente que este seleccionado";
             }
 
-            if (request.PPDetail.Any(q => 
-                    q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending 
-                    && q.PaymentTypeCode == Constants.GeneralTableCode.PaymentType.OnAccount
-                    && (!q.IsSelected.Value || !q.IsSelected.HasValue)))
-            {
-                isValid = false;
-                errorMessage = "No puedes grabar un Payment On Account sin seleccionarlo";
-            }
+            //if (request.PPDetail.Any(q => 
+            //        q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending 
+            //        && q.PaymentTypeCode == Constants.GeneralTableCode.PaymentType.OnAccount
+            //        && (!q.IsSelected.Value || !q.IsSelected.HasValue)))
+            //{
+            //    isValid = false;
+            //    errorMessage = "No puedes grabar un Payment On Account sin seleccionarlo";
+            //}
 
             if (request.PPDetail.Any(q =>
                     q.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending

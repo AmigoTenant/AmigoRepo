@@ -32,10 +32,8 @@
                 </div>
             </div>
             <div class="col-sm-4 text-right">
-
-                <st-boton-maintenance (onEventSave)="onExecuteEvent($event)" [formValid]="validationForm.form.valid"
-                    [formName]="'validationForm'"></st-boton-maintenance>
-
+                <input type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
+                <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancel">
             </div>
         </div>
 

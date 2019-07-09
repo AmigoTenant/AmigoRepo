@@ -162,7 +162,8 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
             paymentTypeId: null,
             conceptName: null,
             businessPartnerId: null,
-            fileName: null
+            fileName: null,
+            tenantFullName: null
         });
     }
 

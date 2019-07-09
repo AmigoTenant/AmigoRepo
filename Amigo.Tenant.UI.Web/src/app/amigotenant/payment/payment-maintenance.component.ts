@@ -100,6 +100,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     public showDetailMaintenance= false;
     public addDetail() {
         this.showDetailMaintenance= true;
+        this.paymentForm.get('paymentTypeId').setValidators(Validators.required);
+        this.paymentForm.updateValueAndValidity();
     }
 
     public saveDetail() {
@@ -286,22 +288,11 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('amigotenant/payment');
     }
 
-    //This Event came from BotonComponent
-    onExecuteEvent($event) {
-        switch ($event) {
-            case "s":
-                //this.savePaymentDetail();
-                this.openedConfimationPopup = true;
-                break;
-            case "c":
-                //this.onClear();
-                break;
-            case "k":
-                this.onCancel();
-                break;
-            default:
-                confirm("Sorry, that Event does not exists yet!");
-        }
+    public savePaymentStatus()
+    {
+        this.paymentForm.get('paymentTypeId').clearValidators();
+        this.paymentForm.updateValueAndValidity();
+        this.openedConfimationPopup = true;
     }
 
     onReset(): void {
