@@ -297,7 +297,7 @@ namespace Amigo.Tenant.Common
             public const string Deposit = "DEPOSIT";
             public const string LateFee = "LATEFEE";
             public const string Energy = "SVCENERGY";
-            public const string Fine = "FINEINFRAC";
+            public const string Fine = "FINE";
             public const string OnAccount = "ONACCOUNT";
 
         }
