@@ -24,6 +24,7 @@ using System.Web.Script.Serialization;
 using iTextSharp.text;
 using iTextSharp.text.html.simpleparser;
 using iTextSharp.text.pdf;
+using Amigo.Tenant.Commands.Common;
 
 namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 {
@@ -68,13 +69,15 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             if (ModelState.IsValid)
             {
                 //var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
-                await GenerateFileAndSend(paymentPeriod);
+                //var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
+                var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", 221);
+                await GenerateFileAndSend(resp.Data);
                 return null; // response;
             }
             return ModelState.ToResponse();
         }
 
-        private async Task GenerateFileAndSend(PPHeaderSearchByContractPeriodDTO paymentPeriod)
+        private async Task GenerateFileAndSend(List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
         {
             MemoryStream memStream = CrearDocumentoAmigo(paymentPeriod);
             var attachment = new Attachment(new MemoryStream(memStream.ToArray()), System.Net.Mime.MediaTypeNames.Application.Pdf);
@@ -82,7 +85,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             await SendEmail(attachment, paymentPeriod);
         }
 
-        private async Task SendEmail(Attachment attachment, PPHeaderSearchByContractPeriodDTO paymentPeriod)
+        private async Task SendEmail(Attachment attachment, List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
         {
             var emailBody = "<!DOCTYPE html><html><head><title>Título de la WEB</title><meta charset='UTF-8'></head><body><h1>TEST H1</h1><div><table><tr><td>celda1</td></tr></table></div></body></html>";
             var mail = new MailMessage
@@ -191,7 +194,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             writer1.Close();
             return memStream;
         }
-        private MemoryStream CrearDocumentoAmigo(PPHeaderSearchByContractPeriodDTO paymentPeriod)
+        private MemoryStream CrearDocumentoAmigo(List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
         {
             // Creamos el documento con el tamaño de página tradicional
             Document doc = new Document(PageSize.LETTER);
@@ -209,39 +212,121 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             doc.Open();
 
             //// Escribimos el encabezamiento en el documento
-            doc.Add(new Paragraph("Mi primer documento PDF"));
             doc.Add(Chunk.NEWLINE);
 
             //string imagepath = System.Web.Hosting.HostingEnvironment.MapPath("~/Images/logo_invoice.png"); //Application.StartupPath;
             Image jpg = Image.GetInstance(System.Web.Hosting.HostingEnvironment.MapPath("~/Images/logo_invoice.png"));
-            jpg.ScaleToFit(300f, 300f);
+            jpg.ScaleToFit(100f, 50f);
             jpg.SpacingAfter = 12f;
             jpg.SpacingBefore = 12f;
-            doc.Add(new Paragraph("GIF"));
-
-            //Image gif = Image.GetInstance(imagepath + "/mikesdotnetting.gif");
-
+            
             doc.Add(jpg);
 
-            iTextSharp.text.Font _standardFont = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            iTextSharp.text.Font _standardFontTitle = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
+            var paragraph = new Paragraph("INVOICE", _standardFontTitle);
+            paragraph.Alignment = Element.ALIGN_CENTER;
+            doc.Add(paragraph);
+            doc.Add(Chunk.NEWLINE);
+
+            //otro
+
+            PdfContentByte cb = writer1.DirectContentUnder;
+            BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1257, BaseFont.NOT_EMBEDDED);
+            cb.SetColorFill(BaseColor.LIGHT_GRAY);
+            cb.SetFontAndSize(bf, 32);
+            cb.BeginText();
+            string text = "Signature with Seal";
+            
 
             // Creamos una tabla que contendrá el nombre, apellido y país 
+            var firstPaymentPeriod = paymentPeriod.First();
+            CreateHeaderInvoice(doc, firstPaymentPeriod);
+            doc.Add(Chunk.NEWLINE);
+
+            CreateDetailInvoice(doc, paymentPeriod);
+            doc.Add(Chunk.NEWLINE);
+
+            CreateFooterInvoice(doc, paymentPeriod.First());
+            doc.Add(Chunk.NEWLINE);
+
+            //memStream.Position = 0;
+
+            cb.ShowTextAligned(1, text, 300, 400, 45);
+            cb.EndText();
+
+            doc.Close();
+            writer1.Close();
+            return memStream;
+        }
+
+        private void CreateFooterInvoice(Document doc, PPHeaderSearchByInvoiceDTO invoiceData)
+        {
+            iTextSharp.text.Font _standardFontSubTitle = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font _standardFontSubTitleData = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            PdfPTable tblHeader = new PdfPTable(3);
+            tblHeader.WidthPercentage = 100;
+            tblHeader.DefaultCell.Border = Rectangle.NO_BORDER;
+
+            //TITULOS
+
+            PdfPCell clSubTitleSeparation = new PdfPCell();
+            clSubTitleSeparation.BorderWidth = 0;
+
+            PdfPCell clSubTitleAmount = new PdfPCell(new Phrase("Total Amount", _standardFontSubTitle));
+            clSubTitleAmount.BorderWidth = 0;
+            clSubTitleAmount.HorizontalAlignment = 1;
+
+            PdfPCell clSubTitleBalance = new PdfPCell(new Phrase("Balance", _standardFontSubTitle));
+            clSubTitleBalance.BorderWidth = 0;
+            clSubTitleBalance.HorizontalAlignment = 1;
+
+            //DATOS
+
+            PdfPCell clSubTitleAmountData = new PdfPCell(new Phrase(invoiceData.TotalAmount.ToString(), _standardFontSubTitleData));
+            clSubTitleAmountData.BorderWidth = 0;
+            clSubTitleAmountData.HorizontalAlignment = 1;
+
+            var balance = invoiceData.TotalIncome - invoiceData.TotalInvoice;
+            PdfPCell clSubTitleBalanceData = new PdfPCell(new Phrase(balance.ToString(), _standardFontSubTitleData));
+            clSubTitleBalanceData.BorderWidth = 0;
+            clSubTitleBalanceData.HorizontalAlignment = 1;
+
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleAmount);
+            tblHeader.AddCell(clSubTitleAmountData);
+
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleBalance);
+            tblHeader.AddCell(clSubTitleBalanceData);
+
+            doc.Add(tblHeader);
+        }
+
+        private void CreateDetailInvoice(Document doc, List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
+        {
+
+            iTextSharp.text.Font _standardFontHeader = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font _standardFontBody = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
             // de nuestros visitante.
             PdfPTable tblDetail = new PdfPTable(3);
             tblDetail.WidthPercentage = 100;
+            tblDetail.DefaultCell.Border = Rectangle.NO_BORDER;
 
             // Configuramos el título de las columnas de la tabla
-            PdfPCell clSequence = new PdfPCell(new Phrase("No.", _standardFont));
+            PdfPCell clSequence = new PdfPCell(new Phrase("No.", _standardFontHeader));
             clSequence.BorderWidth = 0;
             clSequence.BorderWidthBottom = 0.75f;
 
-            PdfPCell clDescription = new PdfPCell(new Phrase("Description", _standardFont));
+            PdfPCell clDescription = new PdfPCell(new Phrase("Description", _standardFontHeader));
             clDescription.BorderWidth = 0;
             clDescription.BorderWidthBottom = 0.75f;
 
-            PdfPCell clAmount = new PdfPCell(new Phrase("Amount", _standardFont));
+            PdfPCell clAmount = new PdfPCell(new Phrase("Amount", _standardFontHeader));
             clAmount.BorderWidth = 0;
             clAmount.BorderWidthBottom = 0.75f;
+            clAmount.HorizontalAlignment = 1;
 
             // Añadimos las celdas a la tabla
             tblDetail.AddCell(clSequence);
@@ -250,16 +335,17 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
             // Llenamos la tabla con información
             var sequence = 1;
-            paymentPeriod.PPDetail.ForEach(q => 
+            paymentPeriod.ForEach(q =>
             {
-                clSequence = new PdfPCell(new Phrase(sequence.ToString(), _standardFont));
+                clSequence = new PdfPCell(new Phrase(sequence.ToString(), _standardFontBody));
                 clSequence.BorderWidth = 0;
 
-                clDescription = new PdfPCell(new Phrase(q.PaymentDescription, _standardFont));
+                clDescription = new PdfPCell(new Phrase(q.PaymentDescription, _standardFontBody));
                 clDescription.BorderWidth = 0;
 
-                clAmount = new PdfPCell(new Phrase(q.PaymentAmount.ToString(), _standardFont));
+                clAmount = new PdfPCell(new Phrase(q.PaymentAmount.ToString(), _standardFontBody));
                 clAmount.BorderWidth = 0;
+                clAmount.HorizontalAlignment = 1;
 
                 // Añadimos las celdas a la tabla
                 tblDetail.AddCell(clSequence);
@@ -271,12 +357,100 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
             // Finalmente, añadimos la tabla al documento PDF y cerramos el documento
             doc.Add(tblDetail);
-            //memStream.Position = 0;
+        }
+
+        private void CreateHeaderInvoice(Document doc, PPHeaderSearchByInvoiceDTO paymentPeriod )
+        {
+            iTextSharp.text.Font _standardFontSubTitle = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            iTextSharp.text.Font _standardFontSubTitleData = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+
+            PdfPTable tblHeader = new PdfPTable(5);
+            tblHeader.WidthPercentage = 100;
+            tblHeader.DefaultCell.Border = Rectangle.NO_BORDER;
+
+            // Configuramos el TITULOS de las columnas de la tabla
+            PdfPCell clSubTitleSeparation = new PdfPCell();
+            clSubTitleSeparation.BorderWidth = 0;
+
+            PdfPCell clSubTitleInvoice = new PdfPCell(new Phrase("Invoice No.", _standardFontSubTitle));
+            clSubTitleInvoice.BorderWidth = 0;
+
+            PdfPCell clSubTitlePeriod = new PdfPCell(new Phrase("Period", _standardFontSubTitle));
+            clSubTitlePeriod.BorderWidth = 0;
+
+            PdfPCell clSubTitleDate = new PdfPCell(new Phrase("Date", _standardFontSubTitle));
+            clSubTitleDate.BorderWidth = 0;
+
+            PdfPCell clSubTitleUser = new PdfPCell(new Phrase("User", _standardFontSubTitle));
+            clSubTitleUser.BorderWidth = 0;
+
+            PdfPCell clSubTitleBillTo = new PdfPCell(new Phrase("Bill To", _standardFontSubTitle));
+            clSubTitleBillTo.BorderWidth = 0;
+
+            PdfPCell clSubTitleAddress = new PdfPCell(new Phrase("Address", _standardFontSubTitle));
+            clSubTitleAddress.BorderWidth = 0;
+
+            PdfPCell clSubTitleComment = new PdfPCell(new Phrase("Comment", _standardFontSubTitle));
+            clSubTitleComment.BorderWidth = 0;
+
+            PdfPCell clSubTitleAddressAmigo = new PdfPCell(new Phrase("", _standardFontSubTitle));
+            clSubTitleAddressAmigo.BorderWidth = 0;
+
+            //Configracipon de DATOS del header
+            PdfPCell clSubTitleInvoiceData = new PdfPCell(new Phrase(paymentPeriod.InvoiceNo, _standardFontSubTitleData));
+            clSubTitleInvoiceData.BorderWidth = 0;
+
+            PdfPCell clSubTitlePeriodData = new PdfPCell(new Phrase(paymentPeriod.PeriodCode, _standardFontSubTitleData));
+            clSubTitlePeriodData.BorderWidth = 0;
+
+            PdfPCell clSubTitleDateData = new PdfPCell(new Phrase(DateTime.Today.ToShortDateString(), _standardFontSubTitleData));
+            clSubTitleDateData.BorderWidth = 0;
+
+            PdfPCell clSubTitleUserData = new PdfPCell(new Phrase(paymentPeriod.UserName, _standardFontSubTitleData));
+            clSubTitleUserData.BorderWidth = 0;
+
+            PdfPCell clSubTitleBillToData = new PdfPCell(new Phrase(paymentPeriod.TenantFullName, _standardFontSubTitleData));
+            clSubTitleBillToData.BorderWidth = 0;
+
+            PdfPCell clSubTitleAddressData = new PdfPCell(new Phrase(paymentPeriod.HouseName, _standardFontSubTitleData));
+            clSubTitleAddressData.BorderWidth = 0;
+
+            PdfPCell clSubTitleCommentData = new PdfPCell(new Phrase(paymentPeriod.Comment, _standardFontSubTitleData));
+            clSubTitleCommentData.BorderWidth = 0;
+
+            // Añadimos las celdas a la tabla
+            tblHeader.AddCell(clSubTitleInvoice);
+            tblHeader.AddCell(clSubTitleInvoiceData);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitlePeriod);
+            tblHeader.AddCell(clSubTitlePeriodData);
+
+            tblHeader.AddCell(clSubTitleDate);
+            tblHeader.AddCell(clSubTitleDateData);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleUser);
+            tblHeader.AddCell(clSubTitleUserData);
+
+            tblHeader.AddCell(clSubTitleBillTo);
+            tblHeader.AddCell(clSubTitleBillToData);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleAddress);
+            tblHeader.AddCell(clSubTitleAddressData);
+
+            tblHeader.AddCell(clSubTitleComment);
+            tblHeader.AddCell(clSubTitleCommentData);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
+
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
+            tblHeader.AddCell(clSubTitleSeparation);
 
 
-            doc.Close();
-            writer1.Close();
-            return memStream;
+            doc.Add(tblHeader);
         }
 
         [HttpGet, Route("calculateLateFeeByContractAndPeriod")]
@@ -330,7 +504,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var rowInicioDetalle = 16;
             var rowTitulosDetalle = 15;
 
-            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo);
+            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo, null);
             var c = 1;
             var listFilter = from data in resp.Data
                              select new

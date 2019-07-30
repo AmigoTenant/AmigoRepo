@@ -370,10 +370,16 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return ResponseBuilder.Correct(ppHeaderSearchByContractPeriodDTO);
         }
 
-        public async Task<ResponseDTO<List<PPHeaderSearchByInvoiceDTO>>> SearchInvoiceByIdAsync(string invoiceNo)
+        public async Task<ResponseDTO<List<PPHeaderSearchByInvoiceDTO>>> SearchInvoiceByIdAsync(string invoiceNo, int? invoiceId)
         {
             Expression<Func<PPHeaderSearchByInvoiceDTO, bool>> queryFilter = c => true;
+
+            if (!string.IsNullOrEmpty(invoiceNo))
             queryFilter = queryFilter.And(p => p.InvoiceNo == invoiceNo);
+
+            if (invoiceId.HasValue)
+                queryFilter = queryFilter.And(p => p.InvoiceId == invoiceId);
+
             var paymentsPeriod = await _paymentPeriodSearchByInvoiceDataAccess.ListAsync(queryFilter);
             return ResponseBuilder.Correct(paymentsPeriod.ToList());
         }

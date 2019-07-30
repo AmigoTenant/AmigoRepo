@@ -26,7 +26,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         private readonly IRepository<Invoice> _repositoryInvoice;
         private readonly IRepository<InvoiceDetail> _repositoryInvoiceDetail;
         private readonly IRepository<EntityStatus> _repositoryEntityStatus;
-
+        private readonly IRepository<Concept> _repositoryConcept;
 
         public PaymentPeriodHeaderCommandHandler(
          IBus bus,
@@ -35,7 +35,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
          IRepository<PaymentPeriod> repositoryPayment,
          IRepository<Invoice> repositoryInvoice,
          IRepository<EntityStatus> repositoryEntityStatus,
-         IRepository<InvoiceDetail> repositoryInvoiceDetail)
+         IRepository<InvoiceDetail> repositoryInvoiceDetail,
+         IRepository<Concept> repositoryConcept)
         {
             _bus = bus;
             _mapper = mapper;
@@ -44,11 +45,14 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
             _repositoryInvoice = repositoryInvoice;
             _repositoryEntityStatus = repositoryEntityStatus;
             _repositoryInvoiceDetail = repositoryInvoiceDetail;
+            _repositoryConcept = repositoryConcept;
         }
 
 
         public async Task<CommandResult> Handle(PaymentPeriodHeaderCommand message)
         {
+            int invoiceId = 0;
+            var invoiceEntity = new Invoice();
             try
             {
                 var paymentPeriodPayed = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.PaymentPeriod && q.Code == Constants.EntityStatus.PaymentPeriod.Payed);
@@ -66,7 +70,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     var maxInvoice = await _repositoryInvoice.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray());
 
                     var firstDetail = message.PPDetail.First();
-                    var invoiceEntity = new Invoice();
+                    invoiceEntity = new Invoice();
                     invoiceEntity.InvoiceId = -1;
                     invoiceEntity.ContractId = firstDetail.ContractId;
                     invoiceEntity.InvoiceDate = DateTime.Now;
@@ -120,14 +124,15 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     //TODO: TRAER EL CODIGO DE LOS CONCEPTOS QUE RESTAN
                     if (message.IsPayInFull)
                     {
-                        var existOnlyOnAccountCpt = message.PPDetail.Count(q => q.ConceptId != 23); //SI EXISTEN CONCEPTOS PARA RESTAR ACCOUNTS
+                        var accountConcept = await _repositoryConcept.FirstOrDefaultAsync(q=> q.Code == Constants.ConceptCode.OnAccount);
+                        var existOnlyOnAccountCpt = message.PPDetail.Count(q => q.ConceptId != accountConcept.ConceptId); //SI EXISTEN CONCEPTOS PARA RESTAR ACCOUNTS
 
                         if (existOnlyOnAccountCpt > 0)
                         {
                             //Ingresara solo si existen otros conceptos de Pago como Renta o Deposito u otro,
                             //Caso contrario no grabara los onaccounts en negativo en los Invoice
                             var paymentsForDiscount = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId
-                            && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == 23 && q.PaymentPeriodStatusId == 12);
+                            && q.TenantId == message.TenantId && q.RowStatus && q.ConceptId == accountConcept.ConceptId && q.PaymentPeriodStatusId == paymentPeriodPayed.EntityStatusId);
                             // 12: PPPAYED
                             // 23: ONACCOUNT Concept
                             var existDiscount = false;
@@ -160,17 +165,15 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                                     invoiceEntity.TotalAmount += invoiceDetailEntity.TotalAmount;
                                 }
                             }
-
                             if (existDiscount)
                                 invoiceEntity.Comment = string.Format("On Account concepts were applied ");
                         }
-
-
                     }
 
                     invoiceEntity.InvoiceDetails = invoiceDetailsEntity;
 
                     _repositoryInvoice.Add(invoiceEntity);
+
 
                 }
                 
@@ -187,14 +190,15 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
 
                 if (index != 0)
                 {
+                    invoiceId = invoiceEntity.InvoiceId.Value;
                     message.PaymentPeriodId = index;
                 }
 
                 var entityToSave = new PaymentPeriod();
                 entityToSave.PaymentPeriodId = index;
-                return entityToSave.ToRegisterdResult().WithId(index);
+                return entityToSave.ToRegisterdResult().WithId(invoiceId);
 
-                            }
+            }
             catch (Exception ex)
             {
                 throw;
