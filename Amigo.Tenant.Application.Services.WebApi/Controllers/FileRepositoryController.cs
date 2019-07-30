@@ -70,7 +70,6 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                 };
                 return await _fileRepositoryAppService.RegisterAsync(entityDtoRequest);
             }
-            return ModelState.ToResponse();
         }
 
         [HttpGet]

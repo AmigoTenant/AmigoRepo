@@ -1,10 +1,17 @@
-﻿using Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod;
+﻿using Amigo.Tenant.Application.DTOs.FileRepository.Requests;
+using Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod;
 using Amigo.Tenant.Application.DTOs.Responses.Common;
+using Amigo.Tenant.Application.DTOs.Responses.FileRepository;
 using Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod;
+using Amigo.Tenant.Application.Services.Interfaces.FileRepository;
 using Amigo.Tenant.Application.Services.Interfaces.MasterData;
 using Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod;
 using Amigo.Tenant.Application.Services.WebApi.Validation.Fluent;
+using Amigo.Tenant.Commands.Common;
+using Amigo.Tenant.Common;
 using Amigo.Tenant.Mail;
+using iTextSharp.text;
+using iTextSharp.text.pdf;
 using Newtonsoft.Json;
 using Nustache.Core;
 using Report.Presentation.Tools;
@@ -17,14 +24,10 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Mail;
+using System.Net.Mime;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http;
-using System.Web.Script.Serialization;
-using iTextSharp.text;
-using iTextSharp.text.html.simpleparser;
-using iTextSharp.text.pdf;
-using Amigo.Tenant.Commands.Common;
 
 namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 {
@@ -33,11 +36,15 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
     {
         private readonly IPaymentPeriodApplicationService _paymentPeriodApplicationService;
         private readonly IConceptApplicationService _conceptApplicationService;
+        private readonly IFileRepositoryApplicationService _fileRepositoryAppService;
 
-        public PaymentPeriodController(IPaymentPeriodApplicationService paymentPeriodApplicationService, IConceptApplicationService conceptApplicationService)
+        public PaymentPeriodController(IPaymentPeriodApplicationService paymentPeriodApplicationService, 
+                IConceptApplicationService conceptApplicationService,
+                IFileRepositoryApplicationService fileRepositoryAppService)
         {
             _paymentPeriodApplicationService = paymentPeriodApplicationService;
             _conceptApplicationService = conceptApplicationService;
+            _fileRepositoryAppService = fileRepositoryAppService;
         }
 
         [HttpGet, Route("searchCriteria")]
@@ -68,30 +75,81 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                //var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
-                //var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
-                var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", 221);
+                var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
+
+                var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
+                var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
                 await GenerateFileAndSend(resp.Data);
                 return null; // response;
             }
             return ModelState.ToResponse();
         }
 
-        private async Task GenerateFileAndSend(List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
+        private async Task GenerateFileAndSend(List<PPHeaderSearchByInvoiceDTO> paymentPeriodList)
         {
-            MemoryStream memStream = CrearDocumentoAmigo(paymentPeriod);
+
+            var paymentPeriod = paymentPeriodList.First();
+
+            //Nombre Archivo
+            var fileName = string.Format("Invoice Nro{0}-{1}.pdf", paymentPeriod.InvoiceNo, paymentPeriod.PeriodCode);
+
+            //Generar Document
+            MemoryStream memStream = CrearDocumentoAmigo(paymentPeriodList);
+
+            //Grabar en File Repository
+            await SaveInFileRepositoryAsync(memStream, paymentPeriod, fileName);
+
+            //Enviar Correo
             var attachment = new Attachment(new MemoryStream(memStream.ToArray()), System.Net.Mime.MediaTypeNames.Application.Pdf);
-            attachment.ContentDisposition.FileName = string.Format("Invoice_{0}.pdf", "Test");
+            attachment.ContentDisposition.FileName = fileName;
             await SendEmail(attachment, paymentPeriod);
         }
 
-        private async Task SendEmail(Attachment attachment, List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
+        private async Task SaveInFileRepositoryAsync(MemoryStream memStream, PPHeaderSearchByInvoiceDTO paymentPeriod, string fileName)
         {
-            var emailBody = "<!DOCTYPE html><html><head><title>Título de la WEB</title><meta charset='UTF-8'></head><body><h1>TEST H1</h1><div><table><tr><td>celda1</td></tr></table></div></body></html>";
+            FileRepositoryRequest request = new FileRepositoryRequest()
+            {
+                EntityCode = Constants.EntityCode.Invoice,
+                ParentId = paymentPeriod.InvoiceId,
+                AdditionalInfo = fileName
+            };
+
+            ContentType contentType = new ContentType("application/pdf");
+            var fileExtension = "pdf";
+            byte[] bytes = memStream.ToArray();
+            var entityDtoRequest = new FileRepositoryEntityDTO()
+            {
+                Name = fileName,
+                ParentId = request.ParentId.Value,
+                UtMediaFile = bytes,
+                EntityCode = request.EntityCode,
+                ContentType = "application/pdf",
+                FileExtension = fileExtension,
+                AdditionalInfo = request.AdditionalInfo
+            };
+            await _fileRepositoryAppService.RegisterAsync(entityDtoRequest);
+        }
+
+        private async Task SendEmail(Attachment attachment, PPHeaderSearchByInvoiceDTO headerPayment)
+        {
+            StringBuilder body = new StringBuilder("<!DOCTYPE html><html><head><meta charset='UTF-8'></head>");
+            body.AppendLine("<body>");
+            body.AppendLine(string.Format("<h3>Notificación de Pago: Invoice Nro {0}</h3><br/>", headerPayment.InvoiceNo));
+            body.AppendLine(string.Format("<p>Estimado <b>{0}</b>, la presente es para notificar que el dia {1} Ud. realizo el pago de <b> $ {2} </b> dolares canadienses correspondiente al periodo <b> {3} </b> para la propiedad '<b><i>{4}</i></b>'. Adjuntamos recibo de pago.</p><br/>", headerPayment.TenantFullName, headerPayment.InvoiceDate.Value.ToShortDateString(), headerPayment.TotalAmount, headerPayment.PeriodCode, headerPayment.HouseName));
+            
+            var balance = headerPayment.TotalIncome - headerPayment.TotalInvoice;
+            if (balance != 0)
+                body.AppendLine(string.Format("<p style='color: red'><b>Tener en cuenta que el balance a la fecha es $ {0} Dolares Canadienses.</b></p><br/>", balance));
+
+            body.AppendLine("<p>Atentamente,</p><br/>");
+            body.AppendLine("<p><b>LA GERENCIA</b></p><br/>");
+            body.AppendLine("</body></html>");
+
+            var emailBody = body.ToString();
             var mail = new MailMessage
             {
                 From = new MailAddress("pjromg@gmail.com"),
-                Subject = string.Format("Payment Notification - Renta AmigoTenant - Periodo: {0}", "2019"),
+                Subject = string.Format("Amigo Tenant Invoice Nro. {0}", headerPayment.InvoiceNo),
                 Body = emailBody,
                 IsBodyHtml = true
             };
@@ -122,7 +180,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             // Le colocamos el título y el autor
             // **Nota: Esto no será visible en el documento
             doc.AddTitle("Mi primer PDF");
-            doc.AddCreator("Roberto Torres");
+            doc.AddCreator("Paul Romero");
 
             // Abrimos el archivo
             doc.Open();
@@ -194,19 +252,16 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             writer1.Close();
             return memStream;
         }
+
         private MemoryStream CrearDocumentoAmigo(List<PPHeaderSearchByInvoiceDTO> paymentPeriod)
         {
-            // Creamos el documento con el tamaño de página tradicional
+
             Document doc = new Document(PageSize.LETTER);
-
             MemoryStream memStream = new MemoryStream();
-            PdfWriter writer1 = PdfWriter.GetInstance(doc, memStream);
-            //StringBuilder sb = CreateHtml();
+            PdfWriter writer = PdfWriter.GetInstance(doc, memStream);
 
-            // Le colocamos el título y el autor
-            // **Nota: Esto no será visible en el documento
-            doc.AddTitle("Mi primer PDF");
-            doc.AddCreator("Roberto Torres");
+            doc.AddTitle("Invoice for Amigo Tenant Copyright");
+            doc.AddCreator("Paul Romero");
 
             // Abrimos el archivo
             doc.Open();
@@ -223,20 +278,20 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             doc.Add(jpg);
 
             iTextSharp.text.Font _standardFontTitle = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 14, iTextSharp.text.Font.BOLD, BaseColor.BLUE);
-            var paragraph = new Paragraph("INVOICE", _standardFontTitle);
+            var paragraph = new Paragraph("I N V O I C E", _standardFontTitle);
             paragraph.Alignment = Element.ALIGN_CENTER;
             doc.Add(paragraph);
             doc.Add(Chunk.NEWLINE);
 
-            //otro
-
-            PdfContentByte cb = writer1.DirectContentUnder;
+            //SELLO DE AGUA
+            PdfContentByte contentByte = writer.DirectContentUnder;
             BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1257, BaseFont.NOT_EMBEDDED);
-            cb.SetColorFill(BaseColor.LIGHT_GRAY);
-            cb.SetFontAndSize(bf, 32);
-            cb.BeginText();
-            string text = "Signature with Seal";
-            
+            contentByte.SetColorFill(BaseColor.LIGHT_GRAY);
+            contentByte.SetFontAndSize(bf, 32);
+            contentByte.BeginText();
+            string text = Constants.EntityStatus.InvoiceName.Paid;
+            contentByte.ShowTextAligned(1, text, 200, 200, 45);
+            contentByte.EndText();
 
             // Creamos una tabla que contendrá el nombre, apellido y país 
             var firstPaymentPeriod = paymentPeriod.First();
@@ -248,21 +303,18 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
             CreateFooterInvoice(doc, paymentPeriod.First());
             doc.Add(Chunk.NEWLINE);
-
-            //memStream.Position = 0;
-
-            cb.ShowTextAligned(1, text, 300, 400, 45);
-            cb.EndText();
+            
+            
 
             doc.Close();
-            writer1.Close();
+            writer.Close();
             return memStream;
         }
 
         private void CreateFooterInvoice(Document doc, PPHeaderSearchByInvoiceDTO invoiceData)
         {
-            iTextSharp.text.Font _standardFontSubTitle = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
-            iTextSharp.text.Font _standardFontSubTitleData = new iTextSharp.text.Font(iTextSharp.text.Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
+            Font _standardFontSubTitle = new Font(Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.BOLD, BaseColor.BLACK);
+            Font _standardFontSubTitleData = new Font(Font.FontFamily.HELVETICA, 8, iTextSharp.text.Font.NORMAL, BaseColor.BLACK);
 
             PdfPTable tblHeader = new PdfPTable(3);
             tblHeader.WidthPercentage = 100;

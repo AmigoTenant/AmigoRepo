@@ -235,6 +235,11 @@ namespace Amigo.Tenant.Common
                 public const string Pending = "INPENDING";
                 public const string Payed = "INPAYED";
             }
+            public struct InvoiceName
+            {
+                public const string Pending = "PENDING";
+                public const string Paid = "PAID";
+            }
             public struct Expense
             {
                 public const string Pending = "EXPENDING";
