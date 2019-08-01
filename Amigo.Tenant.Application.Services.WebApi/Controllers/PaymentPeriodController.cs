@@ -75,12 +75,37 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         {
             if (ModelState.IsValid)
             {
-                var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
+                try
+                {
+                    var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
+                    var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
 
-                var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
-                var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
-                await GenerateFileAndSend(resp.Data);
-                return null; // response;
+                    if (response.IsValid && invoiceId > 0)
+                    {
+                        var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
+                        await GenerateFileAndSend(resp.Data);
+                    }
+                    else{
+                        return response;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    var errorMessage = ex.Message;
+                    var response = new ResponseDTO()
+                    {
+                        IsValid = false,
+                        Messages = new List<ApplicationMessage>()
+                    };
+
+                    response.Messages.Add(new ApplicationMessage()
+                    {
+                        Key = "Error",
+                        Message = errorMessage
+                    });
+                    return response;
+                }
+                
             }
             return ModelState.ToResponse();
         }
