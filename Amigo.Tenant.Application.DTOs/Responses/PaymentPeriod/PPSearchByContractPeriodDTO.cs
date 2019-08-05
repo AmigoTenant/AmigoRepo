@@ -45,5 +45,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public bool?  IsTenantFavorable { get; set; }
         public decimal? TotalInvoice { get; set; }
         public decimal? TotalIncome { get; set; }
+        public int? FileRepositoryId { get; set; }
     }
 }

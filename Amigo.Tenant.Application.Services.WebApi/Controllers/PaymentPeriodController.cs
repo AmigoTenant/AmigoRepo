@@ -82,8 +82,15 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
                     if (response.IsValid && invoiceId > 0)
                     {
-                        var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
-                        await GenerateFileAndSend(resp.Data);
+                        try
+                        {
+                            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
+                            await GenerateFileAndSend(resp.Data);
+                        }
+                        catch (Exception ex)
+                        {
+                            return CreateErrorResponse(ex, "Error intentando adjuntar el archivo");
+                        }
                     }
                     else{
                         return response;
@@ -91,23 +98,30 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                 }
                 catch (Exception ex)
                 {
-                    var errorMessage = ex.Message;
-                    var response = new ResponseDTO()
-                    {
-                        IsValid = false,
-                        Messages = new List<ApplicationMessage>()
-                    };
-
-                    response.Messages.Add(new ApplicationMessage()
-                    {
-                        Key = "Error",
-                        Message = errorMessage
-                    });
-                    return response;
+                    return CreateErrorResponse(ex, "Error intentando actualizar el pago");
                 }
                 
             }
             return ModelState.ToResponse();
+        }
+
+        private ResponseDTO CreateErrorResponse(Exception ex, string errorPrefixMessage)
+        {
+            var errorMessage = ex.Message;
+            var stackTrace = ex.StackTrace.ToString();
+
+            var response = new ResponseDTO()
+            {
+                IsValid = false,
+                Messages = new List<ApplicationMessage>()
+            };
+
+            response.Messages.Add(new ApplicationMessage()
+            {
+                Key = "Error",
+                Message = string.Format("{0} {1} {2} {3}", errorPrefixMessage, errorMessage, Environment.NewLine, stackTrace)
+            });
+            return response;
         }
 
         private async Task GenerateFileAndSend(List<PPHeaderSearchByInvoiceDTO> paymentPeriodList)
@@ -116,18 +130,21 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var paymentPeriod = paymentPeriodList.First();
 
             //Nombre Archivo
-            var fileName = string.Format("Invoice Nro{0}-{1}.pdf", paymentPeriod.InvoiceNo, paymentPeriod.PeriodCode);
+            var fileName = string.Format("Invoice_{0}_{1}_{2}.pdf", paymentPeriod.InvoiceNo, paymentPeriod.PeriodCode, DateTime.Now);
 
-            //Generar Document
+            //Generar Documento
             MemoryStream memStream = CrearDocumentoAmigo(paymentPeriodList);
 
             //Grabar en File Repository
             await SaveInFileRepositoryAsync(memStream, paymentPeriod, fileName);
 
-            //Enviar Correo
+            //Crear Archivo Adjunto
             var attachment = new Attachment(new MemoryStream(memStream.ToArray()), System.Net.Mime.MediaTypeNames.Application.Pdf);
             attachment.ContentDisposition.FileName = fileName;
+
+            //Enviar Correo
             await SendEmail(attachment, paymentPeriod);
+
         }
 
         private async Task SaveInFileRepositoryAsync(MemoryStream memStream, PPHeaderSearchByInvoiceDTO paymentPeriod, string fileName)
@@ -157,6 +174,11 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         private async Task SendEmail(Attachment attachment, PPHeaderSearchByInvoiceDTO headerPayment)
         {
+            MailConfiguration mailConfig = new MailConfiguration();
+            var fromEmail = System.Configuration.ConfigurationManager.AppSettings["fromEmail"];
+            var userName = System.Configuration.ConfigurationManager.AppSettings["userName"];
+            var password = System.Configuration.ConfigurationManager.AppSettings["password"];
+
             StringBuilder body = new StringBuilder("<!DOCTYPE html><html><head><meta charset='UTF-8'></head>");
             body.AppendLine("<body>");
             body.AppendLine(string.Format("<h3>Notificación de Pago: Invoice Nro {0}</h3><br/>", headerPayment.InvoiceNo));
@@ -173,18 +195,18 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var emailBody = body.ToString();
             var mail = new MailMessage
             {
-                From = new MailAddress("pjromg@gmail.com"),
+                From = new MailAddress(fromEmail),
                 Subject = string.Format("Amigo Tenant Invoice Nro. {0}", headerPayment.InvoiceNo),
                 Body = emailBody,
                 IsBodyHtml = true
             };
             mail.Attachments.Add(attachment);
-            mail.To.Add("jamromguz@outlook.com");
+            mail.To.Add(headerPayment.Email);
 
             var client = new SmtpClient("smtp.gmail.com")
             {
                 Port = 587,
-                Credentials = new System.Net.NetworkCredential("pjromg@gmail.com", "jursaturnepplu"),
+                Credentials = new System.Net.NetworkCredential(fromEmail, password),
                 EnableSsl = true
             };
             await client.SendMailAsync(mail);
@@ -576,63 +598,81 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         [AllowAnonymous]
         [HttpGet, Route("searchCriteriaByInvoice")]
-        public async Task<HttpResponseMessage> PrintInvoiceById(string invoiceNo)
+        public async Task<HttpResponseMessage> PrintInvoiceById(int fileRepositoryId)
         {
-            var rowInicioDetalle = 16;
-            var rowTitulosDetalle = 15;
+            HttpResponseMessage response = Request.CreateResponse(HttpStatusCode.OK);
+            var obj = await _fileRepositoryAppService.GetFileRepositoryByIdAsync(fileRepositoryId);
+            var bytes = obj.UtMediaFile;
 
-            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo, null);
-            var c = 1;
-            var listFilter = from data in resp.Data
-                             select new
-                             {
-                                 Sequence = c++,
-                                 PaymentType = data.PaymentTypeCode,
-                                 Description = data.PaymentDescription,
-                                 Amount = data.PaymentAmount
-                             };
+            //Set the Response Content.
+            response.Content = new ByteArrayContent(bytes);
+            response.Content.Headers.ContentLength = bytes.LongLength;
 
-            try
+            //Set the Content Disposition Header Value and FileName.
+            response.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment")
             {
-                var ruta = System.Web.Hosting.HostingEnvironment.MapPath("~/AmigoInvoice.xlsx");
+                FileName = string.Format("{0}.{1}", obj.Name, obj.FileExtension),
+            };
+            response.Content.Headers.Add("Access-Control-Expose-Headers", "Content-Disposition");
+            //Set the File Content Type.
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue(obj.ContentType);
+            return response;
 
-                var factory = ReportExportFactory.Create("EXCEL", ruta);
+            //var rowInicioDetalle = 16;
+            //var rowTitulosDetalle = 15;
 
-                var balance = resp.Data[0].TotalIncome - resp.Data[0].TotalInvoice;
+            //var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync(invoiceNo, null);
+            //var c = 1;
+            //var listFilter = from data in resp.Data
+            //                 select new
+            //                 {
+            //                     Sequence = c++,
+            //                     PaymentType = data.PaymentTypeCode,
+            //                     Description = data.PaymentDescription,
+            //                     Amount = data.PaymentAmount
+            //                 };
 
-                factory.SetPreHeader(
-                    new List<ReportHeader> {
-                        new ReportHeader() { Position = 6, PositionY = 2, Name =  resp.Data[0].InvoiceNo },
-                        new ReportHeader() { Position = 6, PositionY = 4, Name =  resp.Data[0].PeriodCode },
-                        new ReportHeader() { Position = 7, PositionY = 2, Name =  resp.Data[0].InvoiceDate.Value.ToShortDateString() },
-                        new ReportHeader() { Position = 7, PositionY = 4, Name =  resp.Data[0].UserName},
-                        new ReportHeader() { Position = 8, PositionY = 2, Name =  resp.Data[0].TenantFullName },
-                        new ReportHeader() { Position = 9, PositionY = 2, Name =  resp.Data[0].HouseName },
-                        new ReportHeader() { Position = 10, PositionY = 2, Name =  resp.Data[0].Comment },
-                        new ReportHeader() { Position = 26, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() },
-                        new ReportHeader() { Position = 29, PositionY = 4, Name =  balance.ToString() }
-                    });
+            //try
+            //{
+            //    var ruta = System.Web.Hosting.HostingEnvironment.MapPath("~/AmigoInvoice.xlsx");
 
-                factory.SetHeader(
-                    new List<ReportHeader> {
-                        new ReportHeader() { Position = 1, Name =   "N°" },
-                        new ReportHeader() { Position = 2, Name =   "Payment Type" },
-                        new ReportHeader() { Position = 3, Name =   "Description"},
-                        new ReportHeader() { Position = 4, Name =   "Amount"},
-                    }, rowTitulosDetalle);
+            //    var factory = ReportExportFactory.Create("EXCEL", ruta);
 
-                factory.SetBody(listFilter.ToList());
-                factory.Export("Invoice" + resp.Data[0].InvoiceNo + DateTime.Now.ToString("dd_MM_yy"), rowInicioDetalle);
+            //    var balance = resp.Data[0].TotalIncome - resp.Data[0].TotalInvoice;
 
-            }
-            catch (Exception ex)
-            {
-                System.Diagnostics.Trace.TraceError($"DateTime: {DateTime.Now} searchCriteriaByInvoice Error: {ex.ToString()}");
-                Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
-            }
+            //    factory.SetPreHeader(
+            //        new List<ReportHeader> {
+            //            new ReportHeader() { Position = 6, PositionY = 2, Name =  resp.Data[0].InvoiceNo },
+            //            new ReportHeader() { Position = 6, PositionY = 4, Name =  resp.Data[0].PeriodCode },
+            //            new ReportHeader() { Position = 7, PositionY = 2, Name =  resp.Data[0].InvoiceDate.Value.ToShortDateString() },
+            //            new ReportHeader() { Position = 7, PositionY = 4, Name =  resp.Data[0].UserName},
+            //            new ReportHeader() { Position = 8, PositionY = 2, Name =  resp.Data[0].TenantFullName },
+            //            new ReportHeader() { Position = 9, PositionY = 2, Name =  resp.Data[0].HouseName },
+            //            new ReportHeader() { Position = 10, PositionY = 2, Name =  resp.Data[0].Comment },
+            //            new ReportHeader() { Position = 26, PositionY = 4, Name =  resp.Data[0].TotalAmount.Value.ToString() },
+            //            new ReportHeader() { Position = 29, PositionY = 4, Name =  balance.ToString() }
+            //        });
 
-            HttpResponseMessage rs = new HttpResponseMessage();
-            return rs;
+            //    factory.SetHeader(
+            //        new List<ReportHeader> {
+            //            new ReportHeader() { Position = 1, Name =   "N°" },
+            //            new ReportHeader() { Position = 2, Name =   "Payment Type" },
+            //            new ReportHeader() { Position = 3, Name =   "Description"},
+            //            new ReportHeader() { Position = 4, Name =   "Amount"},
+            //        }, rowTitulosDetalle);
+
+            //    factory.SetBody(listFilter.ToList());
+            //    factory.Export("Invoice" + resp.Data[0].InvoiceNo + DateTime.Now.ToString("dd_MM_yy"), rowInicioDetalle);
+
+            //}
+            //catch (Exception ex)
+            //{
+            //    System.Diagnostics.Trace.TraceError($"DateTime: {DateTime.Now} searchCriteriaByInvoice Error: {ex.ToString()}");
+            //    Request.CreateResponse(HttpStatusCode.InternalServerError, ex);
+            //}
+
+            //HttpResponseMessage rs = new HttpResponseMessage();
+            //return rs;
         }
 
         private List<ResultOperationAuthorizedDTO> GetDispatchedNotPaidOrReceived()

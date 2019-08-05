@@ -310,6 +310,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.IsTenantFavorable = item.IsTenantFavorable;
                     detail.Comment = item.Comment;
                     detail.Reference = item.ReferenceNo;
+                    detail.FileRepositoryId = item.FileRepositoryId;
 
                     detailList.Add(detail);
 

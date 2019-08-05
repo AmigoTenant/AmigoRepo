@@ -37,6 +37,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public string UserName { get; set; }
         public decimal? TotalInvoice { get; set; }
         public decimal? TotalIncome { get; set; }
+        public string Email { get; set; }
 
     }
 }

@@ -111,7 +111,7 @@ export interface IPaymentPeriodClient {
      */
     update(paymentPeriod: PPHeaderSearchByContractPeriodDTO): Observable<ResponseDTO | null>;
 
-    searchInvoiceById(invoiceNo: string);
+    searchInvoiceById(fileRepositoryId: number);
 }
 
 @Injectable()
@@ -317,12 +317,12 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
     /**
      * @return OK
      */
-   searchInvoiceById(invoiceNo: string) {
+   searchInvoiceById(fileRepositoryId: number) {
         let url_ = this.baseUrl + "/api/payment/searchCriteriaByInvoice?";
-        if (invoiceNo === undefined || invoiceNo === null)
+        if (fileRepositoryId === undefined || fileRepositoryId === null)
             throw new Error("The parameter 'invoiceNo' must be defined and cannot be null.");
         else
-            url_ += "invoiceNo=" + encodeURIComponent("" + invoiceNo) + "&";
+            url_ += "invoiceNo=" + encodeURIComponent("" + fileRepositoryId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         window.open(url_);
@@ -1263,6 +1263,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
     paymentTypeCode: string | null; 
     invoiceNo: string | null;
     invoiceDate: Date | null;
+    fileRepositoryId: number | null;
 
     constructor(data?: IPPDetailSearchByContractPeriodDTO) {
         if (data) {
@@ -1304,6 +1305,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
             this.paymentTypeCode = data["PaymentTypeCode"] !== undefined ? data["PaymentTypeCode"] : <any>null;
             this.invoiceNo = data["InvoiceNo"] !== undefined ? data["InvoiceNo"] : <any>null;
             this.invoiceDate = data["InvoiceDate"] ? new Date(data["InvoiceDate"].toString()) : <any>null;
+            this.fileRepositoryId = data["FileRepositoryId"] !== undefined ? data["FileRepositoryId"] : <any>null;
         }
     }
 
@@ -1344,6 +1346,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
         data["PaymentTypeCode"] = this.paymentTypeCode !== undefined ? this.paymentTypeCode : <any>null;
         data["InvoiceNo"] = this.invoiceNo !== undefined ? this.invoiceNo : <any>null;
         data["InvoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>null;
+        data["FileRepositoryId"] = this.fileRepositoryId !== undefined ? this.fileRepositoryId : <any>null;
         return data;
     }
 

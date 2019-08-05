@@ -531,12 +531,12 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     public dataLatestInvoiceId: any;
 
-    onPrint(invoiceNo) {
-        if (invoiceNo === '' || invoiceNo == undefined || invoiceNo == null) {
+    onPrint(fileRepositoryId) {
+        if (fileRepositoryId === '' || fileRepositoryId == undefined || fileRepositoryId == null) {
             this.writeMessage(false, 'There is no invoice to print');
             return;
         }
-        this.paymentDataService.searchInvoiceById(invoiceNo);
+        this.paymentDataService.searchInvoiceById(fileRepositoryId);
     }
 
 
