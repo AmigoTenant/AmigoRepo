@@ -78,18 +78,25 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                 try
                 {
                     var response = await _paymentPeriodApplicationService.UpdatePaymentPeriodAsync(paymentPeriod);
-                    var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
-
-                    if (response.IsValid && invoiceId > 0)
+                    
+                    if (response.IsValid )
                     {
-                        try
+                        var invoiceId = ((RegisteredCommandResult)((ResponseDTO<CommandResult>)response).Data).Id;
+                        if (invoiceId > 0)
                         {
-                            var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
-                            await GenerateFileAndSend(resp.Data);
+                            try
+                            {
+                                var resp = await _paymentPeriodApplicationService.SearchInvoiceByIdAsync("", invoiceId);
+                                await GenerateFileAndSend(resp.Data);
+                            }
+                            catch (Exception ex)
+                            {
+                                return CreateErrorResponse(ex, "Error intentando adjuntar el archivo");
+                            }
                         }
-                        catch (Exception ex)
+                        else
                         {
-                            return CreateErrorResponse(ex, "Error intentando adjuntar el archivo");
+                            throw new Exception("Error intentando extraer el invoice Id del payment registrado");
                         }
                     }
                     else{

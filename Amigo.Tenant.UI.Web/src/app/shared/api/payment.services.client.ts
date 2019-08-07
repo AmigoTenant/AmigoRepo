@@ -320,9 +320,9 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
    searchInvoiceById(fileRepositoryId: number) {
         let url_ = this.baseUrl + "/api/payment/searchCriteriaByInvoice?";
         if (fileRepositoryId === undefined || fileRepositoryId === null)
-            throw new Error("The parameter 'invoiceNo' must be defined and cannot be null.");
+            throw new Error("The parameter 'fileRepositoryId' must be defined and cannot be null.");
         else
-            url_ += "invoiceNo=" + encodeURIComponent("" + fileRepositoryId) + "&";
+            url_ += "fileRepositoryId=" + encodeURIComponent("" + fileRepositoryId) + "&";
         url_ = url_.replace(/[?&]$/, "");
 
         window.open(url_);
