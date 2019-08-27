@@ -34,6 +34,5 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public decimal? TotalIncomePaidAmount { get; set; }
         public decimal? TotalIncomePendingAmount { get; set; }
         public decimal? TotalIncomeAmountByPeriod { get; set; }
-
     }
 }

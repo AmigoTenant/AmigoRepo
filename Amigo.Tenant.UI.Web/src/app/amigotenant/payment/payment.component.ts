@@ -19,6 +19,7 @@ import { ConfirmationList, ConfirmationIntResult } from '../../model/confirmatio
 import { PaymentService, PaymentPeriodSearchRequest } from "../../shared/api/payment.service";
 import { PaymentServiceNew } from './payment.service';
 import { MasterDataService } from '../../shared/api/master-data-service';
+import { PaymentPeriodSendNotificationRequest } from './dto/payment-period-sendnotification-request';
 
 declare var $: any;
 
@@ -239,14 +240,14 @@ export class PaymentComponent implements OnInit {
 
     public onSendPayNotification(){
 
-
-        let numbers = this.gridData.data.filter((value, index) => {
-            return value.isSelected;
-        }).map((value, index) => {
-            return JSON.stringify(value.paymentPeriodId).replace(/\W/g, '');
+        let lista: PaymentPeriodSendNotificationRequest[];
+        debugger;
+        this.gridData.data.filter(q => q.isSelected).forEach(element => {
+            lista.push(new PaymentPeriodSendNotificationRequest(element.contractId, element.periodId, element.periodCode));
         });
 
-        this.paymentDataService
+
+        
 
         // this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         // this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;

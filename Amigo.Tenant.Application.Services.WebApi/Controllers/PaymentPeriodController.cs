@@ -717,9 +717,9 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
 
         [HttpGet, Route("sendPaymentNotificationEmail")]
-        public async Task<ResponseDTO> SendPaymentNotificationEMail([FromUri] PaymentPeriodSearchRequest search)
+        public async Task<ResponseDTO> SendPaymentNotificationEMail([FromBody] List<PaymentPeriodSendNotificationListRequest> paymentPeriodContractIds)
         {
-            var resp = await _paymentPeriodApplicationService.SearchPaymentPeriodAsync(search);
+            //var resp = await _paymentPeriodApplicationService.SearchPaymentPeriodAsync(search);
 
             MailConfiguration mailConfig = new MailConfiguration();
             var fromEmail = System.Configuration.ConfigurationManager.AppSettings["fromEmail"];
@@ -728,7 +728,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var msg = new StringBuilder();
             
 
-            foreach (var header in resp.Data.Items.ToList())
+            foreach (var header in paymentPeriodContractIds)
             {
                 var searchByContractAndPeriod = new PaymentPeriodSearchByContractPeriodRequest();
                 searchByContractAndPeriod.ContractId = header.ContractId;
