@@ -716,7 +716,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
 
-        [HttpGet, Route("sendPaymentNotificationEmail")]
+        [HttpPost, Route("sendPaymentNotificationEmail")]
         public async Task<ResponseDTO> SendPaymentNotificationEMail([FromBody] List<PaymentPeriodSendNotificationListRequest> paymentPeriodContractIds)
         {
             //var resp = await _paymentPeriodApplicationService.SearchPaymentPeriodAsync(search);

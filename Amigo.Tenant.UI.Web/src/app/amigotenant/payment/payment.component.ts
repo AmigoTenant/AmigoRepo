@@ -20,6 +20,7 @@ import { PaymentService, PaymentPeriodSearchRequest } from "../../shared/api/pay
 import { PaymentServiceNew } from './payment.service';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { PaymentPeriodSendNotificationRequest } from './dto/payment-period-sendnotification-request';
+import { PaymentDataService } from './payment-data.service';
 
 declare var $: any;
 
@@ -61,13 +62,14 @@ export class PaymentComponent implements OnInit {
     }
 
     constructor(private router: Router, private route: ActivatedRoute,
-        private paymentDataService: PaymentPeriodClient,
+        private paymentPeriodDataService: PaymentPeriodClient,
         private _listsService: ListsService,
         private listConfirmation: ConfirmationList,
         private entityStatusClient: EntityStatusClient,
         public serviceOrderService: PaymentService,
         public paymentServiceNew: PaymentServiceNew,
-        public masterDataService: MasterDataService
+        public masterDataService: MasterDataService,
+        public paymentService: PaymentDataService
     ) { }
 
     public gridData: GridDataResult;
@@ -108,13 +110,12 @@ export class PaymentComponent implements OnInit {
         this.getEntityStatus();
         this.confirmationFilter();
         this.setCurrentPeriod(isCurrentPeriod);
-        this.periodIdToSendEmail = undefined;
       }
 
     onSearch() {
         this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
         this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
-        this.paymentDataService.search(
+        this.paymentPeriodDataService.search(
             this.searchCriteria.periodId,
             this.searchCriteria.houseId,
             this.searchCriteria.contractCode,
@@ -188,17 +189,17 @@ export class PaymentComponent implements OnInit {
         
     }
 
-    periodIdToSendEmail: number | null;
+    
     getPeriod = (item) => {
         if (item != null && item != undefined && item != "") {
             this.searchCriteria.periodId = item.periodId;
             this._currentPeriod = item;
-            this.periodIdToSendEmail = item.periodId;
+            
         }
         else {
             this.searchCriteria.periodId = undefined;
             this._currentPeriod = undefined;
-            this.periodIdToSendEmail = undefined;
+            
         }
     };
 
@@ -240,41 +241,38 @@ export class PaymentComponent implements OnInit {
 
     public onSendPayNotification(){
 
-        let lista: PaymentPeriodSendNotificationRequest[];
+        let lista: PaymentPeriodSendNotificationRequest[]= [];
         debugger;
         this.gridData.data.filter(q => q.isSelected).forEach(element => {
             lista.push(new PaymentPeriodSendNotificationRequest(element.contractId, element.periodId, element.periodCode));
         });
 
+        this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
+        this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
 
-        
-
-        // this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
-        // this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
-
-        // this.paymentDataService.sendPayNotification(
-        //     this.searchCriteria.periodId,
-        //     11, //PPPENDING
-        //     this.searchCriteria.tenantId,
-        //     this.searchCriteria.hasPendingServices,
-        //     this.searchCriteria.hasPendingFines,
-        //     this.searchCriteria.hasPendingLateFee,
-        //     this.searchCriteria.hasPendingDeposit,
-        //     1,
-        //     100
-        // )
-        //     .subscribe(res => {
-        //         let dataResult: any = res;
-        //         this.successFlag = dataResult.isValid;
-        //         this.errorMessages = dataResult.messages;
-        //         this.successMessage = 'Emails has been sent Successfully';
-        //     });
+        this.paymentService.SendPaymentNotificationEMail(
+            lista
+        ).subscribe(res => {
+            let dataResult: any = res;
+            this.successFlag = dataResult.isValid;
+            this.errorMessages = dataResult.messages;
+            this.successMessage = 'Emails has been sent Successfully';
+        });
     }
 
     isValidateToSendEmailNotification(){
-        if (this.periodIdToSendEmail === null || this.periodIdToSendEmail === undefined || this.periodIdToSendEmail === 0){
+        this.errorMessages= [];
+        
+        if (this.searchCriteria.periodId === null || this.searchCriteria.periodId === undefined || this.searchCriteria.periodId === 0){
+            this.errorMessages.push({message: 'Period is required to send Notification'});
+        }
+        if (this.gridData.data.filter(q => q.isSelected).length===0){
+            this.errorMessages.push({message: 'You must to select at least one record'});
+        }
+
+        if (this.errorMessages.length>0)
+        {
             this.successFlag = false;
-            this.errorMessages = [{message: 'Period is required to send Notification'}];
             this.successMessage = null;
 
             setTimeout(() => {
@@ -285,6 +283,8 @@ export class PaymentComponent implements OnInit {
             return false;
 
         }
+        
+
         return true;
     }
 
