@@ -1,0 +1,56 @@
+<div>
+    <div class="row">
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"
+                checked formControlName="contractTermType">
+            <label class="form-check-label" for="exampleRadios1">
+                Default radio
+            </label>
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2"
+                formControlName="contractTermType">
+            <label class="form-check-label" for="exampleRadios2">
+                Second default radio
+            </label>
+        </div>
+        <div class="form-check disabled">
+            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
+                disabled formControlName="contractTermType">
+            <label class="form-check-label" for="exampleRadios3">
+                Disabled radio
+            </label>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="periodIdTo" class="col-sm-2 col-form-label">Periodo Final</label>
+        <div class="col-sm-10">
+            <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
+            </ngbd-typeahead-period>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="propertyId" class='col-sm-2 col-form-label'>Propiedad</label>
+        <div class="col-sm-10">
+            <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
+            </ngbd-typeahead-house>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="newDeposit" class="col-sm-2 col-form-label">Nuevo Deposito</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" formControlName= 'newDeposit'>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="newRent" class="col-sm-2 col-form-label">Nueva Renta</label>
+        <div class="col-sm-10">
+            <input type="number" class="form-control" formControlName= "newRent">
+        </div>
+    </div>
+    <div class="row">
+        <input type="button" id="btnCancel" (onClick)="onCancel()" class="btn-default btn">
+        <input type="button" id="btnAccept" (onClick)="onAccept()" class="btn-primary btn">
+    </div>
+
+</div>

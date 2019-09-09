@@ -60,6 +60,7 @@ import { ExpenseMaintenanceDetailComponent } from './expense/expense-maintenance
 import { UploadFileComponent } from "../shared/upload-file/upload-file.component";
 import { PaymentPeriodService } from "./payment/payment-period.service";
 import { PaymentDataService } from './payment/payment-data.service';
+import { ContractDataService } from './contract/contract-data.service';
 
 @NgModule({
   imports: [
@@ -126,7 +127,8 @@ import { PaymentDataService } from './payment/payment-data.service';
       PaymentServiceNew,
       ExpenseDataService,
       PaymentPeriodService,
-      PaymentDataService
+      PaymentDataService,
+      ContractDataService
     ],
 })
 export class AmigotenantModule { }

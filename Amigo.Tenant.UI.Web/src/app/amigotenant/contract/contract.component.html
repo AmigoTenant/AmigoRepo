@@ -251,6 +251,9 @@
                                        <button type="button" class="btn-icon" (click)="onView(dataItem);">
                                            <i class="xico-shipment-find"></i>
                                        </button>
+                                       <button type="button" class="btn-icon" (click)="onChangeTerm(dataItem);">
+                                            <i class="xico-shipment-find"></i>
+                                        </button>
                                    </div>
 
             <!--<div class="text-right">
@@ -287,3 +290,6 @@
         <at-contract-maintenance></at-contract-maintenance>
     </div>
 </div>
+<kendo-dialog title="Confirmation" *ngIf="openedChangeTermConfimation" (close)="closeChangeTermConfirmation()">
+    <at-contract-change-term (onClosePopupEmitter)= "closeChangeTermConfirmation()" (onAcceptPopupEmitter)="yesChangeTerm()"></at-contract-change-term>
+</kendo-dialog>

@@ -19,6 +19,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs'
 import { PeriodDTO } from '../../shared/index';
 import { MasterDataService } from '../../shared/api/master-data-service';
+import { ContractChangeTermRequest } from './dto/contract-change-term-request';
+import { ContractDataService } from './contract-data.service';
 
 declare var $: any;
 
@@ -111,7 +113,8 @@ constructor(
     private listsService: ListsService,
     private route: ActivatedRoute,
     private router: Router,
-    private masterDataService: MasterDataService
+    private masterDataService: MasterDataService,
+    private contractDataService: ContractDataService
       ) {
       super();
   }
@@ -466,6 +469,34 @@ ngOnInit() {
 
     onView(data){
         this.onEdit(data, true);
+    }
+
+    public changeTermMessage: string = "Are you sure to Formalize this Lease?";
+    contractToChangeTerm: any; 
+
+    onChangeTerm(contract) {
+        debugger;
+        this.contractToChangeTerm = new ContractChangeTermRequest();
+        this.contractToChangeTerm.contractId = contract.contractId;
+        this.contractToChangeTerm.tenantId = contract.tenantId;
+        this.contractToChangeTerm.houseId = contract.houseId;
+        this.contractToChangeTerm.periodId = contract.contractId;
+        this.contractToChangeTerm.contractId = contract.contractId;
+        this.openedChangeTermConfimation = true;
+    }
+
+    yesChangeTerm() {
+        this.contractDataService.ContractChangeTerm(this.contractToChangeStatus)
+            .subscribe(response => {
+                this.onSelect();
+                this.closeChangeTermConfirmation();
+            });
+    }
+
+    public openedChangeTermConfimation: boolean = false;
+
+    public closeChangeTermConfirmation() {
+        this.openedChangeTermConfimation= false;
     }
 
 }
