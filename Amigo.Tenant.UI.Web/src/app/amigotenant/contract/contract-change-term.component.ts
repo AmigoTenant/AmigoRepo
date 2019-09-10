@@ -5,7 +5,7 @@ import { FormBuilder, FormControl, Validators } from "@angular/forms";
 @Component(
 {
     selector: 'at-contract-change-term',
-    templateUrl: '.\contract-change-term.component.html'
+    templateUrl: './contract-change-term.component.html'
 })
 
 export class ContractChangeTermComponent implements OnInit{
@@ -44,4 +44,27 @@ export class ContractChangeTermComponent implements OnInit{
         this.onCancelPopupEmitter.emit();
         //this.contractDataService.ContractChangeTerm()
     }
+
+    
+    getHouse = (item) => {
+        // if (item != null && item != undefined && item != "") {
+        //     this.model.houseId = item.houseId;
+        //     this._currentHouse = item;
+        // }
+        // else {
+        //     this.model.houseId = undefined;
+        //     this._currentHouse = undefined;
+        // }
+    };
+
+    getPeriod = (item) => {
+        // if (item != null && item != undefined && item != "") {
+        //     this.model.periodId = item.periodId;
+        //     this._currentPeriod = item;
+        // }
+        // else {
+        //     this.model.periodId = undefined;
+        //     this._currentPeriod = undefined;
+        // }
+    };
 }

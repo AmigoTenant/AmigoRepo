@@ -61,6 +61,7 @@ import { UploadFileComponent } from "../shared/upload-file/upload-file.component
 import { PaymentPeriodService } from "./payment/payment-period.service";
 import { PaymentDataService } from './payment/payment-data.service';
 import { ContractDataService } from './contract/contract-data.service';
+import { ContractChangeTermComponent } from './contract/contract-change-term.component';
 
 @NgModule({
   imports: [
@@ -100,7 +101,8 @@ import { ContractDataService } from './contract/contract-data.service';
     ExpenseMaintenanceComponent,
     ExpenseMaintenanceSearchGridComponent,
     ExpenseMaintenanceDetailComponent,
-    UploadFileComponent
+    UploadFileComponent,
+    ContractChangeTermComponent
   ],
   providers: [
       TenantClient,
