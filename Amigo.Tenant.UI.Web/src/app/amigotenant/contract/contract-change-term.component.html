@@ -1,22 +1,23 @@
 <div>
+    <form [formGroup]="contractChangeTermForm" >
     <div class="row">
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1"
+            <input class="form-check-input" type="radio" name="contractTermType" value="option1"
                 checked formControlName="contractTermType">
             <label class="form-check-label" for="exampleRadios1">
                 Default radio
             </label>
         </div>
         <div class="form-check">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2"
+            <input class="form-check-input" type="radio" name="contractTermType" value="option2"
                 formControlName="contractTermType">
             <label class="form-check-label" for="exampleRadios2">
                 Second default radio
             </label>
         </div>
         <div class="form-check disabled">
-            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="option3"
-                disabled formControlName="contractTermType">
+            <input class="form-check-input" type="radio" name="contractTermType" value="option3"
+                formControlName="contractTermType">
             <label class="form-check-label" for="exampleRadios3">
                 Disabled radio
             </label>
@@ -49,8 +50,8 @@
         </div>
     </div>
     <div class="row">
-        <input type="button" id="btnCancel" (onClick)="onCancel()" class="btn-default btn">
-        <input type="button" id="btnAccept" (onClick)="onAccept()" class="btn-primary btn">
+        <input type="button" id="btnCancel" (click)="onCancel()" class="btn-default btn" value="Cancel">
+        <input type="button" id="btnAccept" (click)="onAccept()" class="btn-primary btn" value="Accept">
     </div>
-
+</form>
 </div>

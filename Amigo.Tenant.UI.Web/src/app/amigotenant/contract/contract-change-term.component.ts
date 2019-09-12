@@ -1,6 +1,10 @@
 import { Component, OnInit, Output, EventEmitter } from "@angular/core";
 import { ContractDataService } from "./contract-data.service";
-import { FormBuilder, FormControl, Validators } from "@angular/forms";
+import { FormBuilder, FormControl, Validators, FormGroup } from "@angular/forms";
+import { ContractChangeTermRequest } from "./dto/contract-change-term-request";
+import { GenericValidator } from "../../shared/generic.validator";
+import { Observable } from "rxjs/Observable";
+import { TranslateService } from "@ngx-translate/core";
 
 @Component(
 {
@@ -9,38 +13,50 @@ import { FormBuilder, FormControl, Validators } from "@angular/forms";
 })
 
 export class ContractChangeTermComponent implements OnInit{
-
-    public contractChangeTermForm: any;
+    private genericValidator: GenericValidator;
+    public contractChangeTermForm: FormGroup;
     @Output() onAcceptPopupEmitter= new EventEmitter();
-    @Output() onCancelPopupEmitter= new EventEmitter();
+    @Output() onCancelPopupEmitter= new EventEmitter<ContractChangeTermRequest>();
 
     constructor(private contractDataService: ContractDataService,
-        private fb: FormBuilder){}
+        private fb: FormBuilder,
+        private translate: TranslateService){}
 
     ngOnInit(){
         this.buildForm();
+        this.buildValidator();
     }
 
     buildForm() {
         this.contractChangeTermForm = this.fb.group({
-            periodIdTo : [''],
-            propertyId: [''],
+            // periodIdTo : [''],
+            // propertyId: [''],
             newDeposit: [null],
             newRent: [null],
-            newResponsible: [''],
-            periodIdFrom: [''],
-            contractId: [''],
-            tenantId: ['']
+            // newResponsible: [''],
+            // periodIdFrom: [''],
+            // contractId: [''],
+            // tenantId: [''],
+            contractTermType: [null]
         });
     }
 
 
     onAccept(){
-        this.onAcceptPopupEmitter.emit();
+        debugger;
+        if (!this.contractChangeTermForm.valid)
+        {
+            this.showErrors(true);
+            return;
+        }
+
+        let model = this.contractChangeTermForm.value;
+        this.onAcceptPopupEmitter.emit(model);
         //this.contractDataService.ContractChangeTerm()
     }
 
-    onCancelPopup(){
+    onCancel(){
+        debugger;
         this.onCancelPopupEmitter.emit();
         //this.contractDataService.ContractChangeTerm()
     }
@@ -67,4 +83,45 @@ export class ContractChangeTermComponent implements OnInit{
         //     this._currentPeriod = undefined;
         // }
     };
+
+    //Shor¡w Errors
+    public displayMessage: { [key: string]: string; } = {};
+    public validationMessages: { [key: string]: { [key: string]: string } } = {};
+
+    private showErrors(force = false) {
+        this.displayMessage = this.genericValidator.processMessages(this.contractChangeTermForm, force);
+    }
+
+    buildValidator() {
+        Observable.forkJoin([
+            this.translate.get('common.requiredField'),
+            this.translate.get('common.maxLength', { value: 500 }),
+            this.translate.get('common.notValidFormat')
+        ]).subscribe((messages: string[]) => this.buildMessages(...messages));
+        this.genericValidator = new GenericValidator(this.validationMessages);
+    }
+
+    buildMessages(required?: string, maxlength?: string, notvalid?: string) {
+        this.validationMessages = {
+            conceptId: {
+                required: required
+            },
+            applyTo: {
+                required: required
+            },
+            subTotalAmount: {
+                required: required
+            },
+            tax: {
+                required: required
+            },
+            totalAmount: {
+                required: required
+            },
+            tenantId: {
+                required: required
+            }
+        };
+    }
+
 }
