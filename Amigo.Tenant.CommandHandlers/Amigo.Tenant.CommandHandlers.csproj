@@ -90,6 +90,7 @@
     <Compile Include="Extensions\MoveExtensions.cs" />
     <Compile Include="FileRepository\ExpenseDetailDeleteCommandHandler.cs" />
     <Compile Include="FileRepository\FileRepositoryRegisterCommandHandler.cs" />
+    <Compile Include="Leasing\Contract\ContractChangeTermCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractDeleteCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractChangeStatusCommandHandler.cs" />
     <Compile Include="Leasing\Contract\ContractUpdateCommandHandler.cs" />

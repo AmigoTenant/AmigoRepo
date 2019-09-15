@@ -636,5 +636,48 @@ namespace Amigo.Tenant.Application.Services.Tracking
             return textProperties;
         }
 
+        public async Task<ResponseDTO> ChangeTermAsync(ContractChangeTermRequest contractChangeTermRequest)
+        {
+            var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
+            var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
+            if (response.IsValid)
+            {
+                var resp = await _bus.SendAsync(command);
+                return ResponseBuilder.Correct(resp);
+            }
+            return response;
+        }
+
+        public async Task<ResponseDTO> ValidateEntityToChangeTermAsync(ContractChangeTermRequest request)
+        {
+            //var errorMessage = "";
+            //Expression<Func<ContractRegisterRequest, bool>> queryFilter = p => p.RowStatus;
+            //queryFilter = queryFilter.And(p => p.ContractId != request.ContractId);
+            //queryFilter = queryFilter.And(p => p.TenantId == request.TenantId);
+            //queryFilter = queryFilter.And(p => p.ContractStatusCode == Constants.EntityStatus.Contract.Draft || p.ContractStatusCode == Constants.EntityStatus.Contract.Formalized);
+
+            //bool isValid = true;
+            //var contract = await _contractDataAccess.FirstOrDefaultAsync(queryFilter);
+
+            //if (contract != null)
+            //{
+            //    isValid = false;
+            //    errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
+            //}
+
+            //var response = new ResponseDTO()
+            //{
+            //    IsValid = string.IsNullOrEmpty(errorMessage),
+            //    Messages = new List<ApplicationMessage>()
+            //};
+
+            //response.Messages.Add(new ApplicationMessage()
+            //{
+            //    Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
+            //    Message = errorMessage
+            //});
+
+            return null; //response;
+        }
     }
 }

@@ -20,5 +20,6 @@ namespace Amigo.Tenant.Application.Services.Interfaces.Tracking
         Task<ResponseDTO<List<HouseFeatureDetailContractDTO>>> SearchHouseFeatureDetailContractAsync(int? houseId);
         Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent, TransportContext transportContext, ContractSearchRequest search);
         Task<ResponseDTO> ChangeStatusContractAsync(ContractChangeStatusRequest contractId);
+        Task<ResponseDTO> ChangeTermAsync(ContractChangeTermRequest contractId);
     }
 }

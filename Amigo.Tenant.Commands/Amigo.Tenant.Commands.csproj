@@ -62,6 +62,7 @@
     <Compile Include="Expense\ExpenseUpdateCommand.cs" />
     <Compile Include="FileRepository\FileRepositoryDeleteCommand.cs" />
     <Compile Include="FileRepository\FileRepositoryRegisterCommand.cs" />
+    <Compile Include="Leasing\Contract\ContractChangeTermCommand.cs" />
     <Compile Include="Leasing\Contract\ContractDetailObligationRegisterCommand.cs" />
     <Compile Include="Leasing\Contract\ContractDetailRegisterCommand.cs" />
     <Compile Include="Leasing\Contract\ContractHouseDetailRegisterCommand.cs" />

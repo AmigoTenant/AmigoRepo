@@ -4,14 +4,11 @@ using System.Collections.Generic;
 
 namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
 {
-    public class ContractChangeStatusRequest : AuditBaseRequest
+    public class ContractChangeTermRequest : AuditBaseRequest
     {
+        public int? PeriodId { get; set; }
         public int? ContractId { get; set; }
-        //public decimal? RentPrice { get; set; }
-        //public int? ContractStatusId { get; set; }
-        //public bool? RowStatus { get; set; }
-        public virtual ICollection<ContractDetailRegisterRequest> ContractDetails { get; set; }
-        public virtual ICollection<PaymentPeriodRegisterRequest> PaymentsPeriod { get; set; }
-
+        public int? TenantId { get; set; }
+        public int? HouseId { get; set; }
     }
 }

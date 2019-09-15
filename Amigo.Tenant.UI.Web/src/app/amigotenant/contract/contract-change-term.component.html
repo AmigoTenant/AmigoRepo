@@ -1,57 +1,144 @@
 <div>
-    <form [formGroup]="contractChangeTermForm" >
-    <div class="row">
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="contractTermType" value="option1"
-                checked formControlName="contractTermType">
-            <label class="form-check-label" for="exampleRadios1">
-                Default radio
-            </label>
+    <form [formGroup]="contractChangeTermForm">
+        <div class="form-group row">
+            <div class="form-check form-check-inline">
+                <input class="form-check-input" type="radio" name="contractTermType" value="EXTEN"
+                    id="contractTermType1" checked formControlName="contractTermType">
+                <label class="form-check-label" for="contractTermType1">
+                    Extension de Contrato
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="contractTermType" value="MODIF"
+                    id="contractTermType2" formControlName="contractTermType">
+                <label class="form-check-label" for="contractTermType2">
+                    Modificacion de Datos
+                </label>
+            </div>
         </div>
-        <div class="form-check">
-            <input class="form-check-input" type="radio" name="contractTermType" value="option2"
-                formControlName="contractTermType">
-            <label class="form-check-label" for="exampleRadios2">
-                Second default radio
-            </label>
+        <div class="form-group row" *ngIf="contractTermType=='EXTENSION'">
+            <label for="periodIdTo" class="col-sm-4 col-form-label">Hasta Periodo</label>
+            <div class="col-sm-8">
+                <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
+                </ngbd-typeahead-period>
+            </div>
         </div>
-        <div class="form-check disabled">
-            <input class="form-check-input" type="radio" name="contractTermType" value="option3"
-                formControlName="contractTermType">
-            <label class="form-check-label" for="exampleRadios3">
-                Disabled radio
-            </label>
+        <div class="form-group row" *ngIf="contractTermType!='EXTENSION'">
+                <label for="periodIdTo" class="col-sm-4 col-form-label">Desde Periodo</label>
+                <div class="col-sm-8">
+                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
+                    </ngbd-typeahead-period>
+                </div>
+            </div>
+        <div class="form-group row">
+            <label for="propertyId" class='col-sm-4 col-form-label'>Propiedad</label>
+            <div class="col-sm-8">
+                <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
+                </ngbd-typeahead-house>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="periodIdTo" class="col-sm-2 col-form-label">Periodo Final</label>
-        <div class="col-sm-10">
-            <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
-            </ngbd-typeahead-period>
+        <div class="form-group row">
+            <label for="newDeposit" class="col-sm-4 col-form-label">Nuevo Deposito</label>
+            <div class="col-sm-8">
+                <input type="number" class="form-control" formControlName='newDeposit'>
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="propertyId" class='col-sm-2 col-form-label'>Propiedad</label>
-        <div class="col-sm-10">
-            <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
-            </ngbd-typeahead-house>
+        <div class="form-group row">
+            <label for="newRent" class="col-sm-4 col-form-label">Nueva Renta</label>
+            <div class="col-sm-8">
+                <input type="number" class="form-control" formControlName="newRent">
+            </div>
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="newDeposit" class="col-sm-2 col-form-label">Nuevo Deposito</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-control" formControlName= 'newDeposit'>
+        <div class="row">
+            <input type="button" id="btnCancel" (click)="onCancel()" class="btn-default btn" value="Cancel">
+            <input type="button" id="btnAccept" (click)="onAccept()" class="btn-primary btn" value="Accept">
         </div>
-    </div>
-    <div class="form-group row">
-        <label for="newRent" class="col-sm-2 col-form-label">Nueva Renta</label>
-        <div class="col-sm-10">
-            <input type="number" class="form-control" formControlName= "newRent">
-        </div>
-    </div>
-    <div class="row">
-        <input type="button" id="btnCancel" (click)="onCancel()" class="btn-default btn" value="Cancel">
-        <input type="button" id="btnAccept" (click)="onAccept()" class="btn-primary btn" value="Accept">
-    </div>
-</form>
+
+        <!-- <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne"
+                            aria-expanded="true" aria-controls="collapseOne">
+                            Collapsible Group Item #1
+                        </button>
+                    </h5>
+                </div>
+
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="periodIdTo" class="col-sm-2 col-form-label">Periodo Final</label>
+                            <div class="col-sm-10">
+                                <ngbd-typeahead-period (modelOutput)="getPeriod($event)"
+                                    [currentPeriod]="_currentPeriod">
+                                </ngbd-typeahead-period>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="propertyId" class='col-sm-2 col-form-label'>Propiedad</label>
+                            <div class="col-sm-10">
+                                <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
+                                </ngbd-typeahead-house>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="newDeposit" class="col-sm-2 col-form-label">Nuevo Deposito</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" formControlName='newDeposit'>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="newRent" class="col-sm-2 col-form-label">Nueva Renta</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" formControlName="newRent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header" id="headingTwo">
+                    <h5 class="mb-0">
+                        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo"
+                            aria-expanded="false" aria-controls="collapseTwo">
+                            Collapsible Group Item #2
+                        </button>
+                    </h5>
+                </div>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="form-group row">
+                            <label for="periodIdTo" class="col-sm-2 col-form-label">Periodo Final</label>
+                            <div class="col-sm-10">
+                                <ngbd-typeahead-period (modelOutput)="getPeriod($event)"
+                                    [currentPeriod]="_currentPeriod">
+                                </ngbd-typeahead-period>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="propertyId" class='col-sm-2 col-form-label'>Propiedad</label>
+                            <div class="col-sm-10">
+                                <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
+                                </ngbd-typeahead-house>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="newDeposit" class="col-sm-2 col-form-label">Nuevo Deposito</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" formControlName='newDeposit'>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="newRent" class="col-sm-2 col-form-label">Nueva Renta</label>
+                            <div class="col-sm-10">
+                                <input type="number" class="form-control" formControlName="newRent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+    </form>
 </div>

@@ -29,15 +29,15 @@ export class ContractChangeTermComponent implements OnInit{
 
     buildForm() {
         this.contractChangeTermForm = this.fb.group({
-            // periodIdTo : [''],
-            // propertyId: [''],
+            contractTermType : [''],
+            finalPeriodId: [null],
+            fromPeriodId: [null],
+            newTenantId: [null],
             newDeposit: [null],
             newRent: [null],
-            // newResponsible: [''],
-            // periodIdFrom: [''],
-            // contractId: [''],
-            // tenantId: [''],
-            contractTermType: [null]
+            contractId: [null],
+            tenantId: [null],
+            houseId: [null]
         });
     }
 

@@ -62,6 +62,7 @@
     <Compile Include="Requests\Expense\ExpenseDetailUpdateRequest.cs" />
     <Compile Include="Requests\Expense\ExpenseUpdateRequest.cs" />
     <Compile Include="Requests\FileRepository\FileRepositoryRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractChangeTermRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailObligationRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractHouseDetailRegisterRequest.cs" />

@@ -109,5 +109,15 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             return ModelState.ToResponse();
         }
 
+        [HttpPost, Route("changeTerm")] //, AmigoTenantClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.ContractUpdate)]
+        public async Task<ResponseDTO> ChangeTerm(ContractChangeTermRequest contractChangeRermRequest)
+        {
+            if (ModelState.IsValid)
+            {
+                return await _contractApplicationService.ChangeTermAsync(contractChangeRermRequest);
+            }
+            return ModelState.ToResponse();
+        }
+
     }
 }

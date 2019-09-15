@@ -14,7 +14,8 @@
                                             <div class="form-group">
                                                 <label for="driver" class="col-sm-5 control-label">Lease No</label>
                                                 <label class="col-sm-7">
-                                                    <input type="text" name="LeaseNo" class="form-control" [(ngModel)]="model.contractCode" />
+                                                    <input type="text" name="LeaseNo" class="form-control"
+                                                        [(ngModel)]="model.contractCode" />
                                                 </label>
                                             </div>
                                         </div>
@@ -22,9 +23,12 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">From</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="BeginDate" ngbDatepicker #d1="ngbDatepicker"
-                                                    [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()">
-                                                    <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="BeginDate" ngbDatepicker #d1="ngbDatepicker"
+                                                        [outside-click]="d1" [(ngModel)]="modelFrom"
+                                                        (ngModelChange)="onSelectModelFrom()">
+                                                    <span class="ro-calendar-btn" (click)="d1.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
@@ -32,9 +36,12 @@
                                             <div class="form-group">
                                                 <label for="to" class="col-sm-5 control-label">To</label>
                                                 <label class="ro-calendar col-sm-7">
-                                                    <input class="form-control" [placeholder]="localization.dateFormat" name="EndDate" ngbDatepicker #d2="ngbDatepicker"
-                                                    [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()">
-                                                    <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
+                                                    <input class="form-control" [placeholder]="localization.dateFormat"
+                                                        name="EndDate" ngbDatepicker #d2="ngbDatepicker"
+                                                        [outside-click]="d2" [(ngModel)]="modelTo"
+                                                        (ngModelChange)="onSelectModelTo()">
+                                                    <span class="ro-calendar-btn" (click)="d2.toggle()"><i
+                                                            class="xico-ui-calendar" style="width:30px"></i></span>
                                                 </label>
                                             </div>
                                         </div>
@@ -44,7 +51,8 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Tenant</label>
                                                 <label class="col-sm-7">
-                                                  <input type="text" name="FullName" class="form-control" [(ngModel)]="model.tenantFullName" />
+                                                    <input type="text" name="FullName" class="form-control"
+                                                        [(ngModel)]="model.tenantFullName" />
                                                 </label>
                                             </div>
                                         </div>
@@ -52,8 +60,10 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Days To Collect</label>
                                                 <label class="col-sm-7">
-                                                  <select name="nextDaysToCollect" [(ngModel)]="model.nextDaysToCollect" class="form-control">
-                                                        <option *ngFor="let o of _listNextDaysToCollect" [ngValue]="o.id">{{o.name}}</option>
+                                                    <select name="nextDaysToCollect"
+                                                        [(ngModel)]="model.nextDaysToCollect" class="form-control">
+                                                        <option *ngFor="let o of _listNextDaysToCollect"
+                                                            [ngValue]="o.id">{{o.name}}</option>
                                                     </select>
                                                 </label>
                                             </div>
@@ -62,8 +72,10 @@
                                             <div class="form-group">
                                                 <label for="chargeNoType" class="col-sm-5 control-label">Status</label>
                                                 <label class="col-sm-7">
-                                                    <select name="contractStatusId" [(ngModel)]="model.contractStatusId" class="form-control">
-                                                        <option *ngFor="let o of _listEntityStatus" [ngValue]="o.entityStatusId">{{o.name}}</option>
+                                                    <select name="contractStatusId" [(ngModel)]="model.contractStatusId"
+                                                        class="form-control">
+                                                        <option *ngFor="let o of _listEntityStatus"
+                                                            [ngValue]="o.entityStatusId">{{o.name}}</option>
                                                     </select>
                                                 </label>
                                             </div>
@@ -74,7 +86,8 @@
                                             <div class="form-group">
                                                 <label for="from" class="col-sm-5 control-label">Period</label>
                                                 <label class="col-sm-7">
-                                                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
+                                                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)"
+                                                        [currentPeriod]="_currentPeriod"></ngbd-typeahead-period>
                                                     <!--<select name="houseId" [(ngModel)]="model.houseId" class="form-control">
                                                         <option *ngFor="let o of _listProperties" [ngValue]="o.houseId">{{o.name}}</option>
                                                     </select>-->
@@ -86,16 +99,20 @@
                                                 <label for="from" class="col-sm-5 control-label">House</label>
                                                 <label class="col-sm-7">
                                                     <!--<ss-multiselect-dropdown [options]="featureListMultiSelect" [texts]="myTexts" [settings]="mySettings" [(ngModel)]="selectedOptionsFeature" [ngModelOptions]="{standalone: true}"></ss-multiselect-dropdown>-->
-                                                    <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse"></ngbd-typeahead-house>
+                                                    <ngbd-typeahead-house (modelOutput)="getHouse($event)"
+                                                        [currentHouse]="_currentHouse"></ngbd-typeahead-house>
                                                 </label>
                                             </div>
                                         </div>
                                         <div class="col-sm-4">
                                             <div class="form-group">
-                                                <label for="chargeNoType" class="col-sm-5 control-label">Unpaid Periods</label>
+                                                <label for="chargeNoType" class="col-sm-5 control-label">Unpaid
+                                                    Periods</label>
                                                 <label class="col-sm-7">
-                                                    <select class="form-control" [(ngModel)]="model.unpaidPeriods" name="unpaidPeriods">
-                                                        <option *ngFor="let item of _listUnpaidPeriods" [ngValue]='item.code'>
+                                                    <select class="form-control" [(ngModel)]="model.unpaidPeriods"
+                                                        name="unpaidPeriods">
+                                                        <option *ngFor="let item of _listUnpaidPeriods"
+                                                            [ngValue]='item.code'>
                                                             {{item.name}}
                                                         </option>
                                                     </select>
@@ -106,23 +123,25 @@
                                 </div>
                                 <div class="col-lg-2 col-md-2 col-sm-2 text-right">
                                     <div class="button-container">
-                                        <button type="submit" id="btnSearch" (click)="onSelect()" class="ro-button btn-primary" >Search</button>
+                                        <button type="submit" id="btnSearch" (click)="onSelect()"
+                                            class="ro-button btn-primary">Search</button>
                                     </div>
                                     <div class="button-container">
-                                        <button type="button" class="ro-button btn-default" (click)="onReset()">Clear</button>
+                                        <button type="button" class="ro-button btn-default"
+                                            (click)="onReset()">Clear</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="action-bar">
                             <div class="button-container">
-                                <button type="button" class="ro-button btn-success" (click)="onInsert()" >
+                                <button type="button" class="ro-button btn-success" (click)="onInsert()">
                                     <i class="xico-action-edit"></i>
                                     Add Lease
                                 </button>
                             </div>
                             <div class="button-container">
-                                <button type="button" class="ro-button btn-default" (click)="onPrint($event)" >
+                                <button type="button" class="ro-button btn-default" (click)="onPrint($event)">
                                     <i class="xico-action-print"></i>
                                     Print
                                 </button>
@@ -136,12 +155,8 @@
                         </div>
                     </form>
                     <div class="grid-container">
-                        <kendo-grid id="kgrid-Contract" 
-                                    [data]="contractSearchDTOs" 
-                                    [pageSize]="model.pageSize" 
-                                    [skip]="currentPage" 
-                                    [style.height.%]="100" [style.width.%]="100"
-                                    [pageable]="{
+                        <kendo-grid id="kgrid-Contract" [data]="contractSearchDTOs" [pageSize]="model.pageSize"
+                            [skip]="currentPage" [style.height.%]="100" [style.width.%]="100" [pageable]="{
                                 buttonCount: buttonCount,
                                 info: info,
                                 type: type,
@@ -163,7 +178,7 @@
                                 </ng-template>
                             </kendo-grid-column>-->
                             <kendo-grid-column field="contractCode" title="Lease No" width="6%"></kendo-grid-column>
-                            <kendo-grid-column field="periodCode" title="Period" width="5%" ></kendo-grid-column>
+                            <kendo-grid-column field="periodCode" title="Period" width="5%"></kendo-grid-column>
                             <kendo-grid-column field="tenantFullName" title="Tenant" width="10%"></kendo-grid-column>
                             <kendo-grid-column field="houseName" title="Property" width="10%"></kendo-grid-column>
                             <kendo-grid-column field="creationDate" title="Lease Date" width="5%">
@@ -208,8 +223,10 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column field="nextDaysToCollect" title="Days To collect" width="6%"></kendo-grid-column>
-                            <kendo-grid-column field="unpaidPeriods" title="Unpaid Periods" width="6%"></kendo-grid-column>
+                            <kendo-grid-column field="nextDaysToCollect" title="Days To collect" width="6%">
+                            </kendo-grid-column>
+                            <kendo-grid-column field="unpaidPeriods" title="Unpaid Periods" width="6%">
+                            </kendo-grid-column>
                             <kendo-grid-column title="Status" width="6%">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div *ngIf="dataItem.contractStatusCode==='DRAFT'">
@@ -242,28 +259,28 @@
                                         <button type="button" class="btn-icon" (click)="onChangeStatus(dataItem);">
                                             <i class="xico-action-send-doc"></i>
                                         </button>
-                                   </div>
+                                    </div>
 
-                                   <div *ngIf="dataItem.contractStatusCode=='FORMAL'">
-                                       <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
-                                           <i class="xico-action-remove"></i>
-                                       </button>
-                                       <button type="button" class="btn-icon" (click)="onView(dataItem);">
-                                           <i class="xico-shipment-find"></i>
-                                       </button>
-                                       <button type="button" class="btn-icon" (click)="onChangeTerm(dataItem);">
+                                    <div *ngIf="dataItem.contractStatusCode=='FORMAL'">
+                                        <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                            <i class="xico-action-remove"></i>
+                                        </button>
+                                        <button type="button" class="btn-icon" (click)="onView(dataItem);">
                                             <i class="xico-shipment-find"></i>
                                         </button>
-                                   </div>
+                                        <button type="button" class="btn-icon" (click)="onChangeTerm(dataItem);">
+                                            <i class="xico-shipment-find"></i>
+                                        </button>
+                                    </div>
 
-            <!--<div class="text-right">
+                                    <!--<div class="text-right">
                 <button ng-show=false type="button" class="btn-icon" (click)="onChangeStatus(dataItem)">
                     <i class="xico-action-edit"></i>
                 </button>
             </div>-->
-</ng-template>
+                                </ng-template>
                             </kendo-grid-column>
-                            
+
                         </kendo-grid>
                     </div>
                 </div>
@@ -285,11 +302,14 @@
         <button type="button" class="k-button k-primary" (click)="yesChangeStatus()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>
-<div >
+<div>
     <div>
         <at-contract-maintenance></at-contract-maintenance>
     </div>
 </div>
-<kendo-dialog title="Confirmation" *ngIf="openedChangeTermConfimation" (close)="closeChangeTermConfirmation()">
-    <at-contract-change-term (onCancelPopupEmitter)= "closeChangeTermConfirmation()" (onAcceptPopupEmitter)="yesChangeTerm()"></at-contract-change-term>
-</kendo-dialog>
+<div style="width: 30%; vertical-align: center">
+    <kendo-dialog title="Confirmation" *ngIf="openedChangeTermConfimation" (close)="closeChangeTermConfirmation()">
+        <at-contract-change-term (onCancelPopupEmitter)="closeChangeTermConfirmation()"
+            (onAcceptPopupEmitter)="yesChangeTerm()"></at-contract-change-term>
+    </kendo-dialog>
+</div>
