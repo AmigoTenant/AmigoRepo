@@ -19,6 +19,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
+using model = Amigo.Tenant.CommandModel.Models;
 
 namespace Amigo.Tenant.Application.Services.PaymentPeriod
 {
@@ -37,7 +38,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IAppSettingApplicationService _appSettingApplicationService;
         private readonly IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> _paymentPeriodGroupedStatusAndConceptDTOApplication;
         private readonly IQueryDataAccess<PaymentPeriodDTO> _paymentPeriodRepo;
-        
+        private readonly IRepository<model.PaymentPeriod> _paymentPeriodRepository;
+
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
             IQueryDataAccess<PaymentPeriodRegisterRequest> paymentPeriodDataAccess,
@@ -50,7 +52,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             IQueryDataAccess<PPHeaderSearchByInvoiceDTO> paymentPeriodSearchByInvoiceDataAccess,
             IAppSettingApplicationService appSettingApplicationService,
             IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> paymentPeriodGroupedStatusAndConceptDTOApplication,
-            IQueryDataAccess<PaymentPeriodDTO> paymentPeriodRepo)
+            IQueryDataAccess<PaymentPeriodDTO> paymentPeriodRepo,
+            IRepository<model.PaymentPeriod> paymentPeriodRepository)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -67,6 +70,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             _appSettingApplicationService = appSettingApplicationService;
             _paymentPeriodGroupedStatusAndConceptDTOApplication = paymentPeriodGroupedStatusAndConceptDTOApplication;
             _paymentPeriodRepo = paymentPeriodRepo;
+            _paymentPeriodRepository = paymentPeriodRepository;
         }
 
         private async Task<int?> GetStatusbyCodeAsync(string entityCode, string statusCode)
@@ -485,64 +489,6 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return null;
         }
 
-        //public async Task<ResponseDTO> ValidateEntityRegister(PaymentPeriodRegisterRequest request)
-        //{
-        //    bool isValid = true;
-        //    Expression<Func<PaymentPeriodRegisterRequest, bool>> queryFilter = p => true;
-        //    var errorMessage = "";
-        //    queryFilter = queryFilter.And(p => p.PaymentPeriodCode == request.PaymentPeriodCode);
-        //    var paymentPeriod = await _paymentPeriodDataAccess.FirstOrDefaultAsync(queryFilter);
-
-        //    if (paymentPeriod != null)
-        //    {
-        //        isValid = false;
-        //        errorMessage = "PaymentPeriod already Exists";
-        //    }
-
-        //    //Existe un Lease para el mismo tenant Activo o Futuro
-        //    if (isValid)
-        //    {
-        //        queryFilter = p => p.TenantId == request.TenantId;
-        //        queryFilter = queryFilter.And(p => p.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Active || p.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Future);
-        //        paymentPeriod = await _paymentPeriodDataAccess.FirstOrDefaultAsync(queryFilter);
-
-        //        if (paymentPeriod != null)
-        //        {
-        //            isValid = false;
-        //            errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
-        //        }
-        //    }
-
-        //    //Validate Period
-        //    if (isValid)
-        //    {
-        //        Expression<Func<PeriodDTO, bool>> queryFilterPeriod = p => true;
-        //        queryFilterPeriod = queryFilterPeriod.And(p => p.EndDate < request.EndDate);
-        //        var period = await _periodApplicationService.GetLastPeriodAsync();
-
-        //        if (period != null && period.Data.EndDate < request.EndDate)
-        //        {
-        //            isValid = false;
-        //            errorMessage = "There is no period configurated to support the end date of this Lease, please create period";
-        //        }
-        //    }
-
-
-        //    var response = new ResponseDTO()
-        //    {
-        //        IsValid = string.IsNullOrEmpty(errorMessage),
-        //        Messages = new List<ApplicationMessage>()
-        //    };
-
-        //    response.Messages.Add(new ApplicationMessage()
-        //    {
-        //        Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
-        //        Message = errorMessage
-        //    });
-
-        //    return response;
-        //}
-
         public async Task<ResponseDTO> ValidateEntityUpdate(PPHeaderSearchByContractPeriodDTO request)
         {
             var errorMessage = "";
@@ -633,6 +579,17 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
             return response;
         }
+
+        public async Task<model.PaymentPeriod> GetPaymentPeriodByCodeAsync(string periodCode, int? contractId )
+        {
+            string[] includes = new string[] { "Period" };
+            var paymentPeriodEntity = await _paymentPeriodRepository.FirstOrDefaultAsync(q =>
+                                         q.Period.Code == periodCode && q.ContractId == contractId,  includes: includes);
+
+            return paymentPeriodEntity;
+            
+        }
+
 
         /*EXCEL REPORT*/
 

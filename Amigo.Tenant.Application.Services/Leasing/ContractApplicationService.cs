@@ -35,6 +35,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
         private readonly IQueryDataAccess<OtherTenantRegisterRequest> _otherTenantDataAccess;
         private readonly IQueryDataAccess<HouseFeatureDetailContractDTO> _houseFeatureDetailContractDataAccess;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
+        private readonly IPaymentPeriodAppication _contractDataAccess;
 
         public ContractApplicationService(IBus bus,
             IQueryDataAccess<ContractSearchDTO> contractSearchDataAccess,
@@ -94,7 +95,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
 
             var contractRequest = await GetByIdAsync(request.ContractId);
 
-            await CreateContractDetail(contractRequest.Data);
+            await CreatePaymentsByPeriod(contractRequest.Data);
 
             var command = _mapper.Map<ContractRegisterRequest, ContractChangeStatusCommand>(contractRequest.Data);
 
@@ -169,7 +170,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
             contractDetailFirst.ContractDetailObligations = contractDetailObligationList;
         }
 
-        private async Task CreateContractDetail(ContractRegisterRequest request)
+        private async Task CreatePaymentsByPeriod(ContractRegisterRequest request)
         {
             var isLastPeriod = false;
             var period = (await _periodApplicationService.GetPeriodByIdAsync(request.PeriodId)).Data;
@@ -184,11 +185,8 @@ namespace Amigo.Tenant.Application.Services.Tracking
             var paymentTypeRentId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Rent);
             var paymentTypeDepositId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Deposit);
 
-
-
             while (contractEndDate > currentPeriodDueDate)
             {
-                //SetContractDetail(contractDetails, request, period, id, isLastPeriod);
                 SetPaymentsPeriod(paymentsPeriod, request, period, id, isLastPeriod, rentConceptId, entityStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId);
 
                 //TODO: nO HA SEQUENCE 13 SE ESTA CAYENDO
@@ -199,15 +197,12 @@ namespace Amigo.Tenant.Application.Services.Tracking
                 if (contractEndDate.Value.Year == currentPeriodDueDate.Year && contractEndDate.Value.Month == currentPeriodDueDate.Month)
                 {
                     isLastPeriod = true;
-                    //SetContractDetail(contractDetails, request, period, id, isLastPeriod);
                     SetPaymentsPeriod(paymentsPeriod, request, period, id, isLastPeriod, rentConceptId, entityStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId);
-                    //request.ContractDetails = contractDetails;
                     request.PaymentsPeriod = paymentsPeriod;
                     return;
                 }
                 else if (currentPeriodDueDate.CompareTo(contractEndDate)>0)
                 {
-                    //request.ContractDetails = contractDetails;
                     request.PaymentsPeriod = paymentsPeriod;
                     return;
                 }
@@ -272,34 +267,6 @@ namespace Amigo.Tenant.Application.Services.Tracking
             
         }
 
-        //private void SetContractDetail(List<ContractDetailRegisterRequest> contractDetails, ContractRegisterRequest request, PeriodDTO period, int id, bool isLastPeriod)
-        //{
-        //    var contractDetail = new ContractDetailRegisterRequest();
-        //    contractDetail.ContractDetailId = id;
-        //    contractDetail.ItemNo = id * -1;
-        //    contractDetail.Description = period.Code;
-        //    contractDetail.ContractDetailStatusId = 8; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
-        //    contractDetail.ContractId = request.ContractId;
-        //    contractDetail.PeriodId = period.PeriodId;
-        //    contractDetail.TotalPayment = contractDetail.Rent;
-        //    contractDetail.RowStatus = true;
-        //    contractDetail.CreatedBy = request.UserId;
-        //    contractDetail.CreationDate = DateTime.Now;
-        //    contractDetail.UpdatedBy = request.UserId;
-        //    contractDetail.UpdatedDate = DateTime.Now;
-
-        //    if (!isLastPeriod)
-        //    {
-        //        contractDetail.Rent = contractDetail.ItemNo == 1 ? CalculateFirstRent(request.BeginDate, request.RentPrice) : request.RentPrice;
-        //    }
-        //    else
-        //    {
-        //        contractDetail.Rent = CalculateLastRent(request.EndDate, request.RentPrice);
-        //    }
-        //    contractDetail.DueDate = period.DueDate;
-        //    contractDetails.Add(contractDetail);
-        //}
-
         private decimal CalculateFirstRent(DateTime? beginDate, decimal rentPrice)
         {
             var daysNumber = 31 - beginDate.Value.Day;
@@ -349,15 +316,12 @@ namespace Amigo.Tenant.Application.Services.Tracking
 
         public async Task<ResponseDTO> UpdateContractAsync(ContractUpdateRequest contract)
         {
-            //Map to Command
-            
             var command = _mapper.Map<ContractUpdateRequest, ContractUpdateCommand>(contract);
 
             var response = await ValidateEntityUpdate(contract);
 
             if (response.IsValid)
             {
-                //Execute Command
                 var resp = await _bus.SendAsync(command);
                 return ResponseBuilder.Correct(resp);
             }
@@ -367,12 +331,8 @@ namespace Amigo.Tenant.Application.Services.Tracking
 
         public async Task<ResponseDTO> DeleteContractAsync(ContractDeleteRequest contract)
         {
-            //Map to Command
             var command = _mapper.Map<ContractDeleteRequest, ContractDeleteCommand>(contract);
-            
-            //Execute Command
             var resp = await _bus.SendAsync(command);
-
             return ResponseBuilder.Correct(resp);
         }
 
@@ -500,7 +460,6 @@ namespace Amigo.Tenant.Application.Services.Tracking
                 }
             }
 
-            //Validate Period
             if (isValid)
             {
                 var period = await _periodApplicationService.GetLastPeriodAsync();
@@ -571,7 +530,6 @@ namespace Amigo.Tenant.Application.Services.Tracking
 
 
         /*EXCEL REPORT*/
-
         public async Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent,
             TransportContext transportContext, ContractSearchRequest search)
         {
@@ -613,8 +571,6 @@ namespace Amigo.Tenant.Application.Services.Tracking
         {
             var startDate = string.Format("{0:MM/dd/yyyy HH:mm}", item.BeginDate) ?? "";
             var finishDate = string.Format("{0:MM/dd/yyyy HH:mm}", item.EndDate) ?? "";
-            //var product = !string.IsNullOrEmpty(item.ProductName) ? item.ProductName.Replace(@",", ".") : "";
-            //var total = string.Format("{0:0.00}", item.DriverPay);
             var rentPrice = string.Format("{0:0.00}", item.RentPrice);
             var rentDeposit = string.Format("{0:0.00}", item.RentDeposit);
             var unpaidPeriods = string.Format("{0:0}", item.UnpaidPeriods);
@@ -638,6 +594,9 @@ namespace Amigo.Tenant.Application.Services.Tracking
 
         public async Task<ResponseDTO> ChangeTermAsync(ContractChangeTermRequest contractChangeTermRequest)
         {
+            //CREACION DE PERIODOS
+            string[] includes = new string[] { "Period" };
+            var lastPeriodProyected = (await paymen.GetPeriodByIdAsync(request.PeriodId)).Data
             var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
             var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
             if (response.IsValid)
