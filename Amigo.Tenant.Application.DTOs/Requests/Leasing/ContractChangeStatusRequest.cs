@@ -19,5 +19,6 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
         public int HouseId { get; set; }
 
 
+
     }
 }

@@ -6,6 +6,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
+using model = Amigo.Tenant.CommandModel.Models;
 
 namespace Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod
 {
@@ -22,5 +23,7 @@ namespace Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod
         Task GenerateDataCsvToReportExcel(Stream outputStream, HttpContent httpContent, TransportContext transportContext, PaymentPeriodSearchRequest search);
         Task<ResponseDTO> RegisterPaymentPeriodDetailAsync(PaymentPeriodRegisterRequest paymentPeriod);
         Task<ResponseDTO> UpdatePaymentPeriodDetailAsync(PaymentPeriodUpdateRequest paymentPeriod);
+        Task<model.PaymentPeriod> GetPaymentPeriodByCodeAsync(int? periodId, int? contractId);
+
     }
 }

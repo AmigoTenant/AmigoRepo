@@ -580,11 +580,11 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return response;
         }
 
-        public async Task<model.PaymentPeriod> GetPaymentPeriodByCodeAsync(string periodCode, int? contractId )
+        public async Task<model.PaymentPeriod> GetPaymentPeriodByCodeAsync(int? periodId, int? contractId )
         {
             string[] includes = new string[] { "Period" };
             var paymentPeriodEntity = await _paymentPeriodRepository.FirstOrDefaultAsync(q =>
-                                         q.Period.Code == periodCode && q.ContractId == contractId,  includes: includes);
+                                         q.PeriodId == periodId && q.ContractId == contractId,  includes: includes);
 
             return paymentPeriodEntity;
             

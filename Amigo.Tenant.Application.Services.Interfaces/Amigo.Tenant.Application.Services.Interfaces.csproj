@@ -98,6 +98,10 @@
       <Project>{e24205a2-8839-4ad1-aa3a-1f5cb0a5b586}</Project>
       <Name>Amigo.Tenant.Application.DTOs</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Amigo.Tenant.CommandModel\Amigo.Tenant.CommandModel.csproj">
+      <Project>{897d8378-f63c-42aa-9c77-ed7a21256f00}</Project>
+      <Name>Amigo.Tenant.CommandModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Amigo.Tenant.ServiceAgent.IdentityServer\Amigo.Tenant.ServiceAgent.IdentityServer.csproj">
       <Project>{07959646-b943-448c-b814-931eff480dfb}</Project>
       <Name>Amigo.Tenant.ServiceAgent.IdentityServer</Name>

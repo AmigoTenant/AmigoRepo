@@ -20,6 +20,8 @@ using System.Net.Http;
 using System.Net;
 using System.Web;
 using Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod;
+using Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod;
+using model = Amigo.Tenant.CommandModel.Models;
 
 namespace Amigo.Tenant.Application.Services.Tracking
 {
@@ -35,7 +37,8 @@ namespace Amigo.Tenant.Application.Services.Tracking
         private readonly IQueryDataAccess<OtherTenantRegisterRequest> _otherTenantDataAccess;
         private readonly IQueryDataAccess<HouseFeatureDetailContractDTO> _houseFeatureDetailContractDataAccess;
         private readonly IGeneralTableApplicationService _generalTableApplicationService;
-        private readonly IPaymentPeriodAppication _contractDataAccess;
+        private readonly IPaymentPeriodApplicationService _paymentPeriodApplicationService;
+        private readonly IRepository<model.PaymentPeriod> _paymentPeriodRepository;
 
         public ContractApplicationService(IBus bus,
             IQueryDataAccess<ContractSearchDTO> contractSearchDataAccess,
@@ -46,7 +49,9 @@ namespace Amigo.Tenant.Application.Services.Tracking
             IMapper mapper,
             IQueryDataAccess<OtherTenantRegisterRequest> otherTenantDataAccess,
             IQueryDataAccess<HouseFeatureDetailContractDTO> houseFeatureDetailContractDataAccess,
-            IGeneralTableApplicationService generalTableApplicationService)
+            IGeneralTableApplicationService generalTableApplicationService,
+            IPaymentPeriodApplicationService paymentPeriodApplicationService,
+            IRepository<model.PaymentPeriod> paymentPeriodRepository)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -60,6 +65,8 @@ namespace Amigo.Tenant.Application.Services.Tracking
             _otherTenantDataAccess = otherTenantDataAccess;
             _houseFeatureDetailContractDataAccess = houseFeatureDetailContractDataAccess;
             _generalTableApplicationService = generalTableApplicationService;
+            _paymentPeriodApplicationService = paymentPeriodApplicationService;
+            _paymentPeriodRepository = paymentPeriodRepository;
         }
 
         public async Task<ResponseDTO> RegisterContractAsync(ContractRegisterRequest request)
@@ -595,16 +602,20 @@ namespace Amigo.Tenant.Application.Services.Tracking
         public async Task<ResponseDTO> ChangeTermAsync(ContractChangeTermRequest contractChangeTermRequest)
         {
             //CREACION DE PERIODOS
-            string[] includes = new string[] { "Period" };
-            var lastPeriodProyected = (await paymen.GetPeriodByIdAsync(request.PeriodId)).Data
-            var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
-            var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
-            if (response.IsValid)
-            {
-                var resp = await _bus.SendAsync(command);
-                return ResponseBuilder.Correct(resp);
-            }
-            return response;
+            List<OrderExpression<model.PaymentPeriod>> orderExpressionList = new List<OrderExpression<model.PaymentPeriod>>();
+            orderExpressionList.Add(new OrderExpression<model.PaymentPeriod>(OrderType.Desc, p => p.PaymentPeriodId.Value));
+            var paymentPeriod = await _paymentPeriodRepository.ListAsync(q => q.ContractId == contractChangeTermRequest.ContractId, orderExpressionList.ToArray());
+
+            var lastPeriodProyected = (await _paymentPeriodApplicationService.GetPaymentPeriodByCodeAsync(paymentPeriod.FirstOrDefault().PeriodId, contractChangeTermRequest.ContractId));
+
+            //var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
+            //var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
+            //if (response.IsValid)
+            //{
+            //    var resp = await _bus.SendAsync(command);
+            //    return ResponseBuilder.Correct(resp);
+            //}
+            return null; // response;
         }
 
         public async Task<ResponseDTO> ValidateEntityToChangeTermAsync(ContractChangeTermRequest request)
