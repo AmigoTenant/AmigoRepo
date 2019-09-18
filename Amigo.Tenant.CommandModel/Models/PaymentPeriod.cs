@@ -1,6 +1,6 @@
 namespace Amigo.Tenant.CommandModel.Models
 {
-    using Amigo.Tenant.CommandModel.Abstract;
+    using Abstract;
     using System;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -22,5 +22,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public DateTime? PaymentDate { get; set; }
         public string ReferenceNo { get; set; }
         public Contract Contract { get; set; }
+        public Period Period { get; set; }
     }
 }

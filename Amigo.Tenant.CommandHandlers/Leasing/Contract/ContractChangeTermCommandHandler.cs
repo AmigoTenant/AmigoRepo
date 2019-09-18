@@ -46,14 +46,19 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         {
             try
             {
+                string[] includes = new string[] { "Period" };
+                //var detailList = await _repositoryExpenseDetail.ListAsync(q => expenseDetailList.ExpenseDetailListId.Contains(q.ExpenseDetailId.Value), includes: includes);
+
+                Expression<Func<PaymentPeriod, object>> expresion = q => q.PaymentPeriodId.Value;
+
                 List<OrderExpression<PaymentPeriod>> orderExpressionList = new List<OrderExpression<PaymentPeriod>>();
-                orderExpressionList.Add(new OrderExpression<PaymentPeriod>(OrderType.Desc, p => p.PaymentPeriodId.Value));
+                orderExpressionList.Add(new OrderExpression<PaymentPeriod>(OrderType.Desc, p=> p.Period.Code.ToString()));
 
                 //List<OrderExpression<Invoice>> orderExpressionList = new List<OrderExpression<Invoice>>();
                 //orderExpressionList.Add(new OrderExpression<Invoice>(OrderType.Desc, p => p.InvoiceNo));
                 Expression<Func<PaymentPeriod, bool>> queryFilter = q => q.RowStatus;
 
-                var firstPaymentPeriod = (await _repositoryPayment.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray()));
+                var firstPaymentPeriod = (await _repositoryPayment.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray(), includes: includes));
 
 
                 List<OrderExpression<Invoice>> orderExpressionList1 = new List<OrderExpression<Invoice>>();

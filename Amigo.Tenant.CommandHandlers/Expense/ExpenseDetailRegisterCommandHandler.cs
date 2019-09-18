@@ -68,16 +68,16 @@ namespace Amigo.Tenant.CommandHandlers.Expense
                 {
                     var rentaConcept = await _repositoryConcept.FirstOrDefaultAsync(q => q.Code == Constants.ConceptCode.Rent && q.RowStatus.Value);
                     string[] includes = new string[] { "Contract" };
-                    var payments = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.Contract.HouseId == message.HouseId && q.ConceptId == rentaConcept.ConceptId, null, includes); 
-                    foreach (var item in payments)
-                    {
-                        obj = new model.ExpenseDetail();
-                        obj = entity;
-                        obj.TenantId = item.TenantId;
-                        obj.ExpenseDetailStatusId = (expensePending != null ? expensePending.EntityStatusId : (int?)null); //PENDING
-                        _repository.Add(obj);
-                        await _unitOfWork.CommitAsync();
-                    }
+                    //var payments = await _repositoryPayment.ListAsync(q => q.PeriodId == message.PeriodId && q.Contract.HouseId == message.HouseId && q.ConceptId == rentaConcept.ConceptId, null, includes); 
+                    //foreach (var item in payments)
+                    //{
+                    //    obj = new model.ExpenseDetail();
+                    //    obj = entity;
+                    //    obj.TenantId = item.TenantId;
+                    //    obj.ExpenseDetailStatusId = (expensePending != null ? expensePending.EntityStatusId : (int?)null); //PENDING
+                    //    _repository.Add(obj);
+                    //    await _unitOfWork.CommitAsync();
+                    //}
                 }
                 else
                 {
