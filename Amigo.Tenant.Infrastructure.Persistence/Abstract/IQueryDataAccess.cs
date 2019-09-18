@@ -27,5 +27,6 @@ namespace Amigo.Tenant.Infrastructure.Persistence.Abstract
         Task<bool> AnyAsync(Expression<Func<T, bool>> whereExpression);
 
         Task<T> FirstOrDefaultAsync(Expression<Func<T, bool>> whereExpression, OrderExpression<T>[] orderExpression = null, string[] includes = null);
-    }
+
+     }
 }

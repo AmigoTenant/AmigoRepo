@@ -602,25 +602,25 @@ namespace Amigo.Tenant.Application.Services.Tracking
         public async Task<ResponseDTO> ChangeTermAsync(ContractChangeTermRequest contractChangeTermRequest)
         {
             //CREACION DE PERIODOS
-            List<OrderExpression<model.PaymentPeriod>> orderExpressionList = new List<OrderExpression<model.PaymentPeriod>>();
-            orderExpressionList.Add(new OrderExpression<model.PaymentPeriod>(OrderType.Desc, p => p.PaymentPeriodId.Value));
-            var paymentPeriod = await _paymentPeriodRepository.ListAsync(q => q.ContractId == contractChangeTermRequest.ContractId, orderExpressionList.ToArray());
+            //List<OrderExpression<model.PaymentPeriod>> orderExpressionList = new List<OrderExpression<model.PaymentPeriod>>();
+            //orderExpressionList.Add(new OrderExpression<model.PaymentPeriod>(OrderType.Desc, p => p.PaymentPeriodId.Value));
+            //var paymentPeriod = await _paymentPeriodRepository.ListAsync(q => q.ContractId == contractChangeTermRequest.ContractId, orderExpressionList.ToArray());
 
-            var lastPeriodProyected = (await _paymentPeriodApplicationService.GetPaymentPeriodByCodeAsync(paymentPeriod.FirstOrDefault().PeriodId, contractChangeTermRequest.ContractId));
+            //var lastPeriodProyected = (await _paymentPeriodApplicationService.GetPaymentPeriodByCodeAsync(paymentPeriod.FirstOrDefault().PeriodId, contractChangeTermRequest.ContractId));
 
-            //var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
-            //var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
-            //if (response.IsValid)
-            //{
-            //    var resp = await _bus.SendAsync(command);
-            //    return ResponseBuilder.Correct(resp);
-            //}
+            var command = _mapper.Map<ContractChangeTermRequest, ContractChangeTermCommand>(contractChangeTermRequest);
+            var response = await ValidateEntityToChangeTermAsync(contractChangeTermRequest);
+            if (response.IsValid)
+            {
+                var resp = await _bus.SendAsync(command);
+                return ResponseBuilder.Correct(resp);
+            }
             return null; // response;
         }
 
         public async Task<ResponseDTO> ValidateEntityToChangeTermAsync(ContractChangeTermRequest request)
         {
-            //var errorMessage = "";
+            var errorMessage = "";
             //Expression<Func<ContractRegisterRequest, bool>> queryFilter = p => p.RowStatus;
             //queryFilter = queryFilter.And(p => p.ContractId != request.ContractId);
             //queryFilter = queryFilter.And(p => p.TenantId == request.TenantId);
@@ -635,19 +635,19 @@ namespace Amigo.Tenant.Application.Services.Tracking
             //    errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
             //}
 
-            //var response = new ResponseDTO()
-            //{
-            //    IsValid = string.IsNullOrEmpty(errorMessage),
-            //    Messages = new List<ApplicationMessage>()
-            //};
+            var response = new ResponseDTO()
+            {
+                IsValid = string.IsNullOrEmpty(errorMessage),
+                Messages = new List<ApplicationMessage>()
+            };
 
-            //response.Messages.Add(new ApplicationMessage()
-            //{
-            //    Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
-            //    Message = errorMessage
-            //});
+            response.Messages.Add(new ApplicationMessage()
+            {
+                Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
+                Message = errorMessage
+            });
 
-            return null; //response;
+            return response;
         }
     }
 }

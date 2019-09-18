@@ -100,6 +100,7 @@ namespace Amigo.Tenant.Infrastructure.Persistence.NPoco.Abstract
                 Items = pagedResult.Items
             };
         }
+
         #region helper methods
         private IQueryProvider<T> ApplyOrderStatement(IQueryProvider<T> query, OrderExpression<T> order)
         {
