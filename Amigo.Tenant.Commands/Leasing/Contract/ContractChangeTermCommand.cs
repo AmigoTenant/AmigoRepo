@@ -14,5 +14,7 @@ namespace Amigo.Tenant.Commands.Leasing.Contracts
         public int? CreatedBy { get; set; }
         public DateTime? CreationDate { get; set; }
         public int? TenantId { get; set; }
+        public decimal? newRent { get; set; }
+        public decimal? newDeposit { get; set; }
     }
 }
