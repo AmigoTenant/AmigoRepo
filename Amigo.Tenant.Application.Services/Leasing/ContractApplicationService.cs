@@ -239,6 +239,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
                 paymentPeriodDeposit.PaymentTypeId = paymentTypeDepositId;
                 paymentPeriodDeposit.PaymentAmount = request.RentDeposit;
                 paymentPeriodDeposit.DueDate = period.DueDate;
+                paymentPeriodDeposit.HouseId = request.HouseId;
                 paymentsPeriod.Add(paymentPeriodDeposit);
             }
 
@@ -269,6 +270,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
                 paymentPeriodRent.PaymentAmount = CalculateLastRent(request.EndDate, request.RentPrice);
             }
             paymentPeriodRent.DueDate = period.DueDate;
+            paymentPeriodRent.HouseId = request.HouseId;
             paymentsPeriod.Add(paymentPeriodRent);
 
             

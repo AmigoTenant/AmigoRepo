@@ -313,6 +313,13 @@ namespace Amigo.Tenant.Common
             public const string LateFeeXDay = "LATEFEEXDY";
             public const string CptToFavTn = "CPTTOFAVTN";
         }
+
+        public struct ContractTypeTerm
+        {
+            public const string Extension = "EXTENSION";
+            public const string Modification = "MODIFICATION";
+        }
+
     }
 
     

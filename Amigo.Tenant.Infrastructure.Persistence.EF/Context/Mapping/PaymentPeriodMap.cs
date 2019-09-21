@@ -27,6 +27,7 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context.Mapping
             this.Property(t => t.Comment).HasColumnName("Comment");
             this.Property(t => t.ReferenceNo).HasColumnName("ReferenceNo");
             this.Property(t => t.PaymentDate).HasColumnName("PaymentDate");
+            this.Property(t => t.HouseId).HasColumnName("HouseId");
         }
     }
 }

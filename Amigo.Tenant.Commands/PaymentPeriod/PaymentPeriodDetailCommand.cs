@@ -25,6 +25,7 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
         public string ReferenceNo { get; set; }
         public ObjectStatus TableStatus { get; set; }
         public bool? IsSelected { get; set; }
+        public int? HouseId { get; set; }
 
     }
 }

@@ -232,6 +232,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                 entityToSave.ReferenceNo = message.ReferenceNo;
                 entityToSave.PaymentDate = DateTime.Now; ;
                 entityToSave.Update(message.UserId);
+                entityToSave.HouseId = item.HouseId;
                 _repositoryPayment.Add(entityToSave);
                 return c;
             }

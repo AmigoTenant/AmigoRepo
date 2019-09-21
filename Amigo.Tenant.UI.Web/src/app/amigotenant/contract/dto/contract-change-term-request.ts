@@ -8,6 +8,7 @@ export class ContractChangeTermRequest{
     newTenantId: number | null;
     newDeposit: number;
     newRent: number;
+    newHouseId: number | null;
     //Additional Data
     contractId: number | null;
     tenantId: number | null;

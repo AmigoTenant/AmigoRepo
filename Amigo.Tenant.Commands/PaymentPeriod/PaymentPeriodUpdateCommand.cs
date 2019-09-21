@@ -23,5 +23,7 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
         public DateTime? UpdatedDate { get; set; }
         public string Comment { get; set; }
         public string ReferenceNo { get; set; }
+        public int? HouseId { get; set; }
+
     }
 }

@@ -5,7 +5,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
     public class ContractChangeTermRequest : AuditBaseRequest
     {
 
-        public int? ContractTermType { get; set; }
+        public string ContractTermType { get; set; }
         public int? FinalPeriodId { get; set; }
         public int? FromPeriodId { get; set; }
 

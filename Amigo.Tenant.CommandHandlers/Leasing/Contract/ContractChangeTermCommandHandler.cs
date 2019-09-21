@@ -53,42 +53,66 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         }
 
 
-        public async Task<CommandResult> Handle(ContractChangeTermCommand message)
+        public async Task<CommandResult> Handle(ContractChangeTermCommand request)
         {
             try
             {
-                //Ultimo Periodo del contrato Actual
+                var rentConceptId = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
+                //Ultimo Periodo del contrato Actual para el concepto Renta
                 string[] includes = new string[] { "Period" };
                 List<OrderExpression<PaymentPeriod>> orderExpressionList = new List<OrderExpression<PaymentPeriod>>();
                 orderExpressionList.Add(new OrderExpression<PaymentPeriod>(OrderType.Desc, p=> p.Period.Code.ToString()));
-                Expression<Func<PaymentPeriod, bool>> queryFilter = q => q.RowStatus && q.ContractId == message.ContractId;
-                var firstPaymentPeriod = (await _repositoryPayment.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray(), includes: includes));
+                Expression<Func<PaymentPeriod, bool>> queryFilter = q => q.RowStatus && q.ContractId == request.ContractId && q.ConceptId == rentConceptId;
+                var lastPaymentPeriod = (await _repositoryPayment.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray(), includes: includes));
                 //Periodo hasta donde hay que traer
-                var newPeriod = await _repositoryPeriod.FirstOrDefaultAsync(q => q.PeriodId == message.PeriodId);
+                var finalPeriod = await _repositoryPeriod.FirstOrDefaultAsync(q => q.PeriodId == request.FinalPeriodId);
                 //Lista de Periodos hasta donde hay que traer
-                var periodList = (await _repositoryPeriod.ListAsync(q => q.Sequence > firstPaymentPeriod.Period.Sequence && 
-                                                                        q.Sequence <= newPeriod.Sequence &&
+                var newPeriodList = (await _repositoryPeriod.ListAsync(q => q.Sequence > lastPaymentPeriod.Period.Sequence && 
+                                                                        q.Sequence <= finalPeriod.Sequence &&
                                                                         q.RowStatus)).OrderBy(q=> q.Sequence);
 
-                var paymentPeriodList = await CreatePaymentsByPeriod(newPeriod, firstPaymentPeriod.Period, periodList.ToList(), message);
-
-                //=================================================
-                //PAYMENT PERIOD
-                //=================================================
-                foreach (var paymentPeriod in paymentPeriodList)
+                if (request.ContractTermType == Constants.ContractTypeTerm.Extension)
                 {
-                    paymentPeriod.RowStatus = true;
-                    paymentPeriod.Creation(message.UserId);
-                    _repositoryPayment.Add(paymentPeriod);
+                    var paymentPeriodList = await CreatePaymentsByPeriod(lastPaymentPeriod.Period, newPeriodList.ToList(), request, lastPaymentPeriod, rentConceptId);
+
+                    //=================================================
+                    //PAYMENT PERIOD
+                    //=================================================
+                    foreach (var paymentPeriod in paymentPeriodList)
+                    {
+                        paymentPeriod.RowStatus = true;
+                        paymentPeriod.Creation(request.UserId);
+                        _repositoryPayment.Add(paymentPeriod);
+                    }
                 }
+
+                if (request.ContractTermType == Constants.ContractTypeTerm.Modification)
+                {
+                    //var paymentPeriodList = await CreatePaymentsByPeriod(lastPaymentPeriod.Period, newPeriodList.ToList(), message, lastPaymentPeriod, rentConceptId);
+
+                    ////=================================================
+                    ////PAYMENT PERIOD
+                    ////=================================================
+                    //foreach (var paymentPeriod in paymentPeriodList)
+                    //{
+                    //    paymentPeriod.RowStatus = true;
+                    //    paymentPeriod.Creation(message.UserId);
+                    //    _repositoryPayment.Add(paymentPeriod);
+                    //}
+                }
+
 
                 //=================================================
                 //CONTRACT
                 //=================================================
                 int? contractRenewedStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.Contract, Constants.EntityStatus.Contract.Renewed);
-                var entity = await _repository.FirstAsync(q=> q.ContractId == message.ContractId);
+                var entity = await _repository.FirstAsync(q=> q.ContractId == request.ContractId);
                 entity.ContractStatusId = contractRenewedStatusId.Value;
-                entity.Update(message.UserId);
+                entity.TenantId = request.NewTenantId;
+                entity.HouseId = request.NewHouseId.Value;
+                entity.RentPrice = request.NewRent.Value;
+                entity.RentDeposit = request.NewDeposit.Value;
+                entity.Update(request.UserId);
                 _repository.Update(entity);
 
                 //=================================================
@@ -105,69 +129,59 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             }
         }
 
-        private async Task<List<PaymentPeriod>> CreatePaymentsByPeriod(Period newPeriod, Period currentPeriod, List<Period> periodList, ContractChangeTermCommand request)
+        private async Task<List<PaymentPeriod>> CreatePaymentsByPeriod(Period currentPeriod, List<Period> periodList, ContractChangeTermCommand request, PaymentPeriod lastPaymentPeriod, int? rentConceptId)
         {
-            var isLastPeriod = false;
-            //var period = (await _periodApplicationService.GetPeriodByIdAsync(request.PeriodId)).Data;
-            var contractEndDate = newPeriod.EndDate;
-            var currentPeriodDueDate = currentPeriod.DueDate.Value.AddMonths(1);
             var id = -1;
-            //var contractDetails = new List<ContractDetailRegisterRequest>();
             var paymentPeriodList = new List<PaymentPeriod>();
-            var rentConceptId = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Rent);
             var depositConceptId = await GetConceptIdByCode(Constants.GeneralTableCode.ConceptType.Deposit);
-            var entityStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
+            var paymentPendingStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
             var paymentTypeRentId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Rent);
             var paymentTypeDepositId = await GetGeneralTableIdByTableNameAndCode(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.Deposit);
 
-            //while (contractEndDate > currentPeriodDueDate)
-            foreach (var period in periodList)
-            {
-                SetPaymentsPeriod(paymentPeriodList, request, period, id, isLastPeriod, rentConceptId, entityStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId);
+            request.NewTenantId = request.NewHouseId.HasValue ? request.NewTenantId : lastPaymentPeriod.TenantId;
+            request.NewRent = request.NewRent.HasValue ? request.NewRent : lastPaymentPeriod.PaymentAmount;
+            request.NewHouseId = request.NewHouseId.HasValue ? request.NewHouseId : lastPaymentPeriod.HouseId;
 
-                //TODO: nO HA SEQUENCE 13 SE ESTA CAYENDO
-                //period = (await _periodApplicationService.GetPeriodBySequenceAsync(period.Sequence + 1)).Data;
-                currentPeriodDueDate = period.DueDate.Value.AddMonths(1);
+            foreach (var newPeriod in periodList)
+            {
+                SetNewPaymentsPeriods(paymentPeriodList, request, newPeriod, id, rentConceptId, paymentPendingStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId, lastPaymentPeriod);
                 id--;
-                //if (contractEndDate.Value.Year == currentPeriodDueDate.Year && contractEndDate.Value.Month == currentPeriodDueDate.Month)
-                //{
-                //    isLastPeriod = true;
-                //    SetPaymentsPeriod(paymentsPeriod, request, period, id, isLastPeriod, rentConceptId, entityStatusId, paymentTypeRentId, depositConceptId, paymentTypeDepositId);
-                //    request.PaymentsPeriod = paymentsPeriod;
-                //    return;
-                //}
-                //else if (currentPeriodDueDate.CompareTo(contractEndDate) > 0)
-                //{
-                //    request.PaymentsPeriod = paymentsPeriod;
-                //    return;
-                //}
             }
             return paymentPeriodList;
         }
 
-        private void SetPaymentsPeriod(List<PaymentPeriod> paymentsPeriod, ContractChangeTermCommand request, Period period, int id, bool isLastPeriod, int? rentId, int? entityStatusId, int? paymentTypeId, int? depositConceptId, int? paymentTypeDepositId)
+        private void SetNewPaymentsPeriods(List<PaymentPeriod> paymentsPeriod, ContractChangeTermCommand request, Period newPeriod, int id, int? rentId, int? paymentPendingStatusId, int? paymentTypeId, int? depositConceptId, int? paymentTypeDepositId, PaymentPeriod lastPaymentPeriod)
         {
+            
+
             ///////////////////
             //SETTING FOR  DEPOSIT
             ///////////////////
 
             if (Math.Abs(id) == 1 && request.NewDeposit.HasValue)
             {
+                //Aqui por la pregunta para entrar a la condicion
+                //request.NewDeposit = request.NewDeposit.HasValue ? request.NewDeposit : request.NewDeposit;
+
                 var paymentPeriodDeposit = new PaymentPeriod();
                 paymentPeriodDeposit.PaymentPeriodId = id;
                 paymentPeriodDeposit.ConceptId = depositConceptId; //"CODE FOR CONCEPT"; //TODO:
                 paymentPeriodDeposit.ContractId = request.ContractId;
-                paymentPeriodDeposit.TenantId = request.TenantId;
-                paymentPeriodDeposit.PeriodId = period.PeriodId;
-                paymentPeriodDeposit.PaymentPeriodStatusId = entityStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
+
+                paymentPeriodDeposit.TenantId = request.NewTenantId;
+                paymentPeriodDeposit.PaymentTypeId = paymentTypeDepositId;
+                paymentPeriodDeposit.PaymentAmount = request.NewDeposit;
+                paymentPeriodDeposit.PeriodId = newPeriod.PeriodId;
+                paymentPeriodDeposit.DueDate = newPeriod.DueDate;
+                paymentPeriodDeposit.HouseId = request.NewHouseId;
+
+                paymentPeriodDeposit.PaymentPeriodStatusId = paymentPendingStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
                 paymentPeriodDeposit.RowStatus = true;
                 paymentPeriodDeposit.CreatedBy = request.UserId;
                 paymentPeriodDeposit.CreationDate = DateTime.Now;
                 paymentPeriodDeposit.UpdatedBy = request.UserId;
                 paymentPeriodDeposit.UpdatedDate = DateTime.Now;
-                paymentPeriodDeposit.PaymentTypeId = paymentTypeDepositId;
-                paymentPeriodDeposit.PaymentAmount = request.NewDeposit;
-                paymentPeriodDeposit.DueDate = period.DueDate;
+
                 paymentsPeriod.Add(paymentPeriodDeposit);
             }
 
@@ -179,9 +193,9 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             paymentPeriodRent.PaymentPeriodId = id;
             paymentPeriodRent.ConceptId = rentId; //"CODE FOR CONCEPT"; //TODO:
             paymentPeriodRent.ContractId = request.ContractId;
-            paymentPeriodRent.TenantId = request.TenantId;
-            paymentPeriodRent.PeriodId = period.PeriodId;
-            paymentPeriodRent.PaymentPeriodStatusId = entityStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
+            paymentPeriodRent.TenantId = request.NewTenantId;
+            paymentPeriodRent.PeriodId = newPeriod.PeriodId;
+            paymentPeriodRent.PaymentPeriodStatusId = paymentPendingStatusId; //TODO: PONER EL CODIGO CORRECTO PARA EL CONTRACTDETAILSTATUS
             paymentPeriodRent.RowStatus = true;
             paymentPeriodRent.CreatedBy = request.UserId;
             paymentPeriodRent.CreationDate = DateTime.Now;
@@ -189,25 +203,11 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             paymentPeriodRent.UpdatedDate = DateTime.Now;
             paymentPeriodRent.PaymentTypeId = paymentTypeId;
             paymentPeriodRent.PaymentAmount = request.NewRent;
-            paymentPeriodRent.DueDate = period.DueDate;
+            paymentPeriodRent.DueDate = newPeriod.DueDate;
+            paymentPeriodRent.HouseId = request.NewHouseId;
+
             paymentsPeriod.Add(paymentPeriodRent);
         }
-
-        //private decimal CalculateFirstRent(DateTime? beginDate, decimal rentPrice)
-        //{
-        //    var daysNumber = 31 - beginDate.Value.Day;
-        //    var rent = rentPrice / 30 * daysNumber;
-        //    return rent;
-        //}
-
-        //private decimal CalculateLastRent(DateTime? endDate, decimal rentPrice)
-        //{
-        //    var daysNumber = endDate.Value.Day;
-        //    if (daysNumber >= 28)
-        //        daysNumber = 30;
-        //    var rent = rentPrice / 30 * daysNumber;
-        //    return rent;
-        //}
 
         private async Task<int?> GetStatusbyEntityAndCodeAsync(string entityCode, string statusCode)
         {
