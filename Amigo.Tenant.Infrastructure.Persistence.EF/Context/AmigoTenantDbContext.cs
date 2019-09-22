@@ -67,6 +67,8 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context
 
             modelBuilder.Configurations.Add(new FileRepositoryMap());
 
+            modelBuilder.Configurations.Add(new ContractChangeStatusMap());
+
             //TODO: Llevar a clases de Mapeos
             modelBuilder.Entity<AppSetting>()
                 .Property(e => e.Code)

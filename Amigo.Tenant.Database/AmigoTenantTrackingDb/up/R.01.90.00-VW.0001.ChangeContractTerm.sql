@@ -1,3 +1,10 @@
+IF OBJECT_ID ('dbo.vwPaymentPeriodByContract') IS NOT NULL
+	DROP VIEW dbo.vwPaymentPeriodByContract
+GO
+
+CREATE VIEW [dbo].[vwPaymentPeriodByContract]  
+AS  
+  
 SELECT PP.PaymentPeriodId      ,  
    PP.PeriodId             ,    
    P.Code as PeriodCode,    
@@ -74,7 +81,7 @@ SELECT PP.PaymentPeriodId      ,
 
    go
 
-   CREATE VIEW [dbo].[vwPaymentPeriod]  
+   ALTER VIEW [dbo].[vwPaymentPeriod]  
 
 AS  
 SELECT PaymentPeriodId,          
@@ -188,7 +195,7 @@ Left join vwDashboardBalance vwDashBala on vwDashBala.PeriodCode = P.Code
 go
 
 
-CREATE VIEW [dbo].[vwPaymentPeriodInvoicePrint]    
+ALTER VIEW [dbo].[vwPaymentPeriodInvoicePrint]    
 AS    
 
 SELECT  I.InvoiceNo 

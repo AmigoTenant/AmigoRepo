@@ -13,6 +13,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
 
         public int? NewDeposit { get; set; }
         public int? NewRent { get; set; }
+        public int? NewHouseId { get; set; }
 
         public int ContractId { get; set; }
         public int TenantId { get; set; }

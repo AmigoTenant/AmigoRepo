@@ -71,6 +71,7 @@
     <Compile Include="Context\Mapping\BrandMap.cs" />
     <Compile Include="Context\Mapping\CityMap.cs" />
     <Compile Include="Context\Mapping\ExpenseDetailMap.cs" />
+    <Compile Include="Context\Mapping\ContractChangeStatusMap.cs" />
     <Compile Include="Context\Mapping\FileRepositoryMap.cs" />
     <Compile Include="Context\Mapping\HouseServicePeriodMap.cs" />
     <Compile Include="Context\Mapping\InvoiceDetailMap.cs" />

@@ -11,6 +11,7 @@ using Amigo.Tenant.CommandModel.Models;
 using Amigo.Tenant.Commands.Leasing.Contracts;
 using Amigo.Tenant.Application.DTOs.Requests.Common;
 using System.Linq;
+using Amigo.Tenant.Common;
 
 namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
 {
@@ -23,6 +24,9 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         private readonly IRepository<Contract> _repository;
         private readonly IRepository<OtherTenant> _repositoryOtherTenant;
         private readonly IRepository<ContractHouseDetail> _repositoryContractHouseDetail;
+        private readonly IRepository<ContractChangeStatus> _repositoryContractChangeStatus;
+        private readonly IRepository<EntityStatus> _repositoryEntityStatus;
+        private readonly IRepository<Period> _repositoryPeriod;
 
         public ContractUpdateCommandHandler(
          IBus bus,
@@ -30,7 +34,10 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
          IRepository<Contract> repository,
          IUnitOfWork unitOfWork,
          IRepository<OtherTenant> repositoryOtherTenant,
-         IRepository<ContractHouseDetail> repositoryContractHouseDetail)
+         IRepository<ContractHouseDetail> repositoryContractHouseDetail,
+         IRepository<ContractChangeStatus> repositoryContractChangeStatus,
+         IRepository<EntityStatus> repositoryEntityStatus,
+         IRepository<Period> repositoryPeriod)
         {
             _bus = bus;
             _mapper = mapper;
@@ -38,6 +45,9 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             _unitOfWork = unitOfWork;
             _repositoryOtherTenant = repositoryOtherTenant;
             _repositoryContractHouseDetail = repositoryContractHouseDetail;
+            _repositoryContractChangeStatus = repositoryContractChangeStatus;
+            _repositoryEntityStatus = repositoryEntityStatus;
+            _repositoryPeriod = repositoryPeriod;
         }
 
 
@@ -68,6 +78,11 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                     "UpdatedDate",
                     "FrecuencyTypeId",
                     "TenantId"});
+
+                //=================================================
+                //ContractChangeStatus
+                //=================================================
+                await CreateContractChangeStatus(entity);
 
                 //=================================================
                 // Other Tenant
@@ -121,6 +136,40 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                 throw;
             }
 
+        }
+
+        private async Task CreateContractChangeStatus(Contract entity)
+        {
+            var finalPeriod = entity.EndDate.Value.Year.ToString() + entity.EndDate.Value.Month.ToString().PadLeft(2, '0');
+            var endPeriod = await _repositoryPeriod.FirstOrDefaultAsync(q => q.Code == finalPeriod);
+
+            var contractChangeStatus = new ContractChangeStatus()
+            {
+                ContractChangeStatusId = -1,
+                ContractId = entity.ContractId,
+                ContractStatusId = entity.ContractStatusId,
+                TenantId = entity.TenantId,
+                HouseId = entity.HouseId,
+                Rent = entity.RentPrice,
+                Deposit = entity.RentDeposit,
+                ContractTermType = Constants.ContractTypeTerm.Update,
+                BeginPeriodId = entity.PeriodId,
+                EndPeriodId = endPeriod.PeriodId,
+                CreatedBy = entity.UpdatedBy,
+                CreationDate = entity.UpdatedDate,
+                UpdatedBy = entity.UpdatedBy,
+                UpdatedDate = entity.UpdatedDate
+            };
+            _repositoryContractChangeStatus.Add(contractChangeStatus);
+        }
+
+        private async Task<int?> GetStatusbyEntityAndCodeAsync(string entityCode, string statusCode)
+        {
+            var entityStatus = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == entityCode && q.Code == statusCode);
+            if (entityStatus != null)
+                return entityStatus.EntityStatusId;
+
+            return null;
         }
 
         //private async Task SendLogToAmigoTenantTEventLog(RegisterAmigoTenanttServiceCommand message, string errorMsg = "")

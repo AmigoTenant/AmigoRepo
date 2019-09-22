@@ -316,6 +316,10 @@ namespace Amigo.Tenant.Common
 
         public struct ContractTypeTerm
         {
+            public const string Draft = "DRAFT";
+            public const string Formal = "FORMAL";
+            public const string Delete = "DELETE";
+            public const string Update = "UPDATE";
             public const string Extension = "EXTENSION";
             public const string Modification = "MODIFICATION";
         }
