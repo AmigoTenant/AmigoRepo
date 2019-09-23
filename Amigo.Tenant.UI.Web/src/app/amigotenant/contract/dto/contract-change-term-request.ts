@@ -11,6 +11,4 @@ export class ContractChangeTermRequest{
     newHouseId: number | null;
     //Additional Data
     contractId: number | null;
-    tenantId: number | null;
-    houseId: number | null;
 }

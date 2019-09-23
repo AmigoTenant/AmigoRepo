@@ -35,9 +35,8 @@ export class ContractChangeTermComponent implements OnInit{
             newTenantId: [null],
             newDeposit: [null],
             newRent: [null],
-            contractId: [null],
-            tenantId: [null],
-            houseId: [null]
+            newHouseId: [null],
+            contractId: [null]
         });
     }
 
@@ -72,6 +71,10 @@ export class ContractChangeTermComponent implements OnInit{
         //     this._currentHouse = undefined;
         // }
     };
+
+    getTenant = (item)=> {
+        
+    }
 
     getPeriod = (item) => {
         // if (item != null && item != undefined && item != "") {
