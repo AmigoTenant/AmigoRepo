@@ -2,7 +2,7 @@
 
 namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
 {
-    public class ContractChangeStatusRequest : AuditBaseRequest
+    public class ContractChangeTermRequest : AuditBaseRequest
     {
         public string ContractTermType { get; set; }
         public int? FinalPeriodId { get; set; }
@@ -15,5 +15,6 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
         public int? NewHouseId { get; set; }
 
         public int ContractId { get; set; }
+        
     }
 }

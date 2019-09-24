@@ -4,9 +4,8 @@ using System.Collections.Generic;
 
 namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
 {
-    public class ContractChangeTermRequest : AuditBaseRequest
+    public class ContractChangeStatusRequest : AuditBaseRequest
     {
-
         public int? ContractId { get; set; }
         //public decimal? RentPrice { get; set; }
         //public int? ContractStatusId { get; set; }

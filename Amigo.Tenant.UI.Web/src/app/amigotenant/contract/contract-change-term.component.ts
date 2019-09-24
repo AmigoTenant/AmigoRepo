@@ -15,7 +15,7 @@ import { TranslateService } from "@ngx-translate/core";
 export class ContractChangeTermComponent implements OnInit{
     private genericValidator: GenericValidator;
     public contractChangeTermForm: FormGroup;
-    @Output() onAcceptPopupEmitter= new EventEmitter();
+    @Output() onAcceptPopupEmitter= new EventEmitter<ContractChangeTermRequest>();
     @Output() onCancelPopupEmitter= new EventEmitter<ContractChangeTermRequest>();
 
     constructor(private contractDataService: ContractDataService,
@@ -29,7 +29,7 @@ export class ContractChangeTermComponent implements OnInit{
 
     buildForm() {
         this.contractChangeTermForm = this.fb.group({
-            contractTermType : [''],
+            contractTermType : [null],
             finalPeriodId: [null],
             fromPeriodId: [null],
             newTenantId: [null],

@@ -62,12 +62,12 @@
     <Compile Include="Requests\Expense\ExpenseDetailUpdateRequest.cs" />
     <Compile Include="Requests\Expense\ExpenseUpdateRequest.cs" />
     <Compile Include="Requests\FileRepository\FileRepositoryRequest.cs" />
-    <Compile Include="Requests\Leasing\ContractChangeTermRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractChangeStatusRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailObligationRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDetailRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractHouseDetailRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractDeleteRequest.cs" />
-    <Compile Include="Requests\Leasing\ContractChangeStatusRequest.cs" />
+    <Compile Include="Requests\Leasing\ContractChangeTermRequest.cs" />
     <Compile Include="Requests\Leasing\OtherTenantRegisterRequest.cs" />
     <Compile Include="Requests\Leasing\ContractSearchRequest.cs" />
     <Compile Include="Requests\Leasing\ContractRegisterRequest.cs" />

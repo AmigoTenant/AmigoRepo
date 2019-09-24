@@ -310,6 +310,6 @@
 <div style="width: 30%; vertical-align: center">
     <kendo-dialog title="Confirmation" *ngIf="openedChangeTermConfimation" (close)="closeChangeTermConfirmation()">
         <at-contract-change-term (onCancelPopupEmitter)="closeChangeTermConfirmation()"
-            (onAcceptPopupEmitter)="yesChangeTerm()"></at-contract-change-term>
+            (onAcceptPopupEmitter)="yesChangeTerm($event)"></at-contract-change-term>
     </kendo-dialog>
 </div>

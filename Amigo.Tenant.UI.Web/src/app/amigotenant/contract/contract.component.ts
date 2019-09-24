@@ -472,21 +472,24 @@ ngOnInit() {
     }
 
     public changeTermMessage: string = "Are you sure to Formalize this Lease?";
-    contractToChangeTerm: any; 
+    public contractToChangeTerm: ContractChangeTermRequest; 
 
     onChangeTerm(contract) {
         debugger;
         this.contractToChangeTerm = new ContractChangeTermRequest();
         this.contractToChangeTerm.contractId = contract.contractId;
-        this.contractToChangeTerm.tenantId = contract.tenantId;
-        this.contractToChangeTerm.houseId = contract.houseId;
-        this.contractToChangeTerm.periodId = contract.contractId;
-        this.contractToChangeTerm.contractId = contract.contractId;
+        this.contractToChangeTerm.newTenantId = contract.tenantId;
+        this.contractToChangeTerm.newHouseId = contract.houseId;
+        this.contractToChangeTerm.newDeposit = contract.newDeposit;
+        this.contractToChangeTerm.newRent = contract.newRent;
+        this.contractToChangeTerm.contractTermType = contract.contractTermType;
+        this.contractToChangeTerm.finalPeriodId = contract.finalPeriodId;
+        this.contractToChangeTerm.fromPeriodId = contract.fromPeriodId;
         this.openedChangeTermConfimation = true;
     }
 
-    yesChangeTerm() {
-        this.contractDataService.ContractChangeTerm(this.contractToChangeStatus)
+    yesChangeTerm(model:any) {
+        this.contractDataService.ContractChangeTerm(model)
             .subscribe(response => {
                 this.onSelect();
                 this.closeChangeTermConfirmation();
