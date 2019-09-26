@@ -76,7 +76,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             }
         }
 
-        private async Task<Contract> UpdateContract(ContractChangeTermCommand request, DateTime? contractEndDate)
+        private async Task<Contract> UpdateContract(ContractChangeTermCommand request, DateTime? contractEndDate, int? newPeriodIdForExtension)
         {
             int? contractRenewedStatusId = await GetStatusbyEntityAndCodeAsync(Constants.EntityCode.Contract, Constants.EntityStatus.Contract.Renewed);
             var entity = await _repository.FirstAsync(q => q.ContractId == request.ContractId);
@@ -84,6 +84,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             entity.TenantId = request.NewTenantId;
             entity.HouseId = request.NewHouseId.Value;
             entity.RentPrice = request.NewRent.Value;
+
             if (request.ContractTermType == Constants.ContractTypeTerm.Extension && request.NewDeposit.HasValue)
             {
                 entity.RentDeposit = request.NewDeposit.Value;
@@ -98,7 +99,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             //=================================================
             //ContractChangeStatus
             //=================================================
-            await CreateContractChangeStatus(entity, request.ContractTermType);
+            await CreateContractChangeStatus(entity, request.ContractTermType, newPeriodIdForExtension);
 
             return entity;
         }
@@ -155,8 +156,8 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                     await SetExistingPaymentsPeriod(request, newPeriod, rentConceptId, paymentPendingStatusId);
                 }
             }
-
-            return await UpdateContract(request, contractEndDate);
+            
+            return await UpdateContract(request, contractEndDate, lastPaymentPeriodByContract.Period.PeriodId);
 
         }
 
@@ -220,7 +221,8 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         private async Task SetExistingPaymentsPeriod(ContractChangeTermCommand request, Period newPeriod, int? rentConceptId, int? paymentPendingStatusId)
         {
             //Esta Logica no cambia depositos
-            var paymentPeriodRent = await _repositoryPayment.FirstOrDefaultAsync(q => q.PeriodId == newPeriod.PeriodId 
+            var paymentPeriodRent = await _repositoryPayment.FirstOrDefaultAsync(q => q.ContractId == request.ContractId 
+                                            && q.PeriodId == newPeriod.PeriodId 
                                             && q.PaymentPeriodStatusId == paymentPendingStatusId
                                             && q.ConceptId == rentConceptId
                                             && q.RowStatus);
@@ -237,7 +239,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
             }
         }
 
-        private async Task CreateContractChangeStatus(Contract entity, string contractTermType)
+        private async Task CreateContractChangeStatus(Contract entity, string contractTermType, int? newPeriodIdForExtension)
         {
             var finalPeriod = entity.EndDate.Value.Year.ToString() + entity.EndDate.Value.Month.ToString().PadLeft(2, '0');
             var endPeriod = await _repositoryPeriod.FirstOrDefaultAsync(q => q.Code == finalPeriod);
@@ -251,7 +253,7 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                 HouseId = entity.HouseId,
                 Rent = entity.RentPrice,
                 ContractTermType = contractTermType,
-                BeginPeriodId = entity.PeriodId,
+                BeginPeriodId = newPeriodIdForExtension,
                 EndPeriodId = endPeriod.PeriodId,
                 CreatedBy = entity.UpdatedBy,
                 CreationDate = entity.UpdatedDate,

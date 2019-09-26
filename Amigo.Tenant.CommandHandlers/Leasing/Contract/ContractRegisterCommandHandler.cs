@@ -10,6 +10,7 @@ using Amigo.Tenant.Infrastructure.Persistence.Abstract;
 using Amigo.Tenant.CommandModel.Models;
 using Amigo.Tenant.Commands.Leasing.Contracts;
 using Amigo.Tenant.Common;
+using System.Collections.Generic;
 
 namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
 {
@@ -50,15 +51,17 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
         {
             try
             {
+
                 var entity = _mapper.Map<ContractRegisterCommand, Contract>(message);
                 entity.RowStatus = true;
                 message.RowStatus = true;
                 entity.Creation(message.UserId);
+                entity.ContractChangeStatus = await CreateContractChangeStatus(entity);
 
                 //=================================================
                 //ContractChangeStatus
                 //=================================================
-                await CreateContractChangeStatus(entity);
+
 
                 _repository.Add(entity);
                 await _unitOfWork.CommitAsync();
@@ -83,11 +86,11 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
 
         }
 
-        private async Task CreateContractChangeStatus(Contract entity)
+        private async Task<ICollection<ContractChangeStatus>> CreateContractChangeStatus(Contract entity)
         {
             var finalPeriod = entity.EndDate.Value.Year.ToString() + entity.EndDate.Value.Month.ToString().PadLeft(2, '0');
             var endPeriod = await _repositoryPeriod.FirstOrDefaultAsync(q => q.Code == finalPeriod);
-
+            var listaChangeStatus = new List<ContractChangeStatus>();
             var contractChangeStatus = new ContractChangeStatus()
             {
                 ContractChangeStatusId = -1,
@@ -100,12 +103,13 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                 ContractTermType = Constants.ContractTypeTerm.Draft,
                 BeginPeriodId = entity.PeriodId,
                 EndPeriodId = endPeriod.PeriodId,
-                CreatedBy= entity.UpdatedBy,
-                CreationDate = entity.UpdatedDate,
-                UpdatedBy = entity.UpdatedBy,
-                UpdatedDate = entity.UpdatedDate
+                CreatedBy= entity.CreatedBy,
+                CreationDate = entity.CreationDate
             };
-            _repositoryContractChangeStatus.Add(contractChangeStatus);
+            listaChangeStatus.Add(contractChangeStatus);
+
+            //_repositoryContractChangeStatus.Add(contractChangeStatus);
+            return listaChangeStatus;
         }
 
         private async Task<int?> GetStatusbyEntityAndCodeAsync(string entityCode, string statusCode)

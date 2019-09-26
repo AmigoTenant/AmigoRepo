@@ -157,6 +157,11 @@ namespace Amigo.Tenant.Infrastructure.Persistence.EF.Context
                 .WithRequired(e => e.Contract)
                 .WillCascadeOnDelete(false);
 
+            modelBuilder.Entity<Contract>()
+               .HasMany(e => e.ContractChangeStatus)
+               .WithRequired(e => e.Contract)
+               .WillCascadeOnDelete(false);
+
             modelBuilder.Entity<ContractDetail>()
                 .Property(e => e.Description)
                 .IsUnicode(false);

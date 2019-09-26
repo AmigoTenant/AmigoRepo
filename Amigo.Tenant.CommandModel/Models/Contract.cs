@@ -17,6 +17,7 @@ namespace Amigo.Tenant.CommandModel.Models
             ContractDetails = new HashSet<ContractDetail>();
             OtherTenants = new HashSet<OtherTenant>();
             Incomes = new HashSet<Income>();
+            ContractChangeStatus = new HashSet<ContractChangeStatus>();
         }
 
         public int ContractId { get; set; }
@@ -73,7 +74,10 @@ namespace Amigo.Tenant.CommandModel.Models
         public virtual ICollection<Income> Incomes { get; set; }
 
         public virtual MainTenant Tenant { get; set; }
-        
+
+        public virtual ICollection<ContractChangeStatus> ContractChangeStatus { get; set; }
+
+
 
     }
 }

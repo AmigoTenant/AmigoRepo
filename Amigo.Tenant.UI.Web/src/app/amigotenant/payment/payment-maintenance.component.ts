@@ -178,12 +178,25 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
             if (periodId != null && typeof (periodId) != 'undefined' &&
                 contractId != null && typeof (contractId) != 'undefined' ) {
-                this.getPaymentDetailByContract(contractId, periodId);
+                this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
+                .subscribe(res => {
+                    
+                    let dataResult: any = res;
+                    this.paymentMaintenance = dataResult.data;
+                    this.countItemsDet = dataResult.data.pPDetail.length;
+                    this.gridDataDet = {
+                        data: dataResult.data.pPDetail,
+                        total: dataResult.data.pPDetail.length
+                    }
+                })
+                .add(r=> {
+                    this.calculatePendingToPay();
+                    this.verifyLateFeeMissing();
+                });
                 this.flgEdition = "E";
             } else {
                 this.flgEdition = "N";
             }
-
         });
 
     }
@@ -223,7 +236,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
             .subscribe(res => {
                 let dataResult: any = res;
-                debugger;
+                
                 this.paymentMaintenance = dataResult.data;
                 this.countItemsDet = dataResult.data.pPDetail.length;
                 this.gridDataDet = {
@@ -231,9 +244,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                     total: dataResult.data.pPDetail.length
                 }
                 this.calculatePendingToPay();
-            })
-            .add(r=> {
-                this.verifyLateFeeMissing();
             });
     }
 
@@ -275,8 +285,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                         this.dataToPrint = this.paymentMaintenance;
                         this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
                     }
-
-                    
             });
 
 
@@ -447,19 +455,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     }
 
     saveDetailPopup(data): void {
-        // let paymentperiod: PPDetailSearchByContractPeriodDTO[];
-        // paymentperiod = this.gridDataDet.data.filter(q => q.paymentPeriodId === data.paymentPeriodId);
-        // if (paymentperiod.length > 0) {
-        //     if (paymentperiod[0].paymentAmount != Number(data.paymentAmount)
-        //         || paymentperiod[0].comment != data.comment) {
-        //         paymentperiod[0].paymentAmount = Number(data.paymentAmount);
-        //         paymentperiod[0].comment = data.comment;
-        //         if (paymentperiod[0].paymentPeriodId > 0) {
-        //             paymentperiod[0].tableStatus = 2; //Modified
-        //         }
-        //     }
-        // }
-
         let paymentDetail = new PaymentPeriodUpdateRequest();
         paymentDetail.paymentPeriodId = data.paymentPeriodId;
         paymentDetail.paymentAmount = data.paymentAmount;
@@ -566,7 +561,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     public openedLateFeeConfimationPopup = false;
 
     public yesConfirmLateFee() {
-        debugger;
+        
         let payment = this.paymentMaintenance.lateFeeMissing;
         let paymentDetail = new PaymentPeriodRegisterRequest();
         paymentDetail.contractId = this.paymentMaintenance.contractId;
@@ -576,6 +571,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         paymentDetail.referenceNo = payment.reference;
         paymentDetail.comment = payment.comment;
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
+        paymentDetail.houseId = payment.houseId;
         this.paymentPeriodService.registerPaymentDetail(paymentDetail)
         .subscribe()
         .add(

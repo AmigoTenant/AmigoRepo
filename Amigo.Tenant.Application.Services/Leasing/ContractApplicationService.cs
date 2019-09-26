@@ -327,15 +327,15 @@ namespace Amigo.Tenant.Application.Services.Tracking
         {
             var command = _mapper.Map<ContractUpdateRequest, ContractUpdateCommand>(contract);
 
-            var response = await ValidateEntityUpdate(contract);
+            //var response = await ValidateEntityUpdate(contract);
 
-            if (response.IsValid)
-            {
+            //if (response.IsValid)
+            //{
                 var resp = await _bus.SendAsync(command);
                 return ResponseBuilder.Correct(resp);
-            }
+            //}
 
-            return response;
+            //return response;
         }
 
         public async Task<ResponseDTO> DeleteContractAsync(ContractDeleteRequest contract)
@@ -456,18 +456,18 @@ namespace Amigo.Tenant.Application.Services.Tracking
             }
 
             //Existe un Lease para el mismo tenant Activo o Futuro
-            if (isValid)
-            {
-                queryFilter = p => p.TenantId == request.TenantId;
-                queryFilter = queryFilter.And(p => p.ContractStatusCode == Constants.EntityStatus.Contract.Formalized && p.RowStatus );
-                contract = await _contractDataAccess.FirstOrDefaultAsync(queryFilter);
+            //if (isValid)
+            //{
+            //    queryFilter = p => p.TenantId == request.TenantId;
+            //    queryFilter = queryFilter.And(p => p.ContractStatusCode == Constants.EntityStatus.Contract.Formalized && p.RowStatus );
+            //    contract = await _contractDataAccess.FirstOrDefaultAsync(queryFilter);
 
-                if (contract != null)
-                {
-                    isValid = false;
-                    errorMessage = "Already Exists a tenant associated to other Lease Formalized";
-                }
-            }
+            //    if (contract != null)
+            //    {
+            //        isValid = false;
+            //        errorMessage = "Already Exists a tenant associated to other Lease Formalized. Validacion relajada a solicitud de USUARIO";
+            //    }
+            //}
 
             if (isValid)
             {
@@ -496,37 +496,36 @@ namespace Amigo.Tenant.Application.Services.Tracking
             return response;
         }
 
-        public async Task<ResponseDTO> ValidateEntityUpdate(ContractUpdateRequest request)
-        {
-            var errorMessage = "";
-            Expression<Func<ContractRegisterRequest, bool>> queryFilter = p => p.RowStatus;
-            queryFilter = queryFilter.And(p => p.ContractId != request.ContractId);
-            queryFilter = queryFilter.And(p => p.TenantId == request.TenantId);
-            queryFilter = queryFilter.And(p => p.ContractStatusCode == Constants.EntityStatus.Contract.Draft || p.ContractStatusCode == Constants.EntityStatus.Contract.Formalized);
+        //public async Task<ResponseDTO> ValidateEntityUpdate(ContractUpdateRequest request)
+        //{
+            //NOTE: VALIDACION RELAJADA A SOLICITUD DE USUARIO: 25/SEP/2019
+            //var errorMessage = "";
+            //Expression<Func<ContractRegisterRequest, bool>> queryFilter = p => p.RowStatus;
+            //queryFilter = queryFilter.And(p => p.ContractId != request.ContractId);
+            //queryFilter = queryFilter.And(p => p.TenantId == request.TenantId);
+            //queryFilter = queryFilter.And(p => p.ContractStatusCode == Constants.EntityStatus.Contract.Draft || p.ContractStatusCode == Constants.EntityStatus.Contract.Formalized);
 
-            bool isValid = true;
-            var contract = await _contractDataAccess.FirstOrDefaultAsync(queryFilter);
+            //var contract = await _contractDataAccess.FirstOrDefaultAsync(queryFilter);
 
-            if (contract != null)
-            {
-                isValid = false;
-                errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
-            }
+            //if (contract != null)
+            //{
+            //    errorMessage = "Already Exists a tenant associated to other Lease Active or Future";
+            //}
 
-            var response = new ResponseDTO()
-            {
-                IsValid = string.IsNullOrEmpty(errorMessage),
-                Messages = new List<ApplicationMessage>()
-            };
+            //var response = new ResponseDTO()
+            //{
+            //    IsValid = string.IsNullOrEmpty(errorMessage),
+            //    Messages = new List<ApplicationMessage>()
+            //};
 
-            response.Messages.Add(new ApplicationMessage()
-            {
-                Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
-                Message = errorMessage
-            });
+            //response.Messages.Add(new ApplicationMessage()
+            //{
+            //    Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
+            //    Message = errorMessage
+            //});
 
-            return response;
-        }
+        //    return response;
+        //}
         
         public async Task<ResponseDTO<List<HouseFeatureDetailContractDTO>>> SearchHouseFeatureDetailContractAsync(int? houseId) {
 
@@ -623,6 +622,8 @@ namespace Amigo.Tenant.Application.Services.Tracking
         public async Task<ResponseDTO> ValidateEntityToChangeTermAsync(ContractChangeTermRequest request)
         {
             var errorMessage = "";
+            //NOTE: VALIDACION RELAJADA A SOLICITUD DE USUARIO: 25/SEP/2019
+
             //Expression<Func<ContractRegisterRequest, bool>> queryFilter = p => p.RowStatus;
             //queryFilter = queryFilter.And(p => p.ContractId != request.ContractId);
             //queryFilter = queryFilter.And(p => p.TenantId == request.TenantId);

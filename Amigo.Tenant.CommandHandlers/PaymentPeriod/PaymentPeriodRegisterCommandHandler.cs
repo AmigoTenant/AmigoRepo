@@ -89,6 +89,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
             entityToSave.DueDate = command.DueDate;
             entityToSave.Comment = command.Comment;
             entityToSave.ReferenceNo = command.ReferenceNo;
+            entityToSave.HouseId = command.HouseId;
             entityToSave.RowStatus = true;
             entityToSave.Creation(command.UserId);
             if (paymentPeriodPending != null)

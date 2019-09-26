@@ -242,7 +242,7 @@ export class PaymentComponent implements OnInit {
     public onSendPayNotification(){
 
         let lista: PaymentPeriodSendNotificationRequest[]= [];
-        debugger;
+        
         this.gridData.data.filter(q => q.isSelected).forEach(element => {
             lista.push(new PaymentPeriodSendNotificationRequest(element.contractId, element.periodId, element.periodCode));
         });

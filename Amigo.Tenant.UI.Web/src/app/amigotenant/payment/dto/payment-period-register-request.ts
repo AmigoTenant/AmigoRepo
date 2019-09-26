@@ -7,4 +7,5 @@ export class PaymentPeriodRegisterRequest
     referenceNo:string;
     comment:string;
     tenantId:number;
+    houseId:number;
 }

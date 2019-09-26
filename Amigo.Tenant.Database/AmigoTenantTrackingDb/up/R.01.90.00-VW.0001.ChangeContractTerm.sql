@@ -44,6 +44,7 @@ SELECT PP.PaymentPeriodId      ,
    ,PP.Comment
    ,PP.ReferenceNo
    ,FR.FileRepositoryId
+   ,PP.HouseId
  FROM PaymentPeriod PP    
    INNER JOIN Contract C ON C.ContractId = PP.ContractId    
    INNER JOIN House H ON h.HouseId = PP.HouseId    

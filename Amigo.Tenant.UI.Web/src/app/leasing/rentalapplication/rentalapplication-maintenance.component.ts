@@ -113,19 +113,12 @@ export class RentalApplicationMaintenanceComponent extends EnvironmentComponent 
             //TODO:
             let id = params['rentalApplicationId'];
             if (id != null && typeof (id) != 'undefined') {
-                //this.getBudgets();
                 this.getRentalApplicationById(id); //TODO:
                 this.flgEdition = "E";
-                //this.allowEditing = this.model.contractStatusCode == "DRAFT" ? true : false;
                 this._isDisabled = false;
 
             } else {
                 this.flgEdition = "N";
-                //this.model.contractId = -1;
-                //this.isVisibleHouseFeature = false;
-                //this.model.contractCode = "";
-                //this.model.features = [];
-                //this.model.contractStatusCode = "DRAFT";
                 this._isDisabled = false;
             }
 

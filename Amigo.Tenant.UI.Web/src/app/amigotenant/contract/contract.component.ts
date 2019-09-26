@@ -1,6 +1,6 @@
 //import { GridActivityLogComponent } from './../../shipment-tracking/activity-log/grid-activity-log/grid-activity-log.component';
 import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
-import { Component, Input, Injectable, OnChanges, SimpleChange, OnInit, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, Input, Injectable, OnChanges, SimpleChange, OnInit, Output, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
@@ -21,6 +21,7 @@ import { PeriodDTO } from '../../shared/index';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { ContractChangeTermRequest } from './dto/contract-change-term-request';
 import { ContractDataService } from './contract-data.service';
+import { TooltipDirective } from '@progress/kendo-angular-tooltip';
 
 declare var $: any;
 
@@ -33,7 +34,15 @@ export class modelDate {
 
 @Component({
   selector: 'at-contract',
-  templateUrl: './contract.component.html'
+  templateUrl: './contract.component.html',
+  encapsulation: ViewEncapsulation.None,
+  styles: [`
+    .k-grid .k-grid-content td {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  `]
 })
 
 export class ContractComponent extends EnvironmentComponent implements OnInit {
@@ -63,6 +72,18 @@ export class ContractComponent extends EnvironmentComponent implements OnInit {
   public featureListMultiSelect: IMultiSelectOption[] = [];
   public selectedOptionsFeature: number[] = [];
   public selectedOptionsFeatureBackup: number[] = [];
+
+  @ViewChild(TooltipDirective) public tooltipDir: TooltipDirective;
+
+    public showTooltip(e: MouseEvent): void {
+        const element = e.target as HTMLElement;
+        if ((element.nodeName === 'TD' || element.nodeName === 'TH')
+                && element.offsetWidth < element.scrollWidth) {
+            this.tooltipDir.toggle(element);
+        } else {
+            this.tooltipDir.hide();
+        }
+    }
 
   public mySettings: IMultiSelectSettings = {
       pullRight: false,
@@ -473,18 +494,12 @@ ngOnInit() {
 
     public changeTermMessage: string = "Are you sure to Formalize this Lease?";
     public contractToChangeTerm: ContractChangeTermRequest; 
+    public titleChangeTerm: string;
 
     onChangeTerm(contract) {
-        debugger;
+        this.titleChangeTerm = contract.contractCode;
         this.contractToChangeTerm = new ContractChangeTermRequest();
         this.contractToChangeTerm.contractId = contract.contractId;
-        this.contractToChangeTerm.newTenantId = contract.tenantId;
-        this.contractToChangeTerm.newHouseId = contract.houseId;
-        this.contractToChangeTerm.newDeposit = contract.newDeposit;
-        this.contractToChangeTerm.newRent = contract.newRent;
-        this.contractToChangeTerm.contractTermType = contract.contractTermType;
-        this.contractToChangeTerm.finalPeriodId = contract.finalPeriodId;
-        this.contractToChangeTerm.fromPeriodId = contract.fromPeriodId;
         this.openedChangeTermConfimation = true;
     }
 

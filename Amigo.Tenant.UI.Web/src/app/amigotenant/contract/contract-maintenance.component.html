@@ -80,7 +80,7 @@
                                     <div class="form-group col-sm-12">
                                         <label for="from" class="col-sm-5 control-label">Tenant</label>
                                         <label class="col-sm-7">
-                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [isDisabled]="_isView" [currentTenant]="_currentTenant" [validateInActiveContract]=true></ngbd-typeahead-tenant>
+                                        <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [isDisabled]="_isView" [currentTenant]="_currentTenant" [validateInActiveContract]=false></ngbd-typeahead-tenant>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.tenantError">Tenant is required</label>
                                         </label>
                                     </div>

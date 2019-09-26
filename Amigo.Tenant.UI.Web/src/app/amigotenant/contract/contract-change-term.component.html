@@ -1,51 +1,53 @@
 <div>
     
     <form [formGroup]="contractChangeTermForm">
-            {{ contractTermType | json }}
-        <div class="form-group row">
-            <div class="form-check form-check-inline">
-                <input class="form-check-input" type="radio" value="EXTENSION"
-                    id="contractTermType1" checked formControlName="contractTermType">
-                <label class="form-check-label" for="contractTermType1">
-                    Extension de Contrato
-                </label>
+        <div class="form-group row" >
+            <label for="contractTermType" class="col-sm-4 col-form-label">Tipo</label>
+            <div class="col-sm-8" >
+                <select formControlName="contractTermType" class='form-control input-control' (change)="onChangeTermTypeClick()">
+                    <option value="EXTENSION">Extension</option>
+                    <option value="MODIFICATION">Modificacion</option>
+                  </select>
             </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="MODIFICATION"
-                    id="contractTermType2" formControlName="contractTermType">
-                <label class="form-check-label" for="contractTermType2">
-                    Modificacion de Datos
-                </label>
-            </div>
-        </div>
-        <div class="form-group row" *ngIf="contractTermType==='EXTENSION'">
+        </div>            
+
+        <div class="form-group row" *ngIf="contractChangeTermForm.get('contractTermType').value==='EXTENSION'">
             <label for="periodIdTo" class="col-sm-4 col-form-label">Hasta Periodo</label>
             <div class="col-sm-8">
-                <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
+                <ngbd-typeahead-period (modelOutput)="getFinalPeriod($event)" >
                 </ngbd-typeahead-period>
+                <span class="help-block text-danger" *ngIf="displayMessage['finalPeriodId']">
+                    {{ displayMessage['finalPeriodId'] }}
+                </span>
             </div>
+           
         </div>
-        <div class="form-group row" *ngIf="contractTermType!=='EXTENSION'">
+        <div class="form-group row" *ngIf="contractChangeTermForm.get('contractTermType').value!=='EXTENSION'">
                 <label for="periodIdTo" class="col-sm-4 col-form-label">Desde Periodo</label>
                 <div class="col-sm-8">
-                    <ngbd-typeahead-period (modelOutput)="getPeriod($event)" [currentPeriod]="_currentPeriod">
+                    <ngbd-typeahead-period (modelOutput)="getFromPeriod($event)" >
                     </ngbd-typeahead-period>
+                    <span class="help-block text-danger" *ngIf="displayMessage['fromPeriodId']">
+                        {{ displayMessage['fromPeriodId'] }}
+                    </span>
                 </div>
+                
             </div>
+            
         <div class="form-group row">
-            <label for="propertyId" class='col-sm-4 col-form-label'>Tenant</label>
+            <label for="propertyId" class='col-sm-4 col-form-label'>Nuevo Tenant</label>
             <div class="col-sm-8">
-                <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" [currentTenant]="_currentTenant" ></ngbd-typeahead-tenant>
+                <ngbd-typeahead-tenant (modelOutput)="getTenant($event)" ></ngbd-typeahead-tenant>
             </div>
         </div>
         <div class="form-group row">
-            <label for="propertyId" class='col-sm-4 col-form-label'>Propiedad</label>
+            <label for="propertyId" class='col-sm-4 col-form-label'>Nueva Propiedad</label>
             <div class="col-sm-8">
-                <ngbd-typeahead-house (modelOutput)="getHouse($event)" [currentHouse]="_currentHouse">
+                <ngbd-typeahead-house (modelOutput)="getHouse($event)" >
                 </ngbd-typeahead-house>
             </div>
         </div>
-        <div class="form-group row" *ngIf="contractTermType==='EXTENSION'">
+        <div class="form-group row" *ngIf="contractChangeTermForm.get('contractTermType').value==='EXTENSION'">
             <label for="newDeposit" class="col-sm-4 col-form-label">Nuevo Deposito</label>
             <div class="col-sm-8">
                 <input type="number" class="form-control" formControlName='newDeposit'>
@@ -64,3 +66,11 @@
 
     </form>
 </div>
+
+<kendo-dialog title="Confirmation" *ngIf="showPopuChangeTermConfirm" (close)="noChangeTerm()">
+    <div>{{changeTermMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="noChangeTerm()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesChangeTerm()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>

@@ -315,6 +315,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.Comment = item.Comment;
                     detail.Reference = item.ReferenceNo;
                     detail.FileRepositoryId = item.FileRepositoryId;
+                    detail.HouseId = item.HouseId;
 
                     detailList.Add(detail);
 
@@ -340,6 +341,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.ConceptCode = concept.Data.Code;
                         lateFeeDetail.TenantId = header.TenantId;
                         lateFeeDetail.IsTenantFavorable = isLateFeeTenantFavorable;
+                        lateFeeDetail.HouseId = header.HouseId;
 
                         lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
 

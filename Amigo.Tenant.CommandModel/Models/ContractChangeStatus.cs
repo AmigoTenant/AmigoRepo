@@ -35,6 +35,6 @@ namespace Amigo.Tenant.CommandModel.Models
         public int? EndPeriodId { get; set; }
         public string ContractTermType { get; set; }
         public virtual House House { get; set; }
-
+        public virtual Contract Contract { get; set; }
     }
 }

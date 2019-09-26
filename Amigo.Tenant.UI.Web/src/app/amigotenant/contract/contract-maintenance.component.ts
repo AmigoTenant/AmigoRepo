@@ -160,7 +160,8 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 this.getHouseFeatureDetailContract();
                 this.getHouseFeatureAndDetail();
                 this.setOtherTenants(this.model.otherTenants);
-                this.parentId = this.model.contractStatusCode == "FORMAL" ? id : null;
+                
+                this.parentId = this.model.contractStatusCode == "FORMAL" || this.model.contractStatusCode == "RENEWED"  ? id : null;
             });
     }
 

@@ -113,7 +113,8 @@ namespace Amigo.Tenant.Application.Services.MasterData
             if (validateInActiveContract)
             {
                 queryFilter = queryFilter.And(p =>  p.ContractStatusCode != Constants.EntityStatus.Contract.Formalized &&
-                                                    p.ContractStatusCode != Constants.EntityStatus.Contract.Draft );
+                                                    p.ContractStatusCode != Constants.EntityStatus.Contract.Draft &&
+                                                    p.ContractStatusCode != Constants.EntityStatus.Contract.Renewed);
             }
 
             var mainTenant = await _mainTenantSearchBasicDataAccess.ListAsync(queryFilter, orderExpressionList.ToArray());

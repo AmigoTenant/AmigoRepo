@@ -1015,6 +1015,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     totalInvoice: number | null;
     totalIncome: number | null;
     balance: number | null;
+    houseId: number | null;
 
     lateFeeMissing: PPDetailSearchByContractPeriodDTO;
 
@@ -1074,6 +1075,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.balance = data["Balance"] !== undefined ? data["Balance"] : <any>null;
 
             this.lateFeeMissing = data["LateFeeMissing"] !== undefined && data["LateFeeMissing"] !== null? PPDetailSearchByContractPeriodDTO.fromJS(data["LateFeeMissing"]) : <any>null;
+            this.houseId = data["HouseId"] !== undefined ? ["HouseId"] : <any>null;
         }
     }
 
@@ -1126,6 +1128,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["TotalInvoice"] = this.totalInvoice !== undefined ? this.totalInvoice : <any>null;
         data["Balance"] = this.balance !== undefined ? this.balance : <any>null;
         data["LateFeeMissing"] = this.lateFeeMissing !== undefined ? this.lateFeeMissing : <any>null;
+        data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
         return data;
     }
 
@@ -1264,7 +1267,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
     invoiceNo: string | null;
     invoiceDate: Date | null;
     fileRepositoryId: number | null;
-
+    houseId: number | null;
     constructor(data?: IPPDetailSearchByContractPeriodDTO) {
         if (data) {
             for (var property in data) {
@@ -1306,6 +1309,8 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
             this.invoiceNo = data["InvoiceNo"] !== undefined ? data["InvoiceNo"] : <any>null;
             this.invoiceDate = data["InvoiceDate"] ? new Date(data["InvoiceDate"].toString()) : <any>null;
             this.fileRepositoryId = data["FileRepositoryId"] !== undefined ? data["FileRepositoryId"] : <any>null;
+            
+            this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
         }
     }
 
@@ -1347,6 +1352,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
         data["InvoiceNo"] = this.invoiceNo !== undefined ? this.invoiceNo : <any>null;
         data["InvoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>null;
         data["FileRepositoryId"] = this.fileRepositoryId !== undefined ? this.fileRepositoryId : <any>null;
+        data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
         return data;
     }
 

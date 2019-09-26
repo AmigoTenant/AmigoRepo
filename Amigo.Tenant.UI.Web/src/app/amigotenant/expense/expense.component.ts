@@ -219,7 +219,7 @@ export class ExpenseComponent extends EnvironmentComponent implements OnInit {
             .subscribe(res => {
                 this._listHouseTypes = [];
                 let dataResult = new ResponseListDTO(res);
-                debugger;
+                
                 this._listHouseTypes = dataResult.data;
             });
     }
