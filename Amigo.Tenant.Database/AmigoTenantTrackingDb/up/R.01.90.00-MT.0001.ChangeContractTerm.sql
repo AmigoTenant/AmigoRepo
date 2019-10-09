@@ -20,8 +20,11 @@ From PaymentPeriod PP
 go
 
 
+if not exists(select * from entitystatus where code = 'RENEWED' and EntityCode = 'CO')
+BEGIN
 INSERT INTO EntityStatus (Code, Name, EntityCode, Sequence, CreatedBy, CreationDate)
 VALUES('RENEWED', 'Renewed', 'CO', 7, 1, getdate())
+END
 
 go 
 IF EXISTS (select  so.name from sysobjects so WHERE so.name = 'ContractChangeStatus') 

@@ -85,6 +85,7 @@ SELECT PP.PaymentPeriodId      ,
    ALTER VIEW [dbo].[vwPaymentPeriod]  
 
 AS  
+
 SELECT PaymentPeriodId,          
   PP.ContractId,        
   PP.TenantId,        
@@ -100,6 +101,7 @@ SELECT PaymentPeriodId,
   T.FullName as TenantFullName,          
   ES.Code as PaymentPeriodStatusCode,        
   ES.Name as PaymentPeriodStatusName,   
+
   --PENDING ACCOUNTS  
   ISNULL(PaymentPending.ServicesPending, 0) AS ServicesPending,        
   ISNULL(PaymentPending.FinesPending, 0) AS FinesPending,        
@@ -108,6 +110,7 @@ SELECT PaymentPeriodId,
   WHEN DATEDIFF(DD, P.DueDate, GETDATE()) > 0 AND ES.Code = 'PPPENDING' THEN  1 ELSE 0           
   END AS LateFeesPending,         
   ISNULL(PaymentPending.DepositPending, 0) AS DepositPending,        
+
   --PENDING AMOUNTS  
   PaymentAmountPending.ServicesAmountPending,        
   PaymentAmountPending.FinesAmountPending,        
@@ -122,12 +125,23 @@ SELECT PaymentPeriodId,
 
   PaymentAmountPending.DepositAmountPending,        
   PaymentAmountPending.OnAccountAmountPending,
+
+  --PAID AMOUNTS
+
+
   --FOR DASHBOARDS  
   vwDashBala.TotalExpenseAmount,
   vwDashBala.TotalIncomePaidAmount,
   vwDashBala.TotalIncomePendingAmount,
   vwDashBala.TotalIncomePaidAmount + 
-  vwDashBala.TotalIncomePendingAmount AS TotalIncomeAmountByPeriod
+  vwDashBala.TotalIncomePendingAmount AS TotalIncomeAmountByPeriod,
+
+  ISNULL(PaymentAmountPaid.RentAmountPaid, 0) as RentAmountPaid, 
+  ISNULL(PaymentAmountPaid.DepositAmountPaid, 0) as DepositAmountPaid, 
+  ISNULL(PaymentAmountPaid.LateFeesAmountPaid, 0) as LateFeesAmountPaid, 
+  ISNULL(PaymentAmountPaid.FinesAmountPaid, 0) as FinesAmountPaid, 
+  ISNULL(PaymentAmountPaid.OnAccountAmountPaid, 0) as OnAccountAmountPaid
+
  FROM PaymentPeriod PP        
   INNER JOIN Contract C ON C.ContractId = PP.ContractId        
   INNER JOIN House H ON h.HouseId = PP.HouseId        
@@ -184,6 +198,23 @@ SELECT PaymentPeriodId,
      ES1.Code = 'PPPENDING'          
   ) AS PaymentAmountPending  
   
+  CROSS APPLY  
+  (            
+   SELECT       
+	 SUM(ISNULL(CASE WHEN CPTO1.Code = 'RENT' THEN PaymentAmount ELSE 0 END, 0)) AS RentAmountPaid,   
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'DEPOSIT' THEN PaymentAmount ELSE 0 END, 0)) AS DepositAmountPaid,          
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'FINE' THEN PaymentAmount ELSE 0 END, 0)) AS FinesAmountPaid,          
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'LATEFEE' THEN PaymentAmount ELSE 0 END, 0)) AS LateFeesAmountPaid,         
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'ONACCOUNT' THEN PaymentAmount ELSE 0 END, 0)) AS OnAccountAmountPaid        
+   FROM PaymentPeriod PP1          
+     INNER JOIN CONCEPT CPTO1 ON CPTO1.ConceptId = PP1.ConceptId          
+     INNER JOIN EntityStatus ES1 ON ES1.EntityStatusId = PP1.PaymentPeriodStatusId        
+   WHERE PP1.ContractId = PP.ContractId  AND           
+     PP1.PeriodId = PP.PeriodId  AND           
+     CPTO1.Code in ('RENT','DEPOSIT', 'LATEFEE', 'FINE', 'ONACCOUNT') AND          
+     ES1.Code = 'PPPAYED'          
+  ) AS PaymentAmountPaid  
+
   
   OUTER APPLY  
   (  
@@ -192,6 +223,7 @@ SELECT PaymentPeriodId,
   
 
 Left join vwDashboardBalance vwDashBala on vwDashBala.PeriodCode = P.Code
+
 
 go
 
