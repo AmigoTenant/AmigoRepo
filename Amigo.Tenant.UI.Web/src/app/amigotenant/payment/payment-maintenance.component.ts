@@ -120,6 +120,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
         paymentDetail.referenceNo = payment.referenceNo;
         paymentDetail.comment = payment.comment;
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
+        paymentDetail.houseId = this.paymentMaintenance.houseId;
         this.paymentPeriodService.registerPaymentDetail(paymentDetail)
         .subscribe(
             r=> {

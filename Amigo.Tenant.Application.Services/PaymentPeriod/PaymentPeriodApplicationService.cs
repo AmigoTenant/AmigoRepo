@@ -217,11 +217,11 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 else
                     queryFilter = queryFilter.And(p => p.LateFeesPending == 0);
 
-            if (search.HasPendingServices.HasValue)
-                if (search.HasPendingServices.Value)
-                    queryFilter = queryFilter.And(p => p.ServicesPending > 0);
-                else
-                    queryFilter = queryFilter.And(p => p.ServicesPending == 0);
+            //if (search.HasPendingServices.HasValue)
+            //    if (search.HasPendingServices.Value)
+            //        queryFilter = queryFilter.And(p => p.ServicesPending > 0);
+            //    else
+            //        queryFilter = queryFilter.And(p => p.ServicesPending == 0);
 
             if (search.HasPendingDeposit.HasValue)
                 if (search.HasPendingDeposit.Value)
@@ -284,7 +284,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.IsPayInFull = false; //Required To apply OnAccount concept when Tenant is paying (false: pay independent concept, true: pay for the total)
                 ppHeaderSearchByContractPeriodDTO.TotalInvoice = header.TotalInvoice;
                 ppHeaderSearchByContractPeriodDTO.TotalIncome = header.TotalIncome;
-
+                ppHeaderSearchByContractPeriodDTO.HouseId = header.HouseId;
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
                 var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
@@ -637,7 +637,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             var dueDate = string.Format("{0:MM/dd/yyyy}", item.DueDate) ?? "";
             var pendingRent = string.Format("{0:0.00}", item.PaymentAmount);
             var pendingDeposit = string.Format("{0:0.00}", item.DepositAmountPending);
-            var pendingService = string.Format("{0:0.00}", item.ServicesAmountPending);
+            //var pendingService = string.Format("{0:0.00}", item.ServicesAmountPending);
             var pendingLateFee = string.Format("{0:0.00}", item.LateFeesAmountPending);
             var pendingFine = string.Format("{0:0.00}", item.FinesAmountPending);
 
@@ -650,7 +650,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                                  ExcelHelper.StringToCSVCell(pendingRent) + "," +
                                  ExcelHelper.StringToCSVCell(pendingDeposit) + "," +
                                  ExcelHelper.StringToCSVCell(pendingFine) + "," +
-                                 ExcelHelper.StringToCSVCell(pendingService) + "," +
+                                 //ExcelHelper.StringToCSVCell(pendingService) + "," +
                                  ExcelHelper.StringToCSVCell(pendingLateFee);
 
             return textProperties;

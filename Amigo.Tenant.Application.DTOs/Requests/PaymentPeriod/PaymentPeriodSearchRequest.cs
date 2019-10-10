@@ -11,7 +11,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod
         public string ContractCode { get; set; }
         public int? PaymentPeriodStatusId { get; set; }
         public int? TenantId { get; set; }
-        public bool? HasPendingServices { get; set; }
+        //public bool? HasPendingServices { get; set; }
         public bool? HasPendingFines { get; set; }
         public bool? HasPendingLateFee { get; set; }
         public bool? HasPendingDeposit { get; set; }

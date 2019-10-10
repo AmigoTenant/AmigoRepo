@@ -93,7 +93,7 @@ export interface IPaymentPeriodClient {
     /**
      * @return OK
      */
-    search(search_periodId: number, search_houseId: number, search_contractCode: string, search_paymentPeriodStatusId: number, search_tenantId: number, search_hasPendingServices: boolean, search_hasPendingFines: boolean, search_hasPendingLateFee: boolean, search_hasPendingDeposit: boolean, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPagedListOfPPSearchDTO | null>;
+    search(search_periodId: number, search_houseId: number, search_contractCode: string, search_paymentPeriodStatusId: number, search_tenantId: number, search_hasPendingFines: boolean, search_hasPendingLateFee: boolean, search_hasPendingDeposit: boolean, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPagedListOfPPSearchDTO | null>;
     /**
      * @return OK
      */
@@ -129,7 +129,7 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
     /**
      * @return OK
      */
-    search(search_periodId: number, search_houseId: number, search_contractCode: string, search_paymentPeriodStatusId: number, search_tenantId: number, search_hasPendingServices: boolean, search_hasPendingFines: boolean, search_hasPendingLateFee: boolean, search_hasPendingDeposit: boolean, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPagedListOfPPSearchDTO | null> {
+    search(search_periodId: number, search_houseId: number, search_contractCode: string, search_paymentPeriodStatusId: number, search_tenantId: number, search_hasPendingFines: boolean, search_hasPendingLateFee: boolean, search_hasPendingDeposit: boolean, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPagedListOfPPSearchDTO | null> {
         let url_ = this.baseUrl + "/api/payment/searchCriteria?";
         if (search_periodId !== undefined)
             url_ += "search.periodId=" + encodeURIComponent("" + search_periodId) + "&";
@@ -141,8 +141,8 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
             url_ += "search.paymentPeriodStatusId=" + encodeURIComponent("" + search_paymentPeriodStatusId) + "&";
         if (search_tenantId !== undefined)
             url_ += "search.tenantId=" + encodeURIComponent("" + search_tenantId) + "&";
-        if (search_hasPendingServices !== undefined)
-            url_ += "search.hasPendingServices=" + encodeURIComponent("" + search_hasPendingServices) + "&";
+        // if (search_hasPendingServices !== undefined)
+        //     url_ += "search.hasPendingServices=" + encodeURIComponent("" + search_hasPendingServices) + "&";
         if (search_hasPendingFines !== undefined)
             url_ += "search.hasPendingFines=" + encodeURIComponent("" + search_hasPendingFines) + "&";
         if (search_hasPendingLateFee !== undefined)
@@ -734,15 +734,22 @@ export class PPSearchDTO implements IPPSearchDTO {
     paymentPeriodStatusCode: string | null;
     paymentPeriodStatusName: string | null;
     paymentAmount: number | null;
+    rentAmountPending: number | null;
     depositAmountPending: number | null;
     finesAmountPending: number | null;
-    servicesAmountPending: number | null;
+    //servicesAmountPending: number | null;
     lateFeesAmountPending: number | null;
+    onAccountAmountPending: number | null;
     dueDate: Date | null;
     totalAmountPending: number | null;
     totalIncomeAmountByPeriod: number | null;
     totalIncomePaidAmount: number | null;
     totalIncomePendingAmount: number | null;
+    rentAmountPaid: number | null;
+    depositAmountPaid: number | null;
+    finesAmountPaid: number | null;
+    lateFeesAmountPaid: number | null;
+    onAccountAmountPaid: number | null;
 
     constructor(data?: IPPSearchDTO) {
         if (data) {
@@ -771,16 +778,25 @@ export class PPSearchDTO implements IPPSearchDTO {
             this.paymentPeriodStatusCode = data["PaymentPeriodStatusCode"] !== undefined ? data["PaymentPeriodStatusCode"] : <any>null;
             this.paymentPeriodStatusName = data["PaymentPeriodStatusName"] !== undefined ? data["PaymentPeriodStatusName"] : <any>null;
             this.paymentAmount = data["PaymentAmount"] !== undefined ? data["PaymentAmount"] : <any>null;
+            this.rentAmountPending = data["RentAmountPending"] !== undefined ? data["RentAmountPending"] : <any>null;
             this.depositAmountPending = data["DepositAmountPending"] !== undefined ? data["DepositAmountPending"] : <any>null;
             this.finesAmountPending = data["FinesAmountPending"] !== undefined ? data["FinesAmountPending"] : <any>null;
-            this.servicesAmountPending = data["ServicesAmountPending"] !== undefined ? data["ServicesAmountPending"] : <any>null;
+            //this.servicesAmountPending = data["ServicesAmountPending"] !== undefined ? data["ServicesAmountPending"] : <any>null;
             this.lateFeesAmountPending = data["LateFeesAmountPending"] !== undefined ? data["LateFeesAmountPending"] : <any>null;
+            this.onAccountAmountPending = data["OnAccountAmountPending"] !== undefined ? data["OnAccountAmountPending"] : <any>null;
             this.contractId = data["ContractId"] !== undefined ? data["ContractId"] : <any>null;
             this.dueDate = data["DueDate"] ? new Date(data["DueDate"].toString()) : <any>null;
             this.totalAmountPending = data["TotalAmountPending"] !== undefined ? data["TotalAmountPending"] : <any>null;
             this.totalIncomeAmountByPeriod = data["TotalIncomeAmountByPeriod"] !== undefined ? data["TotalIncomeAmountByPeriod"] : <any>null;
             this.totalIncomePaidAmount = data["TotalIncomePaidAmount"] !== undefined ? data["TotalIncomePaidAmount"] : <any>null;
             this.totalIncomePendingAmount = data["TotalIncomePendingAmount"] !== undefined ? data["TotalIncomePendingAmount"] : <any>null;
+            
+            this.rentAmountPaid = data["RentAmountPaid"] !== undefined ? data["RentAmountPaid"] : <any>null;
+            this.depositAmountPaid = data["DepositAmountPaid"] !== undefined ? data["DepositAmountPaid"] : <any>null;
+            this.finesAmountPaid = data["FinesAmountPaid"] !== undefined ? data["FinesAmountPaid"] : <any>null;
+            this.lateFeesAmountPaid = data["LateFeesAmountPaid"] !== undefined ? data["LateFeesAmountPaid"] : <any>null;
+            this.onAccountAmountPaid = data["OnAccountAmountPaid"] !== undefined ? data["OnAccountAmountPaid"] : <any>null;
+            
         }
     }
 
@@ -808,16 +824,24 @@ export class PPSearchDTO implements IPPSearchDTO {
         data["PaymentPeriodStatusCode"] = this.paymentPeriodStatusCode !== undefined ? this.paymentPeriodStatusCode : <any>null;
         data["PaymentPeriodStatusName"] = this.paymentPeriodStatusName !== undefined ? this.paymentPeriodStatusName : <any>null;
         data["PaymentAmount"] = this.paymentAmount !== undefined ? this.paymentAmount : <any>null;
+        data["RentAmountPending"] = this.rentAmountPending !== undefined ? this.rentAmountPending : <any>null;
         data["DepositAmountPending"] = this.depositAmountPending !== undefined ? this.depositAmountPending : <any>null;
         data["FinesAmountPending"] = this.finesAmountPending !== undefined ? this.finesAmountPending : <any>null;
-        data["ServicesAmountPending"] = this.servicesAmountPending !== undefined ? this.servicesAmountPending : <any>null;
+        //data["ServicesAmountPending"] = this.servicesAmountPending !== undefined ? this.servicesAmountPending : <any>null;
         data["LateFeesAmountPending"] = this.lateFeesAmountPending !== undefined ? this.lateFeesAmountPending : <any>null;
+        data["OnAccountAmountPending"] = this.onAccountAmountPending !== undefined ? this.onAccountAmountPending : <any>null;
         data["ContractId"] = this.contractId !== undefined ? this.contractId : <any>null;
         data["DueDate"] = this.dueDate ? this.dueDate.toISOString() : <any>null;
         data["TotalAmountPending"] = this.totalAmountPending !== undefined ? this.totalAmountPending : <any>null;
         data["TotalIncomeAmountByPeriod"] = this.totalIncomeAmountByPeriod !== undefined ? this.totalIncomeAmountByPeriod : <any>null;
         data["TotalIncomePaidAmount"] = this.totalIncomePaidAmount !== undefined ? this.totalIncomePaidAmount : <any>null;
         data["TotalIncomePendingAmount"] = this.totalIncomePendingAmount !== undefined ? this.totalIncomePendingAmount : <any>null;
+        data["RentAmountPaid"] = this.rentAmountPaid !== undefined ? this.rentAmountPaid : <any>null;
+        data["DepositAmountPaid"] = this.depositAmountPaid !== undefined ? this.depositAmountPaid : <any>null;
+        data["FinesAmountPaid"] = this.finesAmountPaid !== undefined ? this.finesAmountPaid : <any>null;
+        data["LateFeesAmountPaid"] = this.lateFeesAmountPaid !== undefined ? this.lateFeesAmountPaid : <any>null;
+        data["OnAccountAmountPaid"] = this.onAccountAmountPaid !== undefined ? this.onAccountAmountPaid : <any>null;
+        
         return data;
     }
 
@@ -833,7 +857,7 @@ export interface IPPSearchDTO {
     isSelected: boolean | null;
     periodCode: string | null;
     contractCode: string | null;
-    contractId: number | null; 
+    contractId: number | null;
     tenantFullName: string | null;
     houseName: string | null;
     paymentPeriodStatusId: number | null;
@@ -846,14 +870,20 @@ export interface IPPSearchDTO {
     houseId: number | null;
     paymentPeriodStatusCode: string | null;
     paymentPeriodStatusName: string | null;
+    rentAmountPending: number | null;
     depositAmountPending: number | null;
     finesAmountPending: number | null;
-    servicesAmountPending: number | null;
-    lateFeesAmountPending: number | null; 
+    lateFeesAmountPending: number | null;
+    onAccountAmountPending: number | null;
     totalAmountPending: number | null;
     totalIncomeAmountByPeriod: number | null;
     totalIncomePaidAmount: number | null;
     totalIncomePendingAmount: number | null;
+    rentAmountPaid: number | null;
+    depositAmountPaid: number | null;
+    finesAmountPaid: number | null;
+    lateFeesAmountPaid: number | null;
+    onAccountAmountPaid: number | null;
 }
 
 export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPeriodSearchByContractPeriodRequest {
@@ -1075,7 +1105,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.balance = data["Balance"] !== undefined ? data["Balance"] : <any>null;
 
             this.lateFeeMissing = data["LateFeeMissing"] !== undefined && data["LateFeeMissing"] !== null? PPDetailSearchByContractPeriodDTO.fromJS(data["LateFeeMissing"]) : <any>null;
-            this.houseId = data["HouseId"] !== undefined ? ["HouseId"] : <any>null;
+            this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
         }
     }
 

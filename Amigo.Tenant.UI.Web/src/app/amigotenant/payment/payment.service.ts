@@ -14,7 +14,6 @@ export class PaymentServiceNew extends BaseService {
         contractCode: string,
         paymentPeriodStatusId: number|null,
         tenantId: number|null,
-        hasPendingServices: boolean|null,
         hasPendingFines: boolean|null,
         hasPendingLateFee: boolean|null,
         hasPendingDeposit: boolean|null,
@@ -36,9 +35,6 @@ export class PaymentServiceNew extends BaseService {
         if (tenantId === undefined) {
         tenantId = null;
         }
-        if (hasPendingServices === undefined) {
-        hasPendingServices = null;
-        }
         if (hasPendingFines === undefined) {
         hasPendingFines = null;
         }
@@ -49,13 +45,8 @@ export class PaymentServiceNew extends BaseService {
         hasPendingDeposit = null;
         }
 
-        let url = `${this.baseUrl}${Constants.PAYMENTPERIOD_URL_PATH.exportToExcel}/${periodId}/${houseId}/${contractCode}/${paymentPeriodStatusId}/${tenantId}/${hasPendingServices}/${hasPendingFines}/${hasPendingLateFee}/1/20000`;
+        let url = `${this.baseUrl}${Constants.PAYMENTPERIOD_URL_PATH.exportToExcel}/${periodId}/${houseId}/${contractCode}/${paymentPeriodStatusId}/${tenantId}/${hasPendingFines}/${hasPendingLateFee}/1/20000`;
 
         window.open(url);
-        // return this.http.get<void | any>(url, { headers: this.headers.set("Authorization", "Bearer " + token) })
-        //     .pipe(
-        //     catchError(this.handleError)
-        //     );
     }
-    
 }

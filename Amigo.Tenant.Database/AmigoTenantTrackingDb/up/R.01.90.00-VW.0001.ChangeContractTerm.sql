@@ -82,8 +82,7 @@ SELECT PP.PaymentPeriodId      ,
 
    go
 
-   ALTER VIEW [dbo].[vwPaymentPeriod]  
-
+ALTER VIEW [dbo].[vwPaymentPeriod]  
 AS  
 
 SELECT PaymentPeriodId,          
@@ -103,7 +102,7 @@ SELECT PaymentPeriodId,
   ES.Name as PaymentPeriodStatusName,   
 
   --PENDING ACCOUNTS  
-  ISNULL(PaymentPending.ServicesPending, 0) AS ServicesPending,        
+  ISNULL(PaymentPending.RentPending, 0) AS RentPending,        
   ISNULL(PaymentPending.FinesPending, 0) AS FinesPending,        
   CASE         
   WHEN ISNULL(PaymentPending.LateFeesPending, 0) > 0 THEN PaymentPending.LateFeesPending          
@@ -112,8 +111,8 @@ SELECT PaymentPeriodId,
   ISNULL(PaymentPending.DepositPending, 0) AS DepositPending,        
 
   --PENDING AMOUNTS  
-  PaymentAmountPending.ServicesAmountPending,        
-  PaymentAmountPending.FinesAmountPending,        
+  ISNULL(PaymentAmountPending.RentAmountPending, 0) AS RentAmountPending,
+  ISNULL(PaymentAmountPending.FinesAmountPending, 0) AS FinesAmountPending,
   CASE     
    WHEN PaymentAmountPending.LateFeesAmountPending > 0    
     THEN  PaymentAmountPending.LateFeesAmountPending    
@@ -122,12 +121,8 @@ SELECT PaymentPeriodId,
    WHEN ES.Code = 'PPPAYED' AND DATEDIFF(DD, P.DueDate, PP.PaymentDate) > 0 AND ISNULL(LateFeePayed.LateFeePayedCount, 0) = 0    
     THEN DATEDIFF(DD, P.DueDate, GETDATE()) * LateFeeAmountPerDay.AppSettingValue    
    ELSE 0 END LateFeesAmountPending,    
-
-  PaymentAmountPending.DepositAmountPending,        
-  PaymentAmountPending.OnAccountAmountPending,
-
-  --PAID AMOUNTS
-
+  ISNULL(PaymentAmountPending.DepositAmountPending, 0) AS DepositAmountPending,
+  ISNULL(PaymentAmountPending.OnAccountAmountPending, 0) AS OnAccountAmountPending,
 
   --FOR DASHBOARDS  
   vwDashBala.TotalExpenseAmount,
@@ -136,6 +131,7 @@ SELECT PaymentPeriodId,
   vwDashBala.TotalIncomePaidAmount + 
   vwDashBala.TotalIncomePendingAmount AS TotalIncomeAmountByPeriod,
 
+  --PAID AMOUNTS
   ISNULL(PaymentAmountPaid.RentAmountPaid, 0) as RentAmountPaid, 
   ISNULL(PaymentAmountPaid.DepositAmountPaid, 0) as DepositAmountPaid, 
   ISNULL(PaymentAmountPaid.LateFeesAmountPaid, 0) as LateFeesAmountPaid, 
@@ -143,28 +139,27 @@ SELECT PaymentPeriodId,
   ISNULL(PaymentAmountPaid.OnAccountAmountPaid, 0) as OnAccountAmountPaid
 
  FROM PaymentPeriod PP        
-  INNER JOIN Contract C ON C.ContractId = PP.ContractId        
-  INNER JOIN House H ON h.HouseId = PP.HouseId        
-  INNER JOIN Tenant T ON T.TenantId = C.TenantId        
-  INNER JOIN EntityStatus ES ON ES.EntityStatusId = PP.PaymentPeriodStatusId        
-  INNER JOIN GeneralTable GT ON GT.GeneralTableId = PP.PaymentTypeId AND GT.Code = 'RENT'        
-  INNER JOIN Period P ON P.PeriodId = PP.PeriodId         
+	INNER JOIN Contract C ON C.ContractId = PP.ContractId        
+	INNER JOIN House H ON h.HouseId = PP.HouseId        
+	INNER JOIN Tenant T ON T.TenantId = C.TenantId        
+	INNER JOIN EntityStatus ES ON ES.EntityStatusId = PP.PaymentPeriodStatusId        
+	INNER JOIN Concept CPTO ON CPTO.ConceptId = PP.ConceptId AND CPTO.Code = 'RENT'        
+	INNER JOIN Period P ON P.PeriodId = PP.PeriodId         
         
   CROSS APPLY        
   (        
    SELECT   
-     SUM(ISNULL(CASE WHEN GT1.Code = 'SERVICE' THEN 1 ELSE 0 END, 0)) AS ServicesPending,        
-     SUM(ISNULL(CASE WHEN GT1.Code = 'FINE' THEN 1 ELSE 0 END, 0)) AS FinesPending,        
-
-    SUM(ISNULL(CASE WHEN GT1.Code = 'LATEFEE' THEN 1 ELSE 0 END, 0)) AS LateFeesPending,        
-     SUM(ISNULL(CASE WHEN GT1.Code = 'DEPOSIT' THEN 1 ELSE 0 END, 0)) AS DepositPending,      
-     SUM(ISNULL(CASE WHEN GT1.Code = 'ONACCOUNT' THEN 1 ELSE 0 END, 0)) AS OnAccountPending      
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'RENT' THEN 1 ELSE 0 END, 0)) AS RentPending,        
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'FINE' THEN 1 ELSE 0 END, 0)) AS FinesPending,        
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'LATEFEE' THEN 1 ELSE 0 END, 0)) AS LateFeesPending,        
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'DEPOSIT' THEN 1 ELSE 0 END, 0)) AS DepositPending,      
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'ONACCOUNT' THEN 1 ELSE 0 END, 0)) AS OnAccountPending      
    FROM PaymentPeriod PP1        
-     INNER JOIN GENERALTABLE GT1 ON GT1.GeneralTableId = PP1.PaymentTypeId        
+     INNER JOIN CONCEPT CPTO1 ON CPTO1.ConceptId = PP1.ConceptId              
      INNER JOIN EntityStatus ES1 ON ES1.EntityStatusId = PP1.PaymentPeriodStatusId        
    WHERE PP1.ContractId = PP.ContractId  AND         
      PP1.PeriodId = PP.PeriodId  AND         
-     GT1.Code not in ('RENT') AND        
+     CPTO1.Code in ('RENT','DEPOSIT', 'LATEFEE', 'FINE', 'ONACCOUNT') AND          
      ES1.Code = 'PPPENDING'        
   ) AS PaymentPending        
         
@@ -172,11 +167,11 @@ SELECT PaymentPeriodId,
   (          
    SELECT COUNT(1) AS LateFeePayedCount    
    FROM PaymentPeriod PP1          
-     INNER JOIN GENERALTABLE GT1 ON GT1.GeneralTableId = PP1.PaymentTypeId          
+     INNER JOIN CONCEPT CPTO1 ON CPTO1.ConceptId = PP1.ConceptId       
      INNER JOIN EntityStatus ES1 ON ES1.EntityStatusId = PP1.PaymentPeriodStatusId          
    WHERE PP1.ContractId = PP.ContractId  AND           
      PP1.PeriodId = PP.PeriodId  AND      
-     GT1.Code = 'LATEFEE' AND          
+     CPTO1.Code = 'LATEFEE' AND          
      ES1.Code = 'PPPAYED'          
   ) AS LateFeePayed      
        
@@ -184,17 +179,17 @@ SELECT PaymentPeriodId,
   CROSS APPLY  
   (            
    SELECT       
-     SUM(ISNULL(CASE WHEN GT1.Code = 'SERVICE' THEN PaymentAmount ELSE 0 END, 0)) AS ServicesAmountPending,          
-     SUM(ISNULL(CASE WHEN GT1.Code = 'FINE' THEN PaymentAmount ELSE 0 END, 0)) AS FinesAmountPending,          
-     SUM(ISNULL(CASE WHEN GT1.Code = 'LATEFEE' THEN PaymentAmount ELSE 0 END, 0)) AS LateFeesAmountPending,          
-     SUM(ISNULL(CASE WHEN GT1.Code = 'DEPOSIT' THEN PaymentAmount ELSE 0 END, 0)) AS DepositAmountPending,        
-     SUM(ISNULL(CASE WHEN GT1.Code = 'ONACCOUNT' THEN PaymentAmount ELSE 0 END, 0)) AS OnAccountAmountPending        
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'RENT' THEN PaymentAmount ELSE 0 END, 0)) AS RentAmountPending,          
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'FINE' THEN PaymentAmount ELSE 0 END, 0)) AS FinesAmountPending,          
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'LATEFEE' THEN PaymentAmount ELSE 0 END, 0)) AS LateFeesAmountPending,          
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'DEPOSIT' THEN PaymentAmount ELSE 0 END, 0)) AS DepositAmountPending,        
+     SUM(ISNULL(CASE WHEN CPTO1.Code = 'ONACCOUNT' THEN PaymentAmount ELSE 0 END, 0)) AS OnAccountAmountPending        
    FROM PaymentPeriod PP1          
-     INNER JOIN GENERALTABLE GT1 ON GT1.GeneralTableId = PP1.PaymentTypeId          
+     INNER JOIN CONCEPT CPTO1 ON CPTO1.ConceptId = PP1.ConceptId 
      INNER JOIN EntityStatus ES1 ON ES1.EntityStatusId = PP1.PaymentPeriodStatusId        
    WHERE PP1.ContractId = PP.ContractId  AND           
      PP1.PeriodId = PP.PeriodId  AND           
-     GT1.Code not in ('RENT') AND          
+     CPTO1.Code in ('RENT','DEPOSIT', 'LATEFEE', 'FINE', 'ONACCOUNT') AND
      ES1.Code = 'PPPENDING'          
   ) AS PaymentAmountPending  
   

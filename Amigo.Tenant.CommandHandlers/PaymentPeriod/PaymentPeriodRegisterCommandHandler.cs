@@ -98,7 +98,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                 entityToSave.PaymentDate = DateTime.Now;
             }
             entityToSave.PaymentTypeId = command.PaymentTypeId;
-            entityToSave.PaymentDate = DateTime.Now;
+            //entityToSave.PaymentDate = DateTime.Now;
             entityToSave.Update(command.UserId);
             _repositoryPayment.Add(entityToSave);
             return entityToSave.PaymentPeriodId.Value;//TODO

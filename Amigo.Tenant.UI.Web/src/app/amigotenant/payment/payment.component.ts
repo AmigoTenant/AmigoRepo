@@ -121,7 +121,6 @@ export class PaymentComponent implements OnInit {
             this.searchCriteria.contractCode,
             this.searchCriteria.paymentPeriodStatusId,
             this.searchCriteria.tenantId,
-            this.searchCriteria.hasPendingServices,
             this.searchCriteria.hasPendingFines,
             this.searchCriteria.hasPendingLateFee,
             this.searchCriteria.hasPendingDeposit,
@@ -296,7 +295,6 @@ export class PaymentComponent implements OnInit {
             this.searchCriteria.contractCode,
             this.searchCriteria.paymentPeriodStatusId,
             this.searchCriteria.tenantId,
-            this.searchCriteria.hasPendingServices,
             this.searchCriteria.hasPendingFines,
             this.searchCriteria.hasPendingLateFee,
             this.searchCriteria.hasPendingDeposit,
@@ -359,7 +357,7 @@ export class PaymentComponent implements OnInit {
 
     setTotalPendingAmount(data: any[]){
         data.forEach(q=> {
-            q.totalPendingAmount = q.paymentAmount+q.depositAmountPending+q.finesAmountPending+q.servicesAmountPending+q.lateFeesAmountPending;
+            q.totalAmountPending = q.rentAmountPending+q.depositAmountPending+q.finesAmountPending+q.onAccountAmountPending+q.lateFeesAmountPending;
         });
     }
 
