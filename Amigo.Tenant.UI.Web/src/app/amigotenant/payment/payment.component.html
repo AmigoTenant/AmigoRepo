@@ -1,7 +1,3 @@
-<!--<div class="page-header">
-    Location Maintenance
-</div>-->
-
 <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
 <div class="ro-tab tabs-top">
     <ul class="nav-tabs">
@@ -149,28 +145,34 @@
                             </div>
                         </form>
 
-                        
-                        <div class="row">
-                                <div class="col-sm-8">
-                                    <div class="col-sm-6 text-left">
-                                        <button type="submit" id="btnSendPayNotification"
-                                            (click)="confirmSendPayNotification()" class="ro-button btn-success">
-                                            <i class="xico-file-download"></i>
-                                            Send Email Notification
-                                        </button>
-                                        <button type="button" id="btnExport" (click)="exportToExcel()"
-                                            class="ro-button btn-default">
-                                            <i class="xico-file-download"></i>
-                                            Export to Excel
-                                        </button>
-                                    </div>
-                                </div>
-                                <div class="col-sm-4 text-right">
-                                    <span class="col-sm-3 badge badge-success"><h6>Pagado<br> {{ TotalIncomePaidAmount | number:'2.2-2'}}</h6></span>
-                                    <span class="col-sm-3 badge badge-danger"><h6>Pendiente<br>{{ TotalIncomePendingAmount| number:'2.2-2'}}</h6></span>
-                                    <span class="col-sm-3 badge badge-warning"><h6>Total<br>{{ TotalIncomeAmountByPeriod| number:'2.2-2'}}</h6></span>
+
+                        <div class="row pb-3">
+                            <div class="col-sm-8 pt-3">
+                                <div class="col-sm-6 text-left">
+                                    <button type="submit" id="btnSendPayNotification"
+                                        (click)="confirmSendPayNotification()" class="ro-button btn-success">
+                                        <i class="xico-file-download"></i>
+                                        Send Email Notification
+                                    </button>
+                                    <button type="button" id="btnExport" (click)="exportToExcel()"
+                                        class="ro-button btn-default">
+                                        <i class="xico-file-download"></i>
+                                        Export to Excel
+                                    </button>
                                 </div>
                             </div>
+                            <div class="col-sm-4 text-right">
+                                <span class="col-sm-3 badge badge-danger">
+                                    <h6>Pendiente<br>{{ TotalIncomePendingAmount| number:'2.2-2'}}</h6>
+                                </span>
+                                <span class="col-sm-3 badge badge-success">
+                                    <h6>Pagado<br> {{ TotalIncomePaidAmount | number:'2.2-2'}}</h6>
+                                </span>
+                                <span class="col-sm-3 badge badge-warning">
+                                    <h6>Total<br>{{ TotalIncomeAmountByPeriod| number:'2.2-2'}}</h6>
+                                </span>
+                            </div>
+                        </div>
                         <div class="grid-container">
                             <kendo-grid [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage"
                                 [pageable]="{
@@ -180,6 +182,7 @@
                                 pageSizes: pageSizes,
                                 previousNext: previousNext
                             }" [height]="580" (pageChange)="pageChange($event)" [selectable]="false">
+
                                 <kendo-grid-column [width]="30">
                                     <ng-template kendoGridHeaderTemplate let-column let-columnIndex="columnIndex">
                                         <div class="text-center">
@@ -197,6 +200,7 @@
                                     </ng-template>
                                 </kendo-grid-column>
                                 <kendo-grid-column field="periodCode" title="Period" width="40"></kendo-grid-column>
+
                                 <kendo-grid-column field="dueDate" title="Due Date" width="40">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div>
@@ -221,83 +225,96 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="rentAmountPending" title="Pending Rent" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.rentAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="depositAmountPending" title="Pending Deposit" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.depositAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="finesAmountPending" title="Pending Fines" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.finesAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="lateFeesAmountPending" title="Pending Late Fee" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.lateFeesAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="onAccountAmountPending" title="Pending OnAccount" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.onAccountAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="totalAmountPending" title="Total Pending Amount" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.totalAmountPending|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="rentAmountPaid" title="Paid Rent" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.rentAmountPaid|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="depositAmountPaid" title="Paid Deposit" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.depositAmountPaid|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="finesAmountPaid" title="Paid Fines" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.finesAmountPaid|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="lateFeesAmountPaid" title="Paid Late Fee" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.lateFeesAmountPaid|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="onAccountAmountPaid" title="Paid OnAccount" width="35">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{dataItem.onAccountAmountPaid|number:'2.2-2' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
+                                <kendo-grid-column-group title="P E N D I E N T E S" [width]="600" [locked]="false">
+
+                                    <kendo-grid-column field="rentAmountPending"  title="Rent" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingLabel">
+                                                <span>{{dataItem.rentAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="depositAmountPending" title="Deposit" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingLabel">
+                                                <span>{{dataItem.depositAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="finesAmountPending" title="Fines" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingLabel">
+                                                <span>{{dataItem.finesAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="lateFeesAmountPending" title="Late Fee" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingLabel">
+                                                <span>{{dataItem.lateFeesAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="onAccountAmountPending" title="On Account" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingLabel">
+                                                <span>{{dataItem.onAccountAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="totalAmountPending" title="TOTAL" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right pendingTotalLabel">
+                                                <span>{{dataItem.totalAmountPending|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid-column-group>
+                                <kendo-grid-column-group title="P A G A D O S" [width]="600" [locked]="false">
+
+                                    <kendo-grid-column field="rentAmountPaid" title="Rent" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidLabel">
+                                                <span>{{dataItem.rentAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="depositAmountPaid" title="Deposit" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidLabel">
+                                                <span>{{dataItem.depositAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="finesAmountPaid" title="Fines" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidLabel">
+                                                <span>{{dataItem.finesAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="lateFeesAmountPaid" title="Late Fee" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidLabel">
+                                                <span>{{dataItem.lateFeesAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="onAccountAmountPaid" title="On Account" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidLabel">
+                                                <span>{{dataItem.onAccountAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="totalAmountPaid" title="TOTAL" width="35">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right paidTotalLabel">
+                                                <span>{{dataItem.totalAmountPaid|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid-column-group>
                                 <kendo-grid-column width="20">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">

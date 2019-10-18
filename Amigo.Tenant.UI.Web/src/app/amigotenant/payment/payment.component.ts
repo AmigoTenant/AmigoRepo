@@ -26,7 +26,14 @@ declare var $: any;
 
 @Component({
     selector: 'at-payment',
-    templateUrl: './payment.component.html'
+    templateUrl: './payment.component.html',
+    styles:[
+        `.pendingLabel { color:red}
+         .paidLabel { color:green}
+         .pendingTotalLabel { color:red; font-weight: bold}
+         .paidTotalLabel { color:green; font-weight: bold}
+        `
+      ],
 })
 export class PaymentComponent implements OnInit {
     //TYPEAHEAD
@@ -358,6 +365,7 @@ export class PaymentComponent implements OnInit {
     setTotalPendingAmount(data: any[]){
         data.forEach(q=> {
             q.totalAmountPending = q.rentAmountPending+q.depositAmountPending+q.finesAmountPending+q.onAccountAmountPending+q.lateFeesAmountPending;
+            q.totalAmountPaid = q.rentAmountPaid+q.depositAmountPaid+q.finesAmountPaid+q.onAccountAmountPaid+q.lateFeesAmountPaid;
         });
     }
 

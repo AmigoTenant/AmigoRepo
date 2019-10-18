@@ -750,7 +750,7 @@ export class PPSearchDTO implements IPPSearchDTO {
     finesAmountPaid: number | null;
     lateFeesAmountPaid: number | null;
     onAccountAmountPaid: number | null;
-
+    totalAmountPaid: number | null;
     constructor(data?: IPPSearchDTO) {
         if (data) {
             for (var property in data) {
@@ -796,6 +796,7 @@ export class PPSearchDTO implements IPPSearchDTO {
             this.finesAmountPaid = data["FinesAmountPaid"] !== undefined ? data["FinesAmountPaid"] : <any>null;
             this.lateFeesAmountPaid = data["LateFeesAmountPaid"] !== undefined ? data["LateFeesAmountPaid"] : <any>null;
             this.onAccountAmountPaid = data["OnAccountAmountPaid"] !== undefined ? data["OnAccountAmountPaid"] : <any>null;
+            this.totalAmountPaid = data["TotalAmountPaid"] !== undefined ? data["TotalAmountPaid"] : <any>null;
             
         }
     }
@@ -841,6 +842,7 @@ export class PPSearchDTO implements IPPSearchDTO {
         data["FinesAmountPaid"] = this.finesAmountPaid !== undefined ? this.finesAmountPaid : <any>null;
         data["LateFeesAmountPaid"] = this.lateFeesAmountPaid !== undefined ? this.lateFeesAmountPaid : <any>null;
         data["OnAccountAmountPaid"] = this.onAccountAmountPaid !== undefined ? this.onAccountAmountPaid : <any>null;
+        data["TotalAmountPaid"] = this.totalAmountPaid !== undefined ? this.totalAmountPaid : <any>null;
         
         return data;
     }
@@ -884,6 +886,8 @@ export interface IPPSearchDTO {
     finesAmountPaid: number | null;
     lateFeesAmountPaid: number | null;
     onAccountAmountPaid: number | null;
+    totalAmountPaid: number | null;
+    
 }
 
 export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPeriodSearchByContractPeriodRequest {

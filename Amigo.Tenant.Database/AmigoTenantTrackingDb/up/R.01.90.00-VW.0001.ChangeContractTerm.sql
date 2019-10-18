@@ -85,6 +85,8 @@ SELECT PP.PaymentPeriodId      ,
 ALTER VIEW [dbo].[vwPaymentPeriod]  
 AS  
 
+
+
 SELECT PaymentPeriodId,          
   PP.ContractId,        
   PP.TenantId,        
@@ -114,11 +116,14 @@ SELECT PaymentPeriodId,
   ISNULL(PaymentAmountPending.RentAmountPending, 0) AS RentAmountPending,
   ISNULL(PaymentAmountPending.FinesAmountPending, 0) AS FinesAmountPending,
   CASE     
+	-- LATEFEE GRABADO EN BD PENDIENTE
    WHEN PaymentAmountPending.LateFeesAmountPending > 0    
     THEN  PaymentAmountPending.LateFeesAmountPending    
-   WHEN ES.Code = 'PPPENDING' AND DATEDIFF(DD, P.DueDate, GETDATE()) > 0    
+	-- LATEFEE NO GRABADO EN BD Y RENTA SIN PAGAR, DEBE CALCULAR LATEFEE
+   WHEN LateFeePayed.LateFeePayedCount = 0 AND ES.Code = 'PPPENDING' AND DATEDIFF(DD, P.DueDate, GETDATE()) > 0 
     THEN  DATEDIFF(DD, P.DueDate, GETDATE()) * LateFeeAmountPerDay.AppSettingValue    
-   WHEN ES.Code = 'PPPAYED' AND DATEDIFF(DD, P.DueDate, PP.PaymentDate) > 0 AND ISNULL(LateFeePayed.LateFeePayedCount, 0) = 0    
+	-- LATEFEE NO GRABADO EN BD Y RENTA PAGADA FUERA DE TIEMPO Y LATEFEE CALCULADO
+   WHEN LateFeePayed.LateFeePayedCount = 0 AND ES.Code = 'PPPAYED' AND DATEDIFF(DD, P.DueDate, PP.PaymentDate) > 0     
     THEN DATEDIFF(DD, P.DueDate, GETDATE()) * LateFeeAmountPerDay.AppSettingValue    
    ELSE 0 END LateFeesAmountPending,    
   ISNULL(PaymentAmountPending.DepositAmountPending, 0) AS DepositAmountPending,
@@ -178,7 +183,7 @@ SELECT PaymentPeriodId,
        
   CROSS APPLY  
   (            
-   SELECT       
+	SELECT       
      SUM(ISNULL(CASE WHEN CPTO1.Code = 'RENT' THEN PaymentAmount ELSE 0 END, 0)) AS RentAmountPending,          
      SUM(ISNULL(CASE WHEN CPTO1.Code = 'FINE' THEN PaymentAmount ELSE 0 END, 0)) AS FinesAmountPending,          
      SUM(ISNULL(CASE WHEN CPTO1.Code = 'LATEFEE' THEN PaymentAmount ELSE 0 END, 0)) AS LateFeesAmountPending,          
@@ -190,7 +195,7 @@ SELECT PaymentPeriodId,
    WHERE PP1.ContractId = PP.ContractId  AND           
      PP1.PeriodId = PP.PeriodId  AND           
      CPTO1.Code in ('RENT','DEPOSIT', 'LATEFEE', 'FINE', 'ONACCOUNT') AND
-     ES1.Code = 'PPPENDING'          
+     ES1.Code = 'PPPENDING'        
   ) AS PaymentAmountPending  
   
   CROSS APPLY  
