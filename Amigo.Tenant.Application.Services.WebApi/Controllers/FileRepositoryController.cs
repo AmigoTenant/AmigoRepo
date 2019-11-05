@@ -5,6 +5,7 @@ using Amigo.Tenant.Application.Services.Interfaces.FileRepository;
 using Amigo.Tenant.Application.Services.WebApi.Validation.Fluent;
 using Amigo.Tenant.Commands.FileRepository;
 using Amigo.Tenant.Common;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -32,6 +33,14 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositories(string entityCode, int? parentId)
         {
             var list = await _fileRepositoryAppService.GetFileRepositoriesAsync(entityCode, parentId);
+            return list;
+        }
+
+        [HttpPost]
+        [Route("getFileRepositoriesByIdList")]
+        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesByIdList(string entityCode, List<int> parentIds)
+        {
+            var list = await _fileRepositoryAppService.GetFileRepositoriesByIdListAsync(entityCode, parentIds);
             return list;
         }
 

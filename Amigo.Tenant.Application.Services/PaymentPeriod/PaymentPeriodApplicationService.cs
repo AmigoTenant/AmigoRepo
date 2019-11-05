@@ -377,6 +377,143 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             return ResponseBuilder.Correct(ppHeaderSearchByContractPeriodDTO);
         }
 
+        public async Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchForLiquidation(PaymentPeriodSearchByContractPeriodRequest search)
+        {
+           
+            Expression<Func<PPSearchByContractPeriodDTO, bool>> queryFilter = c => true;
+            queryFilter = queryFilter.And(p => p.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending);
+
+            //if (search.PeriodId.HasValue)
+            //    queryFilter = queryFilter.And(p => p.PeriodId == search.PeriodId);
+
+            if (search.ContractId.HasValue)
+                queryFilter = queryFilter.And(p => p.ContractId == search.ContractId);
+
+            var paymentsPeriod = await _paymentPeriodSearchByContractDataAccess.ListAsync(queryFilter);
+            var lateFeePaymenType = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.LateFee);
+            //var appSettingTenantFavorable = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.CptToFavTn);
+            //var isLateFeeTenantFavorable = appSettingTenantFavorable != null && appSettingTenantFavorable.AppSettingValue.Contains(Constants.ConceptCode.LateFee);
+
+            var appSettingLateFeeXDay = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.LateFeeXDay);
+            var lateFeeXDayValue = appSettingLateFeeXDay != null && appSettingLateFeeXDay.AppSettingValue != string.Empty ? decimal.Parse(appSettingLateFeeXDay.AppSettingValue) : 0;
+
+            var entityStatusPayment = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
+            var lateFeeConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.LateFee);
+
+            var ppHeaderSearchByContractPeriodDTO = new PPHeaderSearchByContractPeriodDTO();
+            int id = 0;
+            if (paymentsPeriod.Any())
+            {
+                var header = paymentsPeriod.FirstOrDefault();
+                ppHeaderSearchByContractPeriodDTO.HouseName = header.HouseName;
+                ppHeaderSearchByContractPeriodDTO.PeriodCode = header.PeriodCode;
+                ppHeaderSearchByContractPeriodDTO.PeriodId = header.PeriodId;
+                ppHeaderSearchByContractPeriodDTO.TenantFullName = header.TenantFullName;
+                ppHeaderSearchByContractPeriodDTO.ContractId = header.ContractId;
+                ppHeaderSearchByContractPeriodDTO.DueDate = header.DueDate;
+                ppHeaderSearchByContractPeriodDTO.Email = header.Email;
+                ppHeaderSearchByContractPeriodDTO.TenantId = header.TenantId;
+                ppHeaderSearchByContractPeriodDTO.PaymentTypeId = header.PaymentTypeId;
+                ppHeaderSearchByContractPeriodDTO.IsPayInFull = false; //Required To apply OnAccount concept when Tenant is paying (false: pay independent concept, true: pay for the total)
+                ppHeaderSearchByContractPeriodDTO.TotalInvoice = header.TotalInvoice;
+                ppHeaderSearchByContractPeriodDTO.TotalIncome = header.TotalIncome;
+                ppHeaderSearchByContractPeriodDTO.HouseId = header.HouseId;
+
+                var detailList = new List<PPDetailSearchByContractPeriodDTO>();
+                var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
+                
+                var isLateFeeIncluded = false;
+                var existDepositDevolution = paymentsPeriod.Any(q => q.PaymentTypeCode == Constants.GeneralTableCode.PaymentType.LateFee);
+
+                foreach (var item in paymentsPeriod)
+                {
+
+                    var existLateFeeInDB = paymentsPeriod.Any(q => q.ConceptCode == Constants.ConceptCode.LateFee && q.PeriodId == item.PeriodId);
+                    var delayDays = DateTime.Today.Subtract(header.PeriodDueDate.Value).TotalDays;
+
+                    var detail = new PPDetailSearchByContractPeriodDTO();
+                    detail.ContractId = item.ContractId;
+                    detail.PaymentPeriodId = item.PaymentPeriodId;
+                    detail.PaymentTypeValue = item.PaymentTypeValue;
+                    detail.PaymentAmount = item.PaymentAmount;
+                    detail.PaymentDescription = item.PaymentDescription;
+                    detail.PaymentPeriodStatusCode = item.PaymentPeriodStatusCode;
+                    detail.PaymentPeriodStatusName = item.PaymentPeriodStatusName;
+                    detail.IsRequired = item.IsRequired;
+                    detail.PaymentTypeCode = item.PaymentTypeCode;
+                    detail.IsSelected = item.IsRequired.Value && item.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending ? true : false;
+                    detail.InvoiceDetailId = item.InvoiceDetailId;
+                    detail.InvoiceId = item.InvoiceId;
+                    detail.InvoiceNo = item.InvoiceNo;
+                    detail.InvoiceDate = item.InvoiceDate;
+                    detail.ConceptId = item.ConceptId;
+                    detail.ConceptCode = item.ConceptCode;
+                    detail.IsTenantFavorable = item.IsTenantFavorable;
+                    detail.Comment = item.Comment;
+                    detail.Reference = item.ReferenceNo;
+                    detail.FileRepositoryId = item.FileRepositoryId;
+                    detail.HouseId = item.HouseId;
+
+                    detailList.Add(detail);
+
+                    if (!existLateFeeInDB
+                        && delayDays > 0
+                        && detail.ConceptCode == Constants.ConceptCode.Rent)
+                    {
+                        lateFeeDetail.PaymentPeriodId = id--;
+                        lateFeeDetail.ContractId = item.ContractId;
+                        lateFeeDetail.PeriodId = item.PeriodId;
+                        lateFeeDetail.PaymentAmount = lateFeeXDayValue * (decimal?)delayDays;
+                        lateFeeDetail.PaymentTypeId = lateFeePaymenType.GeneralTableId;
+                        lateFeeDetail.PaymentTypeValue = lateFeePaymenType.Value;
+                        lateFeeDetail.PaymentTypeCode = lateFeePaymenType.Code;
+                        lateFeeDetail.PaymentTypeName = lateFeePaymenType.Code;
+                        lateFeeDetail.PaymentPeriodStatusCode = Constants.EntityStatus.PaymentPeriod.Pending;
+                        lateFeeDetail.PaymentPeriodStatusId = entityStatusPayment.EntityStatusId;
+                        lateFeeDetail.IsRequired = true;
+                        lateFeeDetail.IsSelected = true;
+                        lateFeeDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
+                        lateFeeDetail.PaymentDescription = lateFeePaymenType.Value;
+                        lateFeeDetail.ConceptId = lateFeeConcept.Data.ConceptId;
+                        lateFeeDetail.ConceptCode = lateFeeConcept.Data.Code;
+                        lateFeeDetail.TenantId = header.TenantId;
+                        lateFeeDetail.IsTenantFavorable = false; // isLateFeeTenantFavorable;
+                        lateFeeDetail.HouseId = header.HouseId;
+
+                        lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+
+                        if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
+                        {
+                            ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
+                            //Inserting at Final
+                            //detailList.Add(lateFeeDetail);
+                            isLateFeeIncluded = true;
+                            //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                        }
+                    }
+
+                }
+
+                //Inserting at Final
+                if (!isLateFeeIncluded && lateFeeDetail.PaymentPeriodId.HasValue)
+                {
+                    ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
+                    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                    //detailList.Add(lateFeeDetail);
+                }
+
+
+                ppHeaderSearchByContractPeriodDTO.PPDetail = detailList;
+
+                //ReCalculando el Balance
+
+                ppHeaderSearchByContractPeriodDTO.Balance = ppHeaderSearchByContractPeriodDTO.TotalIncome - ppHeaderSearchByContractPeriodDTO.TotalInvoice;
+
+            }
+
+            return ResponseBuilder.Correct(ppHeaderSearchByContractPeriodDTO);
+        }
+
         public async Task<ResponseDTO<List<PPHeaderSearchByInvoiceDTO>>> SearchInvoiceByIdAsync(string invoiceNo, int? invoiceId)
         {
             Expression<Func<PPHeaderSearchByInvoiceDTO, bool>> queryFilter = c => true;

@@ -21,14 +21,10 @@ namespace Amigo.Tenant.Application.Services.FileRepository
 
         private readonly IBus _bus;
         private readonly IMapper _mapper;
-        //private readonly IQueryDataAccess<ExpenseDetailRegisterRequest> _expenseDetailDataAccess;
-        //private readonly IEntityStatusApplicationService _entityStatusApplicationService;
         private readonly IQueryDataAccess<FileRepositoryDTO> _repositoryFileRepository;
         private readonly IQueryDataAccess<FileRepositoryEntityDTO> _repositoryFileRepositoryEntity;
 
         public FileRepositoryApplicationService(IBus bus,
-            //IQueryDataAccess<ExpenseDetailSearchDTO> expenseDetailSearchDataAccess,
-            //IEntityStatusApplicationService entityStatusApplicationService,
             IMapper mapper ,
             IQueryDataAccess<FileRepositoryDTO> repositoryFileRepository,
             IQueryDataAccess<FileRepositoryEntityDTO> repositoryFileRepositoryEntity
@@ -40,9 +36,6 @@ namespace Amigo.Tenant.Application.Services.FileRepository
             _mapper = mapper;
             _repositoryFileRepository = repositoryFileRepository;
             _repositoryFileRepositoryEntity = repositoryFileRepositoryEntity;
-            //_generalTableApplicationService = generalTableApplicationService;
-            //_contractDtoDataAccess  = contractDtoDataAccess;
-            //_repositoryPaymentPeriod = repositoryPaymentPeriod;
         }
 
         public async Task<bool> DeleteAsync(int fileRepositoryId)
@@ -59,11 +52,8 @@ namespace Amigo.Tenant.Application.Services.FileRepository
             }
             catch (Exception)
             {
-
                 throw;
             }
-            //Map to Command
-            return false;
         }
 
         public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesAsync(string entityCode, int? parentId)
@@ -73,6 +63,27 @@ namespace Amigo.Tenant.Application.Services.FileRepository
             Expression<Func<FileRepositoryDTO, bool>> queryFilter = c => true;
 
             queryFilter = queryFilter.And(p => p.ParentId.Value == parentId && p.EntityCode == entityCode);
+
+            var expense = await _repositoryFileRepository.ListPagedAsync(queryFilter, 1, 20, orderExpressionList.ToArray());
+
+            var pagedResult = new PagedList<FileRepositoryDTO>()
+            {
+                Items = expense.Items,
+                PageSize = expense.PageSize,
+                Page = expense.Page,
+                Total = expense.Total
+            };
+
+            return ResponseBuilder.Correct(pagedResult);
+        }
+
+        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesByIdListAsync(string entityCode, List<int> parentIds)
+        {
+            List<OrderExpression<FileRepositoryDTO>> orderExpressionList = new List<OrderExpression<FileRepositoryDTO>>();
+            orderExpressionList.Add(new OrderExpression<FileRepositoryDTO>(OrderType.Desc, p => p.CreationDate));
+            Expression<Func<FileRepositoryDTO, bool>> queryFilter = c => true;
+
+            queryFilter = queryFilter.And(p => parentIds.Contains(p.ParentId.Value) && p.EntityCode == entityCode);
 
             var expense = await _repositoryFileRepository.ListPagedAsync(queryFilter, 1, 20, orderExpressionList.ToArray());
 

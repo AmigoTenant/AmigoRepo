@@ -27,5 +27,12 @@ export class PaymentPeriodService extends BaseService {
                 catchError(this.handleError)
             );
     }
-
+    searchForLiquitadion(paymentPeriodRegisterRequest: PaymentPeriodRegisterRequest): Observable<any> {
+        const url = `${this.baseUrl}api/payment/searchForLiquidation`;
+        return this.http.post<any>(url, JSON.stringify(paymentPeriodRegisterRequest),
+                { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }
+            ).pipe(
+                catchError(this.handleError)
+            );
+    }
 }

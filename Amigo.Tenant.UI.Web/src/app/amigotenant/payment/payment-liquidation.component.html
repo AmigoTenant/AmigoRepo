@@ -1,0 +1,226 @@
+<style>
+    .divScroll {
+        overflow-y: scroll;
+        height: 500px;
+        width: 800px;
+    }
+</style>
+
+<div class="form-horizontal">
+    <div class="page-header">
+        Payment Detail
+    </div>
+
+
+    <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+    <form #validationForm="ngForm" data-val-form="validationForm" [formGroup]="paymentForm" >
+        <div class="row" style="padding-top:6px">
+        </div>
+        <div class="row col-sm-12">
+            <div class="row col-sm-8">
+                <div class="col-sm-3">
+                    <label>Period : {{paymentMaintenance.periodCode}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>Period : {{paymentMaintenance.dueDate |date:"MM/dd/yyyy"}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>Tenant : {{paymentMaintenance.tenantFullName}}</label>
+                </div>
+                <div class="col-sm-3">
+                    <label>House : {{paymentMaintenance.houseName}}</label>
+                </div>
+            </div>
+            <div class="col-sm-4 text-right">
+                <input type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
+                <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancel">
+            </div>
+        </div>
+
+
+    <ngb-tabset>
+        <ngb-tab title="Detail Information">
+            <ng-template ngbTabContent>
+                <div class="row">
+
+                    <div class="col-sm-8">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="button-container">
+                                    <button type="button" class="ro-button btn-success" (click)="addDetail()" *ngIf="!showDetailMaintenance">Add Detail</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="showDetailMaintenance">
+
+                            <div class="col-sm-12 pl-5">
+                                <div class="form-group row">
+                                    <label for="paymentTypeId" class="col-sm-2 col-form-label">Payment Type</label>
+                                    <div class="col-sm-4">
+                                        <select formControlName="paymentTypeId"
+                                            class="form-control input-control">
+                                            <option value=""></option>
+                                            <option *ngFor="let paymentType of _listPaymentTypes"
+                                                [ngValue]="paymentType.typeId">
+                                                {{paymentType.name}}
+                                            </option>
+                                        </select>
+                                         <span class="help-block text-danger" *ngIf="displayMessage['paymentTypeId']">
+                                            {{ displayMessage['paymentTypeId'] }}
+                                        </span> 
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="paymentAmount" class="col-sm-2 col-form-label">Amount</label>
+                                    <div class="col-sm-4">
+                                        <input type="number" class="form-control input-control" formControlName= "paymentAmount">
+                                         <span class="help-block text-danger" *ngIf="displayMessage['paymentAmount']">
+                                            {{ displayMessage['paymentAmount'] }}
+                                        </span> 
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="referenceNo" class="col-sm-2 col-form-label">Reference No</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control input-control" formControlName= "referenceNo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label for="comment" class="col-sm-2 col-form-label">Comments</label>
+                                    <div class="col-sm-4">
+                                        <input type="text" class="form-control input-control" formControlName= "comment">
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row" *ngIf="showDetailMaintenance">
+                            <div class="col-sm-12 text-right" style="padding-top:6px">
+                                <div class="button-container col-sm-10">
+                                    <label for="continueRegistration" class="col-sm-6">Continue Registering...</label>
+                                    <input type="checkbox" class="checkbox col-sm-1" formControlName= "continueRegistration">
+                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="saveDetail()">Save Detail</button>
+                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="closeDetail()" >Close Detail</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" style="padding-top:6px">
+                            <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail"
+                                style="height: 300px;" (pageChange)="pageChange1($event)">
+                                <kendo-grid-column [width]="50">
+                                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                                        <div class="text-center">
+                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
+                                                [checked]="dataItem.isSelected || dataItem.paymentPeriodStatusCode==='PPPAYED'"
+                                                (change)="changeItem(dataItem)"
+                                                [disabled]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" />
+                                            <label htmlFor="{{rowIndex}}"></label>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column>
+                                <kendo-grid-column field="paymentDescription" title="Description"></kendo-grid-column>
+                                <kendo-grid-column field="paymentAmount" title="Amount">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column title="Status">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
+                                            <label
+                                                class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
+                                        </div>
+                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'">
+                                            <label
+                                                class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
+                                <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
+                                <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
+                                <ng-template kendoGridCellTemplate let-dataItem>
+                                    <div class="text-right">
+                                        <span>{{ dataItem.invoiceNo }}</span><br />
+                                    </div>
+                                </ng-template>
+                                <kendo-grid-column field="invoiceDate" title="InvoiceDate">
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+                                            <span>{{ dataItem.invoiceDate | date:'MM/dd/yyyy' }}</span><br />
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                                <kendo-grid-column>
+                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                        <div class="text-right">
+
+                                            <div
+                                                *ngIf="!dataItem.isRequired && dataItem.paymentPeriodStatusCode==='PPPENDING'">
+                                                <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                                    <i class="xico-action-edit"></i>
+                                                </button>
+                                                <button type="button" class="btn-icon" (click)="onDelete(dataItem);"
+                                                    *ngIf="dataItem.paymentTypeCode!=='RENT' 
+                                                            && dataItem.paymentTypeCode!=='DEPOSIT' 
+                                                            && dataItem.paymentPeriodStatusCode==='PPPENDING' ">
+                                                    <i class="xico-action-remove"></i>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="dataItem.fileRepositoryId">
+                                                <button type="button" class="btn-icon"
+                                                    (click)="onPrint(dataItem.fileRepositoryId)">
+                                                    <i class="xico-device-printer"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </ng-template>
+                                </kendo-grid-column>
+                            </kendo-grid>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">Total Income:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">Total Invoice:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.totalInvoice|number:'2.2-2' }}</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-10">BALANCE:</div>
+                            <div class="col-sm-2">{{paymentMaintenance.balance|number:'2.2-2' }}</div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row col-sm-1">
+                    &nbsp;
+                </div>
+
+
+
+            </ng-template>
+        </ngb-tab>
+        
+    </ngb-tabset>
+    </form>
+</div>
+
+<kendo-dialog title="Detail" *ngIf="isDetailVisible" (close)="closeDetailPopup()" style="z-index: 7888">
+    <at-payment-maintenance-detail #dialogDetail [inputDataDetail]="paymentPeriodPopup" (cancelEvent)="closeDetailPopup($event)"
+        (saveEvent)="saveDetailPopup($event)">
+    </at-payment-maintenance-detail>
+</kendo-dialog>
+
+
+<kendo-dialog title="Confirmation" *ngIf="openedConfimationPopup" (close)="closeConfirmation()">
+    <div>{{confirmMessage}}</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeConfirmation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesConfirm()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+

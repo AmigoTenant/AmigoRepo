@@ -14,6 +14,7 @@ namespace Amigo.Tenant.Application.Services.Interfaces.FileRepository
         Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesAsync(string entityCode, int? fileRepositoryId);
         Task<ResponseDTO> RegisterAsync(FileRepositoryEntityDTO fileRepositoryEntityDtoRequest);
         Task<FileRepositoryEntityDTO> GetFileRepositoryByIdAsync(int fileRepositoryId);
+        Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesByIdListAsync(string entityCode, List<int> parentIds);
         Task<bool> DeleteAsync(int fileRepositoryId);
     }
 }

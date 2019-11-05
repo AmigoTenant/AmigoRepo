@@ -1,4 +1,5 @@
 ﻿using Amigo.Tenant.Application.DTOs.Requests.Common;
+using Amigo.Tenant.Application.DTOs.Responses.FileRepository;
 using System;
 using System.Collections.Generic;
 
