@@ -481,16 +481,18 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.HouseId = header.HouseId;
 
                         lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+                        detailList.Add(lateFeeDetail);
 
-                        if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
-                        {
-                            ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
-                            //Inserting at Final
-                            //detailList.Add(lateFeeDetail);
-                            isLateFeeIncluded = true;
-                            //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
-                        }
+                        //if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
+                        //{
+                        //    ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
+                        //    //Inserting at Final
+                        //    //detailList.Add(lateFeeDetail);
+                        //    isLateFeeIncluded = true;
+                        //    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                        //}
                     }
+
 
                 }
 
