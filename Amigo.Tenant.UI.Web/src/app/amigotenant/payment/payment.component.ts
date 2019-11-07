@@ -377,4 +377,8 @@ export class PaymentComponent implements OnInit {
             this.TotalIncomePendingAmount = data[0].totalIncomePendingAmount;
         }
     }
+
+    onLiquidate(data: any){
+        this.router.navigate(['/amigotenant/payment/liquidate', data.contractId, data.periodId]);
+    }
 }

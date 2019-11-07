@@ -275,7 +275,7 @@ namespace Amigo.Tenant.Common
                 public const string OnAccount = "ONACCOUNT";
                 public const string Deposit = "DEPOSIT";
             }
-
+            
             public struct ApplyTo
             {
                 public const string Period = "APPTOPERIO";
@@ -295,6 +295,7 @@ namespace Amigo.Tenant.Common
             public const string PaymentType = "PaymentType";
             public const string ApplyTo = "ApplyTo";
             public const string Frecuency = "Frecuencia";
+            public const string ConceptType = "ConceptType";
         }
 
         public struct ConceptCode
@@ -305,6 +306,8 @@ namespace Amigo.Tenant.Common
             public const string Energy = "SVCENERGY";
             public const string Fine = "FINE";
             public const string OnAccount = "ONACCOUNT";
+
+            public const string DepositDevol = "EXDEDEPOSI";
 
         }
         public struct AppSettingCode

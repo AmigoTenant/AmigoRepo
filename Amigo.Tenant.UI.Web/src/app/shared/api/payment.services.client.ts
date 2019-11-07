@@ -1363,6 +1363,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
     invoiceDate: Date | null;
     fileRepositoryId: number | null;
     houseId: number | null;
+    periodCode?: string;
     constructor(data?: IPPDetailSearchByContractPeriodDTO) {
         if (data) {
             for (var property in data) {
@@ -1404,6 +1405,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
             this.invoiceNo = data["InvoiceNo"] !== undefined ? data["InvoiceNo"] : <any>null;
             this.invoiceDate = data["InvoiceDate"] ? new Date(data["InvoiceDate"].toString()) : <any>null;
             this.fileRepositoryId = data["FileRepositoryId"] !== undefined ? data["FileRepositoryId"] : <any>null;
+            this.periodCode = data["PeriodCode"] !== undefined ? data["PeriodCode"] : <any>null;
             
             this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
         }
@@ -1448,6 +1450,7 @@ export class PPDetailSearchByContractPeriodDTO implements IPPDetailSearchByContr
         data["InvoiceDate"] = this.invoiceDate ? this.invoiceDate.toISOString() : <any>null;
         data["FileRepositoryId"] = this.fileRepositoryId !== undefined ? this.fileRepositoryId : <any>null;
         data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
+        data["PeriodCode"] = this.periodCode !== undefined ? this.periodCode : <any>null;
         return data;
     }
 
@@ -1489,6 +1492,7 @@ export interface IPPDetailSearchByContractPeriodDTO {
     paymentTypeCode: string | null; 
     invoiceNo: string | null;
     invoiceDate: Date | null;
+    periodCode?: string;
 }
 
 export class ResponseDTOOfListOfPPHeaderSearchByInvoiceDTO implements IResponseDTOOfListOfPPHeaderSearchByInvoiceDTO {

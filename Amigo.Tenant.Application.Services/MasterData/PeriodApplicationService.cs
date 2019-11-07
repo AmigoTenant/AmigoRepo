@@ -152,5 +152,14 @@ namespace Amigo.Tenant.Application.Services.MasterData
 
             return ResponseBuilder.Correct(period);
         }
+
+        public async Task<PeriodDTO> GetInProcessPeriodAsync()
+        {
+            Expression<Func<PeriodDTO, bool>> queryFilter = c => true;
+            queryFilter = queryFilter.And(p => p.Code == string.Format("{0:yyyyMM}", DateTime.Now));
+            var period = await _periodDataAccess.FirstOrDefaultAsync(queryFilter);
+
+            return period;
+        }
     }
 }

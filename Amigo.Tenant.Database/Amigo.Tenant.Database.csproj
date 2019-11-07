@@ -53,6 +53,9 @@
     <Content Include="AmigoTenantTrackingDb\up\R.01.60.00-FD.0001.Module.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="AmigoTenantTrackingDb\up\R.02.10.00-VW.0001.Liquidation.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="AmigoTenantTrackingDb\up\R.01.90.00-VW.0001.ChangeContractTerm.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

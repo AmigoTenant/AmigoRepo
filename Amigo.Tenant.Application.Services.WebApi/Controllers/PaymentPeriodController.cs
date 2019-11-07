@@ -62,7 +62,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         }
 
         [HttpGet, Route("searchForLiquidation")]
-        public async Task<PPHeaderSearchByContractPeriodDTO > SearchForLiquidation([FromUri]PaymentPeriodSearchByContractPeriodRequest search)
+        public async Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchForLiquidation([FromUri]PaymentPeriodSearchByContractPeriodRequest search)
         {
             var resp = await _paymentPeriodApplicationService.SearchForLiquidation(search);
             return resp;

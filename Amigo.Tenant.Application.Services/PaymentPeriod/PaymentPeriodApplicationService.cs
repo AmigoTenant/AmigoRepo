@@ -379,26 +379,40 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
         public async Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchForLiquidation(PaymentPeriodSearchByContractPeriodRequest search)
         {
-           
+            StringBuilder errorMessage = new StringBuilder();
+            //VALIDATE CURRENT PERIOD EXISTS
+            var currentPeriod = await _periodApplicationService.GetCurrentPeriodAsync();
+            if (!currentPeriod.Data.PeriodId.HasValue)
+            {
+                errorMessage.AppendLine("No existe registrado el periodo actual en el maestro de periodos, no se podra crear la DEVOLUCION DEPOSITOS en el periodo Actual!");
+            }
+
+            decimal? totalIncomeAmount = 0;
+            var inProcessPeriod = await _periodApplicationService.GetInProcessPeriodAsync();
+
+            List<OrderExpression<PPSearchByContractPeriodDTO>> orderExpressionList = new List<OrderExpression<PPSearchByContractPeriodDTO>>();
+            orderExpressionList.Add(new OrderExpression<PPSearchByContractPeriodDTO>(OrderType.Asc, p => p.PeriodCode));
+
             Expression<Func<PPSearchByContractPeriodDTO, bool>> queryFilter = c => true;
             queryFilter = queryFilter.And(p => p.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending);
 
-            //if (search.PeriodId.HasValue)
-            //    queryFilter = queryFilter.And(p => p.PeriodId == search.PeriodId);
+            //FILTTRANDO PERIODOS PENDIENTES MENORES O IGUALES AL PERIODO ACTAL 
+            //queryFilter = queryFilter.And(p => p.PeriodSequence <= currentPeriod.Data.Sequence);
 
             if (search.ContractId.HasValue)
                 queryFilter = queryFilter.And(p => p.ContractId == search.ContractId);
 
-            var paymentsPeriod = await _paymentPeriodSearchByContractDataAccess.ListAsync(queryFilter);
+            var paymentsPeriod = await _paymentPeriodSearchByContractDataAccess.ListAsync(queryFilter, orderExpressionList.ToArray());
             var lateFeePaymenType = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.LateFee);
-            //var appSettingTenantFavorable = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.CptToFavTn);
-            //var isLateFeeTenantFavorable = appSettingTenantFavorable != null && appSettingTenantFavorable.AppSettingValue.Contains(Constants.ConceptCode.LateFee);
+            var expensePaymenType = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.ConceptType, Constants.GeneralTableCode.ConceptType.Expense);
 
             var appSettingLateFeeXDay = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.LateFeeXDay);
             var lateFeeXDayValue = appSettingLateFeeXDay != null && appSettingLateFeeXDay.AppSettingValue != string.Empty ? decimal.Parse(appSettingLateFeeXDay.AppSettingValue) : 0;
 
             var entityStatusPayment = await _entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Pending);
             var lateFeeConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.LateFee);
+            var depositDevolConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.DepositDevol);
+            var depositConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.Deposit);
 
             var ppHeaderSearchByContractPeriodDTO = new PPHeaderSearchByContractPeriodDTO();
             int id = 0;
@@ -420,28 +434,66 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.HouseId = header.HouseId;
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
-                var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
-                
-                var isLateFeeIncluded = false;
-                var existDepositDevolution = paymentsPeriod.Any(q => q.PaymentTypeCode == Constants.GeneralTableCode.PaymentType.LateFee);
+
+                //INGRESO DEVOLUCION DE DEPOSITO
+                var existDepositDevolution = paymentsPeriod.Any(q => q.ConceptCode == Constants.ConceptCode.DepositDevol);
+                if (!existDepositDevolution)
+                {
+                    //GET DEPOSIT
+                    var deposit = await _paymentPeriodRepository.ListAsync(q => q.ContractId == header.ContractId && q.ConceptId == depositConcept.Data.ConceptId);
+                    var sumDeposit = deposit.Sum(q => q.PaymentAmount);
+                    //ADD DEVOLUCION DEPOSITO
+                    var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
+                    lateFeeDetail.PaymentPeriodId = id--;
+                    lateFeeDetail.PeriodCode = currentPeriod.Data.Code;
+                    lateFeeDetail.ContractId = header.ContractId;
+                    lateFeeDetail.PeriodId = currentPeriod.Data.PeriodId;
+                    lateFeeDetail.PaymentAmount = sumDeposit*-1;
+                    lateFeeDetail.Comment = string.Format("Devolucion de depositos");
+
+                    lateFeeDetail.PaymentTypeId = expensePaymenType.GeneralTableId;
+                    lateFeeDetail.PaymentTypeValue = expensePaymenType.Value;
+                    lateFeeDetail.PaymentTypeCode = expensePaymenType.Code;
+                    lateFeeDetail.PaymentTypeName = expensePaymenType.Code;
+                    lateFeeDetail.PaymentPeriodStatusCode = Constants.EntityStatus.PaymentPeriod.Pending;
+                    lateFeeDetail.PaymentPeriodStatusId = entityStatusPayment.EntityStatusId;
+                    lateFeeDetail.IsRequired = true;
+                    lateFeeDetail.IsSelected = true;
+                    lateFeeDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
+                    lateFeeDetail.PaymentDescription = depositDevolConcept.Data.Description;
+                    lateFeeDetail.ConceptId = depositDevolConcept.Data.ConceptId;
+                    lateFeeDetail.ConceptCode = depositDevolConcept.Data.Code;
+                    lateFeeDetail.TenantId = header.TenantId;
+                    lateFeeDetail.IsTenantFavorable = true; // isLateFeeTenantFavorable;
+                    lateFeeDetail.HouseId = header.HouseId;
+
+                    lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+                    totalIncomeAmount += lateFeeDetail.PaymentAmount;
+                    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                    detailList.Add(lateFeeDetail);
+                }
 
                 foreach (var item in paymentsPeriod)
                 {
 
                     var existLateFeeInDB = paymentsPeriod.Any(q => q.ConceptCode == Constants.ConceptCode.LateFee && q.PeriodId == item.PeriodId);
-                    var delayDays = DateTime.Today.Subtract(header.PeriodDueDate.Value).TotalDays;
+                    var delayDays = DateTime.Today.Subtract(item.PeriodDueDate.Value).TotalDays;
+                    bool isExoneratedPeriod = item.PeriodSequence>=currentPeriod.Data.Sequence;
+                    
 
                     var detail = new PPDetailSearchByContractPeriodDTO();
+                    detail.PeriodCode = item.PeriodCode;
                     detail.ContractId = item.ContractId;
                     detail.PaymentPeriodId = item.PaymentPeriodId;
                     detail.PaymentTypeValue = item.PaymentTypeValue;
-                    detail.PaymentAmount = item.PaymentAmount;
+                    detail.PaymentAmount = isExoneratedPeriod?0:item.PaymentAmount;
+                    detail.Comment = isExoneratedPeriod ? "Exonerado por ser un periodo futuro" : item.Comment;
                     detail.PaymentDescription = item.PaymentDescription;
                     detail.PaymentPeriodStatusCode = item.PaymentPeriodStatusCode;
                     detail.PaymentPeriodStatusName = item.PaymentPeriodStatusName;
-                    detail.IsRequired = item.IsRequired;
+                    detail.IsRequired = inProcessPeriod.Sequence == item.PeriodSequence?false:true;
                     detail.PaymentTypeCode = item.PaymentTypeCode;
-                    detail.IsSelected = item.IsRequired.Value && item.PaymentPeriodStatusCode == Constants.EntityStatus.PaymentPeriod.Pending ? true : false;
+                    detail.IsSelected = true;
                     detail.InvoiceDetailId = item.InvoiceDetailId;
                     detail.InvoiceId = item.InvoiceId;
                     detail.InvoiceNo = item.InvoiceNo;
@@ -449,21 +501,25 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.ConceptId = item.ConceptId;
                     detail.ConceptCode = item.ConceptCode;
                     detail.IsTenantFavorable = item.IsTenantFavorable;
-                    detail.Comment = item.Comment;
                     detail.Reference = item.ReferenceNo;
                     detail.FileRepositoryId = item.FileRepositoryId;
                     detail.HouseId = item.HouseId;
-
                     detailList.Add(detail);
 
+                    totalIncomeAmount += detail.PaymentAmount;
+
+                    //INGRESO DE LATEFEE
                     if (!existLateFeeInDB
                         && delayDays > 0
                         && detail.ConceptCode == Constants.ConceptCode.Rent)
                     {
+                        var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
                         lateFeeDetail.PaymentPeriodId = id--;
-                        lateFeeDetail.ContractId = item.ContractId;
+                        lateFeeDetail.PeriodCode = item.PeriodCode;
+                        lateFeeDetail.ContractId = header.ContractId;
                         lateFeeDetail.PeriodId = item.PeriodId;
                         lateFeeDetail.PaymentAmount = lateFeeXDayValue * (decimal?)delayDays;
+                        lateFeeDetail.Comment = string.Format("Por:{0} dias x ${1}/dia", delayDays, lateFeeXDayValue);
                         lateFeeDetail.PaymentTypeId = lateFeePaymenType.GeneralTableId;
                         lateFeeDetail.PaymentTypeValue = lateFeePaymenType.Value;
                         lateFeeDetail.PaymentTypeCode = lateFeePaymenType.Code;
@@ -481,39 +537,51 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.HouseId = header.HouseId;
 
                         lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+                        //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                         detailList.Add(lateFeeDetail);
-
-                        //if (item.PaymentTypeSequence + 1 == lateFeePaymenType.Sequence)
-                        //{
-                        //    ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
-                        //    //Inserting at Final
-                        //    //detailList.Add(lateFeeDetail);
-                        //    isLateFeeIncluded = true;
-                        //    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
-                        //}
+                        totalIncomeAmount += lateFeeDetail.PaymentAmount;
                     }
-
-
                 }
-
-                //Inserting at Final
-                if (!isLateFeeIncluded && lateFeeDetail.PaymentPeriodId.HasValue)
-                {
-                    ppHeaderSearchByContractPeriodDTO.LateFeeMissing = lateFeeDetail;
-                    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
-                    //detailList.Add(lateFeeDetail);
-                }
-
 
                 ppHeaderSearchByContractPeriodDTO.PPDetail = detailList;
 
                 //ReCalculando el Balance
-
+                ppHeaderSearchByContractPeriodDTO.TotalIncome = totalIncomeAmount;
                 ppHeaderSearchByContractPeriodDTO.Balance = ppHeaderSearchByContractPeriodDTO.TotalIncome - ppHeaderSearchByContractPeriodDTO.TotalInvoice;
 
             }
 
             return ResponseBuilder.Correct(ppHeaderSearchByContractPeriodDTO);
+
+            //StringBuilder errorMessage = new StringBuilder();
+            //if (paymentType == null)
+            //{
+            //    //isValid = false;
+            //    errorMessage.AppendLine("No existen Tipos de Pago definidos en la Data Maestra");
+            //}
+
+            //var response = new ResponseDTO()
+            //{
+            //    IsValid = string.IsNullOrEmpty(errorMessage.ToString()),
+            //    Messages = new List<ApplicationMessage>()
+            //};
+
+            //if (response.IsValid)
+            //{
+            //    var command = _mapper.Map<PaymentPeriodRegisterRequest, PaymentPeriodRegisterCommand>(paymentPeriod);
+            //    var resp = await _bus.SendAsync(command);
+            //    return ResponseBuilder.Correct(resp);
+            //}
+            //else
+            //{
+            //    response.Messages.Add(new ApplicationMessage()
+            //    {
+            //        Key = string.IsNullOrEmpty(errorMessage.ToString()) ? "Ok" : "Error",
+            //        Message = errorMessage.ToString()
+            //    });
+
+            //    return response;
+            //}
         }
 
         public async Task<ResponseDTO<List<PPHeaderSearchByInvoiceDTO>>> SearchInvoiceByIdAsync(string invoiceNo, int? invoiceId)

@@ -63,6 +63,7 @@ import { PaymentDataService } from './payment/payment-data.service';
 import { ContractDataService } from './contract/contract-data.service';
 import { ContractChangeTermComponent } from './contract/contract-change-term.component';
 import { TooltipModule } from '@progress/kendo-angular-tooltip';
+import { PaymentLiquidationComponent } from './payment/payment-liquidation.component';
 
 @NgModule({
   imports: [
@@ -104,7 +105,8 @@ import { TooltipModule } from '@progress/kendo-angular-tooltip';
     ExpenseMaintenanceSearchGridComponent,
     ExpenseMaintenanceDetailComponent,
     UploadFileComponent,
-    ContractChangeTermComponent
+    ContractChangeTermComponent,
+    PaymentLiquidationComponent
   ],
   providers: [
       TenantClient,

@@ -1,9 +1,6 @@
 import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy } from '@angular/core';
-import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
-import { BotonsComponent } from '../../controls/common/boton.component';
-import { ValidationService } from '../../shared/validations/validation.service';
 import { Observable, Subscription } from 'rxjs'
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -14,20 +11,18 @@ import { GenericValidator } from '../../shared/generic.validator';
 import { TranslateService } from "@ngx-translate/core";
 import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-request";
 import { PaymentPeriodService } from "./payment-period.service";
-import { PPDetailSearchByContractPeriodDTOTableStatus } from "../../shared/api/rentalapplication.services.client";
 import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 import { PaymentPeriodPopup } from './dto/payment-period-popup';
 
 declare var $: any;
 
 
 @Component({
-    selector: 'at-payment-maintenance',
-    templateUrl: './payment-maintenance.component.html'
+    selector: 'at-payment-liquitadion',
+    templateUrl: './payment-liquidation.component.html'
 })
 
-export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
+export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     public paymentPeriodPopup: PaymentPeriodPopup;
     public gridDataDet: GridDataResult;
     public skipDet: number = 0;
@@ -164,7 +159,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
             if (periodId != null && typeof (periodId) != 'undefined' &&
                 contractId != null && typeof (contractId) != 'undefined' ) {
-                this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
+                this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
                 .subscribe(res => {
                     
                     let dataResult: any = res;

@@ -118,12 +118,19 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
+                                <kendo-grid-column field="periodCode" title="Period"></kendo-grid-column>
                                 <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column>
                                 <kendo-grid-column field="paymentDescription" title="Description"></kendo-grid-column>
                                 <kendo-grid-column field="paymentAmount" title="Amount">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
-                                            <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                                            <div *ngIf="dataItem.paymentAmount<0; else notShow">
+                                                <span style="color:red">{{dataItem.paymentAmount|number:'2.2-2' }}</span>
+                                            </div>
+                                            <ng-template #notShow>
+                                                <span >{{dataItem.paymentAmount|number:'2.2-2' }}</span>
+                                            </ng-template>
+                                            <br />
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
@@ -139,8 +146,7 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>
-                                <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
-                                <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
+                                <kendo-grid-column field="comment" title="Comment" [width]="350"></kendo-grid-column>
                                 <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <div class="text-right">

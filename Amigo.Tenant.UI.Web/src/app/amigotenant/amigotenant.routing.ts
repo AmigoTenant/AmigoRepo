@@ -14,6 +14,7 @@ import { UtilityBillComponent } from './utilitybill/utilitybill.component';
 import { UtilityBillMaintenanceComponent } from './utilitybill/utilitybill-maintenance.component';
 import { ExpenseComponent } from './expense/expense.component';
 import { ExpenseMaintenanceComponent } from './expense/expense-maintenance.component';
+import { PaymentLiquidationComponent } from './payment/payment-liquidation.component';
 
 
 export const routes: Routes = [
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: 'house/edit/:id', component: HouseMaintenanceComponent, data: { pageTitle: 'House-Edit' }, canActivate: [LoginRouteGuard] },  
   { path: 'payment', component: PaymentComponent, data: { pageTitle: 'Payment' }, canActivate: [LoginRouteGuard] },    
   { path: 'payment/edit/:contractId/:periodId', component: PaymentMaintenanceComponent, data: { pageTitle: 'Massive Payment Detail' }, canActivate: [LoginRouteGuard] },
+  { path: 'payment/liquidate/:contractId/:periodId', component: PaymentLiquidationComponent, data: { pageTitle: 'Liquidation Detail' }, canActivate: [LoginRouteGuard] },
   { path: 'utilitybill', component: UtilityBillComponent, data: { pageTitle: 'Utility Bills'}, canActivate : [LoginRouteGuard]},
   { path: 'utilitybill/edit/:houseId', component: UtilityBillMaintenanceComponent, data: { pageTitle: 'Register Utility Bills' }, canActivate: [LoginRouteGuard]},
   { path: 'expense', component: ExpenseComponent, data: { pageTitle: 'Expense' }, canActivate: [LoginRouteGuard] },

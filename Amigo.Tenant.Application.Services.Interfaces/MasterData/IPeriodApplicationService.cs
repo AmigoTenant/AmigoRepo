@@ -17,5 +17,6 @@ namespace Amigo.Tenant.Application.Services.Interfaces.MasterData
         Task<ResponseDTO<List<PeriodDTO>>> GetPeriodLastPeriodsAsync(int periodNumber);
         Task<ResponseDTO<List<PeriodDTO>>> GetPeriodsByYearAsync(int? year);
         Task<ResponseDTO<List<YearDTO>>> GetYearsFromPeriodsAsync();
+        Task<PeriodDTO> GetInProcessPeriodAsync();
     }
 }
