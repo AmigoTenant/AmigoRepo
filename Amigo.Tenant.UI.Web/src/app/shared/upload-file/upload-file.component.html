@@ -1,32 +1,49 @@
-<div class="row border border-default" style="height: 97%" *ngIf="parentId !== null">
-  <ngx-loading [show]="isSaving"></ngx-loading>
-  <div class="col-sm-12 text-right">
-    <div class="row">&nbsp;</div>
-    <div class="row">
-      <h5 style="padding-left: 15px">Gestion de Adjuntos</h5>
+<div class="row border border-default" *ngIf="parentId !== null">
+
+  <form #imageForm=ngForm class="col-sm-12" (ngSubmit)="onSubmit(Additional, Image)">
+    <div class="col-sm-12 text-right">
+      <div class="row">&nbsp;</div>
+
+      <div class="row" *ngIf="canAddFiles && seeButton">
+        <button type="buton" class="btn btn-success m-3" (click)="onShowAddFileSection()">
+          <i class="fa fa-arrow-circle-o-down"></i>
+          Show Add File Section</button>
+      </div>
+
+      <ngx-loading [show]="isSaving"></ngx-loading>
+      <div *ngIf="canAddFiles && showAddFileSection">
+        <div class="row">
+          <div class="form-group col-sm-12">
+            <button type="button" class="btn btn-success" (click)="onShowAddFileSection()">
+              <i class="fa fa-arrow-circle-o-up"></i>
+            </button>
+            <h5>Gestion de Adjuntos</h5>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="form-group col-sm-12">
+            <input type="file" #Image (change)="handleFileInput($event.target.files)" class="col-sm-12"
+              style="padding: 0px">
+          </div>
+        </div>
+        <div class="row">
+          <div class="form-group col-sm-12">
+
+            <input type="text" #Additional ngModel name="AdditionalInformation" class="col-sm-8"
+              Id="AditionalInformation" required placeholder="Ingresa Informacion Adicional...">&nbsp;
+
+            <button type="submit" class="btn btn-success btn-sm col-sm-3"
+              [disabled]="Image.value=='' || !imageForm.valid">
+              <i class="fa fa-upload"></i>
+              Add File</button>
+
+          </div>
+        </div>
+
+      </div>
     </div>
-    <div class="row">
-      <form #imageForm=ngForm class="col-sm-12" (ngSubmit)="onSubmit(Additional, Image)">
-
-        <div class="form-group col-sm-12">
-          <input type="file" #Image (change)="handleFileInput($event.target.files)" class="col-sm-12 btn btn-default btn-sm">
-        </div>
-
-        <div class="form-group col-sm-12">
-          <label for="from" class="col-sm-4 control-label float-left">Additional Info.</label>
-          <label class="col-sm-8">
-            <input type="text" #Additional ngModel name="AdditionalInformation" class="float-left" Id="AditionalInformation" required>
-          </label>
-        </div>
-
-        <div class="form-group col-sm-12">
-          <button type="submit" class="btn btn-success btn-sm" [disabled]="Image.value=='' || !imageForm.valid">Add File</button>
-        </div>
-
-      </form>
-    </div>
-    <!--<img [src]="imageUrl" style="width: 250px;height: 250px;">-->
-  </div>
+  </form>
 
   <div class="grid-container">
     <kendo-grid id="kgrid-FileRepository" [data]="fileRepositoryData" [selectable]="false">
@@ -42,9 +59,7 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           <div>
             <span>
-                <a [target]="'_blank'" 
-                id="{{ dataItem.fileRepositoryId }}"
-                style="color: blue"
+              <a [target]="'_blank'" id="{{ dataItem.fileRepositoryId }}" style="color: blue"
                 class="btn btn-link font-weight-bold c-font-size-link clickable p-0"
                 (click)="onDownload(dataItem.fileRepositoryId)">{{ dataItem.name }}</a>
             </span>
@@ -56,7 +71,7 @@
         <ng-template kendoGridCellTemplate let-dataItem>
           <div class="text-right">
             <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
-                <i class="xico-action-remove"></i>
+              <i class="xico-action-remove"></i>
             </button>
           </div>
         </ng-template>

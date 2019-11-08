@@ -5,17 +5,20 @@ import { UploadFileService } from './upload-file-service';
 @Component({
   selector: 'at-upload-file',
   templateUrl: './upload-file.component.html',
-  //styleUrls: ['./upload-file.component.css'],
   providers: [UploadFileService]
 })
+
 export class UploadFileComponent implements OnInit {
 
   imageUrl: string = "/assets/img/image-default.jpeg";
-  fileToUpload : File= null;
+  fileToUpload: File = null;
   @Input() entityCode: string;
   @Input() parentId: string;
   fileRepositoryData: any[];
   public isSaving = false;
+  @Input() canAddFiles = true;
+  showAddFileSection = false;
+  seeButton = true;
 
   constructor(private imageService: UploadFileService) { }
 
@@ -23,49 +26,48 @@ export class UploadFileComponent implements OnInit {
     this.getFileRepositories();
   }
 
-  getFileRepositories()
-  {
+  getFileRepositories() {
     this.imageService.getFileRepositories(this.entityCode, this.parentId).subscribe(
       res => {
-          let datagrid = new ResponseListDTO(res);
-          this.fileRepositoryData = datagrid.items;
+        let datagrid = new ResponseListDTO(res);
+        this.fileRepositoryData = datagrid.items;
       }
     );
   }
 
-  handleFileInput(file: FileList){
+  handleFileInput(file: FileList) {
     this.fileToUpload = file.item(0);
 
     let reader = new FileReader();
-    reader.onload = (event: any) =>{
+    reader.onload = (event: any) => {
       this.imageUrl = event.target.result;
     }
     reader.readAsDataURL(this.fileToUpload);
 
   }
 
-  onSubmit(Additional, Image){
+  onSubmit(Additional, Image) {
 
     this.isSaving = true;
     this.imageService.postFile(this.entityCode, this.parentId, Additional.value, this.fileToUpload).subscribe(
-      data=> {
+      data => {
         console.log('done');
         Additional.value = null;
         Image.value = null;
-        this.imageUrl =  "/assets/img/image-default.jpeg";
+        this.imageUrl = "/assets/img/image-default.jpeg";
       }
     )
-    .add(
-      r=> {
-        this.getFileRepositories();
-        this.isSaving = false;
-      }
-    )
-    
-    ;
+      .add(
+        r => {
+          this.getFileRepositories();
+          this.isSaving = false;
+        }
+      )
+
+      ;
   }
 
-  onDownload(id: any){
+  onDownload(id: any) {
     this.imageService.downloadFile(id)
       .subscribe(response => {
         const contentDisp = response.headers.get('Content-Disposition');
@@ -108,18 +110,22 @@ export class UploadFileComponent implements OnInit {
     return filename;
   }
 
-  public onDelete(data: any)
-  {
+  public onDelete(data: any) {
     this.isSaving = true;
     this.imageService.deleteFile(data.fileRepositoryId)
-    .subscribe()
-    .add(
-      r=>{
-        this.getFileRepositories();
-        this.isSaving = false;
-      }
-    );
+      .subscribe()
+      .add(
+        r => {
+          this.getFileRepositories();
+          this.isSaving = false;
+        }
+      );
+  }
 
+
+  public onShowAddFileSection() {
+    this.showAddFileSection = !this.showAddFileSection;
+    this.seeButton = !this.seeButton;
   }
 
 }
