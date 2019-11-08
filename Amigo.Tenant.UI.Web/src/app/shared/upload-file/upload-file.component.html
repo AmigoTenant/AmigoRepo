@@ -2,8 +2,6 @@
 
   <form #imageForm=ngForm class="col-sm-12" (ngSubmit)="onSubmit(Additional, Image)">
     <div class="col-sm-12 text-right">
-      <div class="row">&nbsp;</div>
-
       <div class="row" *ngIf="canAddFiles && seeButton">
         <button type="buton" class="btn btn-success m-3" (click)="onShowAddFileSection()">
           <i class="fa fa-arrow-circle-o-down"></i>
