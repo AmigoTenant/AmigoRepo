@@ -1113,6 +1113,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     houseId: number | null;
 
     lateFeeMissing: PPDetailSearchByContractPeriodDTO;
+    email?: string;
 
     constructor(data?: IPPHeaderSearchByContractPeriodDTO) {
         if (data) {
@@ -1171,6 +1172,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
 
             this.lateFeeMissing = data["LateFeeMissing"] !== undefined && data["LateFeeMissing"] !== null? PPDetailSearchByContractPeriodDTO.fromJS(data["LateFeeMissing"]) : <any>null;
             this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
+            this.email =  data["Email"] !== undefined ? data["Email"] : <any>null;
         }
     }
 
@@ -1224,6 +1226,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["Balance"] = this.balance !== undefined ? this.balance : <any>null;
         data["LateFeeMissing"] = this.lateFeeMissing !== undefined ? this.lateFeeMissing : <any>null;
         data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
+        data["Email"] = this.email !== undefined ? this.email : <any>null;
         return data;
     }
 

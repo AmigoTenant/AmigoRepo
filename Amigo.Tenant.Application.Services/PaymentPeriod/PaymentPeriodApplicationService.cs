@@ -387,7 +387,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 errorMessage.AppendLine("No existe registrado el periodo actual en el maestro de periodos, no se podra crear la DEVOLUCION DEPOSITOS en el periodo Actual!");
             }
 
-            decimal? totalIncomeAmount = 0;
+            decimal? balanceAmount = 0;
             var inProcessPeriod = await _periodApplicationService.GetInProcessPeriodAsync();
 
             List<OrderExpression<PPSearchByContractPeriodDTO>> orderExpressionList = new List<OrderExpression<PPSearchByContractPeriodDTO>>();
@@ -413,6 +413,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             var lateFeeConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.LateFee);
             var depositDevolConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.DepositDevol);
             var depositConcept = await _conceptApplicationService.GetConceptByCodeAsync(Constants.ConceptCode.Deposit);
+            decimal? sumDeposit = 0;
 
             var ppHeaderSearchByContractPeriodDTO = new PPHeaderSearchByContractPeriodDTO();
             int id = 0;
@@ -441,7 +442,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 {
                     //GET DEPOSIT
                     var deposit = await _paymentPeriodRepository.ListAsync(q => q.ContractId == header.ContractId && q.ConceptId == depositConcept.Data.ConceptId);
-                    var sumDeposit = deposit.Sum(q => q.PaymentAmount);
+                    sumDeposit = deposit.Sum(q => q.PaymentAmount);
                     //ADD DEVOLUCION DEPOSITO
                     var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
                     lateFeeDetail.PaymentPeriodId = id--;
@@ -468,8 +469,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     lateFeeDetail.HouseId = header.HouseId;
 
                     lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
-                    totalIncomeAmount += lateFeeDetail.PaymentAmount;
-                    //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
+                    balanceAmount += lateFeeDetail.PaymentAmount;
                     detailList.Add(lateFeeDetail);
                 }
 
@@ -506,7 +506,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     detail.HouseId = item.HouseId;
                     detailList.Add(detail);
 
-                    totalIncomeAmount += detail.PaymentAmount;
+                    balanceAmount += detail.PaymentAmount;
 
                     //INGRESO DE LATEFEE
                     if (!existLateFeeInDB
@@ -535,20 +535,19 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.TenantId = header.TenantId;
                         lateFeeDetail.IsTenantFavorable = false; // isLateFeeTenantFavorable;
                         lateFeeDetail.HouseId = header.HouseId;
-
                         lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
-                        //ppHeaderSearchByContractPeriodDTO.TotalIncome += lateFeeDetail.PaymentAmount;
                         detailList.Add(lateFeeDetail);
-                        totalIncomeAmount += lateFeeDetail.PaymentAmount;
+
+                        balanceAmount += lateFeeDetail.PaymentAmount;
                     }
                 }
 
                 ppHeaderSearchByContractPeriodDTO.PPDetail = detailList;
 
                 //ReCalculando el Balance
-                ppHeaderSearchByContractPeriodDTO.TotalIncome = totalIncomeAmount;
-                ppHeaderSearchByContractPeriodDTO.Balance = ppHeaderSearchByContractPeriodDTO.TotalIncome - ppHeaderSearchByContractPeriodDTO.TotalInvoice;
-
+                ppHeaderSearchByContractPeriodDTO.Balance = balanceAmount;
+                //Total de Pendientes
+                ppHeaderSearchByContractPeriodDTO.TotalIncome = balanceAmount + Math.Abs(sumDeposit.Value);
             }
 
             return ResponseBuilder.Correct(ppHeaderSearchByContractPeriodDTO);

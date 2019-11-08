@@ -82,7 +82,8 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             paymentTypeId: {
                 required: required
             },
-            paymentAmount: { required: required}
+            paymentAmount: { required: required},
+            email: { required: required}
         };
     }
 
@@ -172,7 +173,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
                 })
                 .add(r=> {
                     this.calculatePendingToPay();
-                    this.verifyLateFeeMissing();
+                    //this.verifyLateFeeMissing();
                 });
                 this.flgEdition = "E";
             } else {
@@ -189,7 +190,8 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             paymentAmount: [null, [Validators.required]],
             referenceNo: [null],
             comment: [null],
-            continueRegistration: [true]
+            continueRegistration: [true],
+            email: [null, [Validators.required]]
         });
     }
 
@@ -217,7 +219,6 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
             .subscribe(res => {
                 let dataResult: any = res;
-                
                 this.paymentMaintenance = dataResult.data;
                 this.countItemsDet = dataResult.data.pPDetail.length;
                 this.gridDataDet = {
@@ -229,17 +230,17 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     }
 
 
-    public verifyLateFeeMissing()
-    {
-        if (this.paymentMaintenance.lateFeeMissing!==null)
-        {
-            this.openedLateFeeConfimationPopup = true;
-            this.confirmLateFeeMessage = "Se ha identificado pago de renta tardía por " + this.paymentMaintenance.lateFeeMissing.paymentAmount + ", deseas agregarlo al periodo?";
-        }
-        else {
-            this.openedLateFeeConfimationPopup = false;
-        }
-    }
+    // public verifyLateFeeMissing()
+    // {
+    //     if (this.paymentMaintenance.lateFeeMissing!==null)
+    //     {
+    //         this.openedLateFeeConfimationPopup = true;
+    //         this.confirmLateFeeMessage = "Se ha identificado pago de renta tardía por " + this.paymentMaintenance.lateFeeMissing.paymentAmount + ", deseas agregarlo al periodo?";
+    //     }
+    //     else {
+    //         this.openedLateFeeConfimationPopup = false;
+    //     }
+    // }
 
     public dataToPrint: any;
 
@@ -349,29 +350,29 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         let isExport: boolean = false;
     }
 
-    public changeItemHeader() {
-        let c = this.gridDataDet.data.length;
-        let index = 0; 
-        for (let item in this.gridDataDet.data) {
+    // public changeItemHeader() {
+    //     let c = this.gridDataDet.data.length;
+    //     let index = 0; 
+    //     for (let item in this.gridDataDet.data) {
 
-            if ($("#" + index)[0].disabled == false) {
-                $("#" + index)[0].checked = this.isColumnHeaderSelected;
-                this.gridDataDet.data[item].isSelected = this.isColumnHeaderSelected;
-            }
-            index++;
-        }
-        this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
-    }
+    //         if ($("#" + index)[0].disabled == false) {
+    //             $("#" + index)[0].checked = this.isColumnHeaderSelected;
+    //             this.gridDataDet.data[item].isSelected = this.isColumnHeaderSelected;
+    //         }
+    //         index++;
+    //     }
+    //     this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
+    // }
 
-    public changeItem(d) {
-        d.isSelected = !d.isSelected;
-        this.calculatePendingToPay();
-    }
+    // public changeItem(d) {
+    //     d.isSelected = !d.isSelected;
+    //     this.calculatePendingToPay();
+    // }
 
-    public deselectColumnAll() {
-        this.isColumnHeaderSelected = true;
-        $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
-    }
+    // public deselectColumnAll() {
+    //     this.isColumnHeaderSelected = true;
+    //     $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
+    // }
 
     public calculatePendingToPay() {
         let pendingRows = this.gridDataDet.data.filter(q => q.paymentPeriodStatusCode === 'PPPENDING').length;
@@ -485,7 +486,6 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             arrMessages.push(appMessage);
             this.errorMessages = arrMessages;
         }
-        
     }
 
 
@@ -530,34 +530,34 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     //ADDING LATEFEE
     //===========
 
-    public confirmLateFeeMessage: string;
-    public openedLateFeeConfimationPopup = false;
+    // public confirmLateFeeMessage: string;
+    // public openedLateFeeConfimationPopup = false;
 
-    public yesConfirmLateFee() {
+    // public yesConfirmLateFee() {
         
-        let payment = this.paymentMaintenance.lateFeeMissing;
-        let paymentDetail = new PaymentPeriodRegisterRequest();
-        paymentDetail.contractId = this.paymentMaintenance.contractId;
-        paymentDetail.periodId = this.paymentMaintenance.periodId;
-        paymentDetail.paymentAmount = payment.paymentAmount;
-        paymentDetail.paymentTypeId = parseInt(payment.paymentTypeId);
-        paymentDetail.referenceNo = payment.reference;
-        paymentDetail.comment = payment.comment;
-        paymentDetail.tenantId = this.paymentMaintenance.tenantId;
-        paymentDetail.houseId = payment.houseId;
-        this.paymentPeriodService.registerPaymentDetail(paymentDetail)
-        .subscribe()
-        .add(
-            r => {
-                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-            }
-        );
-        this.openedLateFeeConfimationPopup = false;
-    }
+    //     let payment = this.paymentMaintenance.lateFeeMissing;
+    //     let paymentDetail = new PaymentPeriodRegisterRequest();
+    //     paymentDetail.contractId = this.paymentMaintenance.contractId;
+    //     paymentDetail.periodId = this.paymentMaintenance.periodId;
+    //     paymentDetail.paymentAmount = payment.paymentAmount;
+    //     paymentDetail.paymentTypeId = parseInt(payment.paymentTypeId);
+    //     paymentDetail.referenceNo = payment.reference;
+    //     paymentDetail.comment = payment.comment;
+    //     paymentDetail.tenantId = this.paymentMaintenance.tenantId;
+    //     paymentDetail.houseId = payment.houseId;
+    //     this.paymentPeriodService.registerPaymentDetail(paymentDetail)
+    //     .subscribe()
+    //     .add(
+    //         r => {
+    //                 this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
+    //         }
+    //     );
+    //     this.openedLateFeeConfimationPopup = false;
+    // }
 
-    public closeConfirmationLateFee() {
-        this.openedLateFeeConfimationPopup = false;
-    }
+    // public closeConfirmationLateFee() {
+    //     this.openedLateFeeConfimationPopup = false;
+    // }
 
 }
 
