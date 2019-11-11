@@ -32,11 +32,11 @@
 
         <div class="row">
 
-            <div class="col-sm-7 col-xs-12">
+            <div class="col-md-7 col-sm-7 col-xs-12">
                 <div class="row m-2">
                     <h4>PENDIENTES</h4>
                 </div>
-                <div class="row m2">
+                <div class="row m-2">
                     <div class="col-sm-12">
                         <div class="button-container">
                             <button type="button" class="ro-button btn-success" (click)="addDetail()"
@@ -47,7 +47,7 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="showDetailMaintenance">
-                    <div class="col-sm-12 pl-5">
+                    <div class="col-md-12 col-sm-12 pl-5">
                         <div class="form-group row">
                             <label for="paymentTypeId" class="col-sm-2 col-form-label">Payment Type</label>
                             <div class="col-sm-4">
@@ -103,7 +103,7 @@
                 <div class="row">
                     <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail" style="height: 500px;"
                         (pageChange)="pageChange1($event)">
-                        <kendo-grid-column [width]="50">
+                        <kendo-grid-column [width]="30">
                             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                 <div class="text-center">
                                     <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
@@ -114,11 +114,11 @@
                                 </div>
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="periodCode" title="Period"></kendo-grid-column>
-                        <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column>
+                        <kendo-grid-column field="periodCode" title="Period" [width]="70"></kendo-grid-column>
+                        <!-- <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column> -->
                         <kendo-grid-column field="paymentDescription" title="Description" [width]="100">
                         </kendo-grid-column>
-                        <kendo-grid-column field="paymentAmount" title="Amount">
+                        <kendo-grid-column field="paymentAmount" title="Amount" [width]="70">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="text-right">
                                     <div *ngIf="dataItem.paymentAmount<0; else notShow">
@@ -131,7 +131,7 @@
                                 </div>
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column title="Status">
+                        <kendo-grid-column title="Status" [width]="100">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
                                     <label class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
@@ -141,23 +141,23 @@
                                 </div>
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column field="comment" title="Comment" [width]="250">
+                        <kendo-grid-column field="comment" title="Comment" [width]="220">
                         </kendo-grid-column>
-                        <kendo-grid-column field="invoiceNo" title="Invoice" [width]="80">
+                        <kendo-grid-column field="invoiceNo" title="Invoice" [width]="70">
                         </kendo-grid-column>
                         <ng-template kendoGridCellTemplate let-dataItem>
                             <div class="text-right">
                                 <span>{{ dataItem.invoiceNo }}</span><br />
                             </div>
                         </ng-template>
-                        <kendo-grid-column field="invoiceDate" title="Invoice Date" [width]="80">
+                        <kendo-grid-column field="invoiceDate" title="Invoice Date" [width]="70">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="text-right">
                                     <span>{{ dataItem.invoiceDate | date:'MM/dd/yyyy' }}</span><br />
                                 </div>
                             </ng-template>
                         </kendo-grid-column>
-                        <kendo-grid-column [width]="100">
+                        <kendo-grid-column [width]="80">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="text-right">
 
@@ -207,7 +207,7 @@
                             Correo Invalido
                         </span>
                     </div>
-                    <div class="col-sm-2">
+                    <div class="col-sm-4">
                         <button class="btn btn-success">
                             <i class="fa fa-send"></i>
                             Enviar Constancia
@@ -218,11 +218,16 @@
 
             </div>&nbsp;
 
-            <div class="col-sm-4 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-12">
                 <div class="row m-2">
                     <h4>EVIDENCIA</h4>
                 </div>
                 <div class="row m-2">
+                    <div class="col-sm-12">
+                        <div class="button-container" style="height: 30px">
+                            &nbsp;
+                        </div>
+                    </div>
                 </div>
                 <at-upload-file [entityCode]="entityCode" [parentId]="parentId" [canAddFiles]="false"></at-upload-file>
             </div>
