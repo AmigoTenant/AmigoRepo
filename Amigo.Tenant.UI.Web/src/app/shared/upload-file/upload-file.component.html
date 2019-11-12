@@ -1,6 +1,7 @@
 <div class="row" *ngIf="parentId !== null">
 
-  <form #imageForm=ngForm class="col-sm-12" (ngSubmit)="onSubmit(Additional, Image)">
+  <form #imageForm=ngForm class="col-sm-12" > 
+    <!-- (ngSubmit)="onSubmit(Additional, Image)"> -->
     <div class="col-sm-12 text-right">
       <div class="row" *ngIf="canAddFiles && seeButton">
         <button type="buton" class="btn btn-success m-3" (click)="onShowAddFileSection()">
@@ -8,7 +9,7 @@
           Show Add File Section</button>
       </div>
 
-      <ngx-loading [show]="isSaving"></ngx-loading>
+      <!-- <ngx-loading [show]="isSaving"></ngx-loading> -->
       <div *ngIf="canAddFiles && showAddFileSection">
         <div class="row">
           <div class="form-group col-sm-12">
@@ -31,9 +32,9 @@
             <input type="text" #Additional ngModel name="AdditionalInformation" class="col-sm-8"
               Id="AditionalInformation" required placeholder="Ingresa Informacion Adicional...">&nbsp;
 
-            <button type="submit" class="btn btn-success btn-sm col-sm-3"
-              [disabled]="Image.value=='' || !imageForm.valid">
-              <i class="fa fa-upload"></i>
+            <button type="button" class="btn btn-success btn-sm col-sm-3"
+              [disabled]="Image.value=='' || !imageForm.valid" (click)="onSubmit(Additional, Image)">
+              <i class="fa fa-upload" ></i>
               Add File</button>
 
           </div>
