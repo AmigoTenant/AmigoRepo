@@ -46,6 +46,8 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
     @Output() onEditItem: EventEmitter<any> = new EventEmitter<any>();
     @Output() onAddItem: EventEmitter<any> = new EventEmitter<any>();
 
+    parentId: number;
+    entityCode: string='PY';
 
     public flgEdition: string;
     public successFlag: boolean;
@@ -169,6 +171,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
 
+    
     ngOnInit() {
         this.paymentPeriodPopup = new PaymentPeriodPopup();
         this.buildForm();
@@ -184,6 +187,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                     
                     let dataResult: any = res;
                     this.paymentMaintenance = dataResult.data;
+                    this.parentId = this.paymentMaintenance.paymentPeriodId;
                     this.countItemsDet = dataResult.data.pPDetail.length;
                     this.gridDataDet = {
                         data: dataResult.data.pPDetail,
@@ -195,6 +199,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                     this.verifyLateFeeMissing();
                 });
                 this.flgEdition = "E";
+                
             } else {
                 this.flgEdition = "N";
             }

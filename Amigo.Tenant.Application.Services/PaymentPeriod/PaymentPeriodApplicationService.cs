@@ -272,6 +272,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             if (paymentsPeriod.Any())
             {
                 var header = paymentsPeriod.FirstOrDefault();
+                ppHeaderSearchByContractPeriodDTO.PaymentPeriodId = header.PaymentPeriodId;
                 ppHeaderSearchByContractPeriodDTO.HouseName = header.HouseName;
                 ppHeaderSearchByContractPeriodDTO.PeriodCode = header.PeriodCode;
                 ppHeaderSearchByContractPeriodDTO.PeriodId = header.PeriodId;

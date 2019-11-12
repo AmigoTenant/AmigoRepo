@@ -1,6 +1,7 @@
 import { ResponseListDTO } from './../dto/response-list-dto';
 import { Component, OnInit, Input } from '@angular/core';
 import { UploadFileService } from './upload-file-service';
+import { FileRepositorySearchRequest } from './file-repository-search.request';
 
 @Component({
   selector: 'at-upload-file',
@@ -14,6 +15,7 @@ export class UploadFileComponent implements OnInit {
   fileToUpload: File = null;
   @Input() entityCode: string;
   @Input() parentId: string;
+  @Input() parentIdList: FileRepositorySearchRequest;
   fileRepositoryData: any[];
   public isSaving = false;
   @Input() canAddFiles = true;
@@ -27,12 +29,25 @@ export class UploadFileComponent implements OnInit {
   }
 
   getFileRepositories() {
-    this.imageService.getFileRepositories(this.entityCode, this.parentId).subscribe(
-      res => {
-        let datagrid = new ResponseListDTO(res);
-        this.fileRepositoryData = datagrid.items;
-      }
-    );
+    if (this.parentId !== null)
+    {
+      this.imageService.getFileRepositories(this.entityCode, this.parentId).subscribe(
+        res => {
+          let datagrid = new ResponseListDTO(res);
+          this.fileRepositoryData = datagrid.items;
+        }
+      );
+    }
+    else
+    {
+      this.imageService.getFileRepositoriesByIdList(this.parentIdList).subscribe(
+        res => {
+          let datagrid = new ResponseListDTO(res);
+          this.fileRepositoryData = datagrid.items;
+        }
+      );
+
+    }
   }
 
   handleFileInput(file: FileList) {
@@ -47,7 +62,7 @@ export class UploadFileComponent implements OnInit {
   }
 
   onSubmit(Additional, Image) {
-
+    debugger;
     this.isSaving = true;
     this.imageService.postFile(this.entityCode, this.parentId, Additional.value, this.fileToUpload).subscribe(
       data => {

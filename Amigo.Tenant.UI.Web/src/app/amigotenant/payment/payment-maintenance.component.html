@@ -13,7 +13,7 @@
 
 
     <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
-    <form #validationForm="ngForm" data-val-form="validationForm" [formGroup]="paymentForm" >
+    <form #validationForm="ngForm" data-val-form="validationForm" [formGroup]="paymentForm">
         <div class="row" style="padding-top:6px">
         </div>
         <div class="row col-sm-12">
@@ -38,129 +38,140 @@
         </div>
 
 
-    <ngb-tabset>
-        <ngb-tab title="Detail Information">
-            <ng-template ngbTabContent>
-                <div class="row">
+        <ngb-tabset>
+            <ngb-tab title="Detail Information">
+                <ng-template ngbTabContent>
+                    <div class="row">
 
-                    <div class="col-sm-8">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="button-container">
-                                    <button type="button" class="ro-button btn-success" (click)="addDetail()" *ngIf="!showDetailMaintenance">Add Detail</button>
+                        <div class="col-md-7 col-sm-7 col-xs-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="button-container">
+                                        <button type="button" class="ro-button btn-success" (click)="addDetail()"
+                                            *ngIf="!showDetailMaintenance">Add Detail</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" *ngIf="showDetailMaintenance">
+                            <div class="row" *ngIf="showDetailMaintenance">
 
-                            <div class="col-sm-12 pl-5">
-                                <div class="form-group row">
-                                    <label for="paymentTypeId" class="col-sm-2 col-form-label">Payment Type</label>
-                                    <div class="col-sm-4">
-                                        <select formControlName="paymentTypeId"
-                                            class="form-control input-control">
-                                            <option value=""></option>
-                                            <option *ngFor="let paymentType of _listPaymentTypes"
-                                                [ngValue]="paymentType.typeId">
-                                                {{paymentType.name}}
-                                            </option>
-                                        </select>
-                                         <span class="help-block text-danger" *ngIf="displayMessage['paymentTypeId']">
-                                            {{ displayMessage['paymentTypeId'] }}
-                                        </span> 
+                                <div class="col-sm-12 pl-5">
+                                    <div class="form-group row">
+                                        <label for="paymentTypeId" class="col-sm-2 col-form-label">Payment Type</label>
+                                        <div class="col-sm-4">
+                                            <select formControlName="paymentTypeId" class="form-control input-control">
+                                                <option value=""></option>
+                                                <option *ngFor="let paymentType of _listPaymentTypes"
+                                                    [ngValue]="paymentType.typeId">
+                                                    {{paymentType.name}}
+                                                </option>
+                                            </select>
+                                            <span class="help-block text-danger"
+                                                *ngIf="displayMessage['paymentTypeId']">
+                                                {{ displayMessage['paymentTypeId'] }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="paymentAmount" class="col-sm-2 col-form-label">Amount</label>
-                                    <div class="col-sm-4">
-                                        <input type="number" class="form-control input-control" formControlName= "paymentAmount">
-                                         <span class="help-block text-danger" *ngIf="displayMessage['paymentAmount']">
-                                            {{ displayMessage['paymentAmount'] }}
-                                        </span> 
+                                    <div class="form-group row">
+                                        <label for="paymentAmount" class="col-sm-2 col-form-label">Amount</label>
+                                        <div class="col-sm-4">
+                                            <input type="number" class="form-control input-control"
+                                                formControlName="paymentAmount">
+                                            <span class="help-block text-danger"
+                                                *ngIf="displayMessage['paymentAmount']">
+                                                {{ displayMessage['paymentAmount'] }}
+                                            </span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="referenceNo" class="col-sm-2 col-form-label">Reference No</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control input-control" formControlName= "referenceNo">
+                                    <div class="form-group row">
+                                        <label for="referenceNo" class="col-sm-2 col-form-label">Reference No</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-control"
+                                                formControlName="referenceNo">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group row">
-                                    <label for="comment" class="col-sm-2 col-form-label">Comments</label>
-                                    <div class="col-sm-4">
-                                        <input type="text" class="form-control input-control" formControlName= "comment">
+                                    <div class="form-group row">
+                                        <label for="comment" class="col-sm-2 col-form-label">Comments</label>
+                                        <div class="col-sm-4">
+                                            <input type="text" class="form-control input-control"
+                                                formControlName="comment">
+                                        </div>
                                     </div>
-                                </div>
 
+                                </div>
                             </div>
-                        </div>
-                        <div class="row" *ngIf="showDetailMaintenance">
-                            <div class="col-sm-12 text-right" style="padding-top:6px">
-                                <div class="button-container col-sm-10">
-                                    <label for="continueRegistration" class="col-sm-6">Continue Registering...</label>
-                                    <input type="checkbox" class="checkbox col-sm-1" formControlName= "continueRegistration">
-                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="saveDetail()">Save Detail</button>
-                                    <!-- <button type="button" class="ro-button btn-success" (click)="addAccount()">Add a
+                            <div class="row" *ngIf="showDetailMaintenance">
+                                <div class="col-sm-12 text-right" style="padding-top:6px">
+                                    <div class="button-container col-sm-10">
+                                        <label for="continueRegistration" class="col-sm-6">Continue
+                                            Registering...</label>
+                                        <input type="checkbox" class="checkbox col-sm-1"
+                                            formControlName="continueRegistration">
+                                        <button type="button" class="ro-button btn-success col-sm-2"
+                                            (click)="saveDetail()">Save Detail</button>
+                                        <!-- <button type="button" class="ro-button btn-success" (click)="addAccount()">Add a
                                         cuenta</button> -->
-                                    <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
-                                    <!-- <button type="button" class="ro-button btn-success" (click)="addLatefee()">Add Late
+                                        <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                                        <!-- <button type="button" class="ro-button btn-success" (click)="addLatefee()">Add Late
                                         fee</button> -->
-                                    <button type="button" class="ro-button btn-success col-sm-2" (click)="closeDetail()" >Close Detail</button>
-                                    <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                                        <button type="button" class="ro-button btn-success col-sm-2"
+                                            (click)="closeDetail()">Close Detail</button>
+                                        <!--st-authCheck [actionCode]="'House.CreateFeature'"-->
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row" style="padding-top:6px">
-                            <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail"
-                                style="height: 300px;" (pageChange)="pageChange1($event)">
-                                <kendo-grid-column [width]="50">
-                                    <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
-                                        <div class="text-center">
-                                            <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
-                                                [checked]="dataItem.isSelected || dataItem.paymentPeriodStatusCode==='PPPAYED'"
-                                                (change)="changeItem(dataItem)"
-                                                [disabled]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" />
-                                            <label htmlFor="{{rowIndex}}"></label>
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column>
-                                <kendo-grid-column field="paymentDescription" title="Description"></kendo-grid-column>
-                                <kendo-grid-column field="paymentAmount" title="Amount">
+                            <div class="row" style="padding-top:6px">
+                                <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail"
+                                    style="height: 300px;" (pageChange)="pageChange1($event)">
+                                    <kendo-grid-column [width]="50">
+                                        <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
+                                            <div class="text-center">
+                                                <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}"
+                                                    value="option"
+                                                    [checked]="dataItem.isSelected || dataItem.paymentPeriodStatusCode==='PPPAYED'"
+                                                    (change)="changeItem(dataItem)"
+                                                    [disabled]="dataItem.isRequired || dataItem.paymentPeriodStatusCode==='PPPAYED'" />
+                                                <label htmlFor="{{rowIndex}}"></label>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="paymentTypeValue" title="Type"></kendo-grid-column>
+                                    <kendo-grid-column field="paymentDescription" title="Description">
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="paymentAmount" title="Amount">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
+                                                <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column title="Status">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
+                                                <label
+                                                    class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
+                                            </div>
+                                            <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'">
+                                                <label
+                                                    class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
+                                    <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
+                                    <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
-                                            <span>{{dataItem.paymentAmount|number:'2.2-2' }}</span><br />
+                                            <span>{{ dataItem.invoiceNo }}</span><br />
                                         </div>
                                     </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column title="Status">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPAYED'">
-                                            <label
-                                                class="label-status approved">{{dataItem.paymentPeriodStatusName}}</label>
-                                        </div>
-                                        <div *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'">
-                                            <label
-                                                class="label-status rejected">{{dataItem.paymentPeriodStatusName}}</label>
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
-                                <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
-                                <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
-                                <ng-template kendoGridCellTemplate let-dataItem>
-                                    <div class="text-right">
-                                        <span>{{ dataItem.invoiceNo }}</span><br />
-                                    </div>
-                                </ng-template>
-                                <kendo-grid-column field="invoiceDate" title="InvoiceDate">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{ dataItem.invoiceDate | date:'MM/dd/yyyy' }}</span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                                <!-- <kendo-grid-column field="invoiceDate" title="InvoiceDate">
+                                    <kendo-grid-column field="invoiceDate" title="InvoiceDate">
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
+                                                <span>{{ dataItem.invoiceDate | date:'MM/dd/yyyy' }}</span><br />
+                                            </div>
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                    <!-- <kendo-grid-column field="invoiceDate" title="InvoiceDate">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
                                             <span>{{ dataItem.paymentTypeCode!=='RENT' 
@@ -169,106 +180,172 @@
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column> -->
-                                <kendo-grid-column>
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
+                                    <kendo-grid-column>
+                                        <ng-template kendoGridCellTemplate let-dataItem>
+                                            <div class="text-right">
 
-                                            <div
-                                                *ngIf="!dataItem.isRequired && dataItem.paymentPeriodStatusCode==='PPPENDING'">
-                                                <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
-                                                    <i class="xico-action-edit"></i>
-                                                </button>
-                                                <button type="button" class="btn-icon" (click)="onDelete(dataItem);"
-                                                    *ngIf="dataItem.paymentTypeCode!=='RENT' 
+                                                <div
+                                                    *ngIf="!dataItem.isRequired && dataItem.paymentPeriodStatusCode==='PPPENDING'">
+                                                    <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
+                                                        <i class="xico-action-edit"></i>
+                                                    </button>
+                                                    <button type="button" class="btn-icon" (click)="onDelete(dataItem);"
+                                                        *ngIf="dataItem.paymentTypeCode!=='RENT' 
                                                             && dataItem.paymentTypeCode!=='DEPOSIT' 
                                                             && dataItem.paymentPeriodStatusCode==='PPPENDING' ">
-                                                    <i class="xico-action-remove"></i>
-                                                </button>
+                                                        <i class="xico-action-remove"></i>
+                                                    </button>
+                                                </div>
+                                                <div *ngIf="dataItem.fileRepositoryId">
+                                                    <button type="button" class="btn-icon"
+                                                        (click)="onPrint(dataItem.fileRepositoryId)">
+                                                        <i class="xico-device-printer"></i>
+                                                    </button>
+                                                </div>
                                             </div>
-                                            <div *ngIf="dataItem.fileRepositoryId">
-                                                <button type="button" class="btn-icon"
-                                                    (click)="onPrint(dataItem.fileRepositoryId)">
-                                                    <i class="xico-device-printer"></i>
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column>
-                            </kendo-grid>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-10">Total Income:</div>
-                            <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-10">Total Invoice:</div>
-                            <div class="col-sm-2">{{paymentMaintenance.totalInvoice|number:'2.2-2' }}</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-10">BALANCE:</div>
-                            <div class="col-sm-2">{{paymentMaintenance.balance|number:'2.2-2' }}</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-3" style="padding-right:6px;padding-left:100px">
-                        <div class="sub-header">RESUME</div>
-                        <form #locationForm="ngForm" data-val-form="locationForm">
+                                        </ng-template>
+                                    </kendo-grid-column>
+                                </kendo-grid>
+                            </div>
                             <div class="row">
+                                <div class="col-sm-10">Total Income:</div>
+                                <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">Total Invoice:</div>
+                                <div class="col-sm-2">{{paymentMaintenance.totalInvoice|number:'2.2-2' }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-10">BALANCE:</div>
+                                <div class="col-sm-2">{{paymentMaintenance.balance|number:'2.2-2' }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3" style="padding-right:6px;padding-left:100px">
+                                    <div class="sub-header">RESUME</div>
+                                    <form #locationForm="ngForm" data-val-form="locationForm">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">Deposit</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingDeposit"
+                                                            name="pendingDeposit"
+                                                            value="paymentMaintenance.pendingDeposit|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">Rent</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingRent"
+                                                            name="pendingRent"
+                                                            value="paymentMaintenance.pendingRent|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">Fine</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingFine"
+                                                            name="pendingFine"
+                                                            value="paymentMaintenance.pendingFine|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">Late Fee</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingLateFee"
+                                                            name="pendingLateFee"
+                                                            value="paymentMaintenance.pendingLateFee|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">Services</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingService"
+                                                            name="pendingService"
+                                                            value="paymentMaintenance.pendingService|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">On Account</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingOnAccount"
+                                                            name="pendingOnAccount"
+                                                            value="paymentMaintenance.pendingOnAccount|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                                <div class="row form-group">
+                                                    <label class="col-sm-5 control-label">TOTAL DETAIL</label>
+                                                    <div class="col-sm-7">
+                                                        <input type="text" class="form-control text-right" readonly
+                                                            [(ngModel)]="paymentMaintenance.pendingTotal"
+                                                            name="pendingTotal"
+                                                            value="paymentMaintenance.pendingTotal|number:'2.2-2'" />
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                            <div class="row m-2">
+                                <h4>EVIDENCIA</h4>
+                            </div>
+                            <div class="row m-2">
                                 <div class="col-sm-12">
+                                    <div class="button-container" style="height: 30px">
+                                        &nbsp;
+                                    </div>
+                                </div>
+                            </div>
+                            <at-upload-file [entityCode]="entityCode" [parentId]="parentId" [canAddFiles]="true"></at-upload-file>
+                        </div>
+
+
+                    </div>
+                    <div class="row col-sm-1">
+                        &nbsp;
+                    </div>
+
+
+
+                </ng-template>
+            </ngb-tab>
+            <ngb-tab title="Other Information">
+                <ng-template ngbTabContent>
+
+                    <div class="row col-sm-8" style="padding-top:6px">
+                        <form #headerForm="ngForm" data-val-form="headerForm" class="col-sm-12">
+                            <div>
+                                <div class="col-sm-8">
                                     <div class="row form-group">
-                                        <label class="col-sm-5 control-label">Deposit</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingDeposit" name="pendingDeposit"
-                                                value="paymentMaintenance.pendingDeposit|number:'2.2-2'" />
+                                        <label class="col-sm-3 control-label">Payment Type</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="paymentMaintenance.paymentType" name="paymentType" />
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <label class="col-sm-5 control-label">Rent</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingRent" name="pendingRent"
-                                                value="paymentMaintenance.pendingRent|number:'2.2-2'" />
+                                        <label class="col-sm-3 control-label">Reference No</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control"
+                                                [(ngModel)]="paymentMaintenance.referenceNo" name="referenceNo" />
                                         </div>
                                     </div>
                                     <div class="row form-group">
-                                        <label class="col-sm-5 control-label">Fine</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingFine" name="pendingFine"
-                                                value="paymentMaintenance.pendingFine|number:'2.2-2'" />
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <label class="col-sm-5 control-label">Late Fee</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingLateFee" name="pendingLateFee"
-                                                value="paymentMaintenance.pendingLateFee|number:'2.2-2'" />
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <label class="col-sm-5 control-label">Services</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingService" name="pendingService"
-                                                value="paymentMaintenance.pendingService|number:'2.2-2'" />
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <label class="col-sm-5 control-label">On Account</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingOnAccount"
-                                                name="pendingOnAccount"
-                                                value="paymentMaintenance.pendingOnAccount|number:'2.2-2'" />
-                                        </div>
-                                    </div>
-                                    <div class="row form-group">
-                                        <label class="col-sm-5 control-label">TOTAL DETAIL</label>
-                                        <div class="col-sm-7">
-                                            <input type="text" class="form-control text-right" readonly
-                                                [(ngModel)]="paymentMaintenance.pendingTotal" name="pendingTotal"
-                                                value="paymentMaintenance.pendingTotal|number:'2.2-2'" />
+                                        <label class="col-sm-3 control-label">Comment</label>
+                                        <div class="col-sm-9">
+                                            <textarea rows="4" style="height:120px" class="form-control"
+                                                [(ngModel)]="paymentMaintenance.comment" name="comment"></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -277,58 +354,15 @@
                         </form>
                     </div>
 
-                </div>
-                <div class="row col-sm-1">
-                    &nbsp;
-                </div>
-
-
-
-            </ng-template>
-        </ngb-tab>
-        <ngb-tab title="Other Information">
-            <ng-template ngbTabContent>
-
-                <div class="row col-sm-8" style="padding-top:6px">
-                    <form #headerForm="ngForm" data-val-form="headerForm" class="col-sm-12">
-                        <div>
-                            <div class="col-sm-8">
-                                <div class="row form-group">
-                                    <label class="col-sm-3 control-label">Payment Type</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control"
-                                            [(ngModel)]="paymentMaintenance.paymentType" name="paymentType" />
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <label class="col-sm-3 control-label">Reference No</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control"
-                                            [(ngModel)]="paymentMaintenance.referenceNo" name="referenceNo" />
-                                    </div>
-                                </div>
-                                <div class="row form-group">
-                                    <label class="col-sm-3 control-label">Comment</label>
-                                    <div class="col-sm-9">
-                                        <textarea rows="4" style="height:120px" class="form-control"
-                                            [(ngModel)]="paymentMaintenance.comment" name="comment"></textarea>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </form>
-                </div>
-
-            </ng-template>
-        </ngb-tab>
-    </ngb-tabset>
+                </ng-template>
+            </ngb-tab>
+        </ngb-tabset>
     </form>
 </div>
 
 <kendo-dialog title="Detail" *ngIf="isDetailVisible" (close)="closeDetailPopup()" style="z-index: 7888">
-    <at-payment-maintenance-detail #dialogDetail [inputDataDetail]="paymentPeriodPopup" (cancelEvent)="closeDetailPopup($event)"
-        (saveEvent)="saveDetailPopup($event)">
+    <at-payment-maintenance-detail #dialogDetail [inputDataDetail]="paymentPeriodPopup"
+        (cancelEvent)="closeDetailPopup($event)" (saveEvent)="saveDetailPopup($event)">
     </at-payment-maintenance-detail>
 </kendo-dialog>
 <kendo-dialog title="Confirmation" *ngIf="openedDeletionConfimation" (close)="closeDeletionConfirmation()">
@@ -353,7 +387,7 @@
 </kendo-dialog>
 <kendo-dialog title="Confirmation" *ngIf="openedLateFeeConfimationPopup" (close)="closeConfirmationLateFee()">
     <div>{{confirmLateFeeMessage}}</div>
-    <kendo-dialog-actions>  
+    <kendo-dialog-actions>
         <button type="button" class="k-button" (click)="closeConfirmationLateFee()">No</button>
         <button type="button" class="k-button k-primary" (click)="yesConfirmLateFee()">Yes</button>
     </kendo-dialog-actions>
