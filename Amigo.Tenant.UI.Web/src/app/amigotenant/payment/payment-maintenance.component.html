@@ -220,9 +220,11 @@
                                 <div class="col-sm-2">{{paymentMaintenance.balance|number:'2.2-2' }}</div>
                             </div>
                             <div class="row">
-                                <div class="col-sm-3" style="padding-right:6px;padding-left:100px">
-                                    <div class="sub-header">RESUME</div>
-                                    <form #locationForm="ngForm" data-val-form="locationForm">
+                                <div class="sub-header col-sm-12" style="padding: 15px;">TOTAL AMOUNT SELECTED: <b> {{ paymentMaintenance.pendingTotal |number:'2.2-2' }} </b></div>
+                                    
+                                <!-- <div class="col-sm-12">
+                                    <div class="sub-header col-sm-12">TOTAL AMOUNT SELECTED {{ paymentMaintenance.pendingTotal |number:'2.2-2' }} </div> -->
+                                    <!-- <form #locationForm="ngForm" data-val-form="locationForm">
                                         <div class="row">
                                             <div class="col-sm-12">
                                                 <div class="row form-group">
@@ -291,8 +293,8 @@
                                             </div>
 
                                         </div>
-                                    </form>
-                                </div>
+                                    </form> -->
+                                <!-- </div> -->
                             </div>
                         </div>
 

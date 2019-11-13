@@ -1,5 +1,5 @@
 import { ResponseListDTO } from './../dto/response-list-dto';
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { UploadFileService } from './upload-file-service';
 import { FileRepositorySearchRequest } from './file-repository-search.request';
 
@@ -9,7 +9,7 @@ import { FileRepositorySearchRequest } from './file-repository-search.request';
   providers: [UploadFileService]
 })
 
-export class UploadFileComponent implements OnInit {
+export class UploadFileComponent implements OnInit, OnChanges {
 
   imageUrl: string = "/assets/img/image-default.jpeg";
   fileToUpload: File = null;
@@ -25,6 +25,11 @@ export class UploadFileComponent implements OnInit {
   constructor(private imageService: UploadFileService) { }
 
   ngOnInit() {
+    this.getFileRepositories();
+  }
+  
+  ngOnChanges()
+  {
     this.getFileRepositories();
   }
 

@@ -1,4 +1,4 @@
-import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy, OnChanges } from '@angular/core';
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
@@ -27,7 +27,7 @@ declare var $: any;
     templateUrl: './payment-maintenance.component.html'
 })
 
-export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
+export class PaymentMaintenanceComponent implements OnInit, OnDestroy, OnChanges {
     public paymentPeriodPopup: PaymentPeriodPopup;
     public gridDataDet: GridDataResult;
     public skipDet: number = 0;
@@ -171,7 +171,37 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
 
     sub: Subscription;
 
-    
+    ngOnChanges(){
+        this.sub = this.route.params.subscribe(params => {
+            let periodId= params['periodId'];
+            let contractId = params['contractId'];
+
+            if (periodId != null && typeof (periodId) != 'undefined' &&
+                contractId != null && typeof (contractId) != 'undefined' ) {
+                this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
+                .subscribe(res => {
+                    debugger;
+                    let dataResult: any = res;
+                    this.paymentMaintenance = dataResult.data;
+                    this.parentId = this.paymentMaintenance.paymentPeriodId;
+                    this.countItemsDet = dataResult.data.pPDetail.length;
+                    this.gridDataDet = {
+                        data: dataResult.data.pPDetail,
+                        total: dataResult.data.pPDetail.length
+                    }
+                })
+                .add(r=> {
+                    this.calculatePendingToPay();
+                    this.verifyLateFeeMissing();
+                });
+                this.flgEdition = "E";
+                
+            } else {
+                this.flgEdition = "N";
+            }
+        });
+    }
+
     ngOnInit() {
         this.paymentPeriodPopup = new PaymentPeriodPopup();
         this.buildForm();
@@ -184,7 +214,7 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy {
                 contractId != null && typeof (contractId) != 'undefined' ) {
                 this.paymentDataService.searchCriteriaByContract(periodId, contractId, 1, 20)
                 .subscribe(res => {
-                    
+                    debugger;
                     let dataResult: any = res;
                     this.paymentMaintenance = dataResult.data;
                     this.parentId = this.paymentMaintenance.paymentPeriodId;
