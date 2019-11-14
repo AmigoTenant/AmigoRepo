@@ -159,11 +159,11 @@
                                     <kendo-grid-column field="reference" title="Reference"></kendo-grid-column>
                                     <kendo-grid-column field="comment" title="Comment"></kendo-grid-column>
                                     <kendo-grid-column field="invoiceNo" title="Invoice"></kendo-grid-column>
-                                    <ng-template kendoGridCellTemplate let-dataItem>
+                                    <!-- <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
                                             <span>{{ dataItem.invoiceNo }}</span><br />
                                         </div>
-                                    </ng-template>
+                                    </ng-template> -->
                                     <kendo-grid-column field="invoiceDate" title="InvoiceDate">
                                         <ng-template kendoGridCellTemplate let-dataItem>
                                             <div class="text-right">
@@ -171,15 +171,6 @@
                                             </div>
                                         </ng-template>
                                     </kendo-grid-column>
-                                    <!-- <kendo-grid-column field="invoiceDate" title="InvoiceDate">
-                                    <ng-template kendoGridCellTemplate let-dataItem>
-                                        <div class="text-right">
-                                            <span>{{ dataItem.paymentTypeCode!=='RENT' 
-                                                && dataItem.paymentTypeCode!=='DEPOSIT' 
-                                                && dataItem.paymentPeriodStatusCode==='PPPENDING'  }} / </span><br />
-                                        </div>
-                                    </ng-template>
-                                </kendo-grid-column> -->
                                     <kendo-grid-column>
                                         <ng-template kendoGridCellTemplate let-dataItem>
                                             <div class="text-right">
@@ -221,84 +212,10 @@
                             </div>
                             <div class="row">
                                 <div class="sub-header col-sm-12" style="padding: 15px;">TOTAL AMOUNT SELECTED: <b> {{ paymentMaintenance.pendingTotal |number:'2.2-2' }} </b></div>
-                                    
-                                <!-- <div class="col-sm-12">
-                                    <div class="sub-header col-sm-12">TOTAL AMOUNT SELECTED {{ paymentMaintenance.pendingTotal |number:'2.2-2' }} </div> -->
-                                    <!-- <form #locationForm="ngForm" data-val-form="locationForm">
-                                        <div class="row">
-                                            <div class="col-sm-12">
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">Deposit</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingDeposit"
-                                                            name="pendingDeposit"
-                                                            value="paymentMaintenance.pendingDeposit|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">Rent</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingRent"
-                                                            name="pendingRent"
-                                                            value="paymentMaintenance.pendingRent|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">Fine</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingFine"
-                                                            name="pendingFine"
-                                                            value="paymentMaintenance.pendingFine|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">Late Fee</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingLateFee"
-                                                            name="pendingLateFee"
-                                                            value="paymentMaintenance.pendingLateFee|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">Services</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingService"
-                                                            name="pendingService"
-                                                            value="paymentMaintenance.pendingService|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">On Account</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingOnAccount"
-                                                            name="pendingOnAccount"
-                                                            value="paymentMaintenance.pendingOnAccount|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                                <div class="row form-group">
-                                                    <label class="col-sm-5 control-label">TOTAL DETAIL</label>
-                                                    <div class="col-sm-7">
-                                                        <input type="text" class="form-control text-right" readonly
-                                                            [(ngModel)]="paymentMaintenance.pendingTotal"
-                                                            name="pendingTotal"
-                                                            value="paymentMaintenance.pendingTotal|number:'2.2-2'" />
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </form> -->
-                                <!-- </div> -->
                             </div>
                         </div>
 
-                        <div class="col-md-4 col-sm-4 col-xs-12">
+                        <div class="col-md-5 col-sm-5 col-xs-12" style="padding: 0px 15px 0px 15px;">
                             <div class="row m-2">
                                 <h4>EVIDENCIA</h4>
                             </div>

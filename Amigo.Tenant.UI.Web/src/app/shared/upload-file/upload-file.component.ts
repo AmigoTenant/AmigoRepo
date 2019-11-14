@@ -25,9 +25,10 @@ export class UploadFileComponent implements OnInit, OnChanges {
   constructor(private imageService: UploadFileService) { }
 
   ngOnInit() {
+    //VERIFICAR QUE NO SE EJECUTE DOS VECES LA BUSQUEDA
     this.getFileRepositories();
   }
-  
+
   ngOnChanges()
   {
     this.getFileRepositories();

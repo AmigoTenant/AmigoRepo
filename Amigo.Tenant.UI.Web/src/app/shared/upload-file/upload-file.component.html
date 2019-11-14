@@ -1,4 +1,4 @@
-<div class="row" *ngIf="parentId !== null">
+<div class="row" *ngIf="parentId !== null || parentIdList !== null ">
 
   <form #imageForm=ngForm class="col-sm-12" > 
     <!-- (ngSubmit)="onSubmit(Additional, Image)"> -->
@@ -46,7 +46,7 @@
 
   <div class="grid-container">
     <kendo-grid id="kgrid-FileRepository" [data]="fileRepositoryData" [selectable]="false">
-      <kendo-grid-column field="creationDate" title="Fecha Creación">
+      <kendo-grid-column field="creationDate" title="Fecha Creación" [width]=70>
         <ng-template kendoGridCellTemplate let-dataItem>
           <div>
             <span class="float-right">{{dataItem.creationDate|date:"MM/dd/yyyy" }}</span>
@@ -54,7 +54,7 @@
           </div>
         </ng-template>
       </kendo-grid-column>
-      <kendo-grid-column field="name" title="Nombre Archivo">
+      <kendo-grid-column field="name" title="Nombre Archivo" [width]=150>
         <ng-template kendoGridCellTemplate let-dataItem>
           <div>
             <span>
@@ -65,8 +65,8 @@
           </div>
         </ng-template>
       </kendo-grid-column>
-      <kendo-grid-column field="additionalInfo" title="Additional Info."></kendo-grid-column>
-      <kendo-grid-column>
+      <kendo-grid-column field="additionalInfo" title="Additional Info." [width]=150></kendo-grid-column>
+      <kendo-grid-column [width]=70>
         <ng-template kendoGridCellTemplate let-dataItem>
           <div class="text-right">
             <button type="button" class="btn-icon" (click)="onDelete(dataItem);">

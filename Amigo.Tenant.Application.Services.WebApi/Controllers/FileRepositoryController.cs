@@ -1,4 +1,5 @@
 ﻿using Amigo.Tenant.Application.DTOs.FileRepository.Requests;
+using Amigo.Tenant.Application.DTOs.Requests.FileRepository;
 using Amigo.Tenant.Application.DTOs.Responses.Common;
 using Amigo.Tenant.Application.DTOs.Responses.FileRepository;
 using Amigo.Tenant.Application.Services.Interfaces.FileRepository;
@@ -38,9 +39,9 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
 
         [HttpPost]
         [Route("getFileRepositoriesByIdList")]
-        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesByIdList(string entityCode, List<int> parentIds)
+        public async Task<ResponseDTO<PagedList<FileRepositoryDTO>>> GetFileRepositoriesByIdList(FileRepositorySearchRequest fileRepositorySearchRequest)
         {
-            var list = await _fileRepositoryAppService.GetFileRepositoriesByIdListAsync(entityCode, parentIds);
+            var list = await _fileRepositoryAppService.GetFileRepositoriesByIdListAsync(fileRepositorySearchRequest.EntityCode, fileRepositorySearchRequest.ParentIds);
             return list;
         }
 

@@ -40,6 +40,7 @@ export class UploadFileService extends BaseService {
 
    getFileRepositoriesByIdList(fileRepositorySearchRequest: FileRepositorySearchRequest): Observable<any[]>
    {
+      debugger;
       const url = `${this.baseUrl}api/filerepository/getFileRepositoriesByIdList`;
       return this.http.post<any>(url, JSON.stringify(fileRepositorySearchRequest),
           { headers: this.headers.set('Authorization', 'Bearer ' + this.token) }

@@ -13,6 +13,8 @@ import { PaymentPeriodRegisterRequest } from "./dto/payment-period-register-requ
 import { PaymentPeriodService } from "./payment-period.service";
 import { PaymentPeriodUpdateRequest } from './dto/payment-period-update-request';
 import { PaymentPeriodPopup } from './dto/payment-period-popup';
+import { FileRepositorySearchRequest } from '../../shared/upload-file/file-repository-search.request';
+import { EntityCode } from '../../shared/constants/enum';
 
 declare var $: any;
 
@@ -149,9 +151,12 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     }
 
     sub: Subscription;
+    fileRepositorySearchRequest= new FileRepositorySearchRequest();
+    parentId: string;
 
     ngOnInit() {
         this.paymentPeriodPopup = new PaymentPeriodPopup();
+        this.fileRepositorySearchRequest.entityCode = 'PY';
         this.buildForm();
         this.initialize();
         this.sub = this.route.params.subscribe(params => {
@@ -162,9 +167,11 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
                 contractId != null && typeof (contractId) != 'undefined' ) {
                 this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
                 .subscribe(res => {
-                    
+                    debugger
                     let dataResult: any = res;
                     this.paymentMaintenance = dataResult.data;
+                    this.fileRepositorySearchRequest.parentIds = this.paymentMaintenance.pPDetail.map(q=> q.paymentPeriodId);
+                    this.parentId = null;
                     this.countItemsDet = dataResult.data.pPDetail.length;
                     this.gridDataDet = {
                         data: dataResult.data.pPDetail,
