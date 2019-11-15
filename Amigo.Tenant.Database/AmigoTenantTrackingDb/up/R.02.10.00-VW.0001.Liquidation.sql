@@ -57,7 +57,8 @@ SELECT PP.PaymentPeriodId      ,
    (
 		SELECT	SUM(ISNULL(TotalAmount, 0)) as TotalInvoice
 		FROM	INVOICE I2
-		WHERE	I2.TenantId = T.TenantId and 
+		WHERE	I2.ContractId = PP.ContractId and 
+				--I2.TenantId = T.TenantId and 
 				I2.PeriodId = P.PeriodId and 
 				I2.RowStatus = 1
    ) as TotalInvoice
@@ -67,7 +68,8 @@ SELECT PP.PaymentPeriodId      ,
 		SELECT	SUM(ISNULL(PP2.PaymentAmount,0)) as TotalIncome
 		FROM	PaymentPeriod PP2
 				INNER JOIN Concept C2 ON C2.ConceptId = PP2.ConceptId
-		WHERE	PP2.TenantId = T.TenantId and 
+		WHERE	PP2.ContractId = PP.ContractId and 
+				--PP2.TenantId = T.TenantId and 
 				PP2.PeriodId = P.PeriodId and 
 				PP2.RowStatus = 1 and 
 				CHARINDEX(C2.Code, (SELECT AppSettingValue FROM AppSetting WHERE Code= 'CPTTOFAVTN' AND RowStatus = 1)) = 0
@@ -75,3 +77,5 @@ SELECT PP.PaymentPeriodId      ,
    ) as IncomeConcept
    
    LEFT JOIN FileRepository FR ON FR.ParentId = INV.InvoiceId  AND FR.EntityCode = 'IN'
+
+GO

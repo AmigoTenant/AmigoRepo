@@ -348,10 +348,13 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             PdfContentByte contentByte = writer.DirectContentUnder;
             BaseFont bf = BaseFont.CreateFont(BaseFont.HELVETICA, BaseFont.CP1257, BaseFont.NOT_EMBEDDED);
             contentByte.SetColorFill(BaseColor.LIGHT_GRAY);
-            contentByte.SetFontAndSize(bf, 32);
+            contentByte.SetFontAndSize(bf, 68);
             contentByte.BeginText();
+            Rectangle pageSize = doc.PageSize;
+            var x = (pageSize.Right + pageSize.Left) / 2;
+            var y = ((pageSize.Bottom + pageSize.Top) / 2)+ 80;
             string text = Constants.EntityStatus.InvoiceName.Paid;
-            contentByte.ShowTextAligned(1, text, 200, 200, 45);
+            contentByte.ShowTextAligned(Element.ALIGN_MIDDLE, text, x, y, 45);
             contentByte.EndText();
 
             // Creamos una tabla que contendrá el nombre, apellido y país 
