@@ -1,10 +1,10 @@
 export const environment = {
   production: true,
-  serviceUrl: "http://amigotenantapplicationserviceswebapi.azurewebsites.net/",
-  authenticationUrl: "http://amigotenantidentityserverwebapi.azurewebsites.net/",
+  serviceUrl: "http://158.69.0.84:8072/", //"http://amigotenantapplicationserviceswebapi.azurewebsites.net/",
+  authenticationUrl: "http://158.69.0.84:7071/", //"http://amigotenantidentityserverwebapi.azurewebsites.net/",
   applicationId: "amigo.tenant.web",
-  redirectUri: "http://amigotenant.azurewebsites.net/",
-  logoutRedirectUri: "http://amigotenant.azurewebsites.net/",
+  redirectUri: "http://158.69.0.84:8070", //"http://amigotenant.azurewebsites.net/",
+  logoutRedirectUri: "http://158.69.0.84:8070", //"http://amigotenant.azurewebsites.net/",
   scopes: "openid profile email roles XST.Services",
   raygunApikey: "EfjFencSOl80YFmtcuzOzQ=)",
   raygunTag: "web",
@@ -33,4 +33,5 @@ export const environment = {
   defaultLang: 'es-CL',
   lang: 'es-CL',
   langReport: 'en-US'
+  
 };

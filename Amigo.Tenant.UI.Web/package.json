@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "publish": "./node_modules/.bin/ng build --aot=true --environment=dev --sourcemaps=true --extract-css=false --output-hashing=media"
+    "publish": "./node_modules/.bin/ng build --aot=true --environment=dev --sourcemaps=true --extract-css=false --output-hashing=media",
+    "publish-prd": "./node_modules/.bin/ng build --aot=true --environment=prod --sourcemaps=true --extract-css=false --output-hashing=media"
   },
   "private": true,
   "dependencies": {
