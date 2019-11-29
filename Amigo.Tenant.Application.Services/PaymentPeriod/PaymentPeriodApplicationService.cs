@@ -256,6 +256,9 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             if (search.ContractId.HasValue)
                 queryFilter = queryFilter.And(p => p.ContractId == search.ContractId);
 
+            if (search.InvoiceId.HasValue)
+                queryFilter = queryFilter.And(p => p.InvoiceId == search.InvoiceId);
+
             var paymentsPeriod = await _paymentPeriodSearchByContractDataAccess.ListAsync(queryFilter);
             var lateFeePaymenType = await _generalTableApplicationService.GetGeneralTableByEntityAndCodeAsync(Constants.GeneralTableName.PaymentType, Constants.GeneralTableCode.PaymentType.LateFee);
             var appSettingTenantFavorable = await _appSettingApplicationService.GetAppSettingByCodeAsync(Constants.AppSettingCode.CptToFavTn);

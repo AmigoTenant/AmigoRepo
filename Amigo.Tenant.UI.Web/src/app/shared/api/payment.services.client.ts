@@ -101,7 +101,7 @@ export interface IPaymentPeriodClient {
     /**
      * @return OK
      */
-    searchCriteriaByContract(search_periodId: number, search_contractId: number, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null>;
+    searchCriteriaByContract(search_periodId: number, search_contractId: number, search_invoiceId: number, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null>;
     /**
      * @return OK
      */
@@ -266,12 +266,14 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
     /**
      * @return OK
      */
-    searchCriteriaByContract(search_periodId: number, search_contractId: number, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null> {
+    searchCriteriaByContract(search_periodId: number, search_contractId: number,  search_invoiceId: number,  search_page: number, search_pageSize: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null> {
         let url_ = this.baseUrl + "/api/payment/searchCriteriaByContract?";
         if (search_periodId !== undefined)
             url_ += "search.periodId=" + encodeURIComponent("" + search_periodId) + "&";
         if (search_contractId !== undefined)
             url_ += "search.contractId=" + encodeURIComponent("" + search_contractId) + "&";
+        if (search_invoiceId !== undefined)
+            url_ += "search.invoiceId=" + encodeURIComponent("" + search_invoiceId) + "&";
         if (search_page !== undefined)
             url_ += "search.page=" + encodeURIComponent("" + search_page) + "&";
         if (search_pageSize !== undefined)
@@ -812,6 +814,8 @@ export class PPSearchDTO implements IPPSearchDTO {
     lateFeesAmountPaid: number | null;
     onAccountAmountPaid: number | null;
     totalAmountPaid: number | null;
+    contractStatusCode: string | null;
+    invoiceId?: number;
     constructor(data?: IPPSearchDTO) {
         if (data) {
             for (var property in data) {
@@ -859,6 +863,8 @@ export class PPSearchDTO implements IPPSearchDTO {
             this.onAccountAmountPaid = data["OnAccountAmountPaid"] !== undefined ? data["OnAccountAmountPaid"] : <any>null;
             this.totalAmountPaid = data["TotalAmountPaid"] !== undefined ? data["TotalAmountPaid"] : <any>null;
             
+            this.contractStatusCode = data["ContractStatusCode"] !== undefined ? data["ContractStatusCode"] : <any>null;
+            this.invoiceId = data["InvoiceId"] !== undefined ? data["InvoiceId"] : <any>null;
         }
     }
 
@@ -904,6 +910,8 @@ export class PPSearchDTO implements IPPSearchDTO {
         data["LateFeesAmountPaid"] = this.lateFeesAmountPaid !== undefined ? this.lateFeesAmountPaid : <any>null;
         data["OnAccountAmountPaid"] = this.onAccountAmountPaid !== undefined ? this.onAccountAmountPaid : <any>null;
         data["TotalAmountPaid"] = this.totalAmountPaid !== undefined ? this.totalAmountPaid : <any>null;
+        data["ContractStatusCode"] = this.contractStatusCode !== undefined ? this.contractStatusCode : <any>null;
+        data["InvoiceId"] = this.invoiceId !== undefined ? this.invoiceId : <any>null;
         
         return data;
     }
@@ -948,12 +956,14 @@ export interface IPPSearchDTO {
     lateFeesAmountPaid: number | null;
     onAccountAmountPaid: number | null;
     totalAmountPaid: number | null;
-    
+    contractStatusCode: string | null;
+    invoiceId?: number ;
 }
 
 export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPeriodSearchByContractPeriodRequest {
     periodId: number | null;
     contractId: number | null;
+    invoiceId: number | null;
     page: number | null;
     pageSize: number | null;
 
@@ -970,6 +980,7 @@ export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPerio
         if (data) {
             this.periodId = data["PeriodId"] !== undefined ? data["PeriodId"] : <any>null;
             this.contractId = data["ContractId"] !== undefined ? data["ContractId"] : <any>null;
+            this.invoiceId = data["InvoiceId"] !== undefined ? data["InvoiceId"] : <any>null;
             this.page = data["Page"] !== undefined ? data["Page"] : <any>null;
             this.pageSize = data["PageSize"] !== undefined ? data["PageSize"] : <any>null;
         }
@@ -985,6 +996,7 @@ export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPerio
         data = typeof data === 'object' ? data : {};
         data["PeriodId"] = this.periodId !== undefined ? this.periodId : <any>null;
         data["ContractId"] = this.contractId !== undefined ? this.contractId : <any>null;
+        data["InvoiceId"] = this.invoiceId !== undefined ? this.invoiceId : <any>null;
         data["Page"] = this.page !== undefined ? this.page : <any>null;
         data["PageSize"] = this.pageSize !== undefined ? this.pageSize : <any>null;
         return data;
@@ -1001,6 +1013,7 @@ export class PaymentPeriodSearchByContractPeriodRequest implements IPaymentPerio
 export interface IPaymentPeriodSearchByContractPeriodRequest {
     periodId: number | null;
     contractId: number | null;
+    invoiceId?: number;
     page: number | null;
     pageSize: number | null;
 }
@@ -1114,6 +1127,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
 
     lateFeeMissing: PPDetailSearchByContractPeriodDTO;
     email?: string;
+    isLiquidating?: boolean;
 
     constructor(data?: IPPHeaderSearchByContractPeriodDTO) {
         if (data) {
@@ -1173,6 +1187,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.lateFeeMissing = data["LateFeeMissing"] !== undefined && data["LateFeeMissing"] !== null? PPDetailSearchByContractPeriodDTO.fromJS(data["LateFeeMissing"]) : <any>null;
             this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
             this.email =  data["Email"] !== undefined ? data["Email"] : <any>null;
+            this.isLiquidating =  data["IsLiquidating"] !== undefined ? data["IsLiquidating"] : <any>null;
         }
     }
 
@@ -1227,6 +1242,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["LateFeeMissing"] = this.lateFeeMissing !== undefined ? this.lateFeeMissing : <any>null;
         data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
         data["Email"] = this.email !== undefined ? this.email : <any>null;
+        data["IsLiquidating"] = this.isLiquidating !== undefined ? this.isLiquidating : <any>null;
         return data;
     }
 
@@ -1266,6 +1282,7 @@ export interface IPPHeaderSearchByContractPeriodDTO {
     totalIncome: number | null;
     balance: number | null;
     lateFeeMissing: PPDetailSearchByContractPeriodDTO | null;
+    isLiquidating?: boolean;
 }
 
 export class ResponseDTOOfPPDetailSearchByContractPeriodDTO implements IResponseDTOOfPPDetailSearchByContractPeriodDTO {

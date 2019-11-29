@@ -1,3 +1,4 @@
+import { PaymentService } from './../../shared/api/payment.service';
 import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
@@ -68,13 +69,13 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         private masterDataService: MasterDataService,
         private translate: TranslateService,
         private paymentPeriodService: PaymentPeriodService
-        ) {
+    ) {
         this.paymentMaintenance = new PPHeaderSearchByContractPeriodDTO();
 
 
         Observable.forkJoin([
             this.translate.get('common.requiredField')
-            
+
         ]).subscribe((messages: string[]) => this.buildMessages(...messages));
         this.genericValidator = new GenericValidator(this.validationMessages);
     }
@@ -84,8 +85,8 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             paymentTypeId: {
                 required: required
             },
-            paymentAmount: { required: required},
-            email: { required: required}
+            paymentAmount: { required: required },
+            email: { required: required }
         };
     }
 
@@ -93,9 +94,9 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.displayMessage = this.genericValidator.processMessages(this.paymentForm, force);
     }
 
-    public showDetailMaintenance= false;
+    public showDetailMaintenance = false;
     public addDetail() {
-        this.showDetailMaintenance= true;
+        this.showDetailMaintenance = true;
         this.paymentForm.get('paymentTypeId').setValidators(Validators.required);
         this.paymentForm.updateValueAndValidity();
     }
@@ -106,7 +107,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             return;
         }
 
-        let paymentType = this._listPaymentTypes.filter(q=> q.typeId == this.paymentForm.get('paymentTypeId').value);
+        let paymentType = this._listPaymentTypes.filter(q => q.typeId == this.paymentForm.get('paymentTypeId').value);
         let payment = this.paymentForm.getRawValue();
         let paymentDetail = new PaymentPeriodRegisterRequest();
         paymentDetail.contractId = this.paymentMaintenance.contractId;
@@ -118,31 +119,28 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         paymentDetail.tenantId = this.paymentMaintenance.tenantId;
         paymentDetail.houseId = this.paymentMaintenance.houseId;
         this.paymentPeriodService.registerPaymentDetail(paymentDetail)
-        .subscribe(
-            r=> {
-                var dataResult: any = r;
-                this.successFlag = dataResult.IsValid;
-                if (!dataResult.IsValid)
-                {
-                    this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+            .subscribe(
+                r => {
+                    var dataResult: any = r;
+                    this.successFlag = dataResult.IsValid;
+                    if (!dataResult.IsValid) {
+                        this.errorMessages = dataResult.Messages.length > 0 ? [{ message: dataResult.Messages[0].Message }] : dataResult.Messages;
+                    }
+                    else {
+                        this.successMessage = 'Payment detail was inserted successfully!';;
+                        this.errorMessages = null;
+                    }
                 }
-                else
-                {
-                    this.successMessage = 'Payment detail was inserted successfully!';;
-                    this.errorMessages = null;
+            )
+            .add(
+                r => {
+                    this.getPaymentDetailForLiquidation(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
                 }
-            }
-        )
-        .add(
-            r => {
-                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-            }
-        );
-        this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
+            );
+        this.showDetailMaintenance = this.paymentForm.get('continueRegistration').value;
     }
 
-    closeDetail()
-    {
+    closeDetail() {
         this.showDetailMaintenance = false;
     }
 
@@ -151,7 +149,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     }
 
     sub: Subscription;
-    fileRepositorySearchRequest= new FileRepositorySearchRequest();
+    fileRepositorySearchRequest = new FileRepositorySearchRequest();
     parentId: string;
 
     ngOnInit() {
@@ -160,38 +158,58 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.buildForm();
         this.initialize();
         this.sub = this.route.params.subscribe(params => {
-            let periodId= params['periodId'];
+            let periodId = params['periodId'];
             let contractId = params['contractId'];
-
-            if (periodId != null && typeof (periodId) != 'undefined' &&
-                contractId != null && typeof (contractId) != 'undefined' ) {
-                this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
-                .subscribe(res => {
-                    debugger
-                    let dataResult: any = res;
-                    this.paymentMaintenance = dataResult.data;
-                    this.fileRepositorySearchRequest.parentIds = this.paymentMaintenance.pPDetail.map(q=> q.paymentPeriodId);
-                    this.parentId = null;
-                    this.countItemsDet = dataResult.data.pPDetail.length;
-                    this.gridDataDet = {
-                        data: dataResult.data.pPDetail,
-                        total: dataResult.data.pPDetail.length
-                    }
-                })
-                .add(r=> {
-                    this.calculatePendingToPay();
-                    //this.verifyLateFeeMissing();
-                });
+            let invoiceId = params['invoiceId'];
+            if (invoiceId != null && typeof (invoiceId) != 'undefined') {
+                this.paymentDataService.searchCriteriaByContract(null, null, invoiceId, 1, 20)
+                    .subscribe(res => {
+                        let dataResult: any = res;
+                        this.paymentMaintenance = dataResult.data;
+                        this.fileRepositorySearchRequest.parentIds = this.paymentMaintenance.pPDetail.map(q => q.paymentPeriodId);
+                        this.parentId = null;
+                        this.countItemsDet = dataResult.data.pPDetail.length;
+                        this.gridDataDet = {
+                            data: dataResult.data.pPDetail,
+                            total: dataResult.data.pPDetail.length
+                        }
+                    })
+                    .add(r => {
+                        this.calculatePendingToPay();
+                    });
                 this.flgEdition = "E";
-            } else {
-                this.flgEdition = "N";
+            }
+            else {
+                if (periodId != null && typeof (periodId) != 'undefined' &&
+                contractId != null && typeof (contractId) != 'undefined') {
+                this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
+                    .subscribe(res => {
+                        debugger
+                        let dataResult: any = res;
+                        this.paymentMaintenance = dataResult.data;
+                        this.fileRepositorySearchRequest.parentIds = this.paymentMaintenance.pPDetail.map(q => q.paymentPeriodId);
+                        this.parentId = null;
+                        this.countItemsDet = dataResult.data.pPDetail.length;
+                        this.gridDataDet = {
+                            data: dataResult.data.pPDetail,
+                            total: dataResult.data.pPDetail.length
+                        }
+                    })
+                    .add(r => {
+                        this.calculatePendingToPay();
+                        //this.verifyLateFeeMissing();
+                    });
+                this.flgEdition = "E";
+                }
+                else {
+                    this.flgEdition = "N";
+                }
             }
         });
 
     }
 
-    public buildForm()
-    {
+    public buildForm() {
         this.paymentForm = this.formBuilder.group({
             paymentTypeId: [null, [Validators.required]],
             paymentAmount: [null, [Validators.required]],
@@ -202,7 +220,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         });
     }
 
-    initialize(){
+    initialize() {
         this.getPaymentTypes();
     }
 
@@ -210,7 +228,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.masterDataService.getGeneralTableByTableName('PaymentType')
             .subscribe(res => {
                 let dataResult = new ResponseListDTO(res);
-                let paymentTypeFiltered = dataResult.data.filter(q=> q.code !== 'RENT' && q.code !== 'DEPOSIT');
+                let paymentTypeFiltered = dataResult.data.filter(q => q.code !== 'RENT' && q.code !== 'DEPOSIT');
                 this._listPaymentTypes = [];
                 for (let i = 0; i < paymentTypeFiltered.length; i++) {
                     this._listPaymentTypes.push({
@@ -222,7 +240,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getPaymentDetailByContract(contractId, periodId): void {
+    private getPaymentDetailForLiquidation(contractId, periodId): void {
         this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
             .subscribe(res => {
                 let dataResult: any = res;
@@ -236,18 +254,19 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             });
     }
 
-
-    // public verifyLateFeeMissing()
-    // {
-    //     if (this.paymentMaintenance.lateFeeMissing!==null)
-    //     {
-    //         this.openedLateFeeConfimationPopup = true;
-    //         this.confirmLateFeeMessage = "Se ha identificado pago de renta tardía por " + this.paymentMaintenance.lateFeeMissing.paymentAmount + ", deseas agregarlo al periodo?";
-    //     }
-    //     else {
-    //         this.openedLateFeeConfimationPopup = false;
-    //     }
-    // }
+    private getPaymentDetailByInvoiceId(invoiceId: number): void {
+        this.paymentDataService.searchCriteriaByContract(null, null, invoiceId, 1, 20)
+            .subscribe(res => {
+                let dataResult: any = res;
+                this.paymentMaintenance = dataResult.data;
+                this.countItemsDet = dataResult.data.pPDetail.length;
+                this.gridDataDet = {
+                    data: dataResult.data.pPDetail,
+                    total: dataResult.data.pPDetail.length
+                }
+                this.calculatePendingToPay();
+            });
+    }
 
     public dataToPrint: any;
 
@@ -260,24 +279,22 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.paymentMaintenance.totalLateFee = this.paymentMaintenance.pendingLateFee;
         this.paymentMaintenance.totalOnAcount = this.paymentMaintenance.pendingOnAccount;
         this.paymentMaintenance.totalService = this.paymentMaintenance.pendingService;
+        this.paymentMaintenance.isLiquidating = true;
         this.calculatePendingToPay();
 
         this.paymentDataService.update(this.paymentMaintenance)
             .subscribe(res => {
+                var dataResult: any = res;
+                this.successFlag = dataResult.isValid;
+                this.errorMessages = dataResult.messages;
+                this.successMessage = 'Payment Detail was Updated';
 
-                    var dataResult: any = res;
-                    this.successFlag = dataResult.isValid;
-                    this.errorMessages = dataResult.messages;
-                    this.successMessage = 'Payment Detail was Updated';
-
-                    if (this.successFlag) {
-                        this.dataToPrint = this.paymentMaintenance;
-                        this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-                    }
+                if (this.successFlag) {
+                    this.dataToPrint = this.paymentMaintenance;
+                    debugger;
+                    this.getPaymentDetailByInvoiceId(dataResult.data.id);
+                }
             });
-
-
-
     }
 
 
@@ -285,8 +302,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.router.navigateByUrl('amigotenant/payment');
     }
 
-    public savePaymentStatus()
-    {
+    public savePaymentStatus() {
         this.paymentForm.get('paymentTypeId').clearValidators();
         this.paymentForm.updateValueAndValidity();
         this.openedConfimationPopup = true;
@@ -301,7 +317,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     public onEdit(data): void {
         this.isDetailVisible = true;
         this.setPaymentPeriodPopup(data);
-        
+
     }
 
     public onClickCloseDialog(refreshGridAfterSaving: boolean) {
@@ -326,7 +342,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     //===========
 
     public deleteMessage: string = "Are you sure to delete this Payment?";
-    paymentPeriodIdToDelete: any; 
+    paymentPeriodIdToDelete: any;
 
     onDelete(entityToDelete) {
         this.paymentPeriodIdToDelete = entityToDelete.paymentPeriodId;
@@ -447,13 +463,13 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         paymentDetail.referenceNo = data.reference;
         paymentDetail.comment = data.comment;
         this.paymentPeriodService.updatePaymentDetail(paymentDetail)
-        .subscribe()
-        .add(
-            r => {
-                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-            }
-        );
-        this.showDetailMaintenance= this.paymentForm.get('continueRegistration').value;
+            .subscribe()
+            .add(
+                r => {
+                    this.getPaymentDetailForLiquidation(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
+                }
+            );
+        this.showDetailMaintenance = this.paymentForm.get('continueRegistration').value;
         this.closeDetailPopup();
         this.calculatePendingToPay();
     }
@@ -541,7 +557,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     // public openedLateFeeConfimationPopup = false;
 
     // public yesConfirmLateFee() {
-        
+
     //     let payment = this.paymentMaintenance.lateFeeMissing;
     //     let paymentDetail = new PaymentPeriodRegisterRequest();
     //     paymentDetail.contractId = this.paymentMaintenance.contractId;

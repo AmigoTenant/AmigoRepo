@@ -227,7 +227,7 @@
                                 </kendo-grid-column>
                                 <kendo-grid-column-group title="P E N D I E N T E S" [width]="600" [locked]="false">
 
-                                    <kendo-grid-column field="rentAmountPending"  title="Rent" width="35">
+                                    <kendo-grid-column field="rentAmountPending" title="Rent" width="35">
                                         <ng-template kendoGridCellTemplate let-dataItem>
                                             <div class="text-right pendingLabel">
                                                 <span>{{dataItem.rentAmountPending|number:'2.2-2' }}</span><br />
@@ -321,10 +321,17 @@
                                             <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
                                                 <i class="xico-action-edit"></i>
                                             </button>
-                                            <button type="button" class="btn-icon" (click)="onLiquidate(dataItem)">
-                                                <i class="fa fa-balance-scale"></i>
-                                            </button>
-                                            
+                                            <div *ngIf="dataItem.contractStatusCode!=='LIQUIDED'">
+                                                <button type="button" class="btn-icon" (click)="onLiquidate(dataItem)">
+                                                    <i class="fa fa-balance-scale"></i>
+                                                </button>
+                                            </div>
+                                            <div *ngIf="dataItem.contractStatusCode==='LIQUIDED'">
+                                                <button type="button" class="btn-icon"
+                                                    (click)="onShowLiquidation(dataItem)">
+                                                    <i class="fa fa-balance-scale"></i>
+                                                </button>
+                                            </div>
                                         </div>
                                     </ng-template>
                                 </kendo-grid-column>

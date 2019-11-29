@@ -8,6 +8,7 @@ namespace Amigo.Tenant.Application.DTOs.Requests.PaymentPeriod
     {
         public int? ContractId { get; set; }
         public int? PeriodId { get; set; }
+        public int? InvoiceId { get; set; }
 
     }
 }

@@ -28,5 +28,6 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
         public int? TenantId { get; set; }
         public int? PaymentTypeId { get; set; }
         public bool IsPayInFull { get; set; }
+        public bool?  IsLiquidating { get; set; }
     }
 }

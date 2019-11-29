@@ -381,4 +381,8 @@ export class PaymentComponent implements OnInit {
     onLiquidate(data: any){
         this.router.navigate(['/amigotenant/payment/liquidate', data.contractId, data.periodId]);
     }
+
+    onShowLiquidation(data: any){
+        this.router.navigate(['/amigotenant/payment/liquidate', 0, 0, data.invoiceId]);
+    }
 }

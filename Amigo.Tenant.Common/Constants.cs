@@ -208,6 +208,7 @@ namespace Amigo.Tenant.Common
                 public const string Expired = "EXPIRED";
                 public const string Canceled = "CANCELED";
                 public const string Renewed = "RENEWED";
+                public const string Liquided = "LIQUIDED";
             }
             public struct ContractDetail
             {

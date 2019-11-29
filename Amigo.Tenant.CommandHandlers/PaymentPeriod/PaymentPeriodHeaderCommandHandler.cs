@@ -27,6 +27,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         private readonly IRepository<InvoiceDetail> _repositoryInvoiceDetail;
         private readonly IRepository<EntityStatus> _repositoryEntityStatus;
         private readonly IRepository<Concept> _repositoryConcept;
+        private readonly IRepository<Contract> _repositoryContract;
+        private readonly IRepository<ContractChangeStatus> _repositoryContractChangeStatus;
 
         public PaymentPeriodHeaderCommandHandler(
          IBus bus,
@@ -36,7 +38,9 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
          IRepository<Invoice> repositoryInvoice,
          IRepository<EntityStatus> repositoryEntityStatus,
          IRepository<InvoiceDetail> repositoryInvoiceDetail,
-         IRepository<Concept> repositoryConcept)
+         IRepository<Concept> repositoryConcept,
+         IRepository<Contract> repositoryContract,
+         IRepository<ContractChangeStatus> repositoryContractChangeStatus)
         {
             _bus = bus;
             _mapper = mapper;
@@ -46,6 +50,8 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
             _repositoryEntityStatus = repositoryEntityStatus;
             _repositoryInvoiceDetail = repositoryInvoiceDetail;
             _repositoryConcept = repositoryConcept;
+            _repositoryContract = repositoryContract;
+            _repositoryContractChangeStatus = repositoryContractChangeStatus;
         }
 
 
@@ -183,8 +189,23 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
                     --c;
                     index = await CreatePaymentPeriod(item, message, c, null);
                 }
-                
 
+                //CONTRACT
+                var contractLiquided = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.Contract && q.Code == Constants.EntityStatus.Contract.Liquided);
+                var contract = await _repositoryContract.FirstOrDefaultAsync(q=> q.ContractId == message.PPDetail.First().ContractId);
+                contract.ContractStatusId = contractLiquided.EntityStatusId;
+                contract.Update(message.UserId);
+                _repositoryContract.Update(contract);
+
+                //ADDING CONTRACT DETAIL
+                var contractChangeStatus = new ContractChangeStatus()
+                {
+                    ContractChangeStatusId = -1,
+                    ContractId = contract.ContractId,
+                    ContractStatusId = contractLiquided.EntityStatusId,
+                };
+                contractChangeStatus.Creation(message.UserId);
+                _repositoryContractChangeStatus.Add(contractChangeStatus);
 
                 await _unitOfWork.CommitAsync();
 

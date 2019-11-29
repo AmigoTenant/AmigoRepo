@@ -41,5 +41,7 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public decimal? FinesAmountPaid { get; set; }
         public decimal? OnAccountAmountPaid { get; set; }
         public decimal? LateFeesAmountPaid { get; set; }
+        public string ContractStatusCode { get; set; }
+        public int? InvoiceId { get; set; }
     }
 }
