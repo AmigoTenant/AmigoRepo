@@ -549,6 +549,7 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
         const status = response.status;
 
         if (status === 200) {
+            debugger;
             let result200: ResponseDTO = null;
             let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
             result200 = resultData200 ? ResponseDTO.fromJS(resultData200) : new ResponseDTO();
@@ -1128,6 +1129,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
     lateFeeMissing: PPDetailSearchByContractPeriodDTO;
     email?: string;
     isLiquidating?: boolean;
+    contractStatusCode?: string;
 
     constructor(data?: IPPHeaderSearchByContractPeriodDTO) {
         if (data) {
@@ -1188,6 +1190,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
             this.houseId = data["HouseId"] !== undefined ? data["HouseId"] : <any>null;
             this.email =  data["Email"] !== undefined ? data["Email"] : <any>null;
             this.isLiquidating =  data["IsLiquidating"] !== undefined ? data["IsLiquidating"] : <any>null;
+            this.contractStatusCode =  data["ContractStatusCode"] !== undefined ? data["ContractStatusCode"] : <any>null;
         }
     }
 
@@ -1243,6 +1246,7 @@ export class PPHeaderSearchByContractPeriodDTO implements IPPHeaderSearchByContr
         data["HouseId"] = this.houseId !== undefined ? this.houseId : <any>null;
         data["Email"] = this.email !== undefined ? this.email : <any>null;
         data["IsLiquidating"] = this.isLiquidating !== undefined ? this.isLiquidating : <any>null;
+        data["ContractStatusCode"] = this.contractStatusCode !== undefined ? this.contractStatusCode : <any>null;
         return data;
     }
 
@@ -1283,6 +1287,7 @@ export interface IPPHeaderSearchByContractPeriodDTO {
     balance: number | null;
     lateFeeMissing: PPDetailSearchByContractPeriodDTO | null;
     isLiquidating?: boolean;
+    contractStatusCode?: string;
 }
 
 export class ResponseDTOOfPPDetailSearchByContractPeriodDTO implements IResponseDTOOfPPDetailSearchByContractPeriodDTO {

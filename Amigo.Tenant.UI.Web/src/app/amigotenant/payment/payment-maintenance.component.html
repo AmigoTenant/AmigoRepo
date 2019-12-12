@@ -32,7 +32,7 @@
                 </div>
             </div>
             <div class="col-sm-4 text-right">
-                <input type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
+                <input *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
                 <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancel">
             </div>
         </div>
@@ -44,7 +44,7 @@
                     <div class="row">
 
                         <div class="col-md-7 col-sm-7 col-xs-12">
-                            <div class="row">
+                            <div  *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" class="row">
                                 <div class="col-sm-12">
                                     <div class="button-container">
                                         <button type="button" class="ro-button btn-success" (click)="addDetail()"
@@ -219,7 +219,7 @@
                             <div class="row m-2">
                                 <h4>EVIDENCIA</h4>
                             </div>
-                            <div class="row m-2">
+                            <div  *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" class="row m-2">
                                 <div class="col-sm-12">
                                     <div class="button-container" style="height: 30px">
                                         &nbsp;

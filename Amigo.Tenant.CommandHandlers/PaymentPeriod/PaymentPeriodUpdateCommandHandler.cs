@@ -45,7 +45,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
         {
             try
             {
-                var index = await CreatePaymentPeriod(command);
+                var index = await UpdatePaymentPeriod(command);
                 
                 await _unitOfWork.CommitAsync();
 
@@ -66,7 +66,7 @@ namespace Amigo.Tenant.CommandHandlers.PaymentPeriods
 
         }
 
-        private async Task<int> CreatePaymentPeriod(PaymentPeriodUpdateCommand command)
+        private async Task<int> UpdatePaymentPeriod(PaymentPeriodUpdateCommand command)
         {
             var entityToSave = new PaymentPeriod();
             var paymentPeriodPending = await _repositoryEntityStatus.FirstOrDefaultAsync(q => q.EntityCode == Constants.EntityCode.PaymentPeriod && q.Code == Constants.EntityStatus.PaymentPeriod.Pending);

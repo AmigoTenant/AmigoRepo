@@ -255,6 +255,12 @@
                                             <i class="fa fa-balance-scale"></i>
                                         </button>
                                     </div>
+
+                                    <div *ngIf="dataItem.contractStatusCode=='LIQUIDED'">
+                                        <button type="button" class="btn-icon" (click)="onView(dataItem);">
+                                            <i class="xico-shipment-find"></i>
+                                        </button>
+                                    </div>
                                 </ng-template>
                             </kendo-grid-column>
 

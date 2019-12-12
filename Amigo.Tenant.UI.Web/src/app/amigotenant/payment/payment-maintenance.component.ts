@@ -384,13 +384,31 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy, OnChanges
     }
 
     yesDelete() {
+        // for (let i in this.paymentMaintenance.pPDetail) {
+        //     if (this.paymentMaintenance.pPDetail[i].paymentPeriodId == this.paymentPeriodIdToDelete) {
+        //         this.paymentMaintenance.pPDetail.splice(parseInt(i), 1);
+        //         break;
+        //     }
+        // }
+        // this.openedDeletionConfimation = false;
+
+        let paymentDetail = new PaymentPeriodUpdateRequest();
         for (let i in this.paymentMaintenance.pPDetail) {
             if (this.paymentMaintenance.pPDetail[i].paymentPeriodId == this.paymentPeriodIdToDelete) {
-                this.paymentMaintenance.pPDetail.splice(parseInt(i), 1);
+                paymentDetail.paymentPeriodId = this.paymentMaintenance.pPDetail[i].paymentPeriodId;
                 break;
             }
         }
+
+        this.paymentPeriodService.deletePaymentDetail(paymentDetail)
+        .subscribe()
+        .add(
+            r => {
+                    this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
+            }
+        );
         this.openedDeletionConfimation = false;
+        this.calculatePendingToPay();
     }
 
     public openedDeletionConfimation: boolean = false;

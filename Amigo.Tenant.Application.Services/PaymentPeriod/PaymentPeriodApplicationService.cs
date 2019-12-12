@@ -3,6 +3,7 @@ using Amigo.Tenant.Application.DTOs.Responses.Common;
 using Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod;
 using Amigo.Tenant.Application.Services.Interfaces.MasterData;
 using Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod;
+using Amigo.Tenant.Commands.Common;
 using Amigo.Tenant.Commands.PaymentPeriod;
 using Amigo.Tenant.Common;
 using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
@@ -155,6 +156,12 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             var resp = await _bus.SendAsync(command);
             return ResponseBuilder.Correct(resp);
         }
+        public async Task<ResponseDTO> DeletePaymentPeriodDetailAsync(PaymentPeriodUpdateRequest paymentPeriod)
+        {
+            var command = _mapper.Map<PaymentPeriodUpdateRequest, PaymentPeriodDeleteCommand>(paymentPeriod);
+            var resp = await _bus.SendAsync(command);
+            return ResponseBuilder.Correct(resp);
+        }
 
         public async Task<ResponseDTO> UpdatePaymentPeriodAsync(PPHeaderSearchByContractPeriodDTO paymentsPeriod)
         {
@@ -178,7 +185,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 }
                 command.PPDetail = commandDetails;
                 var resp = await _bus.SendAsync(command);
-                return ResponseBuilder.Correct(resp);
+                var invoiceId = ((CommandResult)resp);
+                return ResponseBuilder.Correct(resp, ((RegisteredCommandResult)resp).Id, "");
             }
 
             return response;
@@ -289,6 +297,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.TotalInvoice = header.TotalInvoice;
                 ppHeaderSearchByContractPeriodDTO.TotalIncome = header.TotalIncome;
                 ppHeaderSearchByContractPeriodDTO.HouseId = header.HouseId;
+                ppHeaderSearchByContractPeriodDTO.ContractStatusCode = header.ContractStatusCode;
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
                 var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
@@ -437,6 +446,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 ppHeaderSearchByContractPeriodDTO.TotalInvoice = header.TotalInvoice;
                 ppHeaderSearchByContractPeriodDTO.TotalIncome = header.TotalIncome;
                 ppHeaderSearchByContractPeriodDTO.HouseId = header.HouseId;
+                ppHeaderSearchByContractPeriodDTO.ContractStatusCode = header.ContractStatusCode;
 
                 var detailList = new List<PPDetailSearchByContractPeriodDTO>();
 
@@ -448,33 +458,33 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                     var deposit = await _paymentPeriodRepository.ListAsync(q => q.ContractId == header.ContractId && q.ConceptId == depositConcept.Data.ConceptId);
                     sumDeposit = deposit.Sum(q => q.PaymentAmount);
                     //ADD DEVOLUCION DEPOSITO
-                    var lateFeeDetail = new PPDetailSearchByContractPeriodDTO();
-                    lateFeeDetail.PaymentPeriodId = id--;
-                    lateFeeDetail.PeriodCode = currentPeriod.Data.Code;
-                    lateFeeDetail.ContractId = header.ContractId;
-                    lateFeeDetail.PeriodId = currentPeriod.Data.PeriodId;
-                    lateFeeDetail.PaymentAmount = sumDeposit*-1;
-                    lateFeeDetail.Comment = string.Format("Devolucion de depositos");
+                    var devolucionDeposito = new PPDetailSearchByContractPeriodDTO();
+                    devolucionDeposito.PaymentPeriodId = id--;
+                    devolucionDeposito.PeriodCode = currentPeriod.Data.Code;
+                    devolucionDeposito.ContractId = header.ContractId;
+                    devolucionDeposito.PeriodId = currentPeriod.Data.PeriodId;
+                    devolucionDeposito.PaymentAmount = sumDeposit*-1;
+                    devolucionDeposito.Comment = string.Format("Devolucion de depositos");
 
-                    lateFeeDetail.PaymentTypeId = expensePaymenType.GeneralTableId;
-                    lateFeeDetail.PaymentTypeValue = expensePaymenType.Value;
-                    lateFeeDetail.PaymentTypeCode = expensePaymenType.Code;
-                    lateFeeDetail.PaymentTypeName = expensePaymenType.Code;
-                    lateFeeDetail.PaymentPeriodStatusCode = Constants.EntityStatus.PaymentPeriod.Pending;
-                    lateFeeDetail.PaymentPeriodStatusId = entityStatusPayment.EntityStatusId;
-                    lateFeeDetail.IsRequired = true;
-                    lateFeeDetail.IsSelected = true;
-                    lateFeeDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
-                    lateFeeDetail.PaymentDescription = depositDevolConcept.Data.Description;
-                    lateFeeDetail.ConceptId = depositDevolConcept.Data.ConceptId;
-                    lateFeeDetail.ConceptCode = depositDevolConcept.Data.Code;
-                    lateFeeDetail.TenantId = header.TenantId;
-                    lateFeeDetail.IsTenantFavorable = true; // isLateFeeTenantFavorable;
-                    lateFeeDetail.HouseId = header.HouseId;
+                    devolucionDeposito.PaymentTypeId = expensePaymenType.GeneralTableId;
+                    devolucionDeposito.PaymentTypeValue = expensePaymenType.Value;
+                    devolucionDeposito.PaymentTypeCode = expensePaymenType.Code;
+                    devolucionDeposito.PaymentTypeName = expensePaymenType.Code;
+                    devolucionDeposito.PaymentPeriodStatusCode = Constants.EntityStatus.PaymentPeriod.Pending;
+                    devolucionDeposito.PaymentPeriodStatusId = entityStatusPayment.EntityStatusId;
+                    devolucionDeposito.IsRequired = true; 
+                    devolucionDeposito.IsSelected = true;
+                    devolucionDeposito.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
+                    devolucionDeposito.PaymentDescription = depositDevolConcept.Data.Description;
+                    devolucionDeposito.ConceptId = depositDevolConcept.Data.ConceptId;
+                    devolucionDeposito.ConceptCode = depositDevolConcept.Data.Code;
+                    devolucionDeposito.TenantId = header.TenantId;
+                    devolucionDeposito.IsTenantFavorable = true; // isLateFeeTenantFavorable;
+                    devolucionDeposito.HouseId = header.HouseId;
 
-                    lateFeeDetail.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
-                    balanceAmount += lateFeeDetail.PaymentAmount;
-                    detailList.Add(lateFeeDetail);
+                    devolucionDeposito.PaymentPeriodStatusName = Constants.EntityStatus.PaymentPeriodStatusName.Pending;
+                    balanceAmount += devolucionDeposito.PaymentAmount;
+                    detailList.Add(devolucionDeposito);
                 }
 
                 foreach (var item in paymentsPeriod)
@@ -530,7 +540,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                         lateFeeDetail.PaymentTypeName = lateFeePaymenType.Code;
                         lateFeeDetail.PaymentPeriodStatusCode = Constants.EntityStatus.PaymentPeriod.Pending;
                         lateFeeDetail.PaymentPeriodStatusId = entityStatusPayment.EntityStatusId;
-                        lateFeeDetail.IsRequired = true;
+                        lateFeeDetail.IsRequired = false;//permite ver el edit y el tacho
                         lateFeeDetail.IsSelected = true;
                         lateFeeDetail.TableStatus = DTOs.Requests.Common.ObjectStatus.Added;
                         lateFeeDetail.PaymentDescription = lateFeePaymenType.Value;

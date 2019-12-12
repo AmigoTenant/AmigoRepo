@@ -37,5 +37,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public PPDetailSearchByContractPeriodDTO LateFeeMissing { get; set; }
         public int? HouseId { get; set; }
         public bool? IsLiquidating { get; set; }
+        public string ContractStatusCode { get; set; }
     }
 }

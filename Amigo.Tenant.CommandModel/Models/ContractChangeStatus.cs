@@ -26,9 +26,9 @@ namespace Amigo.Tenant.CommandModel.Models
 
         public int ContractChangeStatusId { get; set; }
         public int ContractId { get; set; }
-        public int ContractStatusId { get; set; }
+        public int? ContractStatusId { get; set; }
         public int? TenantId { get; set; }
-        public int HouseId { get; set; }
+        public int? HouseId { get; set; }
         public decimal? Deposit { get; set; }
         public decimal? Rent { get; set; }
         public int? BeginPeriodId { get; set; }

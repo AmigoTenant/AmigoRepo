@@ -315,7 +315,7 @@
                                         </ng-template>
                                     </kendo-grid-column>
                                 </kendo-grid-column-group>
-                                <kendo-grid-column [width]="50">
+                                <kendo-grid-column [width]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
                                             <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
@@ -329,7 +329,7 @@
                                             <div *ngIf="dataItem.contractStatusCode==='LIQUIDED'">
                                                 <button type="button" class="btn-icon"
                                                     (click)="onShowLiquidation(dataItem)">
-                                                    <i class="fa fa-balance-scale"></i>
+                                                    <i class="fa fa-eye"></i>
                                                 </button>
                                             </div>
                                         </div>

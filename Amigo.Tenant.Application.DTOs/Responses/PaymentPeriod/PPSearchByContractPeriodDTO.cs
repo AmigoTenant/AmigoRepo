@@ -48,5 +48,6 @@ namespace Amigo.Tenant.Application.DTOs.Responses.PaymentPeriod
         public int? FileRepositoryId { get; set; }
         public int HouseId { get; set; }
         public int PeriodSequence { get; set; }
+        public string ContractStatusCode { get; set; }
     }
 }

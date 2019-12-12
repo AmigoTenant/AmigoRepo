@@ -161,7 +161,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
             let periodId = params['periodId'];
             let contractId = params['contractId'];
             let invoiceId = params['invoiceId'];
-            if (invoiceId != null && typeof (invoiceId) != 'undefined') {
+            if (invoiceId != null && invoiceId != 0 && typeof (invoiceId) != 'undefined') {
                 this.paymentDataService.searchCriteriaByContract(null, null, invoiceId, 1, 20)
                     .subscribe(res => {
                         let dataResult: any = res;
@@ -292,7 +292,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
                 if (this.successFlag) {
                     this.dataToPrint = this.paymentMaintenance;
                     debugger;
-                    this.getPaymentDetailByInvoiceId(dataResult.data.id);
+                    this.getPaymentDetailByInvoiceId(dataResult.pk);
                 }
             });
     }
@@ -397,48 +397,15 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     //     $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
     // }
 
+    totalPending = 0;
     public calculatePendingToPay() {
-        let pendingRows = this.gridDataDet.data.filter(q => q.paymentPeriodStatusCode === 'PPPENDING').length;
-        let rowsSelected = 0;
-        let totalDeposit = 0;
-        let totalRent = 0;
-        let totalFine = 0;
-        let totalLateFee = 0;
-        let totalService = 0;
-        let totalOnAccount = 0;
-        let total = 0;
+        let pendingRows = this.gridDataDet.data.filter(q => q.paymentPeriodStatusCode === 'PPPAYED').length;
+        let paymentAmountTotal = 0;
 
         for (let item in this.gridDataDet.data) {
-            if (this.gridDataDet.data[item].isSelected) {
-                rowsSelected++;
-            }
-
-            if ((this.gridDataDet.data[item].isSelected == null && this.gridDataDet.data[item].isRequired && this.gridDataDet.data[item].paymentPeriodStatusCode == 'PPPENDING') ||
-                (this.gridDataDet.data[item].isSelected && this.gridDataDet.data[item].paymentPeriodStatusCode == 'PPPENDING')) {
-                if (this.gridDataDet.data[item].paymentTypeCode == 'DEPOSIT')
-                    totalDeposit += this.gridDataDet.data[item].paymentAmount;
-                if (this.gridDataDet.data[item].paymentTypeCode == 'RENT')
-                    totalRent += this.gridDataDet.data[item].paymentAmount;
-                if (this.gridDataDet.data[item].paymentTypeCode == 'FINE')
-                    totalFine += this.gridDataDet.data[item].paymentAmount;
-                if (this.gridDataDet.data[item].paymentTypeCode == 'SERVICE')
-                    totalService += this.gridDataDet.data[item].paymentAmount;
-                if (this.gridDataDet.data[item].paymentTypeCode == 'LATEFEE')
-                    totalLateFee += this.gridDataDet.data[item].paymentAmount;
-                if (this.gridDataDet.data[item].paymentTypeCode == 'ONACCOUNT')
-                    totalOnAccount += this.gridDataDet.data[item].paymentAmount;
-                total += this.gridDataDet.data[item].paymentAmount;
-            }
+            paymentAmountTotal += this.gridDataDet.data[item].paymentAmount;
         }
-        this.paymentMaintenance.pendingDeposit = totalDeposit;
-        this.paymentMaintenance.pendingRent = totalRent;
-        this.paymentMaintenance.pendingFine = totalFine;
-        this.paymentMaintenance.pendingLateFee = totalLateFee;
-        this.paymentMaintenance.pendingService = totalService;
-        this.paymentMaintenance.pendingOnAccount = totalOnAccount;
-        this.paymentMaintenance.pendingTotal = total;
-        this.paymentMaintenance.isPayInFull = rowsSelected === pendingRows;
-
+        this.totalPending = paymentAmountTotal
     }
 
     setPaymentPeriodPopup(dataItem: any): void {
@@ -449,7 +416,6 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         this.paymentPeriodPopup.paymentTypeCode = dataItem.paymentTypeCode;
         this.paymentPeriodPopup.referenceNo = dataItem.reference;
         this.isDetailVisible = true;
-
     };
 
     closeDetailPopup(): void {
@@ -524,13 +490,13 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
 
     // public dataLatestInvoiceId: any;
 
-    // onPrint(fileRepositoryId) {
-    //     if (fileRepositoryId === '' || fileRepositoryId == undefined || fileRepositoryId == null) {
-    //         this.writeMessage(false, 'There is no invoice to print');
-    //         return;
-    //     }
-    //     this.paymentDataService.searchInvoiceById(fileRepositoryId);
-    // }
+    onPrint(fileRepositoryId) {
+        if (fileRepositoryId === '' || fileRepositoryId == undefined || fileRepositoryId == null) {
+            this.writeMessage(false, 'There is no invoice to print');
+            return;
+        }
+        this.paymentDataService.searchInvoiceById(fileRepositoryId);
+    }
 
 
     //===========

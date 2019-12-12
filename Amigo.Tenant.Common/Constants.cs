@@ -196,6 +196,7 @@ namespace Amigo.Tenant.Common
             public const string HouseServicePeriodStatus = "HP";
             public const string Invoice = "IN";
             public const string Expense = "EX";
+            public const string Payment = "PY";
         }
 
 
@@ -326,6 +327,7 @@ namespace Amigo.Tenant.Common
             public const string Update = "UPDATE";
             public const string Extension = "EXTENSION";
             public const string Modification = "MODIFICATION";
+            public const string Liquidation = "LIQUIDATION";
         }
 
     }

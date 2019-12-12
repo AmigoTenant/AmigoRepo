@@ -24,7 +24,7 @@
                 </div>
             </div>
             <div class="col-sm-4 text-right">
-                <input type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
+                <input *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" type="button" class="ro-button btn-success" (click)="savePaymentStatus()" value="Save">
                 <input type="button" class="ro-button btn-default" (click)="onCancel()" value="Cancel">
             </div>
         </div>
@@ -36,7 +36,7 @@
                 <div class="row m-2">
                     <h4>PENDIENTES</h4>
                 </div>
-                <div class="row m-2">
+                <div  *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" class="row m-2">
                     <div class="col-sm-12">
                         <div class="button-container">
                             <button type="button" class="ro-button btn-success" (click)="addDetail()"
@@ -103,7 +103,7 @@
                 <div class="row">
                     <kendo-grid [data]="gridDataDet" [selectable]="false" id="grdPaymentDetail" style="height: 300px;"
                         (pageChange)="pageChange1($event)" >
-                        <kendo-grid-column [width]="2">
+                        <kendo-grid-column [width]="5">
                             <ng-template kendoGridCellTemplate let-dataItem let-rowIndex="rowIndex">
                                 <div class="text-center">
                                     <input class="ro-checkbox" type="checkbox" id="{{rowIndex}}" value="option"
@@ -154,7 +154,6 @@
                         <kendo-grid-column [width]="10">
                             <ng-template kendoGridCellTemplate let-dataItem>
                                 <div class="text-right">
-
                                     <div *ngIf="!dataItem.isRequired && dataItem.paymentPeriodStatusCode==='PPPENDING'">
                                         <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
                                             <i class="xico-action-edit"></i>
@@ -176,23 +175,28 @@
                         </kendo-grid-column>
                     </kendo-grid>
                 </div>
-                <div class="row">
-                    <div class="col-sm-10">Total Pendientes:</div>
-                    <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
+                <div class="row m-4" *ngIf="paymentMaintenance.contractStatusCode==='LIQUIDED'; else showOtherCalculates">
+                        <div class="col-sm-10">Total Pendientes:</div>
+                        <div class="col-sm-2">{{ totalPending|number:'2.2-2' }}</div>
                 </div>
-                <div class="row" *ngIf="paymentMaintenance.balance<0; else showFavorAmigo">
-                    <div class="col-sm-10" style="color:blue">Saldo a favor del Tenant:</div>
-                    <div class="col-sm-2" style="color:blue">{{paymentMaintenance.balance|number:'2.2-2' }}
-                    </div>
-                </div>
-                <ng-template #showFavorAmigo>
+                <ng-template #showOtherCalculates>
                     <div class="row">
-                        <div class="col-sm-10" style="color:red">Saldo a favor de AMIGO:</div>
-                        <div class="col-sm-2" style="color:red">
-                            {{paymentMaintenance.balance|number:'2.2-2' }}</div>
+                        <div class="col-sm-10">Total Pendientes:</div>
+                        <div class="col-sm-2">{{paymentMaintenance.totalIncome|number:'2.2-2' }}</div>
                     </div>
+                    <div class="row" *ngIf="paymentMaintenance.balance<0; else showFavorAmigo">
+                        <div class="col-sm-10" style="color:blue">Saldo a favor del Tenant:</div>
+                        <div class="col-sm-2" style="color:blue">{{paymentMaintenance.balance|number:'2.2-2' }}
+                        </div>
+                    </div>
+                    <ng-template #showFavorAmigo>
+                        <div class="row">
+                            <div class="col-sm-10" style="color:red">Saldo a favor de AMIGO:</div>
+                            <div class="col-sm-2" style="color:red">
+                                {{paymentMaintenance.balance|number:'2.2-2' }}</div>
+                        </div>
+                    </ng-template>
                 </ng-template>
-
                 <div class="row">
                     <div class="col-sm-4">
                         <input type="text" class="form-control input-control" formControlName="email"
@@ -216,7 +220,7 @@
                 <div class="row m-2">
                     <h4>EVIDENCIA</h4>
                 </div>
-                <div class="row m-2">
+                <div  *ngIf="paymentMaintenance.contractStatusCode!=='LIQUIDED'" class="row m-2">
                     <div class="col-sm-12">
                         <div class="button-container" style="height: 30px">
                             &nbsp;
