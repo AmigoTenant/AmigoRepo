@@ -116,7 +116,7 @@ export interface IPaymentPeriodClient {
      * @return OK
      */
     searchForLiquidation(search_periodId: number, search_contractId: number, search_page: number, search_pageSize: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null>;
-    
+    sendEmailAboutLiquidation(search_periodId: number, search_contractId: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null>;
 }
 
 @Injectable()
@@ -362,6 +362,59 @@ export class PaymentPeriodClient extends AmigoTenantServiceBase implements IPaym
     }
 
     protected processSearchForLiquidation(response: Response): ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null {
+        const status = response.status;
+
+        if (status === 200) {
+            const responseText = response.text();
+            let result200: ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null = null;
+            let resultData200 = responseText === "" ? null : JSON.parse(responseText, this.jsonParseReviver);
+            result200 = resultData200 ? ResponseDTOOfPPHeaderSearchByContractPeriodDTO.fromJS(resultData200) : new ResponseDTOOfPPHeaderSearchByContractPeriodDTO();
+            return result200;
+        } else if (status !== 200 && status !== 204) {
+            const responseText = response.text();
+            return this.throwException("An unexpected server error occurred.", status, responseText);
+        }
+        return null;
+    }
+
+
+    /**
+     * @return OK
+     */
+    sendEmailAboutLiquidation(search_periodId: number, search_contractId: number): Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null> {
+        let url_ = this.baseUrl + "/api/payment/sendEmailAboutLiquidation?";
+        if (search_periodId !== undefined)
+            url_ += "search.periodId=" + encodeURIComponent("" + search_periodId) + "&";
+        if (search_contractId !== undefined)
+            url_ += "search.contractId=" + encodeURIComponent("" + search_contractId) + "&";
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = "";
+
+        return this.http.request(url_, this.transformOptions({
+            body: content_,
+            method: "get",
+            headers: new Headers({
+                "Content-Type": "application/json; charset=UTF-8",
+                "Accept": "application/json; charset=UTF-8"
+            })
+        })).map((response) => {
+            return this.transformResult(url_, response, (response) => this.processSendEmailAboutLiquidation(response));
+        }).catch((response: any, caught: any) => {
+            if (response instanceof Response) {
+                try {
+                    return Observable.of(this.transformResult(url_, response, (response) => this.processSearchCriteriaByContract(response)));
+                } catch (e) {
+                    return <Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO>><any>Observable.throw(e);
+                }
+            } else
+                return <Observable<ResponseDTOOfPPHeaderSearchByContractPeriodDTO>><any>Observable.throw(response);
+            });
+
+        
+    }
+
+    protected processSendEmailAboutLiquidation(response: Response): ResponseDTOOfPPHeaderSearchByContractPeriodDTO | null {
         const status = response.status;
 
         if (status === 200) {

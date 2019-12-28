@@ -10,8 +10,8 @@ namespace Amigo.Tenant.Application.DTOs.Requests.Leasing
 
         public int? NewTenantId { get; set; }
 
-        public int? NewDeposit { get; set; }
-        public int? NewRent { get; set; }
+        public decimal? NewDeposit { get; set; }
+        public decimal? NewRent { get; set; }
         public int? NewHouseId { get; set; }
 
         public int ContractId { get; set; }

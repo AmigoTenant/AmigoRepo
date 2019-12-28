@@ -206,7 +206,7 @@
                         </span>
                     </div>
                     <div class="col-sm-4">
-                        <button class="btn btn-success">
+                        <button class="btn btn-success" (click)="onSendLiquidation()">
                             <i class="fa fa-send"></i>
                             Enviar Constancia
                         </button>
@@ -246,5 +246,12 @@
     <kendo-dialog-actions>
         <button type="button" class="k-button" (click)="closeConfirmation()">No</button>
         <button type="button" class="k-button k-primary" (click)="yesConfirm()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Confirmation" *ngIf="openSendLiquidation" (close)="closeSendLiquidation()">
+    <div>Deseas enviar email? Se enviaran todas las evidencias</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="closeSendLiquidation()">No</button>
+        <button type="button" class="k-button k-primary" (click)="yesConfirmSendLiquidation()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>

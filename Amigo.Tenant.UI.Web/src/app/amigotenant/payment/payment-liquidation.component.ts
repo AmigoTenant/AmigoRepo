@@ -62,6 +62,10 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
 
     public paymentPeriodRegisterRequest: PaymentPeriodRegisterRequest;
 
+    totalPending = 0;
+
+    openSendLiquidation= false;
+
     constructor(private route: ActivatedRoute,
         private paymentDataService: PaymentPeriodClient,
         private router: Router,
@@ -270,7 +274,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
 
     public dataToPrint: any;
 
-    public savePaymentDetail() {
+    public savePaymentDetailonHeader() {
 
         this.paymentMaintenance.totalAmount = this.paymentMaintenance.pendingTotal;
         this.paymentMaintenance.totalDeposit = this.paymentMaintenance.pendingDeposit;
@@ -373,31 +377,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
         let isExport: boolean = false;
     }
 
-    // public changeItemHeader() {
-    //     let c = this.gridDataDet.data.length;
-    //     let index = 0; 
-    //     for (let item in this.gridDataDet.data) {
 
-    //         if ($("#" + index)[0].disabled == false) {
-    //             $("#" + index)[0].checked = this.isColumnHeaderSelected;
-    //             this.gridDataDet.data[item].isSelected = this.isColumnHeaderSelected;
-    //         }
-    //         index++;
-    //     }
-    //     this.isColumnHeaderSelected = !this.isColumnHeaderSelected;
-    // }
-
-    // public changeItem(d) {
-    //     d.isSelected = !d.isSelected;
-    //     this.calculatePendingToPay();
-    // }
-
-    // public deselectColumnAll() {
-    //     this.isColumnHeaderSelected = true;
-    //     $("#HeaderTemplate")[0].checked = !this.isColumnHeaderSelected;
-    // }
-
-    totalPending = 0;
     public calculatePendingToPay() {
         let pendingRows = this.gridDataDet.data.filter(q => q.paymentPeriodStatusCode === 'PPPAYED').length;
         let paymentAmountTotal = 0;
@@ -507,7 +487,7 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     public openedConfimationPopup = false;
 
     public yesConfirm() {
-        this.savePaymentDetail();
+        this.savePaymentDetailonHeader();
         this.openedConfimationPopup = false;
     }
 
@@ -516,37 +496,24 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
     }
 
     //===========
-    //ADDING LATEFEE
+    /*SEND EMAIL INFORMACION DE LIQUIDATION */
     //===========
 
-    // public confirmLateFeeMessage: string;
-    // public openedLateFeeConfimationPopup = false;
+    public onSendLiquidation(){
+        this.openSendLiquidation = true;
+    }
 
-    // public yesConfirmLateFee() {
+    public yesConfirmSendLiquidation(){
 
-    //     let payment = this.paymentMaintenance.lateFeeMissing;
-    //     let paymentDetail = new PaymentPeriodRegisterRequest();
-    //     paymentDetail.contractId = this.paymentMaintenance.contractId;
-    //     paymentDetail.periodId = this.paymentMaintenance.periodId;
-    //     paymentDetail.paymentAmount = payment.paymentAmount;
-    //     paymentDetail.paymentTypeId = parseInt(payment.paymentTypeId);
-    //     paymentDetail.referenceNo = payment.reference;
-    //     paymentDetail.comment = payment.comment;
-    //     paymentDetail.tenantId = this.paymentMaintenance.tenantId;
-    //     paymentDetail.houseId = payment.houseId;
-    //     this.paymentPeriodService.registerPaymentDetail(paymentDetail)
-    //     .subscribe()
-    //     .add(
-    //         r => {
-    //                 this.getPaymentDetailByContract(this.paymentMaintenance.contractId, this.paymentMaintenance.periodId);
-    //         }
-    //     );
-    //     this.openedLateFeeConfimationPopup = false;
-    // }
+        this.paymentDataService.sendEmailAboutLiquidation(this.paymentMaintenance.periodId, this.paymentMaintenance.contractId)
+        .subscribe(res => {
+        });
+    }
 
-    // public closeConfirmationLateFee() {
-    //     this.openedLateFeeConfimationPopup = false;
-    // }
+    public closeSendLiquidation(){
+        this.openSendLiquidation = false;
+    }
+
 
 }
 
