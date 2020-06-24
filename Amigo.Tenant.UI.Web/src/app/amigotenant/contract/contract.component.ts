@@ -306,8 +306,10 @@ ngOnInit() {
     }
 
     private resizeGrid() {
+
         var grids = $(".grid-container > .k-grid");
         $.each(grids, (e, grid) => {
+            debugger;
             var _combinedPageElementsHeight = 0;
             var _viewportHeight = 0;
             $.each($(grid).parent().siblings().not("kendo-dialog"), (e, v) => {

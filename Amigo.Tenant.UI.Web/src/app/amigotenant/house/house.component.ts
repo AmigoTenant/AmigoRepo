@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
 import { HouseClient, HouseSearchRequest, HouseDTO, DeleteHouseRequest } from '../../shared/api/services.client';
@@ -10,41 +10,45 @@ import { Router,ActivatedRoute } from '@angular/router';
 import { DataService } from './dataService';
 import { Observable, Subscription } from 'rxjs'
 import { ListsService } from '../../shared/constants/lists.service';
+import { SearchCriteriaDevice } from '../../model/searchCriteria-Device';
 
 declare var $: any;
 
 @Component({
     selector: 'st-house',
-    templateUrl: './house.component.html'
+    templateUrl: './house.component.html',
+    encapsulation: ViewEncapsulation.None
+//     styles: [`
+//     .k-grid .k-grid-content td {
+//       white-space: nowrap;
+//       overflow: hidden;
+//       text-overflow: ellipsis;
+//     }
+//   `]
 })
 export class HouseComponent implements OnInit {
 
     constructor(private router: Router, private route: ActivatedRoute,
         private houseDataService: HouseClient, public dataservice: DataService,
-        private _listsService: ListsService) { }
+        private _listsService: ListsService) { 
+        }
 
     //@ViewChild(HouseMaintenanceComponent) viewHouseComponent: HouseMaintenanceComponent;
 
     public gridData: GridDataResult;
-    public skip: number = 0;
     public listHouseTypes = [];
     public listHouseStatuses = [];
     public SelectedCode: string;
-    public buttonCount: number = 20;
-    public info: boolean = true;
-    public type: 'numeric' | 'input' = 'numeric';
-    public pageSizes: any = [20, 50, 100, 200];
-    public previousNext: boolean = true;
-    public currentPage: number = 0;
+
     public flgMantenance: boolean = true;
 
     confirmDeletionVisible: boolean = false;
     confirmDeletionResponse: boolean = false;
     confirmDeletionActionCode: string;
-    countItems: number = 0;
+    totalResultCount: number = 0;
     visible: boolean = true;
 
-    public activeInactiveStatus: any[] = this._listsService.ActiveInactiveStatus();
+    //public activeInactiveStatus: any[] = this._listsService.ActiveInactiveStatus();
 
     @Output() open: EventEmitter<any> = new EventEmitter();
     @Output() close: EventEmitter<any> = new EventEmitter();
@@ -53,45 +57,81 @@ export class HouseComponent implements OnInit {
     deleteHouse = new DeleteHouseRequest();
     sub: Subscription;
 
+    //PAGINATION
+    public buttonCount: number = 20;
+    public info: boolean = true;
+    public type: 'numeric' | 'input' = 'numeric';
+    public pageSizes: any = [20, 50, 100, 200];
+    public previousNext: boolean = true;
+    public currentPage: number = 0;
+    public skip: number = 0;
+
+    public pageChange({ skip, take }: PageChangeEvent): void {
+        this.currentPage = skip;
+        this.searchCriteria.pageSize = take;
+        this.onSearch();
+    }
+    
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
 
     ngOnInit() {
-        this.searchCriteria.pageSize = 40;
-        this.currentPage = 0;
+        // this.searchCriteria.pageSize = 20;
+        // this.currentPage = 0;
+        this.initializeForm();
+        //this.resetResults();
+    }
 
-        // this.sub = this.route.params.subscribe(params => {
-        //     setTimeout(() => {
-        //             this.onSearch();
-        //         }, 500);
-        // });
-
+    getHouseTypes() {
         this.houseDataService.getHouseTypes()
-            .subscribe(res => {
-                var dataResult: any = res;
-                this.listHouseTypes = dataResult.data;
+        .subscribe(res => {
+            const dataResult: any = res;
+            this.listHouseTypes = dataResult.data;
 
-                this.houseDataService.getHouseStatuses()
-                    .subscribe(res => {
-                        var dataResult: any = res;
-                        this.listHouseStatuses = dataResult.data;
+            this.houseDataService.getHouseStatuses()
+                .subscribe(res => {
+                    var dataResult: any = res;
+                    this.listHouseStatuses = dataResult.data;
 
-                        this.sub = this.route.params.subscribe(params => {
-                            this.onSearch();
-                        });
+                    this.sub = this.route.params.subscribe(params => {
+                        this.onSearch();
+                    })
+                    .add(r => {
+                        this.resetGrid();
                     });
-            });
+                });
+        });
+    }
 
-        // this.houseDataService.getCities()
-        //     .subscribe(res => {
-        //         var dataResult: any = res;
-        //         this.listStatesCities = dataResult.data;
-        //         this.listCountries = this.getCountries(dataResult.data);
-        //     });
 
-        $(document).ready(() => { this.resizeGrid(); });
-        $(window).bind('load resize scroll', (e) => { this.resizeGrid(); });
+    initializeForm(): void {
+        this.searchCriteria = new HouseSearchRequest();
+        this.getHouseTypes();
+        this.resetGrid();
+        this.searchCriteria.pageSize = 20;
+        this.totalResultCount = 0;
+    }
+
+//     public resetResults() {
+//         $(document).ready(() => {
+//             debugger;
+//             this.resizeGrid();
+//         });
+
+//         $(window).bind('load resize scroll', (e) => {
+//             debugger;
+//             this.resizeGrid();
+//         });
+//   }
+    
+    public resetGrid(): void {
+        let grid: GridDataResult[] = [];
+        this.gridData = {
+            data: grid,
+            total: 0
+        };
+        this.skip = 0;
     }
 
     containsDuplicates = function (v, data) {
@@ -118,7 +158,7 @@ export class HouseComponent implements OnInit {
         )
             .subscribe(res => {
                 var dataResult: any = res;
-                this.countItems = dataResult.data.total;
+                this.totalResultCount = dataResult.data.total;
                 this.gridData = {
                     data: dataResult.data.items,
                     total: dataResult.data.total,
@@ -129,7 +169,8 @@ export class HouseComponent implements OnInit {
     deleteFilters(): void {
         this.searchCriteria = new HouseSearchRequest();
         //this.viewHouseComponent.resetMaintenanceForm();
-        this.searchCriteria.pageSize = 40; this.currentPage = 0;
+        this.searchCriteria.pageSize = 20; 
+        this.currentPage = 0;
         setTimeout(() => {
             $(window).resize();
         }, 300);
@@ -179,40 +220,53 @@ export class HouseComponent implements OnInit {
         this.confirmDeletionVisible = false;
     }
 
-    onReloadGrid():void {
-        this.searchCriteria.pageSize = 40;
-        this.currentPage = 0;
-        this.onSearch();
-    }
-    public pageChange({ skip, take }: PageChangeEvent): void {
-        this.currentPage = skip;
-        this.searchCriteria.pageSize = take;
-        this.onSearch();
-    }
-
+    // onReloadGrid():void {
+    //     this.searchCriteria.pageSize = 20;
+    //     this.currentPage = 0;
+    //     this.onSearch();
+    // }
+    
     public resizeGrid() {
-        var grids = $(".grid-container > .k-grid");
-        $.each(grids, (e, grid) => {
-            var _combinedPageElementsHeight = 0;
-            var _viewportHeight = 0;
-            $.each($(grid).parent().siblings().not("kendo-dialog"), (e, v) => {
-                _combinedPageElementsHeight += $(v).outerHeight();
-            });
+        // var grids = $(".grid-container > .k-grid");
+        // $.each(grids, (e, grid) => {
+        //     var _combinedPageElementsHeight = 0;
+        //     var _viewportHeight = 0;
+        //     $.each($(grid).parent().siblings().not("kendo-dialog"), (e, v) => {
+        //         _combinedPageElementsHeight += $(v).outerHeight();
+        //     });
+        //     $.each($(grid).find('.k-grid-content').parent().siblings(), (e, v) => {
+        //         _combinedPageElementsHeight += $(v).outerHeight();
+        //     });
+        //     _combinedPageElementsHeight += $(".menu-top").outerHeight();
+        //     //_combinedPageElementsHeight += $(".page-header").outerHeight();
+        //     _combinedPageElementsHeight += $(".ro-tab.tabs-top").outerHeight();
+        //     _viewportHeight += $(window).outerHeight() - _combinedPageElementsHeight;
+        //     $(grid).find('.k-grid-content').height(_viewportHeight);
+        // });
 
-            $.each($(grid).find('.k-grid-content').parent().siblings(), (e, v) => {
-                _combinedPageElementsHeight += $(v).outerHeight();
-            });
 
-            if($(".menu-top").length)
-                _combinedPageElementsHeight += $(".menu-top").outerHeight();
-            if($(".page-header").length)
-                _combinedPageElementsHeight += $(".page-header").outerHeight();
-            if($(".ro-tab.tabs-top").length)
-                _combinedPageElementsHeight += $(".ro-tab.tabs-top").outerHeight();
+        // var grids = $(".grid-container > .k-grid");
+        // $.each(grids, (e, grid) => {
+        //     var _combinedPageElementsHeight = 0;
+        //     var _viewportHeight = 0;
+        //     $.each($(grid).parent().siblings().not("kendo-dialog"), (e, v) => {
+        //         _combinedPageElementsHeight += $(v).outerHeight();
+        //     });
 
-            _viewportHeight += $(window).outerHeight() - _combinedPageElementsHeight;
-            $(grid).find('.k-grid-content').height(_viewportHeight);
-        });
+        //     $.each($(grid).find('.k-grid-content').parent().siblings(), (e, v) => {
+        //         _combinedPageElementsHeight += $(v).outerHeight();
+        //     });
+
+        //     if($(".menu-top").length)
+        //         _combinedPageElementsHeight += $(".menu-top").outerHeight();
+        //     if($(".page-header").length)
+        //         _combinedPageElementsHeight += $(".page-header").outerHeight();
+        //     if($(".ro-tab.tabs-top").length)
+        //         _combinedPageElementsHeight += $(".ro-tab.tabs-top").outerHeight();
+
+        //     _viewportHeight += $(window).outerHeight() - _combinedPageElementsHeight;
+        //     $(grid).find('.k-grid-content').height(_viewportHeight);
+        // });
     }
 
     public onExport() {

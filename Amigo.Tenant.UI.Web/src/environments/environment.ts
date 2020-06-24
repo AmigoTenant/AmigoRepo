@@ -6,7 +6,7 @@
 export const environment = {
     production: false,
     serviceUrl: "http://127.0.0.1:8072/",
-    authenticationUrl: "http://127.0.0.1:7071/",
+    authenticationUrl:  "http://51.161.11.9:7071/", //"http://127.0.0.1:7071/",
     applicationId: "amigo.tenant.web",
     redirectUri: "http://127.0.0.1:8070",
     logoutRedirectUri: "http://127.0.0.1:8070",

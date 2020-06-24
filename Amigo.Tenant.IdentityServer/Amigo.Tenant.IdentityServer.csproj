@@ -441,6 +441,7 @@
   <ItemGroup>
     <None Include="Properties\PublishProfiles\AmigoTenantIdentityServerWebAPI - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\AmigoTenantIdentityServerWebAPIDev - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

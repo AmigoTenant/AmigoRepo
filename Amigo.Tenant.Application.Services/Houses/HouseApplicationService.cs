@@ -127,7 +127,7 @@ namespace Amigo.Tenant.Application.Services.Houses
             List<OrderExpression<HouseDTO>> orderExpressionList = new List<OrderExpression<HouseDTO>>();
             orderExpressionList.Add(new OrderExpression<HouseDTO>(OrderType.Asc, p => p.Address));
 
-            Expression<Func<HouseDTO, bool>> queryFilter = c => true;
+            Expression<Func<HouseDTO, bool>> queryFilter = c => c.RowStatus;
 
             if (!string.IsNullOrEmpty(search.Code))
                 queryFilter = queryFilter.And(p => p.Code.Contains(search.Code));
@@ -144,8 +144,8 @@ namespace Amigo.Tenant.Application.Services.Houses
             if (!string.IsNullOrEmpty(search.Address))
                 queryFilter = queryFilter.And(p => p.Address.Contains(search.Address));
 
-            if (search.RowStatus.HasValue)
-                queryFilter = queryFilter.And(p => p.RowStatus == search.RowStatus);
+            //if (search.RowStatus.HasValue)
+            //    queryFilter = queryFilter.And(p => p.RowStatus == search.RowStatus);
 
             if (search.HouseStatusId.HasValue)
                 queryFilter = queryFilter.And(p => p.HouseStatusId == search.HouseStatusId.Value);

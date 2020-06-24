@@ -244,7 +244,8 @@
                                         </button>
                                     </div>
 
-                                    <div *ngIf="dataItem.contractStatusCode=='FORMAL' || dataItem.contractStatusCode=='RENEWED'">
+                                    <div
+                                        *ngIf="dataItem.contractStatusCode=='FORMAL' || dataItem.contractStatusCode=='RENEWED'">
                                         <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
                                             <i class="xico-action-remove"></i>
                                         </button>
@@ -290,10 +291,10 @@
         <at-contract-maintenance></at-contract-maintenance>
     </div>
 </div>
-<div >
+<div>
     <kendo-dialog title={{titleChangeTerm}} *ngIf="openedChangeTermConfimation" (close)="closeChangeTermConfirmation()">
         <at-contract-change-term (onCancelPopupEmitter)="closeChangeTermConfirmation()"
-            (onAcceptPopupEmitter)="yesChangeTerm($event)"
-            class="col-sm-8" [contract]=contractToChangeTerm></at-contract-change-term>
+            (onAcceptPopupEmitter)="yesChangeTerm($event)" class="col-sm-8" [contract]=contractToChangeTerm>
+        </at-contract-change-term>
     </kendo-dialog>
 </div>
