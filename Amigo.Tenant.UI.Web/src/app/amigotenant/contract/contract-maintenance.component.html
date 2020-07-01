@@ -163,7 +163,7 @@
 
                         </fieldset>
                     </div>
-                    <div class="col-sm-4">
+                    <div class="col-sm-4" *ngIf="parentId">
                         <at-upload-file [entityCode]="entityCode" [parentId]="parentId"></at-upload-file>
                     </div>
                 </div>

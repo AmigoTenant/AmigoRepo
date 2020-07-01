@@ -124,11 +124,9 @@ namespace Amigo.Tenant.Application.Services.MasterData
         public async Task<ResponseDTO<PeriodDTO>> GetLastPeriodAsync()
         {
             List<OrderExpression<PeriodDTO>> orderExpressionList = new List<OrderExpression<PeriodDTO>>();
-            orderExpressionList.Add(new OrderExpression<PeriodDTO>(OrderType.Desc, p => p.Sequence));
+            orderExpressionList.Add(new OrderExpression<PeriodDTO>(OrderType.Desc, p => p.BeginDate));
 
-            Expression<Func<PeriodDTO, bool>> queryFilter = c => true;
-
-            queryFilter = queryFilter.And(p => p.RowStatus == true);
+            Expression<Func<PeriodDTO, bool>> queryFilter = p => p.RowStatus;
 
             var period = await _periodDataAccess.FirstOrDefaultAsync(queryFilter, orderExpressionList.ToArray());
 

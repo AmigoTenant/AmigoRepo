@@ -281,3 +281,11 @@ CHARINDEX(CPTO.Code, (SELECT AppSettingValue FROM AppSetting WHERE Code= 'CPTTOF
  CHARINDEX(C2.Code, (SELECT AppSettingValue FROM AppSetting WHERE Code= 'CPTTOFAVTN' AND RowStatus = 1)) = 0     ) as IncomeConcept        
  LEFT JOIN FileRepository FR ON FR.ParentId = I.InvoiceId  AND FR.EntityCode = 'IN'
  GO
+
+
+ 
+IF NOT EXISTS(SELECT * FROM EntityStatusTable WHERE CODE = 'PY')
+begin 
+insert into EntityStatusTable (Code, Name, Rowstatus, CreatedBy, CreationDate)
+values('PY', 'Payment Period', 1, 1, getdate())
+END

@@ -163,7 +163,7 @@
                                         }"
                                     (pageChange)="pageChange1($event)">
                                     <kendo-grid-column field="featureCode" title="Code"></kendo-grid-column>
-                                    <kendo-grid-column field="featureDescription" title="Description"></kendo-grid-column>
+                                    <kendo-grid-column field="featureDescription" title="Type"></kendo-grid-column>
                                     <kendo-grid-column field="featureMeasure" title="Measure"></kendo-grid-column>
                                     <kendo-grid-column title="Rentable">
                                         <ng-template kendoGridCellTemplate let-dataItem>
@@ -171,7 +171,7 @@
                                             <span *ngIf="!dataItem.isRentable">No</span>
                                         </ng-template>
                                     </kendo-grid-column>
-                                    <kendo-grid-column field="addressInfo" title="Address"></kendo-grid-column>
+                                    <kendo-grid-column field="addressInfo" title="Description"></kendo-grid-column>
                                     <kendo-grid-column field="rentPrice" title="Rent Price">
                                         <ng-template kendoGridCellTemplate let-dataItem>
                                             <div class="text-right">

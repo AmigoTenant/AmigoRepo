@@ -355,7 +355,10 @@ ngOnInit() {
     //EDIT
     //===========
 
+    parentId: number;
+
     onEdit(data, isView): void {
+        this.parentId = data.contractId;
         this.router.navigateByUrl('/amigotenant/contract/edit/'+ data.contractId+ '/' + isView); // + data.contractId);
     }
 

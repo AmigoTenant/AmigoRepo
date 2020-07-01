@@ -188,7 +188,6 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
                 contractId != null && typeof (contractId) != 'undefined') {
                 this.paymentDataService.searchForLiquidation(periodId, contractId, 1, 20)
                     .subscribe(res => {
-                        debugger
                         let dataResult: any = res;
                         this.paymentMaintenance = dataResult.data;
                         this.fileRepositorySearchRequest.parentIds = this.paymentMaintenance.pPDetail.map(q => q.paymentPeriodId);
@@ -295,7 +294,6 @@ export class PaymentLiquidationComponent implements OnInit, OnDestroy {
 
                 if (this.successFlag) {
                     this.dataToPrint = this.paymentMaintenance;
-                    debugger;
                     this.getPaymentDetailByInvoiceId(dataResult.pk);
                 }
             });

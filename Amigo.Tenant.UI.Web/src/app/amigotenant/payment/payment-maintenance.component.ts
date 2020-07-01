@@ -180,7 +180,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy, OnChanges
                 contractId != null && typeof (contractId) != 'undefined' ) {
                 this.paymentDataService.searchCriteriaByContract(periodId, contractId, null, 1, 20)
                 .subscribe(res => {
-                    debugger;
                     let dataResult: any = res;
                     this.paymentMaintenance = dataResult.data;
                     this.parentId = this.paymentMaintenance.paymentPeriodId;
@@ -214,7 +213,6 @@ export class PaymentMaintenanceComponent implements OnInit, OnDestroy, OnChanges
                 contractId != null && typeof (contractId) != 'undefined' ) {
                 this.paymentDataService.searchCriteriaByContract(periodId, contractId, null, 1, 20)
                 .subscribe(res => {
-                    debugger;
                     let dataResult: any = res;
                     this.paymentMaintenance = dataResult.data;
                     this.parentId = this.paymentMaintenance.paymentPeriodId;

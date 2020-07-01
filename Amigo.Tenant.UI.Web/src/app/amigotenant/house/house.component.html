@@ -87,7 +87,7 @@
                 <div class="col-sm-2 text-right">
                     <div class="button-container">
                         <button type="submit" id="btnSearch" (click)="onSearch()" class="ro-button btn-default"
-                            st-authCheck>Search</button>
+                            class="ro-button btn-primary" st-authCheck>Search</button>
                         <!--[actionCode]="'House.Search'"-->
                     </div>
                     <div class="button-container">
@@ -104,12 +104,12 @@
                             House</button>
                         <!--[actionCode]="'House.Create'"-->
                     </div>
-                    <div class="button-container">
+                    <!-- <div class="button-container">
                         <button type="button" id="btnExport" (click)="onExport()" class="ro-button btn-default">
                             <i class="xico-file-download"></i>
                             Export to Excel
                         </button>
-                    </div>
+                    </div> -->
                 </div>
             </div>
 
@@ -117,7 +117,7 @@
     </div>
     <div class="col-sm-12">
         <kendo-grid id="kgrid-Contract" [data]="gridData" [pageSize]="searchCriteria.pageSize" [skip]="currentPage"
-            [height]="510" [style.width.%]="100" [pageable]="{
+            [height]="430" [style.width.%]="100" [pageable]="{
                         buttonCount: buttonCount,
                            info: info,
                         type: type,

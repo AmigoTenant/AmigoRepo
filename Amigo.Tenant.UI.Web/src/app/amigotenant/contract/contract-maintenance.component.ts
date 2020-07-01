@@ -94,16 +94,14 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
 
     public entityCode = EntityCode.Contract;
     public parentId: number = null;
+
+    //@Input() parent: number;
     
     constructor(
-            private route: ActivatedRoute, 
+            private route: ActivatedRoute,
             private router: Router,
             private contractClient: ContractClient,
-            private entityStatusClient: EntityStatusClient,
             private houseClient: HouseClient,
-            private featureClient: FeatureClient,
-            private listConfirmation: ConfirmationList,
-            private listsService: ListsService,
             private generalTableClient: GeneralTableClient,
             private businessAppSettingService: BusinessAppSettingService
         ) {
@@ -123,17 +121,16 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         this.initializeForm();
         this._isView = true;
         this.sub = this.route.params.subscribe(params => {
-            let id = params['code'];
-            this._isView = (params['isView']==='true');
-            if (id != null && typeof (id) != 'undefined') {
+        let id = params['code'];
+        this._isView = (params['isView'] === 'true');
+            //this.parentId =  id;
+            if (id != null && typeof (id) !== 'undefined') {
                 this.getContractById(id);
-                this.flgEdition = "E";
-                this.allowEditing = this.model.contractStatusCode == "DRAFT" ? true : false;
+                this.flgEdition = 'E';
+                this.allowEditing = this.model.contractStatusCode === "DRAFT" ? true : false;
                 this._isDisabled = true;
-                this.parentId =  id;
-
             } else {
-                this.flgEdition = "N";
+                this.flgEdition = 'N';
                 this.model.contractId = -1;
                 this.isVisibleHouseFeature = false;
                 this.model.contractCode = "";
@@ -141,7 +138,6 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 this.model.contractStatusCode = "DRAFT";
                 this._isDisabled = false;
             }
-
         });
 
     }
@@ -150,7 +146,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     {
         this.contractClient.getById(id).subscribe(
             response => {
-                var dataResult: any = response;
+                const dataResult: any = response;
                 this.model = dataResult.data;
                 this.modelFrom = this.getDateFromModel(this.model.beginDate);
                 this.modelTo = this.getDateFromModel(this.model.endDate);
@@ -160,8 +156,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 this.getHouseFeatureDetailContract();
                 this.getHouseFeatureAndDetail();
                 this.setOtherTenants(this.model.otherTenants);
-                
-                this.parentId = this.model.contractStatusCode == "FORMAL" || this.model.contractStatusCode == "RENEWED"  ? id : null;
+                this.parentId = this.model.contractStatusCode === "FORMAL" || this.model.contractStatusCode === "RENEWED" || this.model.contractStatusCode === "DRAFT" ? id : null;
             });
     }
 
@@ -258,12 +253,12 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
 
         this.setHouseFeatureToDB();
         if (this.isValidData()) {
-            if (this.flgEdition == "N") {
+            if (this.flgEdition === 'N') {
                 //NEW
                 this.model.contractStatusId = 2; //DRAFT
                 this.model.rowStatus = true;
                 this.contractClient.register(this.model).subscribe(res => {
-                    var dataResult: any = res;
+                    let dataResult: any = res;
                     this.successFlag = dataResult.isValid;
                     this.errorMessages = dataResult.messages;
                     this.successMessage = 'Contract was created';
@@ -276,6 +271,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                         this.getContractById(dataResult.pk);
                         this.flgEdition = "E";
                         this._isDisabled = true;
+                        //this.parentId =  dataResult.pk;
                     }
                     
                 });
@@ -283,7 +279,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
             else {
                 //UPDATE
                 this.contractClient.update(this.model).subscribe(res => {
-                    var dataResult: any = res;
+                    const dataResult: any = res;
                     this.successFlag = dataResult.isValid;
                     this.errorMessages = dataResult.messages;
                     this.successMessage = 'Contract was Updated';

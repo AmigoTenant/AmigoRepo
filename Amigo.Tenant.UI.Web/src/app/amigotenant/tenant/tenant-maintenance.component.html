@@ -135,17 +135,6 @@
                   </div>
               </div>
             </div>
-            <!--<div class="col-sm-6">
-              <div class="form-group">
-                  <label for="uploadPicture" class="col-sm-2 control-label" style="padding-right:20px;">Picture</label>
-                  <div class="col-sm-10" style="padding-left:0;">
-                      <input type="text" st-autofocus [isFocused]="flgEdition === 'E'" class="form-control" 
-                        [(ngModel)]="tenant.picture" name="picture" maxlength="100" />
-                  </div>
-              </div>
-            </div>-->
-          </div>
-          <div class="row">
             <div class="col-sm-6">
               <div class="form-group">
                   <label for="reference" class="col-sm-3 control-label" style="padding-right:20px;">Reference</label>
@@ -157,12 +146,13 @@
                   </div>
               </div>
             </div>
+            
           </div>
-                    <!--</fieldset>-->
-
+          
+          
           <label class="sub-header">Emergency contact</label>
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
               <div class="form-group">
                   <label for="email" class="col-sm-2 control-label">Name</label>
                   <div class="col-sm-8">
@@ -171,21 +161,21 @@
                   </div>
               </div>
             </div>
-          </div>
-        <div class="row">
-            <div class="col-md-8">
-                <div class="form-group">
-                    <label for="phoneN01" class="col-sm-2 control-label">Relation</label>
-                    <div class="col-sm-8">
-                        <input type="text" st-autofocus class="form-control"
-                                [(ngModel)]="tenant.contactRelation" name="contactRelation" maxlength="20" />
-                    </div>
-                </div>
-            </div>
 
-        </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                  <label for="phoneN01" class="col-sm-2 control-label">Relation</label>
+                  <div class="col-sm-8">
+                      <input type="text" st-autofocus class="form-control"
+                              [(ngModel)]="tenant.contactRelation" name="contactRelation" maxlength="20" />
+                  </div>
+              </div>
+          </div>
+
+          </div>
+        
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-6">
               <div class="form-group">
                     <label for="contactPhone" class="col-sm-2 control-label">Phone</label>
                     <div class="col-sm-8">
@@ -194,10 +184,8 @@
                     </div>
                </div>
             </div>
-              
-          </div>
-          <div class="row">
-            <div class="col-md-8">
+            
+            <div class="col-md-6">
               <div class="form-group">
                   <label for="contactEmail" class="col-sm-2 control-label">Email</label>
                   <div class="col-sm-8">

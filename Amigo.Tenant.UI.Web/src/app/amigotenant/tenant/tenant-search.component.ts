@@ -30,7 +30,7 @@ export class TenantSearchComponent implements OnInit {
   totalRecords: number;
   nativeWindow: any;
 
-  public activeInactiveStatus: any[] = this._listsService.ActiveInactiveStatus();
+//   public activeInactiveStatus: any[] = this._listsService.ActiveInactiveStatus();
 
   // DropDowns
   //entityStatuses: StatusDTO[];
@@ -168,7 +168,7 @@ export class TenantSearchComponent implements OnInit {
           var dataResult: any = res;
           this.tenantTypes = new Array<TypeDTO>();
           for (var i = 0; i < dataResult.value.data.length; i++) {
-            this.tenantTypes.push({ 
+            this.tenantTypes.push({
                 "typeId": dataResult.value.data[i].generalTableId,
                 "name":  dataResult.value.data[i].value
             });
@@ -255,7 +255,7 @@ export class TenantSearchComponent implements OnInit {
       
       this.itemSelectedEdit.emit({
           'tenant': data,
-          'entityStatuses': this.activeInactiveStatus,
+          'entityStatuses': true, //this.activeInactiveStatus,
           'tenantTypes': this.tenantTypes,
           'countries': this.countries
       });
@@ -265,24 +265,24 @@ export class TenantSearchComponent implements OnInit {
 
   public addItem() {
       this.onAddTenant.emit({
-          'entityStatuses': this.activeInactiveStatus,
+          'entityStatuses': true, //this.activeInactiveStatus,
           'tenantTypes': this.tenantTypes,
           'countries': this.countries
       });
   }
 
-  public sendNotification(dataItem): void {
-    // var newWindow = this.nativeWindow.open("https://api.whatsapp.com/send" + 
-    //     "?phone=" + JSON.stringify(dataItem.phoneN01).replace(/\W/g, '') + 
-    //     "&text=" + "Mr " + dataItem.contactName);
-    this.notificationService
-        .sendNotification(dataItem.phoneN01, encodeURIComponent("http://rpp.pe/"))
-        .subscribe(res => {
+//   public sendNotification(dataItem): void {
+//     // var newWindow = this.nativeWindow.open("https://api.whatsapp.com/send" + 
+//     //     "?phone=" + JSON.stringify(dataItem.phoneN01).replace(/\W/g, '') + 
+//     //     "&text=" + "Mr " + dataItem.contactName);
+//     this.notificationService
+//         .sendNotification(dataItem.phoneN01, encodeURIComponent("http://rpp.pe/"))
+//         .subscribe(res => {
             
-            var dataResult: any = res;
-        });
+//             var dataResult: any = res;
+//         });
 
-  }
+//   }
     //-----------------------------------------------------------------------------------
     //--------------------------    Deletion Confirmation     ---------------------------
     //-----------------------------------------------------------------------------------

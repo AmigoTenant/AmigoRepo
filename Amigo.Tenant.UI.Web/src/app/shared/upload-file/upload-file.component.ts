@@ -68,9 +68,7 @@ export class UploadFileComponent implements OnInit, OnChanges {
   }
 
   onSubmit(Additional: HTMLInputElement, Image: HTMLInputElement) {
-    
     this.isSaving = true;
-    debugger;
     this.imageService.postFile(this.entityCode, this.parentId, Additional.value, this.fileToUpload).subscribe(
       data => {
         console.log('done');

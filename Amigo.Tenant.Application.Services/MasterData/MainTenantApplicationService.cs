@@ -42,7 +42,7 @@ namespace Amigo.Tenant.Application.Services.MasterData
             List<OrderExpression<MainTenantDTO>> orderExpressionList = new List<OrderExpression<MainTenantDTO>>();
             orderExpressionList.Add(new OrderExpression<MainTenantDTO>(OrderType.Asc, p => p.FullName));
 
-            Expression<Func<MainTenantDTO, bool>> queryFilter = c => true;
+            Expression<Func<MainTenantDTO, bool>> queryFilter = c => c.RowStatus;
 
             if (!string.IsNullOrEmpty(search.Code))
                 queryFilter = queryFilter.And(p => p.Code.Contains(search.Code));
@@ -59,8 +59,8 @@ namespace Amigo.Tenant.Application.Services.MasterData
             if (search.TypeId.HasValue)
                 queryFilter = queryFilter.And(p => p.TypeId== search.TypeId.Value);
 
-            if (search.RowStatus.HasValue)
-                queryFilter = queryFilter.And(p => p.RowStatus == search.RowStatus);
+            //if (search.RowStatus.HasValue)
+            //    queryFilter = queryFilter.And(p => p.RowStatus == search.RowStatus);
 
             var mainTenant = await _mainTenantSearchDataAccess.ListPagedAsync(queryFilter, search.Page, search.PageSize, orderExpressionList.ToArray());
 
