@@ -1,17 +1,14 @@
 ﻿
-using System;
-using System.Threading.Tasks;
 using Amigo.Tenant.CommandHandlers.Abstract;
 using Amigo.Tenant.CommandHandlers.Common;
+using Amigo.Tenant.CommandModel.Models;
 using Amigo.Tenant.Commands.Common;
+using Amigo.Tenant.Commands.MasterData.RentalApplication;
 using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
-using Amigo.Tenant.CommandModel.Models;
-using Amigo.Tenant.Commands.Leasing.Contracts;
-using Amigo.Tenant.Application.DTOs.Requests.Common;
-using System.Linq;
-using Amigo.Tenant.Commands.MasterData.RentalApplication;
+using System;
+using System.Threading.Tasks;
 
 namespace Amigo.Tenant.CommandHandlers.MasterData.RentalApplications
 {

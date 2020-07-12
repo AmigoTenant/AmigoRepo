@@ -24,7 +24,7 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <Use64BitIISExpress />
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -349,7 +349,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
-      <Project>{e24205a2-8839-4ad1-aa3a-1f5cb0a5b586}</Project>
+      <Project>{628B77C7-0971-4A5E-97CF-CA3762694692}</Project>
       <Name>Amigo.Tenant.Application.DTOs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Amigo.Tenant.Application.Services.Interfaces\Amigo.Tenant.Application.Services.Interfaces.csproj">

@@ -1,17 +1,15 @@
 ﻿
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using FakeItEasy;
+using Amigo.Tenant.CommandHandlers.Tracking.Moves;
 using Amigo.Tenant.CommandModel.Models;
+using Amigo.Tenant.Commands.Tracking.Moves;
+using Amigo.Tenant.Events.Tracking;
 using Amigo.Tenant.Infrastructure.EventSourcing.Abstract;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Infrastructure.Persistence.Abstract;
+using FakeItEasy;
 using NUnit.Framework;
-using Amigo.Tenant.Application.DTOs.Responses.Move;
-using Amigo.Tenant.CommandHandlers.Tracking.Moves;
-using Amigo.Tenant.Commands.Tracking.Moves;
-using Amigo.Tenant.Events.Tracking;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Amigo.Tenant.CommandHandlers.UnitTests
 {

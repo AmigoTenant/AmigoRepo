@@ -70,7 +70,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Amigo.Tenant.Application.DTOs\Amigo.Tenant.Application.DTOs.csproj">
-      <Project>{E24205A2-8839-4AD1-AA3A-1F5CB0A5B586}</Project>
+      <Project>{628b77c7-0971-4a5e-97cf-ca3762694692}</Project>
       <Name>Amigo.Tenant.Application.DTOs</Name>
     </ProjectReference>
     <ProjectReference Include="..\Amigo.Tenant.Common\Amigo.Tenant.Common.csproj">
