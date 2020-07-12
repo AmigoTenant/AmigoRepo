@@ -82,8 +82,8 @@ namespace Amigo.Tenant.Application.Services.Houses
             });
 
 
-            Expression<Func<HouseFeatureDetailContractDTO, bool>> queryFilterDetailContract = c => c.HouseId == houseId;
-            var listDetailContract = await _houseFeatureDetailContractDataAccess.ListAsync(queryFilterDetailContract);
+            //Expression<Func<HouseFeatureDetailContractDTO, bool>> queryFilterDetailContract = c => c.HouseId == houseId;
+            //var listDetailContract = await _houseFeatureDetailContractDataAccess.ListAsync(queryFilterDetailContract);
 
 
 

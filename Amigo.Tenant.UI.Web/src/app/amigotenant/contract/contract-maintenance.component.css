@@ -1,0 +1,5 @@
+.h-scroll {
+    height: 90vh; /* %-height of the viewport */
+    position: fixed;
+    overflow-y: scroll;
+}

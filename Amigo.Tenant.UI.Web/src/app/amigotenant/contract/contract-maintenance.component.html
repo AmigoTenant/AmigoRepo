@@ -1,4 +1,4 @@
-<div class="form-horizontal">
+<div  class="h-scroll">
     <div class="page-header">
         Contract
     </div>
@@ -12,7 +12,7 @@
         </div>
         <div class="row">&nbsp;</div>
         <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
-        <div class="row">
+        <div>
             <form #tenantForm="ngForm" data-val-form="tenantForm" class="col-sm-12">
                 <div class="row col-sm-12">
                     <div class="col-sm-8">
@@ -153,8 +153,8 @@
                                         </label>
                                     </div>
                                 </div>
-
-                                <div class="col-sm-6" *ngIf="hasFeatures">
+                                
+                                <div class="col-sm-6" *ngIf="hasFeatures && _listContractHouseDetail && _listHouseAndDetails">
                                     <at-contract-house-feature [_listHouseFeature]="_listHouseAndDetails" (outputPrices)="getPrices($event)" [_isDisabled]="false || _isView"></at-contract-house-feature>
                                     <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.contractHouseDetailError">House Feature is required</label>
                                 </div>

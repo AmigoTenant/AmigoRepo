@@ -1,12 +1,12 @@
-import {Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy} from '@angular/core';
-import {Http, Jsonp, URLSearchParams} from '@angular/http';
+import { Component, Input, Output, state, SimpleChange, ViewChild, EventEmitter, OnInit, OnDestroy } from '@angular/core';
+import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { FormGroup, FormBuilder, Validators, FormControl, ReactiveFormsModule } from "@angular/forms";
 
 //import { GridActivityLogComponent } from './../../shipment-tracking/activity-log/grid-activity-log/grid-activity-log.component';
 import { EntityStatusDTO, HouseDTO } from './../../shared/api/services.client';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
 import { IMultiSelectOption, IMultiSelectSettings, IMultiSelectTexts } from 'angular-2-dropdown-multiselect';
-import { ConfirmationList, Confirmation } from  '../../model/confirmation.dto';
+import { ConfirmationList, Confirmation } from '../../model/confirmation.dto';
 import { ListsService } from '../../shared/constants/lists.service';
 import { ContractClient, ContractRegisterRequest, EntityStatusClient, HouseClient, FeatureClient, GeneralTableClient } from '../../shared/api/services.client';
 import { EnvironmentComponent } from '../../shared/common/environment.component';
@@ -54,14 +54,15 @@ export class FormError {
 
 
 @Component({
-  selector: 'at-contract-maintenance',
-  templateUrl: './contract-maintenance.component.html'
+    selector: 'at-contract-maintenance',
+    styleUrls: ['./contract-maintenance.component.css'],
+    templateUrl: './contract-maintenance.component.html'
 })
 
 export class ContractMaintenanceComponent extends EnvironmentComponent implements OnInit, OnDestroy {
 
     model: ContractRegisterRequest;
-    otherTenantRequestList: OtherTenantRegisterRequest[]=[];
+    otherTenantRequestList: OtherTenantRegisterRequest[] = [];
     otherTenantRequest: OtherTenantRegisterRequest;
     houseFeatureRequest: ContractHouseDetailRegisterRequest;
 
@@ -69,16 +70,16 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     public modelFrom: any;
     public modelTo: any;
     hasFeatures: boolean = false;
-    allowEditing: boolean= true;
+    allowEditing: boolean = true;
     public successFlag: boolean;
     public errorMessages: string[];
     public successMessage: string;
-    _listContractHouseDetail: any[]=[];
+    _listContractHouseDetail: any[] = [];
 
     _formError: FormError;
 
     //DROPDOWNS
-    _listHouseAndDetails: HouseFeatureAndDetailDTO[]=[];
+    _listHouseAndDetails: HouseFeatureAndDetailDTO[] = [];
     _listPaymentMode: any[];
     _listProperties: any[];
     _currentTenant: any;
@@ -96,15 +97,15 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     public parentId: number = null;
 
     //@Input() parent: number;
-    
+
     constructor(
-            private route: ActivatedRoute,
-            private router: Router,
-            private contractClient: ContractClient,
-            private houseClient: HouseClient,
-            private generalTableClient: GeneralTableClient,
-            private businessAppSettingService: BusinessAppSettingService
-        ) {
+        private route: ActivatedRoute,
+        private router: Router,
+        private contractClient: ContractClient,
+        private houseClient: HouseClient,
+        private generalTableClient: GeneralTableClient,
+        private businessAppSettingService: BusinessAppSettingService
+    ) {
         super();
     }
 
@@ -121,8 +122,8 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         this.initializeForm();
         this._isView = true;
         this.sub = this.route.params.subscribe(params => {
-        let id = params['code'];
-        this._isView = (params['isView'] === 'true');
+            let id = params['code'];
+            this._isView = (params['isView'] === 'true');
             //this.parentId =  id;
             if (id != null && typeof (id) !== 'undefined') {
                 this.getContractById(id);
@@ -142,8 +143,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
 
     }
 
-    getContractById(id):void
-    {
+    getContractById(id): void {
         this.contractClient.getById(id).subscribe(
             response => {
                 const dataResult: any = response;
@@ -160,8 +160,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
             });
     }
 
-    public setOtherTenants(otherTenants: any[])
-    {
+    public setOtherTenants(otherTenants: any[]) {
         for (let i in otherTenants) {
             var tenant = new modelTenant();
             tenant.tenantId = otherTenants[i].tenantId;
@@ -203,32 +202,32 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         this.getPaymentMode();
     }
 
-  onSelectModelFrom(): void {
-      if (this.modelFrom != null && this.modelFrom != undefined ) {
-          this.model.beginDate = new Date(this.modelFrom.year, this.modelFrom.month - 1, this.modelFrom.day, 0, 0, 0, 0);
-          let monthsNumber = this.model.monthsNumber === undefined || this.model.monthsNumber == null ? 0 : this.model.monthsNumber;
-          this.calculateEndDate(monthsNumber);
-          this._formError.beginDateError = false;
+    onSelectModelFrom(): void {
+        if (this.modelFrom != null && this.modelFrom != undefined) {
+            this.model.beginDate = new Date(this.modelFrom.year, this.modelFrom.month - 1, this.modelFrom.day, 0, 0, 0, 0);
+            let monthsNumber = this.model.monthsNumber === undefined || this.model.monthsNumber == null ? 0 : this.model.monthsNumber;
+            this.calculateEndDate(monthsNumber);
+            this._formError.beginDateError = false;
 
-      }
-      else {
-          this.model.beginDate = undefined; //new Date();
-          this._formError.beginDateError = true;
-      }
-  }
+        }
+        else {
+            this.model.beginDate = undefined; //new Date();
+            this._formError.beginDateError = true;
+        }
+    }
 
-  onSelectModelTo(): void {
-      if (this.modelTo != null && this.modelTo != undefined) {
-          this.model.endDate = new Date(this.modelTo.year, this.modelTo.month - 1, this.modelTo.day, 0, 0, 0, 0);
-          this.getHouseFeatureAndDetail();
-          this._formError.endDateError = false;
-      }
-      else {
-          this.model.endDate = undefined; //new Date();
-          this._formError.endDateError = true;
-      }
+    onSelectModelTo(): void {
+        if (this.modelTo != null && this.modelTo != undefined) {
+            this.model.endDate = new Date(this.modelTo.year, this.modelTo.month - 1, this.modelTo.day, 0, 0, 0, 0);
+            this.getHouseFeatureAndDetail();
+            this._formError.endDateError = false;
+        }
+        else {
+            this.model.endDate = undefined; //new Date();
+            this._formError.endDateError = true;
+        }
 
-  }
+    }
 
     //=========== 
     //PRINT
@@ -273,7 +272,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                         this._isDisabled = true;
                         //this.parentId =  dataResult.pk;
                     }
-                    
+
                 });
             }
             else {
@@ -292,15 +291,15 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
 
                 });
             }
-            
-            
+
+
         }
     }
 
     ////===========
     ////DELETE
     ////===========
-    
+
     //public deleteMessage: string = "Are you sure to delete this Lease?";
     //deviceToDelete: any; //DeleteDeviceRequest;
 
@@ -333,12 +332,11 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     //EXPORT
     //===========
 
-    onExport():void
-    {
+    onExport(): void {
 
     }
 
-    onCancel():void{
+    onCancel(): void {
         this.router.navigate(['amigotenant/contract']);
     }
 
@@ -375,7 +373,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     };
 
     getHouse = (item) => {
-        if (item != null && item != undefined && item!= "") {
+        if (item != null && item != undefined && item != "") {
             this.model.houseId = item.houseId;
             this._currentHouse = item;
             this.isVisibleHouseFeature = true;
@@ -400,8 +398,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
             });
     }
 
-    getHouseFeatureAndDetail():void
-    {
+    getHouseFeatureAndDetail(): void {
         if (this.model.houseId !== undefined && this.model.houseId !== null && this.model.houseId > 0) {
             this.houseClient.searchHouseFeatureAndDetail(this.model.houseId, this.model.contractId)
                 .subscribe(response => {
@@ -414,54 +411,58 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     }
 
     setHouseAndDetails(): void {
-        let inputBeginDate: Date = this.model.beginDate;
-        let inputEndDate: Date = this.model.endDate;
+        debugger;
+        let beginContract: Date = this.model.beginDate;
+        let endContract: Date = this.model.endDate;
 
-        if (inputBeginDate !== undefined && inputEndDate !== undefined) {
-            for (let i in this._listHouseAndDetails) {
-                var houseFeature = this._listHouseAndDetails[i];
-                var featureExisting = this._listContractHouseDetail.filter(q =>
-                    q.houseFeatureId == houseFeature.houseFeatureId
+        if (beginContract !== undefined && endContract !== undefined) {
+            console.log(this._listHouseAndDetails);
+            this._listHouseAndDetails.forEach(houseFeature => {
+
+                const featureExisting = this._listContractHouseDetail.filter(q =>
+                    q.houseFeatureId === houseFeature.houseFeatureId
                     && (
-                        (inputBeginDate >= q.beginDate && inputBeginDate <= q.endDate) ||
-                        (inputEndDate >= q.beginDate && inputEndDate <= q.endDate) ||
-                        (inputBeginDate <= q.beginDate && inputEndDate >= q.endDate)
+                        (beginContract >= q.beginDate && beginContract <= q.endDate) ||
+                        (endContract >= q.beginDate && endContract <= q.endDate) ||
+                        (beginContract <= q.beginDate && endContract >= q.endDate)
                     )
-                    && q.contractId != this.model.contractId
+                    && q.contractId !== this.model.contractId
                 );
 
-                if (featureExisting.length > 0)
+                if (featureExisting.length > 0) {
                     houseFeature.isDisabled = true;
-                else {
-                    //Busqueda de los features existentes para el contrato EDITADO
+                } else {
+                    // Busqueda de los features existentes para el contrato EDITADO
+                    const existForCheck = this._listContractHouseDetail.filter(q =>
+                        q.houseFeatureId === houseFeature.houseFeatureId
+                        && q.contractId === this.model.contractId);
 
-                    var existForCheck = this._listContractHouseDetail.filter(q =>
-                        q.houseFeatureId == houseFeature.houseFeatureId
-                        && q.contractId == this.model.contractId);
-
-                    if (existForCheck.length > 0)
+                    if (existForCheck.length > 0) {
                         houseFeature.marked = true;
+                    }
                     houseFeature.isDisabled = false;
                 }
+            });
+            //(let i in this._listHouseAndDetails) {
+            this.setAllHouseItem();
+        }
+        console.log(this._listHouseAndDetails);
+    }
+
+
+
+    setAllHouseItem() {
+        if (this._listHouseAndDetails[0] !== undefined) {
+            const exist = this._listHouseAndDetails.filter(r => r.isAllHouse === false && r.isDisabled === true).length;
+            if (exist > 0) {
+                this._listHouseAndDetails[0].isDisabled = true;
+            } else {
+                this._listHouseAndDetails[0].isDisabled = false;
             }
         }
-
-        this.setAllHouseItem();
     }
 
-    setAllHouseItem()
-    {
-        if (this._listHouseAndDetails[0] != undefined) {
-            var exist = this._listHouseAndDetails.filter(r => r.isAllHouse == false && r.isDisabled == true).length;
-            if (exist > 0)
-                this._listHouseAndDetails[0].isDisabled = true;
-            else
-                this._listHouseAndDetails[0].isDisabled = false;
-        }
-    }
-
-    getPaymentMode():void
-    {
+    getPaymentMode(): void {
         this.generalTableClient.getGeneralTableByTableNameAsync("PaymentMode")
             .subscribe(response => {
                 var dataResult: any = response;
@@ -496,8 +497,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 if (otherTenant[0].tableStatus == 3) //deleted
                     otherTenant[0].tableStatus = 0;
             }
-            else
-            {
+            else {
                 this.otherTenantRequest = new OtherTenantRegisterRequest();
                 this.otherTenantRequest.contractId = this.model.contractId;
                 this.otherTenantRequest.tenantId = item.tenantId;
@@ -542,8 +542,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     ///////// PRICES
     //////////////////////////////////////////////////////////////
 
-    getPrices= (items) => 
-    {
+    getPrices = (items) => {
         var rentPrice = 0;
         var rentDeposit = 0;
         for (let i in items) {
@@ -555,18 +554,17 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 }
             }
         }
-        
+
         this.model.rentPrice = rentPrice;
         this.model.rentDeposit = rentPrice * this.businessAppSettingService.GetDepositPercentage();
         if (this.model.rentPrice > 0)
             this._formError.contractHouseDetailError = false;
     }
 
-    calculateEndDate(months): void
-    {
+    calculateEndDate(months): void {
 
-        if ( (this.modelFrom == null || this.modelFrom == undefined))
-             return;
+        if ((this.modelFrom == null || this.modelFrom == undefined))
+            return;
 
         months = months == "" || months == undefined || months == "0" ? 1 : months;
         var dateFrom = new Date(this.modelFrom.year, this.modelFrom.month - 1, this.modelFrom.day, 0, 0, 0, 0);
@@ -574,19 +572,17 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         dateFrom.setDate(dateFrom.getDate() - 1)
         this.modelTo = new modelDate();
         this.modelTo.day = dateFrom.getDate();
-        this.modelTo.month = dateFrom.getMonth()+1;
+        this.modelTo.month = dateFrom.getMonth() + 1;
         this.modelTo.year = dateFrom.getFullYear();
         this.model.endDate = new Date(this.modelTo.year, this.modelTo.month - 1, this.modelTo.day, 0, 0, 0, 0);
         this.getHouseFeatureAndDetail();
         this._formError.endDateError = false;
     }
 
-    setHouseFeatureToDB(): void
-    {
+    setHouseFeatureToDB(): void {
         this.model.contractHouseDetails = [];
         let c: number = 0;
-        for (let i in this._listHouseAndDetails)
-        {
+        for (let i in this._listHouseAndDetails) {
             c--;
             let houseFeature = this._listHouseAndDetails[i];
             if (!houseFeature.isDisabled) {
@@ -608,8 +604,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                         this.houseFeatureRequest.contractHouseDetailId = contractHouseDetail[0].contractHouseDetailId;
                         this.model.contractHouseDetails.push(this.houseFeatureRequest);
                     }
-                    else
-                    {
+                    else {
                         houseFeature.tableStatus = 0; //Unchanged
                         this.houseFeatureRequest.tableStatus = 0;
                     }
@@ -632,14 +627,12 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         }
     }
 
-    onPaymentModeChange(): void
-    {
+    onPaymentModeChange(): void {
         if (this.model.paymentModeId !== undefined && this.model.paymentModeId !== null && this.model.paymentModeId > 0)
-        this._formError.paymentModeError = false;
+            this._formError.paymentModeError = false;
     }
 
-    isValidData(): boolean
-    {
+    isValidData(): boolean {
         var isValid = true;
         this.resetFormError();
 

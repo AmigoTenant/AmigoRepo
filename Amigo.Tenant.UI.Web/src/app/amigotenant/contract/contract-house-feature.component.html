@@ -1,9 +1,9 @@
 <div class="form-horizontal col-sm-12">
     <fieldset class="scheduler-border col-sm-12">
-    <div class="sub-header">House Feature</div>
+        <div class="sub-header">House Feature</div>
         <div *ngFor="let o of _listHouseFeature">
-            <div class="form-group col-sm-12" >
-                <div class="col-sm-12" *ngIf="_isDisabled==true">
+            <div class="form-group col-sm-12">
+                <div class="col-sm-12" *ngIf="_isDisabled===true">
 
                     <div class="row col-sm-12" *ngIf="o.isDisabled===true">
                         <span class="col-sm-5">
@@ -58,7 +58,9 @@
                             <span style="color:red"> RENTED!!!</span>
                         </span>
                         <div class="col-sm-2">
-                            <input type="checkbox" disabled id="chkHouseFeature{{o.houseFeatureId}}" [(ngModel)]="o.marked" (ngModelChange)="onChange(o)" name="chkHouseFeature{{o.houseFeatureId}}" class="ro-checkbox" />
+                            <input type="checkbox" disabled id="chkHouseFeature{{o.houseFeatureId}}"
+                                [(ngModel)]="o.marked" (ngModelChange)="onChange(o)"
+                                name="chkHouseFeature{{o.houseFeatureId}}" class="ro-checkbox" />
                             <label for="chkHouseFeature{{o.houseFeatureId}}"></label>
                         </div>
                     </div>
@@ -73,15 +75,16 @@
                             <span style="color:blue"> FREE!!!</span>
                         </span>
                         <div class="col-sm-2">
-                            <input type="checkbox" id="chkHouseFeature{{o.houseFeatureId}}" [(ngModel)]="o.marked" (ngModelChange)="onChange(o)" name="chkHouseFeature{{o.houseFeatureId}}" class="ro-checkbox" />
+                            <input type="checkbox" id="chkHouseFeature{{o.houseFeatureId}}" [(ngModel)]="o.marked"
+                                (ngModelChange)="onChange(o)" name="chkHouseFeature{{o.houseFeatureId}}"
+                                class="ro-checkbox" />
                             <label for="chkHouseFeature{{o.houseFeatureId}}"></label>
                         </div>
                     </div>
-                    
+
                 </div>
-                
+
             </div>
         </div>
     </fieldset>
 </div>
-
