@@ -77,6 +77,9 @@
     <Content Include=".gitignore" />
     <Content Include="angular-cli.json" />
     <Content Include="package.json" />
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
     <Content Include="README.md" />
     <Content Include="src\app\amigotenant\amigotenant.module.ts" />
     <Content Include="src\app\amigotenant\amigotenant.routing.ts" />
@@ -222,6 +225,7 @@
     <Content Include="src\scripts\material.min.js.map" />
     <Content Include="src\assets\i18n\en-US.json" />
     <Content Include="src\assets\i18n\es-CL.json" />
+    <Content Include="libman.json" />
     <None Include="src\styles\amigotenantx-lookup.less" />
     <Content Include="tslint.json" />
     <Content Include="e2e\tsconfig.json" />
