@@ -153,8 +153,8 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
                 this._currentTenant = this.getCurrentTenant(this.model.tenantId, this.model.fullName);
                 this._currentHouse = this.getCurrentHouse(this.model.houseId, this.model.houseName);
                 this.isVisibleHouseFeature = true;
-                this.getHouseFeatureDetailContract();
-                this.getHouseFeatureAndDetail();
+                this.getAfterHouse();
+                //this.getHouseFeatureDetailContract();
                 this.setOtherTenants(this.model.otherTenants);
                 this.parentId = this.model.contractStatusCode === "FORMAL" || this.model.contractStatusCode === "RENEWED" || this.model.contractStatusCode === "DRAFT" ? id : null;
             });
@@ -377,11 +377,11 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
             this.model.houseId = item.houseId;
             this._currentHouse = item;
             this.isVisibleHouseFeature = true;
-            this.getHouseFeatureDetailContract();
-            this.getHouseFeatureAndDetail();
+            this.getAfterHouse();
+            // this.getHouseFeatureDetailContract();
+            // this.getHouseFeatureAndDetail();
             this._formError.houseError = false;
-        }
-        else {
+        } else {
             this.model.houseId = 0;
             this._currentHouse = undefined;
             this.isVisibleHouseFeature = false;
@@ -390,10 +390,21 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         }
     };
 
+    getAfterHouse() {
+        this.contractClient.searchHouseFeatureDetailContract(this.model.houseId).subscribe
+            (response => {
+                const dataResult: any = response;
+                this._listContractHouseDetail = dataResult.value.data;
+            })
+            .add( q => {
+                this.getHouseFeatureAndDetail()
+            });
+    }
+
     getHouseFeatureDetailContract(): void {
         this.contractClient.searchHouseFeatureDetailContract(this.model.houseId).subscribe
             (response => {
-                var dataResult: any = response;
+                const dataResult: any = response;
                 this._listContractHouseDetail = dataResult.value.data;
             });
     }
@@ -402,7 +413,7 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
         if (this.model.houseId !== undefined && this.model.houseId !== null && this.model.houseId > 0) {
             this.houseClient.searchHouseFeatureAndDetail(this.model.houseId, this.model.contractId)
                 .subscribe(response => {
-                    var dataResult: any = response;
+                    const dataResult: any = response;
                     this._listHouseAndDetails = dataResult.value.data;
                     this.hasFeatures = this._listHouseAndDetails.length > 0;
                     this.setHouseAndDetails();
@@ -411,12 +422,14 @@ export class ContractMaintenanceComponent extends EnvironmentComponent implement
     }
 
     setHouseAndDetails(): void {
-        debugger;
         let beginContract: Date = this.model.beginDate;
         let endContract: Date = this.model.endDate;
 
         if (beginContract !== undefined && endContract !== undefined) {
             console.log(this._listHouseAndDetails);
+            console.log(this.model);
+            console.log(this._listContractHouseDetail);
+
             this._listHouseAndDetails.forEach(houseFeature => {
 
                 const featureExisting = this._listContractHouseDetail.filter(q =>

@@ -350,7 +350,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
             List<OrderExpression<ContractSearchDTO>> orderExpressionList = new List<OrderExpression<ContractSearchDTO>>();
             orderExpressionList.Add(new OrderExpression<ContractSearchDTO>(OrderType.Asc, p => p.ContractCode));
 
-            Expression<Func<ContractSearchDTO, bool>> queryFilter = c => true;
+            Expression<Func<ContractSearchDTO, bool>> queryFilter = c => c.RowStatus.Value == true;
             if (search.BeginDate.HasValue && search.EndDate.HasValue)
             {
                 var toPlusADay = search.EndDate.Value.AddDays(1);

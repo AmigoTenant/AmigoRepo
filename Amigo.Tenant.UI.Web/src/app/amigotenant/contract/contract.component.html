@@ -223,12 +223,12 @@
                                     </div>
                                 </ng-template>
                             </kendo-grid-column>
-                            <kendo-grid-column title="Is Active" width="5%">
+                            <!-- <kendo-grid-column title="Is Active" width="5%">
                                 <ng-template kendoGridCellTemplate let-dataItem>
                                     <span *ngIf="dataItem.rowStatus">Yes</span>
                                     <span *ngIf="!dataItem.rowStatus">No</span>
                                 </ng-template>
-                            </kendo-grid-column>
+                            </kendo-grid-column> -->
                             <kendo-grid-column width="8%">
                                 <span>dataItem.contractStatusCode</span>
                                 <ng-template kendoGridCellTemplate let-dataItem>
@@ -239,20 +239,20 @@
                                         <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
                                             <i class="xico-action-remove"></i>
                                         </button>
-                                        <button type="button" class="btn-icon" (click)="onChangeStatus(dataItem);">
+                                        <button type="button" class="btn-icon" (click)="onChangeStatus(dataItem);" data-toggle="tooltip" data-placement="top" title="Formalize contract">
                                             <i class="xico-action-send-doc"></i>
                                         </button>
                                     </div>
 
                                     <div
                                         *ngIf="dataItem.contractStatusCode=='FORMAL' || dataItem.contractStatusCode=='RENEWED'">
-                                        <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
+                                        <!-- <button type="button" class="btn-icon" (click)="onDelete(dataItem);">
                                             <i class="xico-action-remove"></i>
-                                        </button>
-                                        <button type="button" class="btn-icon" (click)="onView(dataItem);">
+                                        </button> -->
+                                        <button type="button" class="btn-icon" (click)="onView(dataItem);" data-toggle="tooltip" data-placement="top" title="View (readonly)">
                                             <i class="xico-shipment-find"></i>
                                         </button>
-                                        <button type="button" class="btn-icon" (click)="onChangeTerm(dataItem);">
+                                        <button type="button" class="btn-icon" (click)="onChangeTerm(dataItem);" data-toggle="tooltip" data-placement="top" title="Change Contract Term">
                                             <i class="fa fa-balance-scale"></i>
                                         </button>
                                     </div>
