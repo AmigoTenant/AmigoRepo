@@ -1,4 +1,4 @@
-<div  class="h-scroll">
+<div  class="h-scroll col-sm-12">
     <div class="page-header">
         Contract
     </div>
@@ -154,7 +154,7 @@
                                     </div>
                                 </div>
                                 
-                                <div class="col-sm-6" *ngIf="hasFeatures && _listHouseAndDetails && _listContractHouseDetail">
+                                <div class="col-sm-6" *ngIf="hasFeatures">
                                     <at-contract-house-feature [_listHouseFeature]="_listHouseAndDetails" (outputPrices)="getPrices($event)" [_isDisabled]="false || _isView"></at-contract-house-feature>
                                     <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.contractHouseDetailError">House Feature is required</label>
                                 </div>
