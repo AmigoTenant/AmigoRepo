@@ -31,7 +31,7 @@
                                         <label for="from" class="col-sm-5 control-label">Begin Date</label>
                                         <label class="ro-calendar col-sm-7">
                                         <input class="form-control" [placeholder]="localization.dateFormat" name="BeginDate" ngbDatepicker #d1="ngbDatepicker"
-                                               [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()" [disabled]="_isDisabled || _isView">
+                                               [outside-click]="d1" [(ngModel)]="modelFrom" (ngModelChange)="onSelectModelFrom()" [disabled]="_isView">
                                         <span class="ro-calendar-btn" (click)="d1.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.beginDateError">Begin date is required</label>
                                         </label>
@@ -39,14 +39,14 @@
                                     <div class="form-group col-sm-12">
                                         <label for="from" class="col-sm-5 control-label">Months No</label>
                                         <label class="col-sm-7">
-                                        <input type="text" name="monthsNumber" class="form-control" [(ngModel)]="model.monthsNumber" (blur)="calculateEndDate($event.target.value)" [disabled]="_isDisabled" />
+                                        <input type="text" name="monthsNumber" class="form-control" [(ngModel)]="model.monthsNumber" (blur)="calculateEndDate($event.target.value)" [disabled]="_isView" />
                                     </label>
                                     </div>
                                     <div class="form-group col-sm-12">
                                         <label for="from" class="col-sm-5 control-label">End Date</label>
                                         <label class="ro-calendar col-sm-7">
                                         <input class="form-control" [placeholder]="localization.dateFormat" name="EndDate" ngbDatepicker #d2="ngbDatepicker"
-                                               [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()" [disabled]="_isDisabled || _isView">
+                                               [outside-click]="d2" [(ngModel)]="modelTo" (ngModelChange)="onSelectModelTo()" [disabled]="_isView">
                                         <span class="ro-calendar-btn" (click)="d2.toggle()"><i class="xico-ui-calendar" style="width:30px"></i></span>
                                         <label class="message error" style="color: #F44336; margin-top: 4px;" *ngIf="_formError.endDateError">End Date is required</label>
                                         </label>

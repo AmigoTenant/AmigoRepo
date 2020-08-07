@@ -192,7 +192,8 @@ ngOnInit() {
       this.model.nextDaysToCollect = undefined;
       this.model.pageSize = 20;
       this.totalResultCount = 0;
-      this.setCurrentPeriod(isCurrentPeriod);
+      this.getContract();
+      //this.setCurrentPeriod(isCurrentPeriod);
     }
 
   public setDatesFromTo() {
@@ -236,7 +237,7 @@ ngOnInit() {
             this.model.page,
             this.model.pageSize)
             .subscribe(response => {
-                var datagrid: any= response;
+                const datagrid: any = response;
 
                 this.contractSearchDTOs = {
                   data: datagrid.value.data.items,
@@ -246,15 +247,14 @@ ngOnInit() {
             });
     }
 
-    getEntityStatus(): void
-    {
+    getEntityStatus() {
 
         this.entityStatusClient.getEntityStatusByEntityCodeAsync("CO")
             .subscribe(response => {
-                var dataResult: any = response;
+                const  dataResult: any = response;
                 this._listEntityStatus = dataResult.data;
-                let entity= new EntityStatusDTO();
-                entity.entityStatusId= null;
+                let entity = new EntityStatusDTO();
+                entity.entityStatusId = null;
                 entity.name = 'All';
                 this._listEntityStatus.unshift(entity);
               })
@@ -264,17 +264,17 @@ ngOnInit() {
     {
         this.houseClient.searchHouseAll()
             .subscribe(response => {
-                var dataResult: any = response;
+                const dataResult: any = response;
                 this._listProperties = dataResult.value.data;
-                let entity= new HouseDTO();
-                entity.houseId= null;
+                let entity = new HouseDTO();
+                entity.houseId = null;
                 entity.name = 'All';
                 this._listProperties.unshift(entity);
               })
     }
 
     public confirmationFilter(): void {
-        var confirmation = this.listConfirmation.List;
+        const confirmation = this.listConfirmation.List;
         confirmation.forEach(obj => {
             this._listUnpaidPeriods.push(obj);
         });
@@ -477,20 +477,20 @@ ngOnInit() {
             20000);
     }
 
-    setCurrentPeriod(currentPeriod) {
-        let period = this.masterDataService.getCurrentPeriod().subscribe(
-            res => {
-                this._currentPeriod = res.Data;
-            })
-        .add(x => {
-            if (currentPeriod) {
-                this.model.periodId = this.model.periodId === null || this.model.periodId === undefined?
-                this._currentPeriod.PeriodId : this.model.periodId;
-            }
-            this.getContract();
+    // setCurrentPeriod(currentPeriod) {
+    //     let period = this.masterDataService.getCurrentPeriod().subscribe(
+    //         res => {
+    //             this._currentPeriod = res.Data;
+    //         })
+    //     .add(x => {
+    //         if (currentPeriod) {
+    //             this.model.periodId = this.model.periodId === null || this.model.periodId === undefined?
+    //             this._currentPeriod.PeriodId : this.model.periodId;
+    //         }
+    //         this.getContract();
 
-        });
-    }
+    //     });
+    // }
 
     onView(data){
         this.onEdit(data, true);

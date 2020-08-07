@@ -348,7 +348,7 @@ namespace Amigo.Tenant.Application.Services.Tracking
         public async Task<ResponseDTO<PagedList<ContractSearchDTO>>> SearchContractAsync(ContractSearchRequest search)
         {
             List<OrderExpression<ContractSearchDTO>> orderExpressionList = new List<OrderExpression<ContractSearchDTO>>();
-            orderExpressionList.Add(new OrderExpression<ContractSearchDTO>(OrderType.Asc, p => p.ContractCode));
+            orderExpressionList.Add(new OrderExpression<ContractSearchDTO>(OrderType.Desc, p => p.BeginDate));
 
             Expression<Func<ContractSearchDTO, bool>> queryFilter = c => c.RowStatus.Value == true;
             if (search.BeginDate.HasValue && search.EndDate.HasValue)
