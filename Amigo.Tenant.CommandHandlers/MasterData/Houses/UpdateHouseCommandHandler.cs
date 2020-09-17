@@ -36,11 +36,16 @@ namespace Amigo.Tenant.CommandHandlers.MasterData.Houses
 
         public async Task<CommandResult> Handle(UpdateHouseCommand message)
         {
-            //Validate using domain models
-            House entity = _mapper.Map<UpdateHouseCommand, House>(message);
-
-            //if is not valid
-            //if (entity.HasErrors) return entity.ToResult();
+            House entity = await _mainTenantRepository.FirstOrDefaultAsync( q => q.HouseId == message.HouseId && q.RowStatus);
+            entity.Code = message.Code; 
+            entity.Name = message.Name;
+            entity.ShortName = message.ShortName;
+            entity.CityId = message.CityId;
+            entity.Address = message.Address;
+            entity.PhoneNumber = message.PhoneNumber;
+            entity.HouseStatusId = message.HouseStatusId;
+            entity.Latitude = message.Latitude;
+            entity.Longitude = message.Longitude;
             entity.UpdatedBy = message.UserId;
             entity.UpdatedDate = DateTime.Now;
 
