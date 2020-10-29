@@ -91,6 +91,7 @@
     <Compile Include="MasterData\RentalApplication\RentalApplicationRegisterCommand.cs" />
     <Compile Include="MasterData\RentalApplication\RentalApplicationUpdateCommand.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodDeleteCommand.cs" />
+    <Compile Include="PaymentPeriod\PaymentPeriodDeleteMassCommand.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodUpdateCommand.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodRegisterCommand.cs" />
     <Compile Include="PaymentPeriod\PaymentPeriodDetailCommand.cs" />

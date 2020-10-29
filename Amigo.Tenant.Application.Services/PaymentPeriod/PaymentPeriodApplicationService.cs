@@ -40,6 +40,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         private readonly IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> _paymentPeriodGroupedStatusAndConceptDTOApplication;
         private readonly IQueryDataAccess<PaymentPeriodDTO> _paymentPeriodRepo;
         private readonly IRepository<model.PaymentPeriod> _paymentPeriodRepository;
+        private readonly IRepository<model.Period> _periodRepository;
+        private readonly IRepository<model.Contract> _contractRepository;
 
         public PaymentPeriodApplicationService(IBus bus,
             IQueryDataAccess<PPSearchDTO> paymentPeriodSearchDataAccess,
@@ -54,7 +56,10 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             IAppSettingApplicationService appSettingApplicationService,
             IQueryDataAccess<PaymentPeriodGroupedStatusAndConceptDTO> paymentPeriodGroupedStatusAndConceptDTOApplication,
             IQueryDataAccess<PaymentPeriodDTO> paymentPeriodRepo,
-            IRepository<model.PaymentPeriod> paymentPeriodRepository)
+            IQueryDataAccess<PPSearchByContractPeriodDTO> searchByContractPeriodRepo,
+            IRepository<model.PaymentPeriod> paymentPeriodRepository,
+            IRepository<model.Period> periodRepository,
+            IRepository<model.Contract> contractRepository)
         {
             if (bus == null) throw new ArgumentNullException(nameof(bus));
             if (mapper == null) throw new ArgumentNullException(nameof(mapper));
@@ -72,6 +77,8 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             _paymentPeriodGroupedStatusAndConceptDTOApplication = paymentPeriodGroupedStatusAndConceptDTOApplication;
             _paymentPeriodRepo = paymentPeriodRepo;
             _paymentPeriodRepository = paymentPeriodRepository;
+            _periodRepository = periodRepository;
+            _contractRepository = contractRepository;
         }
 
         private async Task<int?> GetStatusbyCodeAsync(string entityCode, string statusCode)
@@ -185,8 +192,52 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
                 }
                 command.PPDetail = commandDetails;
                 var resp = await _bus.SendAsync(command);
-                var invoiceId = ((CommandResult)resp);
+                //var invoiceId = ((CommandResult)resp);
                 return ResponseBuilder.Correct(resp, ((RegisteredCommandResult)resp).Id, "");
+            }
+
+            return response;
+        }
+
+        private async Task<ResponseDTO> DeletePrivatePaymentPeriodAsync(PPDeleteDTO request)
+        {
+            //Execute Command
+            var command = new PaymentPeriodDeleteMassCommand();
+            command.ContractId = request.ContractId;
+            command.PeriodId = request.PeriodId;
+            var resp = await _bus.SendAsync(command);
+            return ResponseBuilder.Correct(resp, ((RegisteredCommandResult)resp).Id, "");
+        }
+
+        public async Task<ResponseDTO> DeletePaymentPeriodAsync(PPDeleteDTO request)
+        {
+            var response = await ValidateEntityDelete(request);
+
+            if (response.IsValid)
+            {
+                return await DeletePrivatePaymentPeriodAsync(request);
+            }
+
+            return response;
+        }
+
+        public async Task<ResponseDTO> MassDeletePaymentPeriodAsync(List<PPDeleteDTO> ids)
+        {
+
+            var response = await ValidateEntityMassDelete(ids);
+
+            if (response.IsValid)
+            {
+                foreach (var paymentPeriod in ids)
+                {
+                    //var paymentPeriod = await this._paymentPeriodRepository.FirstAsync(q => q.PaymentPeriodId == paymentPeriodId);
+                    var request = new PPDeleteDTO();
+                    request.ContractId = paymentPeriod.ContractId;
+                    request.PeriodId = paymentPeriod.PeriodId;
+                    await DeletePrivatePaymentPeriodAsync(request);
+                }
+
+                return ResponseBuilder.Correct();
             }
 
             return response;
@@ -195,10 +246,10 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
         public async Task<ResponseDTO<PagedList<PPSearchDTO>>> SearchPaymentPeriodAsync(PaymentPeriodSearchRequest search)
         {
             List<OrderExpression<PPSearchDTO>> orderExpressionList = new List<OrderExpression<PPSearchDTO>>();
-            orderExpressionList.Add(new OrderExpression<PPSearchDTO>(OrderType.Asc, p => p.PeriodCode));
+            orderExpressionList.Add(new OrderExpression<PPSearchDTO>(OrderType.Desc, p => p.PeriodCode));
             orderExpressionList.Add(new OrderExpression<PPSearchDTO>(OrderType.Asc, p => p.TenantFullName));
 
-            Expression<Func<PPSearchDTO, bool>> queryFilter = c => true;
+            Expression<Func<PPSearchDTO, bool>> queryFilter = c => c.RowStatus;
             
             
             if (search.PeriodId.HasValue)
@@ -256,7 +307,7 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
 
         public async Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchPaymentPeriodByContractAsync(PaymentPeriodSearchByContractPeriodRequest search)
         {
-            Expression<Func<PPSearchByContractPeriodDTO, bool>> queryFilter = c => true;
+            Expression<Func<PPSearchByContractPeriodDTO, bool>> queryFilter = c => c.RowStatus;
 
             if (search.PeriodId.HasValue)
                 queryFilter = queryFilter.And(p => p.PeriodId == search.PeriodId);
@@ -797,6 +848,87 @@ namespace Amigo.Tenant.Application.Services.PaymentPeriod
             {
                 Key = string.IsNullOrEmpty(errorMessage) ? "Ok" : "Error",
                 Message = errorMessage
+            });
+
+            return response;
+        }
+
+        public async Task<ResponseDTO> ValidateEntityDelete(PPDeleteDTO request)
+        {
+            var errorMessage = new StringBuilder();
+            var paymentPeriodStatus = await this._entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Payed);
+
+            if (paymentPeriodStatus == null)
+            {
+                errorMessage.AppendLine("No tienes el estado Pagado en el maestro de estados de Payment Period");
+            }
+            else
+            {
+
+                var hasPaidPayments = await this._paymentPeriodRepository.AnyAsync(q => q.PeriodId.Value == request.PeriodId && q.ContractId.Value == request.ContractId && q.PaymentPeriodStatusId == paymentPeriodStatus.EntityStatusId);
+                if (hasPaidPayments)
+                {
+                    var period = await this._periodRepository.FirstAsync(q => q.PeriodId == request.PeriodId && q.RowStatus);
+                    var contract = await this._contractRepository.FirstAsync(q => q.ContractId == request.ContractId && q.RowStatus);
+
+                    errorMessage.AppendLine(string.Format("Tienes conceptos pagados en el periodo: {0}, contrato: {1}", period.Code, contract.ContractCode));
+                }
+            }
+
+            var response = new ResponseDTO()
+            {
+                IsValid = string.IsNullOrEmpty(errorMessage.ToString()),
+                Messages = new List<ApplicationMessage>()
+            };
+
+            response.Messages.Add(new ApplicationMessage()
+            {
+                Key = string.IsNullOrEmpty(errorMessage.ToString()) ? "Ok" : "Error",
+                Message = errorMessage.ToString()
+            });
+
+            return response;
+        }
+        
+        public async Task<ResponseDTO> ValidateEntityMassDelete(List<PPDeleteDTO> ids)
+        {
+            var errorMessage = new StringBuilder();
+            var paymentPeriodStatus = await this._entityStatusApplicationService.GetEntityStatusByEntityAndCodeAsync(Constants.EntityCode.PaymentPeriod, Constants.EntityStatus.PaymentPeriod.Payed);
+
+            if (paymentPeriodStatus == null)
+            {
+                errorMessage.AppendLine("No tienes el estado Pagado en el maestro de estados de Payment Period");
+            }
+            else
+            {
+                foreach (var paymentPeriod in ids)
+                {
+                    //var paymentPeriod = await this._paymentPeriodRepository.FirstAsync(q => q.PaymentPeriodId == paymentPeriodId);
+                    var request = new PPDeleteDTO();
+                    request.ContractId = paymentPeriod.ContractId;
+                    request.PeriodId = paymentPeriod.PeriodId;
+                    
+                    var hasPaidPayments = await this._paymentPeriodRepository.AnyAsync(q => q.PeriodId.Value == request.PeriodId && q.ContractId.Value == request.ContractId && q.PaymentPeriodStatusId == paymentPeriodStatus.EntityStatusId);
+                    if (hasPaidPayments)
+                    {
+                        var period = await this._periodRepository.FirstAsync(q=> q.PeriodId == request.PeriodId && q.RowStatus);
+                        var contract = await this._contractRepository.FirstAsync(q => q.ContractId == request.ContractId && q.RowStatus);
+
+                        errorMessage.AppendLine(string.Format("Tienes conceptos pagados en el periodo: {0}, contrato: {1}", period.Code, contract.ContractCode ));
+                    }
+                }
+            }
+            
+            var response = new ResponseDTO()
+            {
+                IsValid = string.IsNullOrEmpty(errorMessage.ToString()),
+                Messages = new List<ApplicationMessage>()
+            };
+
+            response.Messages.Add(new ApplicationMessage()
+            {
+                Key = string.IsNullOrEmpty(errorMessage.ToString()) ? "Ok" : "Error",
+                Message = errorMessage.ToString()
             });
 
             return response;

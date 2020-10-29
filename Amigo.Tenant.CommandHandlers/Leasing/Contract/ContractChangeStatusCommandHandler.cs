@@ -68,11 +68,6 @@ namespace Amigo.Tenant.CommandHandlers.Leasing.Contracts
                 //=================================================
                 await CreateContractChangeStatus(entity);
 
-                //_repository.Update(entity, new string[] {    "ContractId",
-                //                                                    "ContractStatusId",
-                //                                                    "UpdatedBy",
-                //                                                    "UpdatedDate"});
-
                 //=================================================
                 //Payment Period
                 //=================================================

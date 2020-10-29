@@ -1,18 +1,12 @@
 import { PPSearchDTO } from './../../shared/api/payment.service';
 
 import { Component, OnInit, Input, Output, EventEmitter, ViewChild } from '@angular/core';
-import { Http, Jsonp, URLSearchParams } from '@angular/http';
 import { GridDataResult, PageChangeEvent, SelectionEvent } from '@progress/kendo-angular-grid';
 
 import { EntityStatusClient, EntityStatusDTO } from '../../shared/api/services.client';
-import { PaymentPeriodClient /*, PaymentPeriodSearchRequest, PaymentDTO, DeletePaymentRequest*/ } from '../../shared/api/payment.services.client';
-import { PaymentMaintenanceComponent } from './payment-maintenance.component';
-import { AuthCheckDirective } from  '../../shared/security/auth-check.directive';
-import { Autofocus } from  '../../shared/directives/autofocus.directive';
+import { PaymentPeriodClient } from '../../shared/api/payment.services.client';
 
 import { Router,ActivatedRoute } from '@angular/router';
-//import { DataService } from './dataService';
-import { Observable, Subscription } from 'rxjs'
 import { ListsService } from '../../shared/constants/lists.service';
 
 import { ConfirmationList, ConfirmationIntResult } from '../../model/confirmation.dto';
@@ -21,6 +15,8 @@ import { PaymentServiceNew } from './payment.service';
 import { MasterDataService } from '../../shared/api/master-data-service';
 import { PaymentPeriodSendNotificationRequest } from './dto/payment-period-sendnotification-request';
 import { PaymentDataService } from './payment-data.service';
+import { PaymentPeriodRequest } from './dto/payment-period-delete-request';
+import { PaymentPeriodMassDeleteRequest } from './dto/payment-period-mass-delete-request';
 
 declare var $: any;
 
@@ -47,6 +43,9 @@ export class PaymentComponent implements OnInit {
 
     //GRID
     isColumnHeaderSelected: boolean = true;
+
+    openedConfimationDelete = false;
+    openedConfimationMassDelete = false;
 
     public confirmationFilter(): void {
         var confirmation = this.listConfirmation.ListIntResult;
@@ -100,6 +99,7 @@ export class PaymentComponent implements OnInit {
     public TotalIncomePendingAmount:number=0;
 
     searchCriteria = new PaymentPeriodSearchRequest();
+
     ngOnInit() {
         this.initializeForm(true);
         $(document).ready(() => { this.resizeGrid(); });
@@ -116,7 +116,8 @@ export class PaymentComponent implements OnInit {
         this._currentHouse = null;
         this.getEntityStatus();
         this.confirmationFilter();
-        this.setCurrentPeriod(isCurrentPeriod);
+        this.onSearch();
+        //this.setCurrentPeriod(isCurrentPeriod);
       }
 
     onSearch() {
@@ -157,6 +158,58 @@ export class PaymentComponent implements OnInit {
 
     onEdit(dataItem): void {
         this.router.navigateByUrl('amigotenant/payment/edit/' + dataItem.contractId + '/' + dataItem.periodId);
+    }
+
+    deleteRequest: PaymentPeriodRequest;
+
+    onDelete(dataItem): void {
+        this.deleteRequest = new PaymentPeriodRequest();
+        this.deleteRequest.periodId = dataItem.periodId;
+        this.deleteRequest.contractId = dataItem.contractId;
+        this.openedConfimationDelete = true;
+    }
+
+    onCloseConfirmationDelete() {
+        this.openedConfimationDelete = false;
+    }
+
+    onYesConfirmDelete(): void {
+        this.onCloseConfirmationDelete();
+
+        //LLAMADA AL SERVICIO PASANDO LA VARIABLE
+        this.paymentService.Delete(this.deleteRequest)
+        .subscribe(
+            r => { this.onSearch();
+        });
+    }
+
+    onMassDelete() {
+        this.openedConfimationMassDelete = true;
+    }
+
+    onCloseConfirmationMassDelete() {
+        this.openedConfimationMassDelete = false;
+    }
+
+    onYesConfirmMassDelete(): void {
+        this.onCloseConfirmationMassDelete();
+
+        let lista: PaymentPeriodMassDeleteRequest[] = [];
+        
+        this.gridData.data.filter(q => q.isSelected).forEach(element => {
+            lista.push(new PaymentPeriodMassDeleteRequest(element.contractId, element.periodId));
+        });
+
+        this.searchCriteria.pageSize = +this.searchCriteria.pageSize;
+        this.searchCriteria.page = (this.currentPage + this.searchCriteria.pageSize) / this.searchCriteria.pageSize;
+
+        this.paymentService.MassDelete(
+            lista
+        ).subscribe(res => {
+            this.successMessage = 'Massive update has been executred Successfully';
+            this.onSearch();
+        });
+
     }
 
     onReloadGrid(): void {
@@ -311,18 +364,18 @@ export class PaymentComponent implements OnInit {
     }
 
     setCurrentPeriod(currentPeriod) {
-        let period = this.masterDataService.getCurrentPeriod().subscribe(
-            res => {
-                this._currentPeriod = res.Data;
-            })
-        .add(x => {
-            if (currentPeriod) {
-                this.searchCriteria.periodId = this.searchCriteria.periodId === null || this.searchCriteria.periodId === undefined?
-                this._currentPeriod.PeriodId : this.searchCriteria.periodId;
-            }
-            this.onSearch();
+        // let period = this.masterDataService.getCurrentPeriod().subscribe(
+        //     res => {
+        //         this._currentPeriod = res.Data;
+        //     })
+        // .add(x => {
+        //     if (currentPeriod) {
+        //         this.searchCriteria.periodId = this.searchCriteria.periodId === null || this.searchCriteria.periodId === undefined?
+        //         this._currentPeriod.PeriodId : this.searchCriteria.periodId;
+        //     }
+        //     this.onSearch();
 
-        });
+        // });
     }
 
     //===========
@@ -385,4 +438,7 @@ export class PaymentComponent implements OnInit {
     onShowLiquidation(data: any){
         this.router.navigate(['/amigotenant/payment/liquidate', 0, 0, data.invoiceId]);
     }
+
+    
+
 }

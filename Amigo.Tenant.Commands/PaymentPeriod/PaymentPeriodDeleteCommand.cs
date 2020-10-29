@@ -9,6 +9,6 @@ namespace Amigo.Tenant.Commands.PaymentPeriod
     public class PaymentPeriodDeleteCommand : IAsyncRequest<CommandResult>
     {
         public int PaymentPeriodId { get; set; }
-
+        
     }
 }

@@ -212,6 +212,7 @@
     <Compile Include="Responses\Move\AmigoTenantTServiceReportDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PaymentPeriodDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PaymentPeriodGroupedStatusAndConceptDTO.cs" />
+    <Compile Include="Responses\PaymentPeriod\PPDeleteDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPDetailSearchByContractPeriodDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPDetailSearchByInvoiceDTO.cs" />
     <Compile Include="Responses\PaymentPeriod\PPHeaderSearchByContractPeriodDTO.cs" />

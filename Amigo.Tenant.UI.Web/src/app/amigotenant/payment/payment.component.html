@@ -7,6 +7,8 @@
             <div class="tab-content">
                 <div class="tab-pane">
                     <div [hidden]="!visible">
+                        <biz-val [successFlag]="successFlag" [successMessage]="successMessage" [errorMessages]='errorMessages'></biz-val>
+    
                         <form class="form-horizontal">
                             <div class="filter-bar">
                                 <div class="row">
@@ -158,6 +160,11 @@
                                         class="ro-button btn-default">
                                         <i class="xico-file-download"></i>
                                         Export to Excel
+                                    </button>
+                                    <button type="button" id="btnExport" (click)="onMassDelete()"
+                                        class="ro-button btn-default">
+                                        <i class="xico-file-download"></i>
+                                        Mass Delete
                                     </button>
                                 </div>
                             </div>
@@ -318,6 +325,9 @@
                                 <kendo-grid-column [width]="80">
                                     <ng-template kendoGridCellTemplate let-dataItem>
                                         <div class="text-right">
+                                            <button type="button" class="btn-icon" (click)="onDelete(dataItem)" *ngIf="dataItem.paymentPeriodStatusCode==='PPPENDING'" >
+                                                <i class="xico-action-remove"></i>
+                                            </button>
                                             <button type="button" class="btn-icon" (click)="onEdit(dataItem)">
                                                 <i class="xico-action-edit"></i>
                                             </button>
@@ -355,5 +365,19 @@
     <kendo-dialog-actions>
         <button type="button" class="k-button" (click)="closeConfirmation()">No</button>
         <button type="button" class="k-button k-primary" (click)="yesConfirm()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Confirmation" *ngIf="openedConfimationDelete" (close)="onCloseConfirmationDelete()">
+    <div>Estas seguro de eliminar los Payments</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="onCloseConfirmationDelete()">No</button>
+        <button type="button" class="k-button k-primary" (click)="onYesConfirmDelete()">Yes</button>
+    </kendo-dialog-actions>
+</kendo-dialog>
+<kendo-dialog title="Confirmation" *ngIf="openedConfimationMassDelete" (close)="onCloseConfirmationMassDelete()">
+    <div>Estas seguro de eliminar los Payments de varios registros</div>
+    <kendo-dialog-actions>
+        <button type="button" class="k-button" (click)="onCloseConfirmationMassDelete()">No</button>
+        <button type="button" class="k-button k-primary" (click)="onYesConfirmMassDelete()">Yes</button>
     </kendo-dialog-actions>
 </kendo-dialog>

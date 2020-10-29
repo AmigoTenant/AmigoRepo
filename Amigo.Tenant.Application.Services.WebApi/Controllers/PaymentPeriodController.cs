@@ -8,6 +8,7 @@ using Amigo.Tenant.Application.Services.Interfaces.MasterData;
 using Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod;
 using Amigo.Tenant.Application.Services.WebApi.Validation.Fluent;
 using Amigo.Tenant.Commands.Common;
+using Amigo.Tenant.Commands.PaymentPeriod;
 using Amigo.Tenant.Common;
 using Amigo.Tenant.Infrastructure.Mapping.Abstract;
 using Amigo.Tenant.Mail;
@@ -39,6 +40,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
         private readonly IConceptApplicationService _conceptApplicationService;
         private readonly IFileRepositoryApplicationService _fileRepositoryAppService;
         private readonly IMapper _mapper;
+
 
         public PaymentPeriodController(IPaymentPeriodApplicationService paymentPeriodApplicationService, 
                 IConceptApplicationService conceptApplicationService,
@@ -141,6 +143,44 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
                     return CreateErrorResponse(ex, "Error intentando actualizar el pago");
                 }
                 
+            }
+            return ModelState.ToResponse();
+        }
+
+        [HttpPost, Route("delete")] //, AmigoTenantClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.PaymentPeriodUpdate)]
+        public async Task<ResponseDTO> Delete([FromBody] PPDeleteDTO paymentPeriod)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var response = await _paymentPeriodApplicationService.DeletePaymentPeriodAsync(paymentPeriod);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    return CreateErrorResponse(ex, "Error intentando eliminar los Pagos");
+                }
+
+            }
+            return ModelState.ToResponse();
+        }
+
+        [HttpPost, Route("massDelete")] 
+        public async Task<ResponseDTO> MassDelete([FromBody] List<PPDeleteDTO> request)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var response = await _paymentPeriodApplicationService.MassDeletePaymentPeriodAsync(request);
+                    return response;
+                }
+                catch (Exception ex)
+                {
+                    return CreateErrorResponse(ex, "Error intentando eliminar los Pagos");
+                }
+
             }
             return ModelState.ToResponse();
         }
@@ -672,6 +712,7 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var resp = await _paymentPeriodApplicationService.DeletePaymentPeriodDetailAsync(search);
             return resp;
         }
+
         [HttpGet]
         [Route("exportToExcel/{periodId}/{houseId}/{contractCode}/{paymentPeriodStatusId}/{tenantId}/{hasPendingServices}/{hasPendingFines}/{hasPendingLateFee}/{page}/{pageSize}"), AllowAnonymous]//ShuttleClaimsAuthorize(ActionCode = ConstantsSecurity.ActionCode.WeeklyReportSearch)
         public async Task<HttpResponseMessage> ExportToExcel([FromUri]PaymentPeriodSearchRequest search)

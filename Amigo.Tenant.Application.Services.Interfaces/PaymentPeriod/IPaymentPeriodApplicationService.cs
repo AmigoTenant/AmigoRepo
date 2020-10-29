@@ -14,7 +14,8 @@ namespace Amigo.Tenant.Application.Services.Interfaces.PaymentPeriod
     {
         //Task<ResponseDTO> RegisterPaymentPeriodAsync(PaymentPeriodRegisterRequest paymentPeriod);
         Task<ResponseDTO> UpdatePaymentPeriodAsync(PPHeaderSearchByContractPeriodDTO paymentPeriod);
-        //Task<ResponseDTO> DeletePaymentPeriodAsync(PaymentPeriodDeleteRequest paymentPeriod);
+        Task<ResponseDTO> DeletePaymentPeriodAsync(PPDeleteDTO request);
+        Task<ResponseDTO> MassDeletePaymentPeriodAsync(List<PPDeleteDTO> request);
         Task<ResponseDTO<PagedList<PPSearchDTO>>> SearchPaymentPeriodAsync(PaymentPeriodSearchRequest search);
         Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchPaymentPeriodByContractAsync(PaymentPeriodSearchByContractPeriodRequest search);
         Task<ResponseDTO<PPHeaderSearchByContractPeriodDTO>> SearchForLiquidation(PaymentPeriodSearchByContractPeriodRequest search);
