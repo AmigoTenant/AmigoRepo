@@ -278,6 +278,8 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             var fromEmail = System.Configuration.ConfigurationManager.AppSettings["fromEmail"];
             var userName = System.Configuration.ConfigurationManager.AppSettings["userName"];
             var password = System.Configuration.ConfigurationManager.AppSettings["password"];
+            var isTenantEmailEnabled = System.Configuration.ConfigurationManager.AppSettings["tenantEmailEnabled"];
+
 
             StringBuilder body = new StringBuilder("<!DOCTYPE html><html><head><meta charset='UTF-8'></head>");
             body.AppendLine("<body>");
@@ -306,7 +308,13 @@ namespace Amigo.Tenant.Application.Services.WebApi.Controllers
             attachmentList.ForEach(q => {
                 mail.Attachments.Add(q);
             });
-            mail.To.Add(headerPayment.Email);
+
+            if (bool.Parse(isTenantEmailEnabled)) { 
+                mail.To.Add(headerPayment.Email);
+            } else
+            {
+                mail.To.Add(fromEmail);
+            }
 
             var client = new SmtpClient("smtp.gmail.com")
             {
